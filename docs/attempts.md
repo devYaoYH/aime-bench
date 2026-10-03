@@ -39,7 +39,8 @@ With the GPU free and service ports available:
 
 This creates an exclusive timestamped attempt, warms CUDA with a small matmul,
 launches vLLM from the model's profile, starts a fresh grader with a three-second
-global toll, waits for both services, and makes a 32-token inference warmup.
+global toll, waits for both services, and warms inference with the configured sampling settings at the full batch
+size (up to 32 requests of 32 tokens each).
 The official solving timer starts after initialization and warmup. The directory
 ID is the UTC timestamp of attempt initialization; config and summary distinguish
 initialization, official solving, and cleanup. The runner stops its own services
@@ -52,7 +53,7 @@ For an already running matching, idle server, explicitly attach:
   --reuse-server --questions 1 3 --max-tokens 2048
 ```
 
-Attach mode performs inference warmup and starts its own fresh grader, but leaves
+Attach mode performs the same inference warmup and starts its own fresh grader, but leaves
 the existing inference server running. Its exact launch arguments are external;
 the attempt saves the on-disk profile and `/v1/models` response, which cannot prove
 that the existing server loaded that profile. Managed mode provides that guarantee.

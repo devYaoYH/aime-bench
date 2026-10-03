@@ -405,6 +405,38 @@ def load_questions(indices):
     return problems
 
 
+async def warm_inference(args, client, question_count):
+    """Warm the configured sampling path at the attempt's maximum batch size."""
+    batch_size = min(args.parallelism, question_count) * args.rollouts
+    tokens = min(32, args.max_tokens)
+    started, start = utc_now(), time.perf_counter()
+    print(f'Inference warmup: {batch_size} streams, {tokens} tokens each', flush=True)
+
+    async def one(slot):
+        request = {'model': args.model,
+                   'messages': [{'role': 'user', 'content': 'Compute 1 + 1.'}],
+                   'max_tokens': tokens, 'min_tokens': tokens,
+                   'temperature': args.temperature, 'top_p': args.top_p,
+                   'seed': args.seed - batch_size + slot, 'stream': False}
+        if args.disable_thinking:
+            request['chat_template_kwargs'] = {'enable_thinking': False}
+        response = await client.post(args.vllm_url + '/v1/chat/completions', json=request)
+        response.raise_for_status()
+        return {'request': request, 'response': response.json()}
+
+    tasks = [asyncio.create_task(one(slot)) for slot in range(batch_size)]
+    try:
+        responses = await asyncio.gather(*tasks)
+    finally:
+        for task in tasks:
+            if not task.done():
+                task.cancel()
+        await asyncio.gather(*tasks, return_exceptions=True)
+    return {'started_at_utc': started, 'finished_at_utc': utc_now(),
+            'latency_s': time.perf_counter() - start, 'batch_size': batch_size,
+            'tokens_per_request': tokens, 'requests': responses}
+
+
 async def run(args):
     services = Services()
     sampler = None
@@ -421,6 +453,8 @@ async def run(args):
               'gpu_scope': 'device-level NVML; vLLM preallocates VRAM', 'python': sys.version}
     atomic_json(output / 'config.json', config)
     try:
+        problems = load_questions(args.questions)
+        config['question_indices'] = [p['problem_idx'] for p in problems]
         profile_path = Path(args.models_dir).expanduser() / args.model / 'vllm.yaml'
         profile_text = profile_path.read_text()
         profile = yaml.safe_load(profile_text)
@@ -472,19 +506,16 @@ async def run(args):
             if health.get('queries_so_far') != 0 or health.get('cost_c') != args.grader_cost:
                 raise RuntimeError('Grader did not start with a fresh queue and requested toll')
             config['grader_health'] = health
-            warm_start = time.perf_counter()
-            response = await client.post(args.vllm_url + '/v1/chat/completions', json={
-                'model': args.model, 'messages': [{'role': 'user', 'content': 'Compute 1 + 1.'}],
-                'max_tokens': 32, 'temperature': 0, 'stream': False})
-            response.raise_for_status()
-            atomic_json(output / 'inference_warmup.json', {'response': response.json(),
-                        'latency_s': time.perf_counter() - warm_start})
+            warmup = await warm_inference(args, client, len(problems))
+            atomic_json(output / 'inference_warmup.json', warmup)
+            config['inference_warmup'] = {k: warmup[k] for k in ('latency_s', 'batch_size', 'tokens_per_request')}
             config.update(model_profile_sha256=hashlib.sha256(profile_text.encode()).hexdigest(),
                           launch_profile=profile, official_started_at_utc=utc_now())
             atomic_json(output / 'config.json', config)
             official_start = time.perf_counter()
             status = 'running'
-            results = await run_questions(load_questions(args.questions), args, client, output, sampler)
+            print('Official solving phase started', flush=True)
+            results = await run_questions(problems, args, client, output, sampler)
             status = 'completed' if all(r['status'] != 'error' for r in results) else 'failed'
             if sampler.error:
                 raise RuntimeError(f'GPU telemetry failed: {sampler.error}')

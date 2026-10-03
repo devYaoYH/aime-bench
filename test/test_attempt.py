@@ -14,7 +14,7 @@ import unittest
 import httpx
 import yaml
 
-from src.attempt import CandidateDetector, ROOT, parse_args, ready, run_question, run_questions, sse_payloads
+from src.attempt import CandidateDetector, ROOT, parse_args, ready, run_question, run_questions, sse_payloads, warm_inference
 
 
 class FakeGPU:
@@ -74,6 +74,27 @@ class RunnerTests(unittest.IsolatedAsyncioTestCase):
         for key, value in changes.items():
             setattr(args, key, value)
         return args
+
+    async def test_warmup_matches_sampling_batch_and_excludes_grader(self):
+        requests, active, peak = [], 0, 0
+        async def handler(request):
+            nonlocal active, peak
+            self.assertEqual(request.url.path, '/v1/chat/completions')
+            body = json.loads(request.content)
+            requests.append(body)
+            active += 1
+            peak = max(peak, active)
+            await asyncio.sleep(0.005)
+            active -= 1
+            return httpx.Response(200, json={'choices': []})
+        async with httpx.AsyncClient(transport=httpx.MockTransport(handler)) as client:
+            result = await warm_inference(self.args(disable_thinking=True), client, 30)
+        self.assertEqual((result['batch_size'], peak), (32, 32))
+        self.assertEqual(len({r['seed'] for r in requests}), 32)
+        for request in requests:
+            self.assertEqual((request['max_tokens'], request['min_tokens']), (32, 32))
+            self.assertEqual((request['temperature'], request['top_p']), (0.8, 0.95))
+            self.assertEqual(request['chat_template_kwargs'], {'enable_thinking': False})
 
     async def test_sse_multiline_comments_and_eof(self):
         async def lines():
