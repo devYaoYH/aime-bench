@@ -1,0 +1,215 @@
+{
+  "problem_idx": 10,
+  "started_at_utc": "2026-10-03T22:57:22.466+00:00",
+  "finished_at_utc": "2026-10-03T22:59:14.870+00:00",
+  "end_to_end_latency_s": 112.40374441194581,
+  "status": "solved",
+  "winner": {
+    "answer": 81,
+    "part": "content",
+    "kind": "literal_prose",
+    "end": 46603,
+    "line": "Now we need to express N as p^a * q^b * r^c * s^d where p,q,r,s are distinct primes and a,b,c,d are positive integers. We have four primes: 2,3,5,7. So p=2, a=16; q=3, b=10; r=5, c=1; s=7, d=2. Or any order. So p*a + q*b + r*c + s*d = 2*16 + 3*10 + 5*1 + 7*2 = 32 + 30 + 5 + 14 = 81. So answer would be 81.",
+    "candidate": "81",
+    "rollout": 2,
+    "observed_at_utc": "2026-10-03T22:59:11.860+00:00",
+    "question_elapsed_s": 49.69422070501605,
+    "verification_started_at_utc": "2026-10-03T22:59:11.861+00:00",
+    "round": 2,
+    "candidate_queue_wait_s": 9.24530322663486e-05,
+    "result": {
+      "dataset": {
+        "format": "jsonl",
+        "gold_field": "answer",
+        "id": "aime_2025",
+        "idx_field": "problem_idx",
+        "revision": "c94da77eb22bbd6439e62a323bec18493a421302",
+        "source": "/home/azureuser/aime-bench/grader/data/aime_2025.jsonl",
+        "year": 2025,
+        "sha256": "d5bcac5904290630fe98e3c3d1c2773260ebf59b57955382735e9ce8c0142b41"
+      },
+      "query_id": "20261003T225721.655059Z-q10-a81",
+      "seq": 19,
+      "agent_id": "20261003T225721.655059Z-q10-r2",
+      "index": 10,
+      "candidate": "81",
+      "verdict": true,
+      "queue_ahead_at_submit": 0,
+      "submitted_at": "2026-10-03T22:59:11.864038Z",
+      "picked_at": "2026-10-03T22:59:11.864131Z",
+      "answered_at": "2026-10-03T22:59:14.864258Z",
+      "queue_wait_s": 0.0,
+      "toll_s": 3.0,
+      "latency_s": 3.0
+    },
+    "verification_finished_at_utc": "2026-10-03T22:59:14.865+00:00",
+    "verification_latency_s": 3.0047733950195834
+  },
+  "error": null,
+  "unique_candidates": 1,
+  "candidate_answers": [
+    "81"
+  ],
+  "rollouts": [
+    {
+      "rollout": 1,
+      "round": 1,
+      "started_at_utc": "2026-10-03T22:57:22.485+00:00",
+      "start_monotonic_s": 272490.548387462,
+      "ttft_s": 0.25735909899231046,
+      "last_token_s": 59.61878448101925,
+      "finish_reason": "length",
+      "status": "completed",
+      "done_received": true,
+      "usage": {
+        "prompt_tokens": 364,
+        "total_tokens": 8556,
+        "completion_tokens": 8192,
+        "prompt_tokens_details": {
+          "cached_tokens": 64,
+          "created_cache_tokens": 288
+        }
+      },
+      "endpoint": "/v1/chat/completions",
+      "continuation_of_rollout": null,
+      "requested_max_tokens": 8192,
+      "http_status": 200,
+      "headers_received_s": 0.06379275501240045,
+      "generation_finished_at_utc": "2026-10-03T22:58:22.123+00:00",
+      "generation_end_monotonic_s": 272550.186457618,
+      "generation_latency_s": 59.63807015604107,
+      "generation_censored": true,
+      "generated_token_ids_count": 8192,
+      "prompt_token_ids_count": 364,
+      "cached_prompt_tokens": 64,
+      "prefix_cache_hit_fraction": 0.17582417582417584,
+      "overhead": {
+        "enabled": false,
+        "timings": {},
+        "counters": {},
+        "maxima": {}
+      },
+      "finished_at_utc": "2026-10-03T22:58:22.148+00:00",
+      "end_to_end_latency_s": 59.66306212299969,
+      "end_to_end_scope": "rollout start through question verification/cancellation settlement",
+      "gpu": null
+    },
+    {
+      "rollout": 2,
+      "round": 2,
+      "started_at_utc": "2026-10-03T22:58:22.214+00:00",
+      "start_monotonic_s": 272550.276699594,
+      "ttft_s": 0.18541807599831372,
+      "last_token_s": 52.644619447994046,
+      "finish_reason": null,
+      "status": "cancelled",
+      "done_received": false,
+      "usage": {
+        "prompt_tokens": 8556,
+        "total_tokens": 14771,
+        "completion_tokens": 6215
+      },
+      "endpoint": "/v1/completions",
+      "continuation_of_rollout": 1,
+      "requested_max_tokens": 16384,
+      "http_status": 200,
+      "headers_received_s": 0.09129508800106123,
+      "generation_finished_at_utc": "2026-10-03T22:59:14.866+00:00",
+      "generation_end_monotonic_s": 272602.928668984,
+      "generation_latency_s": 52.65196938998997,
+      "generation_censored": true,
+      "generated_token_ids_count": 6215,
+      "prompt_token_ids_count": 8556,
+      "cached_prompt_tokens": null,
+      "prefix_cache_hit_fraction": null,
+      "overhead": {
+        "enabled": false,
+        "timings": {},
+        "counters": {},
+        "maxima": {}
+      },
+      "finished_at_utc": "2026-10-03T22:59:14.870+00:00",
+      "end_to_end_latency_s": 52.65646718698554,
+      "end_to_end_scope": "rollout start through question verification/cancellation settlement",
+      "gpu": null
+    }
+  ],
+  "round": 2,
+  "first_solved": {
+    "problem_idx": 10,
+    "round": 2,
+    "rollout": 2,
+    "candidate": "81",
+    "first_solved_at_utc": "2026-10-03T22:59:14.865+00:00",
+    "first_solved_elapsed_s": 112.40173926501302,
+    "grader_answered_at_utc": "2026-10-03T22:59:14.864258Z",
+    "grader_query_id": "20261003T225721.655059Z-q10-a81"
+  },
+  "overhead": {
+    "enabled": false,
+    "timings": {},
+    "counters": {},
+    "maxima": {}
+  },
+  "rounds": [
+    {
+      "round": 1,
+      "status": "unsolved",
+      "started_at_utc": "2026-10-03T22:57:22.466+00:00",
+      "finished_at_utc": "2026-10-03T22:58:22.148+00:00",
+      "end_to_end_latency_s": 59.682027215952985,
+      "winner": null,
+      "error": null
+    },
+    {
+      "round": 2,
+      "status": "solved",
+      "started_at_utc": "2026-10-03T22:58:22.166+00:00",
+      "finished_at_utc": "2026-10-03T22:59:14.870+00:00",
+      "end_to_end_latency_s": 52.70397298899479,
+      "winner": {
+        "answer": 81,
+        "part": "content",
+        "kind": "literal_prose",
+        "end": 46603,
+        "line": "Now we need to express N as p^a * q^b * r^c * s^d where p,q,r,s are distinct primes and a,b,c,d are positive integers. We have four primes: 2,3,5,7. So p=2, a=16; q=3, b=10; r=5, c=1; s=7, d=2. Or any order. So p*a + q*b + r*c + s*d = 2*16 + 3*10 + 5*1 + 7*2 = 32 + 30 + 5 + 14 = 81. So answer would be 81.",
+        "candidate": "81",
+        "rollout": 2,
+        "observed_at_utc": "2026-10-03T22:59:11.860+00:00",
+        "question_elapsed_s": 49.69422070501605,
+        "verification_started_at_utc": "2026-10-03T22:59:11.861+00:00",
+        "round": 2,
+        "candidate_queue_wait_s": 9.24530322663486e-05,
+        "result": {
+          "dataset": {
+            "format": "jsonl",
+            "gold_field": "answer",
+            "id": "aime_2025",
+            "idx_field": "problem_idx",
+            "revision": "c94da77eb22bbd6439e62a323bec18493a421302",
+            "source": "/home/azureuser/aime-bench/grader/data/aime_2025.jsonl",
+            "year": 2025,
+            "sha256": "d5bcac5904290630fe98e3c3d1c2773260ebf59b57955382735e9ce8c0142b41"
+          },
+          "query_id": "20261003T225721.655059Z-q10-a81",
+          "seq": 19,
+          "agent_id": "20261003T225721.655059Z-q10-r2",
+          "index": 10,
+          "candidate": "81",
+          "verdict": true,
+          "queue_ahead_at_submit": 0,
+          "submitted_at": "2026-10-03T22:59:11.864038Z",
+          "picked_at": "2026-10-03T22:59:11.864131Z",
+          "answered_at": "2026-10-03T22:59:14.864258Z",
+          "queue_wait_s": 0.0,
+          "toll_s": 3.0,
+          "latency_s": 3.0
+        },
+        "verification_finished_at_utc": "2026-10-03T22:59:14.865+00:00",
+        "verification_latency_s": 3.0047733950195834
+      },
+      "error": null
+    }
+  ],
+  "question_start_monotonic_s": 272490.529422369
+}
