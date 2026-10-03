@@ -1,0 +1,217 @@
+{
+  "model": "typesafe/jev-1.13",
+  "run_id": "20260930-155212",
+  "reasoning_prefix_tokens": 1500,
+  "judged": 18,
+  "question_wording": {
+    "type": "noul",
+    "instructions": "If the same Qwen3 solver continues from the very end of this truncated reasoning trace for at most 8192 more output tokens, is it likely to reach a mathematically justified correct AIME integer answer without restarting the solution?",
+    "criteria": {
+      "true": "The current path has a sound, useful setup and remaining steps look feasible within the continuation budget.",
+      "false": "The path is fundamentally wrong, persistently looping, or too far from a justified answer to finish within the budget."
+    }
+  },
+  "note": "Scores are subjective Jev forecasts. The prefix review contains only the first Qwen reasoning tokens and no gold answers; it is separate from the full-trace review.",
+  "total_input_tokens": 40508,
+  "total_reported_cost": 0.001701336,
+  "ranked": [
+    {
+      "problem_idx": 22,
+      "prefix_promising": 0.77,
+      "full_trace_promising": 0.25,
+      "delta_prefix_minus_full": 0.52,
+      "prefix_tokens": 1500,
+      "prefix_chars": 4932,
+      "input_tokens": 2101,
+      "cost": 8.8242e-05,
+      "trace_file": "jev_prefix_1500/22.json"
+    },
+    {
+      "problem_idx": 23,
+      "prefix_promising": 0.69,
+      "full_trace_promising": 0.57,
+      "delta_prefix_minus_full": 0.12,
+      "prefix_tokens": 1500,
+      "prefix_chars": 5456,
+      "input_tokens": 2275,
+      "cost": 9.555e-05,
+      "trace_file": "jev_prefix_1500/23.json"
+    },
+    {
+      "problem_idx": 18,
+      "prefix_promising": 0.68,
+      "full_trace_promising": 0.59,
+      "delta_prefix_minus_full": 0.09,
+      "prefix_tokens": 1500,
+      "prefix_chars": 5951,
+      "input_tokens": 2284,
+      "cost": 9.5928e-05,
+      "trace_file": "jev_prefix_1500/18.json"
+    },
+    {
+      "problem_idx": 9,
+      "prefix_promising": 0.67,
+      "full_trace_promising": 0.71,
+      "delta_prefix_minus_full": -0.04,
+      "prefix_tokens": 1500,
+      "prefix_chars": 4303,
+      "input_tokens": 2058,
+      "cost": 8.6436e-05,
+      "trace_file": "jev_prefix_1500/09.json"
+    },
+    {
+      "problem_idx": 7,
+      "prefix_promising": 0.65,
+      "full_trace_promising": 0.45,
+      "delta_prefix_minus_full": 0.2,
+      "prefix_tokens": 1500,
+      "prefix_chars": 6818,
+      "input_tokens": 2165,
+      "cost": 9.093e-05,
+      "trace_file": "jev_prefix_1500/07.json"
+    },
+    {
+      "problem_idx": 21,
+      "prefix_promising": 0.64,
+      "full_trace_promising": 0.41,
+      "delta_prefix_minus_full": 0.23,
+      "prefix_tokens": 1500,
+      "prefix_chars": 4887,
+      "input_tokens": 2709,
+      "cost": 0.000113778,
+      "trace_file": "jev_prefix_1500/21.json"
+    },
+    {
+      "problem_idx": 27,
+      "prefix_promising": 0.64,
+      "full_trace_promising": 0.73,
+      "delta_prefix_minus_full": -0.09,
+      "prefix_tokens": 1500,
+      "prefix_chars": 4936,
+      "input_tokens": 2233,
+      "cost": 9.3786e-05,
+      "trace_file": "jev_prefix_1500/27.json"
+    },
+    {
+      "problem_idx": 12,
+      "prefix_promising": 0.58,
+      "full_trace_promising": 0.78,
+      "delta_prefix_minus_full": -0.2,
+      "prefix_tokens": 1500,
+      "prefix_chars": 4036,
+      "input_tokens": 2121,
+      "cost": 8.9082e-05,
+      "trace_file": "jev_prefix_1500/12.json"
+    },
+    {
+      "problem_idx": 2,
+      "prefix_promising": 0.57,
+      "full_trace_promising": 0.41,
+      "delta_prefix_minus_full": 0.16,
+      "prefix_tokens": 1500,
+      "prefix_chars": 4618,
+      "input_tokens": 2659,
+      "cost": 0.000111678,
+      "trace_file": "jev_prefix_1500/02.json"
+    },
+    {
+      "problem_idx": 20,
+      "prefix_promising": 0.56,
+      "full_trace_promising": 0.47,
+      "delta_prefix_minus_full": 0.09,
+      "prefix_tokens": 1500,
+      "prefix_chars": 5518,
+      "input_tokens": 2633,
+      "cost": 0.000110586,
+      "trace_file": "jev_prefix_1500/20.json"
+    },
+    {
+      "problem_idx": 30,
+      "prefix_promising": 0.56,
+      "full_trace_promising": 0.38,
+      "delta_prefix_minus_full": 0.18,
+      "prefix_tokens": 1500,
+      "prefix_chars": 4923,
+      "input_tokens": 2073,
+      "cost": 8.7066e-05,
+      "trace_file": "jev_prefix_1500/30.json"
+    },
+    {
+      "problem_idx": 10,
+      "prefix_promising": 0.55,
+      "full_trace_promising": 0.42,
+      "delta_prefix_minus_full": 0.13,
+      "prefix_tokens": 1500,
+      "prefix_chars": 5528,
+      "input_tokens": 2291,
+      "cost": 9.6222e-05,
+      "trace_file": "jev_prefix_1500/10.json"
+    },
+    {
+      "problem_idx": 11,
+      "prefix_promising": 0.55,
+      "full_trace_promising": 0.46,
+      "delta_prefix_minus_full": 0.09,
+      "prefix_tokens": 1500,
+      "prefix_chars": 4311,
+      "input_tokens": 2453,
+      "cost": 0.000103026,
+      "trace_file": "jev_prefix_1500/11.json"
+    },
+    {
+      "problem_idx": 25,
+      "prefix_promising": 0.53,
+      "full_trace_promising": 0.74,
+      "delta_prefix_minus_full": -0.21,
+      "prefix_tokens": 1500,
+      "prefix_chars": 6382,
+      "input_tokens": 2051,
+      "cost": 8.6142e-05,
+      "trace_file": "jev_prefix_1500/25.json"
+    },
+    {
+      "problem_idx": 15,
+      "prefix_promising": 0.5,
+      "full_trace_promising": 0.25,
+      "delta_prefix_minus_full": 0.25,
+      "prefix_tokens": 1500,
+      "prefix_chars": 4389,
+      "input_tokens": 2064,
+      "cost": 8.6688e-05,
+      "trace_file": "jev_prefix_1500/15.json"
+    },
+    {
+      "problem_idx": 14,
+      "prefix_promising": 0.49,
+      "full_trace_promising": 0.26,
+      "delta_prefix_minus_full": 0.23,
+      "prefix_tokens": 1500,
+      "prefix_chars": 5821,
+      "input_tokens": 2129,
+      "cost": 8.9418e-05,
+      "trace_file": "jev_prefix_1500/14.json"
+    },
+    {
+      "problem_idx": 13,
+      "prefix_promising": 0.48,
+      "full_trace_promising": 0.3,
+      "delta_prefix_minus_full": 0.18,
+      "prefix_tokens": 1500,
+      "prefix_chars": 6375,
+      "input_tokens": 2071,
+      "cost": 8.6982e-05,
+      "trace_file": "jev_prefix_1500/13.json"
+    },
+    {
+      "problem_idx": 28,
+      "prefix_promising": 0.47,
+      "full_trace_promising": 0.22,
+      "delta_prefix_minus_full": 0.25,
+      "prefix_tokens": 1500,
+      "prefix_chars": 2820,
+      "input_tokens": 2138,
+      "cost": 8.9796e-05,
+      "trace_file": "jev_prefix_1500/28.json"
+    }
+  ]
+}

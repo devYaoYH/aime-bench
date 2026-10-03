@@ -1,0 +1,289 @@
+{
+  "config": {
+    "source_run": "20260930-155212",
+    "questions": [
+      1,
+      3,
+      18,
+      25
+    ],
+    "selection": {
+      "1": "All eight first proposals correct; median first position 1,408 versus 5,747.5 final tokens.",
+      "3": "All eight first proposals correct; median first position 3,345 versus 12,924 final tokens.",
+      "18": "Three correct first proposals before the cap; all eight old finals missing. Hard salvage test.",
+      "25": "Seven correct first proposals; extensive rechecking and toy cases; five old capped attempts."
+    },
+    "model": "qwen/qwen3-30b-a3b",
+    "endpoint": "https://openrouter.ai/api/v1/chat/completions",
+    "control_prompt": "Solve the mathematical problem carefully. Reason step by step. End your final response with the AIME integer answer in the exact format Answer: NNN, where NNN is an integer from 0 to 999.",
+    "treatment_prompt": "Solve the mathematical problem carefully. Reason step by step. End your final response with the AIME integer answer in the exact format Answer: NNN, where NNN is an integer from 0 to 999. As soon as you derive the first complete candidate answer to the requested problem, end your reasoning immediately, output the final line Answer: NNN, and stop generating. Do not recheck that candidate, seek another method, test smaller examples, or repeat the derivation. Intermediate quantities and answers to toy examples are not complete answers to the requested problem.",
+    "requests": 8,
+    "concurrency": 8,
+    "provider": {
+      "order": [
+        "deepinfra"
+      ],
+      "allow_fallbacks": false
+    },
+    "sampling": {
+      "temperature": 0.6,
+      "top_p": 0.95,
+      "top_k": 20,
+      "max_tokens": 16384,
+      "reasoning": {
+        "enabled": true,
+        "exclude": false
+      }
+    },
+    "forced_stop": false,
+    "client_cancellation": false,
+    "stream": true,
+    "grading": "local equality against saved key, no external grader",
+    "notes": [
+      "One stochastic sample per arm per selected question; descriptive pilot only.",
+      "Both arms stream with the same routing and sampling; only the system message differs.",
+      "Both arms use the historical DeepInfra provider; no provider fallback.",
+      "No seed requested; the samples do not share a stochastic trajectory.",
+      "No API retries after a partial stream; preserve failures separately."
+    ]
+  },
+  "invocation_start_utc": "2026-10-03T01:02:20.644+00:00",
+  "invocation_end_utc": "2026-10-03T01:05:47.303+00:00",
+  "invocation_wall_s": 206.65870000002906,
+  "arm_totals": {
+    "control": {
+      "requests": 4,
+      "successful_streams": 4,
+      "correct": 2,
+      "natural_stops": 2,
+      "completion_tokens": 49308,
+      "sum_latency_s": 620.5408667090815,
+      "batch_max_latency_s": 206.49882216693368,
+      "reported_cost": 0.02473956
+    },
+    "first_answer": {
+      "requests": 4,
+      "successful_streams": 4,
+      "correct": 3,
+      "natural_stops": 3,
+      "completion_tokens": 48033,
+      "sum_latency_s": 611.1706311269663,
+      "batch_max_latency_s": 206.08722983393818,
+      "reported_cost": 0.02413518
+    }
+  },
+  "comparisons": [
+    {
+      "problem_idx": 1,
+      "gold_answer": 70,
+      "historical_median_tokens": 5747.5,
+      "historical_median_latency_s": 131.3895,
+      "control": {
+        "candidate": "70",
+        "correct": true,
+        "finish_reason": "stop",
+        "generation_latency_s": 70.36462212505285,
+        "done_received": true,
+        "completion_tokens": 5744,
+        "provider": "DeepInfra",
+        "first_proposal": {
+          "answer": 70,
+          "start": 7680,
+          "end": 7703,
+          "kind": "prose",
+          "confidence": "asserted",
+          "expression": "21 + 49 = 70",
+          "quote": "answer is 21 + 49 = 70.",
+          "context": "ger. Therefore, m must be integer. Therefore, m must be integer. So only divisors. \n\nTherefore, the answer is 21 + 49 = 70. \n\nBut let me check if there are other divisors. Wait, if I take m as 1, 2, then we get 49 and 21. B",
+          "part": "reasoning",
+          "visible_output_token": 2916,
+          "observed_at_s": 35.495583125040866,
+          "correct": true,
+          "estimated_stop_tokens": 2919
+        },
+        "tokens_after_first_proposal": 2825,
+        "seconds_after_first_proposal": 34.86903900001198
+      },
+      "first_answer": {
+        "candidate": "70",
+        "correct": true,
+        "finish_reason": "stop",
+        "generation_latency_s": 65.7610775840003,
+        "done_received": true,
+        "completion_tokens": 5442,
+        "provider": "DeepInfra",
+        "first_proposal": {
+          "answer": 70,
+          "start": 3528,
+          "end": 3551,
+          "kind": "prose",
+          "confidence": "asserted",
+          "expression": "21 + 49 = 70",
+          "quote": "answer is 21 + 49 = 70?",
+          "context": "isors. Wait, 56's divisors are only those 8 numbers. So only 28 and 56 are above 16. Therefore, the answer is 21 + 49 = 70?\n\nBut let me check if there are other possibilities. For example, negative divisors? But since b is ",
+          "part": "reasoning",
+          "visible_output_token": 1336,
+          "observed_at_s": 15.890022708917968,
+          "correct": true,
+          "estimated_stop_tokens": 1339
+        },
+        "tokens_after_first_proposal": 4103,
+        "seconds_after_first_proposal": 49.871054875082336
+      },
+      "token_saving_fraction": 0.052576601671309176,
+      "latency_saving_fraction": 0.065424135055697
+    },
+    {
+      "problem_idx": 3,
+      "gold_answer": 16,
+      "historical_median_tokens": 12924.0,
+      "historical_median_latency_s": 293.371,
+      "control": {
+        "candidate": "16",
+        "correct": true,
+        "finish_reason": "stop",
+        "generation_latency_s": 137.69569366704673,
+        "done_received": true,
+        "completion_tokens": 10796,
+        "provider": "DeepInfra",
+        "first_proposal": {
+          "answer": 16,
+          "start": 7598,
+          "end": 7611,
+          "kind": "prose",
+          "confidence": "asserted",
+          "expression": "16",
+          "quote": "answer is 16?",
+          "context": "016. Then, the problem says to find N mod 1000. 2016 divided by 1000 is 2 with remainder 16. So the answer is 16?\n\nWait, but that seems too easy. Wait, but let me check again if there are more triples. Because may",
+          "part": "reasoning",
+          "visible_output_token": 2983,
+          "observed_at_s": 36.24065679195337,
+          "correct": true,
+          "estimated_stop_tokens": 2986
+        },
+        "tokens_after_first_proposal": 7810,
+        "seconds_after_first_proposal": 101.45503687509336
+      },
+      "first_answer": {
+        "candidate": "16",
+        "correct": true,
+        "finish_reason": "stop",
+        "generation_latency_s": 161.11811600008514,
+        "done_received": true,
+        "completion_tokens": 12443,
+        "provider": "DeepInfra",
+        "first_proposal": {
+          "answer": 16,
+          "start": 8977,
+          "end": 8996,
+          "kind": "prose",
+          "confidence": "tentative",
+          "expression": "16",
+          "quote": "answer would be 16?",
+          "context": "6? Then the problem says to find N mod 1000. So 2016 divided by 1000 is 2 with remainder 16. So the answer would be 16?\n\nWait, but that seems low. Let me check my calculations again because I might have made an error.\n\n",
+          "part": "reasoning",
+          "visible_output_token": 3864,
+          "observed_at_s": 46.84739279199857,
+          "correct": true,
+          "estimated_stop_tokens": 3867
+        },
+        "tokens_after_first_proposal": 8576,
+        "seconds_after_first_proposal": 114.27072320808657
+      },
+      "token_saving_fraction": -0.15255650240829932,
+      "latency_saving_fraction": -0.1701027948606344
+    },
+    {
+      "problem_idx": 18,
+      "gold_answer": 82,
+      "historical_median_tokens": 16384.0,
+      "historical_median_latency_s": 379.4815,
+      "control": {
+        "candidate": null,
+        "correct": false,
+        "finish_reason": "length",
+        "generation_latency_s": 205.9817287500482,
+        "done_received": true,
+        "completion_tokens": 16384,
+        "provider": "DeepInfra",
+        "first_proposal": null,
+        "tokens_after_first_proposal": null,
+        "seconds_after_first_proposal": null
+      },
+      "first_answer": {
+        "candidate": null,
+        "correct": false,
+        "finish_reason": "length",
+        "generation_latency_s": 206.08722983393818,
+        "done_received": true,
+        "completion_tokens": 16384,
+        "provider": "DeepInfra",
+        "first_proposal": null,
+        "tokens_after_first_proposal": null,
+        "seconds_after_first_proposal": null
+      },
+      "token_saving_fraction": 0.0,
+      "latency_saving_fraction": -0.0005121866125223917
+    },
+    {
+      "problem_idx": 25,
+      "gold_answer": 907,
+      "historical_median_tokens": 16384.0,
+      "historical_median_latency_s": 347.92,
+      "control": {
+        "candidate": null,
+        "correct": false,
+        "finish_reason": "length",
+        "generation_latency_s": 206.49882216693368,
+        "done_received": true,
+        "completion_tokens": 16384,
+        "provider": "DeepInfra",
+        "first_proposal": {
+          "answer": 907,
+          "start": 12787,
+          "end": 12801,
+          "kind": "prose",
+          "confidence": "asserted",
+          "expression": "907",
+          "quote": "answer is 907.",
+          "context": "he problem says to find N mod 1000. So 2907 divided by 1000 is 2 with remainder 907. Therefore, the answer is 907.\n\nWait, but hold on. Let me check my calculations again. Because I might have made an error in the a",
+          "part": "reasoning",
+          "visible_output_token": 3946,
+          "observed_at_s": 47.8705585419666,
+          "correct": true,
+          "estimated_stop_tokens": 3946
+        },
+        "tokens_after_first_proposal": 12438,
+        "seconds_after_first_proposal": 158.62826362496708
+      },
+      "first_answer": {
+        "candidate": "907",
+        "correct": true,
+        "finish_reason": "stop",
+        "generation_latency_s": 178.2042077089427,
+        "done_received": true,
+        "completion_tokens": 13764,
+        "provider": "DeepInfra",
+        "first_proposal": {
+          "answer": 907,
+          "start": 42031,
+          "end": 42055,
+          "kind": "prose",
+          "confidence": "asserted",
+          "expression": "2907 mod 1000",
+          "quote": "answer is 2907 mod 1000,",
+          "context": "ich matches the earlier result from the block method! So this confirms that N=2907.\n\nTherefore, the answer is 2907 mod 1000, which is 907.\n\nWait, 2907 divided by 1000 is 2 with remainder 907. So the remainder is 907.\n\nBut le",
+          "part": "reasoning",
+          "visible_output_token": 12195,
+          "observed_at_s": 157.570672874921,
+          "correct": true,
+          "estimated_stop_tokens": 12198
+        },
+        "tokens_after_first_proposal": 1566,
+        "seconds_after_first_proposal": 20.633534834021702
+      },
+      "token_saving_fraction": 0.159912109375,
+      "latency_saving_fraction": 0.13702070627365426
+    }
+  ]
+}

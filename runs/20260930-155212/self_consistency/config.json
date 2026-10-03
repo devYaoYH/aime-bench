@@ -1,0 +1,20 @@
+{
+  "source_run": "20260930-155212",
+  "model": "qwen/qwen3-30b-a3b",
+  "endpoint": "https://openrouter.ai/api/v1/chat/completions",
+  "new_attempts_per_question": 7,
+  "total_attempts_per_question": 8,
+  "concurrency": 30,
+  "sampling": {
+    "temperature": 0.6,
+    "top_p": 0.95,
+    "top_k": 20,
+    "max_tokens": 16384,
+    "reasoning": {
+      "enabled": true,
+      "exclude": false
+    }
+  },
+  "grading": "local exact integer match against MathArena answer; no external grader",
+  "voting": "modal parseable final answer; tied top counts give no modal answer; strict majority requires at least 5 of 8 votes; missing answers abstain"
+}

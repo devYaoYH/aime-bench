@@ -1,0 +1,49 @@
+# Credentials and local configuration
+.env
+.env.*
+!.env.example
+
+# Python environments and caches
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+*.egg-info/
+
+# Run artifacts: keep statistics and analysis data, exclude raw traces by default.
+# Reopen directories so the allowlist applies to nested experiment outputs.
+/runs/**
+!/runs/**/
+!/runs/**/config.json
+!/runs/**/summary.json
+!/runs/**/*_summary.json
+!/runs/**/*_metrics.json
+!/runs/**/analysis.json
+!/runs/**/*_rates.json
+!/runs/**/*_replay.json
+!/runs/**/*_audit.json
+!/runs/**/candidate_inventory.json
+!/runs/**/regex_baseline.json
+!/runs/**/worker_preflight.json
+!/runs/**/*.csv
+!/runs/**/*.tsv
+!/runs/**/*.md
+!/runs/**/*.png
+!/runs/**/*.svg
+!/runs/**/*.pdf
+
+# data/ stays versioned, including problem statements, keys, and annotations.
+# Keep cache exclusions after the run allowlist so nested caches stay ignored.
+# Downloaded models, tokenizers, binaries, and generated caches
+.local/
+.cache/
+
+# Local OS files, logs, and interrupted atomic writes
+.DS_Store
+*.log
+*.tmp

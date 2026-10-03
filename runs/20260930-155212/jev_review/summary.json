@@ -1,0 +1,242 @@
+{
+  "model": "typesafe/jev-1.13",
+  "run_id": "20260930-155212",
+  "failed_trajectories": 18,
+  "judged": 18,
+  "continuation_budget_output_tokens": 8192,
+  "question_wording": {
+    "promising_to_extend": {
+      "type": "noul",
+      "instructions": "If the same Qwen3 solver continues from the very end of this truncated reasoning trace for at most 8192 more output tokens, is it likely to reach a mathematically justified correct AIME integer answer without restarting the solution?",
+      "criteria": {
+        "true": "The current path has a sound, useful setup and remaining steps look feasible within the continuation budget.",
+        "false": "The path is fundamentally wrong, persistently looping, or too far from a justified answer to finish within the budget."
+      }
+    },
+    "coherent_route": {
+      "type": "noul",
+      "instructions": "Does the reasoning trace contain a coherent mathematical route that could solve the stated problem?",
+      "criteria": {
+        "true": "A relevant method, equation, invariant, counting setup, or geometric construction has been derived and is usable.",
+        "false": "The trace is largely unguided speculation, unrelated calculations, or mutually incompatible approaches with no usable route."
+      }
+    },
+    "near_solution": {
+      "type": "noul",
+      "instructions": "Near the end of the trace, is the solver within a few concrete derivation or arithmetic steps of a justified AIME integer answer?",
+      "criteria": {
+        "true": "The necessary derivation is mostly complete; only a small number of explicit steps remain.",
+        "false": "Important mathematical work or a major missing insight remains."
+      }
+    },
+    "stuck_or_repeating": {
+      "type": "noul",
+      "instructions": "In the latter half of the trace, is the solver stuck in circular reasoning or repeatedly revisiting approaches without substantial progress?",
+      "criteria": {
+        "true": "Repeated attempts or contradictions consume substantial text with little new progress.",
+        "false": "The latter half makes meaningful forward progress, even if unfinished."
+      }
+    }
+  },
+  "note": "Jev Noul values are subjective predictions about continuation, not observed success rates or validated math proofs. No gold answers were sent.",
+  "ranked": [
+    {
+      "problem_idx": 12,
+      "promising_to_extend": 0.78,
+      "coherent_route": 0.93,
+      "near_solution": 0.82,
+      "stuck_or_repeating": 0.17,
+      "latency_s": 0.291,
+      "input_tokens": 17679,
+      "cost": 0.000742518,
+      "trace_file": "jev_review/12.json"
+    },
+    {
+      "problem_idx": 25,
+      "promising_to_extend": 0.74,
+      "coherent_route": 0.93,
+      "near_solution": 0.71,
+      "stuck_or_repeating": 0.33,
+      "latency_s": 0.262,
+      "input_tokens": 17557,
+      "cost": 0.000737394,
+      "trace_file": "jev_review/25.json"
+    },
+    {
+      "problem_idx": 27,
+      "promising_to_extend": 0.73,
+      "coherent_route": 0.91,
+      "near_solution": 0.77,
+      "stuck_or_repeating": 0.28,
+      "latency_s": 0.215,
+      "input_tokens": 17629,
+      "cost": 0.000740418,
+      "trace_file": "jev_review/27.json"
+    },
+    {
+      "problem_idx": 9,
+      "promising_to_extend": 0.71,
+      "coherent_route": 0.93,
+      "near_solution": 0.78,
+      "stuck_or_repeating": 0.2,
+      "latency_s": 0.272,
+      "input_tokens": 17478,
+      "cost": 0.000734076,
+      "trace_file": "jev_review/09.json"
+    },
+    {
+      "problem_idx": 18,
+      "promising_to_extend": 0.59,
+      "coherent_route": 0.94,
+      "near_solution": 0.6,
+      "stuck_or_repeating": 0.15,
+      "latency_s": 0.317,
+      "input_tokens": 17807,
+      "cost": 0.000747894,
+      "trace_file": "jev_review/18.json"
+    },
+    {
+      "problem_idx": 23,
+      "promising_to_extend": 0.57,
+      "coherent_route": 0.8,
+      "near_solution": 0.46,
+      "stuck_or_repeating": 0.61,
+      "latency_s": 0.22,
+      "input_tokens": 17591,
+      "cost": 0.000738822,
+      "trace_file": "jev_review/23.json"
+    },
+    {
+      "problem_idx": 20,
+      "promising_to_extend": 0.47,
+      "coherent_route": 0.77,
+      "near_solution": 0.25,
+      "stuck_or_repeating": 0.32,
+      "latency_s": 0.217,
+      "input_tokens": 18000,
+      "cost": 0.000756,
+      "trace_file": "jev_review/20.json"
+    },
+    {
+      "problem_idx": 11,
+      "promising_to_extend": 0.46,
+      "coherent_route": 0.83,
+      "near_solution": 0.13,
+      "stuck_or_repeating": 0.24,
+      "latency_s": 0.264,
+      "input_tokens": 17888,
+      "cost": 0.000751296,
+      "trace_file": "jev_review/11.json"
+    },
+    {
+      "problem_idx": 7,
+      "promising_to_extend": 0.45,
+      "coherent_route": 0.77,
+      "near_solution": 0.11,
+      "stuck_or_repeating": 0.31,
+      "latency_s": 0.292,
+      "input_tokens": 17604,
+      "cost": 0.000739368,
+      "trace_file": "jev_review/07.json"
+    },
+    {
+      "problem_idx": 10,
+      "promising_to_extend": 0.42,
+      "coherent_route": 0.71,
+      "near_solution": 0.13,
+      "stuck_or_repeating": 0.28,
+      "latency_s": 0.335,
+      "input_tokens": 17839,
+      "cost": 0.000749238,
+      "trace_file": "jev_review/10.json"
+    },
+    {
+      "problem_idx": 2,
+      "promising_to_extend": 0.41,
+      "coherent_route": 0.6,
+      "near_solution": 0.18,
+      "stuck_or_repeating": 0.89,
+      "latency_s": 0.398,
+      "input_tokens": 18217,
+      "cost": 0.000765114,
+      "trace_file": "jev_review/02.json"
+    },
+    {
+      "problem_idx": 21,
+      "promising_to_extend": 0.41,
+      "coherent_route": 0.73,
+      "near_solution": 0.11,
+      "stuck_or_repeating": 0.71,
+      "latency_s": 0.259,
+      "input_tokens": 18083,
+      "cost": 0.000759486,
+      "trace_file": "jev_review/21.json"
+    },
+    {
+      "problem_idx": 30,
+      "promising_to_extend": 0.38,
+      "coherent_route": 0.64,
+      "near_solution": 0.23,
+      "stuck_or_repeating": 0.46,
+      "latency_s": 0.326,
+      "input_tokens": 17447,
+      "cost": 0.000732774,
+      "trace_file": "jev_review/30.json"
+    },
+    {
+      "problem_idx": 13,
+      "promising_to_extend": 0.3,
+      "coherent_route": 0.6,
+      "near_solution": 0.07,
+      "stuck_or_repeating": 0.68,
+      "latency_s": 0.265,
+      "input_tokens": 17607,
+      "cost": 0.000739494,
+      "trace_file": "jev_review/13.json"
+    },
+    {
+      "problem_idx": 14,
+      "promising_to_extend": 0.26,
+      "coherent_route": 0.56,
+      "near_solution": 0.09,
+      "stuck_or_repeating": 0.71,
+      "latency_s": 0.195,
+      "input_tokens": 17563,
+      "cost": 0.000737646,
+      "trace_file": "jev_review/14.json"
+    },
+    {
+      "problem_idx": 15,
+      "promising_to_extend": 0.25,
+      "coherent_route": 0.47,
+      "near_solution": 0.08,
+      "stuck_or_repeating": 0.71,
+      "latency_s": 0.276,
+      "input_tokens": 17356,
+      "cost": 0.000728952,
+      "trace_file": "jev_review/15.json"
+    },
+    {
+      "problem_idx": 22,
+      "promising_to_extend": 0.25,
+      "coherent_route": 0.89,
+      "near_solution": 0.18,
+      "stuck_or_repeating": 0.83,
+      "latency_s": 0.212,
+      "input_tokens": 17568,
+      "cost": 0.000737856,
+      "trace_file": "jev_review/22.json"
+    },
+    {
+      "problem_idx": 28,
+      "promising_to_extend": 0.22,
+      "coherent_route": 0.42,
+      "near_solution": 0.06,
+      "stuck_or_repeating": 0.71,
+      "latency_s": 0.849,
+      "input_tokens": 17646,
+      "cost": 0.000741132,
+      "trace_file": "jev_review/28.json"
+    }
+  ]
+}

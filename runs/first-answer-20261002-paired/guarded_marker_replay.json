@@ -1,0 +1,134 @@
+{
+  "notes": [
+    "Raw SSE replay; no new inference or actual interruption.",
+    "Syntax and nearby context guard, not semantic verification or a correctness guarantee.",
+    "Require a full standalone line under a Final Answer heading; wait for a line boundary.",
+    "Do not count network chunk EOF as a line/number boundary."
+  ],
+  "summary": {
+    "control": {
+      "matches": 2,
+      "correct_markers": 2,
+      "sum_original_latency_s": 620.5408667090815,
+      "sum_prefix_latency_s": 560.4297884999542,
+      "summed_latency_saving_fraction": 0.09686884689466913,
+      "max_original_latency_s": 206.49882216693368,
+      "max_prefix_latency_s": 206.49882216693368
+    },
+    "first_answer": {
+      "matches": 3,
+      "correct_markers": 3,
+      "sum_original_latency_s": 611.1706311269663,
+      "sum_prefix_latency_s": 564.0317641678266,
+      "summed_latency_saving_fraction": 0.07712881568313934,
+      "max_original_latency_s": 206.08722983393818,
+      "max_prefix_latency_s": 206.08722983393818
+    }
+  },
+  "rows": [
+    {
+      "problem_idx": 1,
+      "arm": "control",
+      "natural_latency_s": 70.36462212505285,
+      "marker": {
+        "answer": 70,
+        "kind": "answer_line",
+        "part": "reasoning",
+        "observed_at_s": 61.360099041019566,
+        "line": "Answer: 070",
+        "start": 13453,
+        "end": 13465
+      },
+      "correct": true,
+      "hypothetical_latency_s": 61.360099041019566
+    },
+    {
+      "problem_idx": 1,
+      "arm": "first_answer",
+      "natural_latency_s": 65.7610775840003,
+      "marker": {
+        "answer": 70,
+        "kind": "answer_line",
+        "part": "reasoning",
+        "observed_at_s": 49.54584104195237,
+        "line": "Answer: 070",
+        "start": 12282,
+        "end": 12294
+      },
+      "correct": true,
+      "hypothetical_latency_s": 49.54584104195237
+    },
+    {
+      "problem_idx": 3,
+      "arm": "control",
+      "natural_latency_s": 137.69569366704673,
+      "marker": {
+        "answer": 16,
+        "kind": "boxed",
+        "part": "reasoning",
+        "observed_at_s": 86.5891385419527,
+        "line": "\\boxed{016}",
+        "start": 18538,
+        "end": 18550
+      },
+      "correct": true,
+      "hypothetical_latency_s": 86.5891385419527
+    },
+    {
+      "problem_idx": 3,
+      "arm": "first_answer",
+      "natural_latency_s": 161.11811600008514,
+      "marker": {
+        "answer": 16,
+        "kind": "answer_line",
+        "part": "reasoning",
+        "observed_at_s": 143.26054804201704,
+        "line": "Answer: 016",
+        "start": 30109,
+        "end": 30121
+      },
+      "correct": true,
+      "hypothetical_latency_s": 143.26054804201704
+    },
+    {
+      "problem_idx": 18,
+      "arm": "control",
+      "natural_latency_s": 205.9817287500482,
+      "marker": null,
+      "correct": null,
+      "hypothetical_latency_s": 205.9817287500482
+    },
+    {
+      "problem_idx": 18,
+      "arm": "first_answer",
+      "natural_latency_s": 206.08722983393818,
+      "marker": null,
+      "correct": null,
+      "hypothetical_latency_s": 206.08722983393818
+    },
+    {
+      "problem_idx": 25,
+      "arm": "control",
+      "natural_latency_s": 206.49882216693368,
+      "marker": null,
+      "correct": null,
+      "hypothetical_latency_s": 206.49882216693368
+    },
+    {
+      "problem_idx": 25,
+      "arm": "first_answer",
+      "natural_latency_s": 178.2042077089427,
+      "marker": {
+        "answer": 907,
+        "kind": "answer_line",
+        "part": "reasoning",
+        "observed_at_s": 165.13814524991903,
+        "line": "Answer: 907",
+        "start": 43975,
+        "end": 43987
+      },
+      "correct": true,
+      "hypothetical_latency_s": 165.13814524991903
+    }
+  ]
+}

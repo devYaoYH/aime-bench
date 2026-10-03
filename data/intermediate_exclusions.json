@@ -1,0 +1,111 @@
+{
+  "method": "Manual audit of numeric answer claims. Exclusions use semantic scope, never answer-key matching. Keep literal_prose replay as the uncurated comparison. These annotations are retrospective, not an online scope detector.",
+  "traces": {
+    "04/08": {
+      "source_file": "runs/20260930-155212/self_consistency/questions/04/08.json",
+      "reasoning_sha256": "93431afe495a79578b52826e07274ce709f4947b494fac1b8bf40f298713f95d",
+      "spans": [
+        {
+          "start": 16059,
+          "end": 18368,
+          "start_cue": "However, let me check with actual enumeration for smaller ranges",
+          "end_cue": "Therefore, returning to original problem",
+          "reason": "Toy subproblem with different parameters; not a proposal for the requested problem."
+        }
+      ]
+    },
+    "24/01": {
+      "source_file": "runs/20260930-155212/questions/24.json",
+      "reasoning_sha256": "04e4f776b11da45a3fe996a6d8e43c5935b6d31aa26ddd424d5f721fdbee1f43",
+      "spans": [
+        {
+          "start": 16095,
+          "end": 17918,
+          "start_cue": "But let me check with a small example. Suppose I take a simpler function",
+          "end_cue": "Therefore, returning to our original problem",
+          "reason": "Toy subproblem with different parameters; not a proposal for the requested problem."
+        }
+      ]
+    },
+    "25/01": {
+      "source_file": "runs/20260930-155212/questions/25.json",
+      "reasoning_sha256": "dc9a5d1deaf8d3628d47e524aaa42f0113863021193c88f63c9c9d38bf7f2b51",
+      "spans": [
+        {
+          "start": 16368,
+          "end": 41480,
+          "start_cue": "But I need to verify this with small cases",
+          "end_cue": "Therefore, in our problem, n = 16",
+          "reason": "Toy subproblem with different parameters; not a proposal for the requested problem."
+        },
+        {
+          "start": 43419,
+          "end": 45755,
+          "start_cue": "Wait, but let me verify this with a small example",
+          "end_cue": "Therefore, returning to our original problem",
+          "reason": "Toy subproblem with different parameters; not a proposal for the requested problem."
+        },
+        {
+          "start": 46886,
+          "end": 47833,
+          "start_cue": "But to be thorough, let me check with a smaller case",
+          "end_cue": "Therefore, I can trust that for n = 16",
+          "reason": "Toy subproblem with different parameters; not a proposal for the requested problem."
+        }
+      ]
+    },
+    "25/03": {
+      "source_file": "runs/20260930-155212/self_consistency/questions/25/03.json",
+      "reasoning_sha256": "959c1cf67f1c56fcb54027110bcdc797a817fa95f69497c56c53bbe243d6333f",
+      "spans": [
+        {
+          "start": 24285,
+          "end": 25827,
+          "start_cue": "But let me check with a small example",
+          "end_cue": "Therefore, applying this formula to our problem",
+          "reason": "Toy subproblem with different parameters; not a proposal for the requested problem."
+        },
+        {
+          "start": 26905,
+          "end": 27937,
+          "start_cue": "But let me check with a smaller case again",
+          "end_cue": "Therefore, the formula seems correct",
+          "reason": "Toy subproblem with different parameters; not a proposal for the requested problem."
+        }
+      ]
+    },
+    "25/04": {
+      "source_file": "runs/20260930-155212/self_consistency/questions/25/04.json",
+      "reasoning_sha256": "3f47ae5efe1191d2f3e3ffeb33f8051d461493d3d8dda198d0745655c5301529",
+      "spans": [
+        {
+          "start": 17971,
+          "end": 23192,
+          "start_cue": "But let me verify with small cases",
+          "end_cue": "Therefore, returning to the original problem",
+          "reason": "Toy subproblem with different parameters; not a proposal for the requested problem."
+        },
+        {
+          "start": 30382,
+          "end": 31419,
+          "start_cue": "Another test case: n=5, k=3.",
+          "end_cue": "Therefore, returning, the answer is 2907.",
+          "reason": "Second toy check uses five chairs and three people, rather than the requested sixteen and eight."
+        }
+      ]
+    },
+    "26/03": {
+      "source_file": "runs/20260930-155212/self_consistency/questions/26/03.json",
+      "reasoning_sha256": "e0aa55dad5decea2111f19aa257e12cb0657913b22ffe73d1c434ddaecb775fc",
+      "spans": [
+        {
+          "start": 25089,
+          "end": 27235,
+          "start_cue": "Wait, but let me check with smaller cases",
+          "end_cue": "Therefore, returning to the original problem",
+          "reason": "Toy subproblem with different parameters; not a proposal for the requested problem."
+        }
+      ]
+    }
+  }
+}

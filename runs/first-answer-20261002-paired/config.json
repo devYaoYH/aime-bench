@@ -1,0 +1,48 @@
+{
+  "source_run": "20260930-155212",
+  "questions": [
+    1,
+    3,
+    18,
+    25
+  ],
+  "selection": {
+    "1": "All eight first proposals correct; median first position 1,408 versus 5,747.5 final tokens.",
+    "3": "All eight first proposals correct; median first position 3,345 versus 12,924 final tokens.",
+    "18": "Three correct first proposals before the cap; all eight old finals missing. Hard salvage test.",
+    "25": "Seven correct first proposals; extensive rechecking and toy cases; five old capped attempts."
+  },
+  "model": "qwen/qwen3-30b-a3b",
+  "endpoint": "https://openrouter.ai/api/v1/chat/completions",
+  "control_prompt": "Solve the mathematical problem carefully. Reason step by step. End your final response with the AIME integer answer in the exact format Answer: NNN, where NNN is an integer from 0 to 999.",
+  "treatment_prompt": "Solve the mathematical problem carefully. Reason step by step. End your final response with the AIME integer answer in the exact format Answer: NNN, where NNN is an integer from 0 to 999. As soon as you derive the first complete candidate answer to the requested problem, end your reasoning immediately, output the final line Answer: NNN, and stop generating. Do not recheck that candidate, seek another method, test smaller examples, or repeat the derivation. Intermediate quantities and answers to toy examples are not complete answers to the requested problem.",
+  "requests": 8,
+  "concurrency": 8,
+  "provider": {
+    "order": [
+      "deepinfra"
+    ],
+    "allow_fallbacks": false
+  },
+  "sampling": {
+    "temperature": 0.6,
+    "top_p": 0.95,
+    "top_k": 20,
+    "max_tokens": 16384,
+    "reasoning": {
+      "enabled": true,
+      "exclude": false
+    }
+  },
+  "forced_stop": false,
+  "client_cancellation": false,
+  "stream": true,
+  "grading": "local equality against saved key, no external grader",
+  "notes": [
+    "One stochastic sample per arm per selected question; descriptive pilot only.",
+    "Both arms stream with the same routing and sampling; only the system message differs.",
+    "Both arms use the historical DeepInfra provider; no provider fallback.",
+    "No seed requested; the samples do not share a stochastic trajectory.",
+    "No API retries after a partial stream; preserve failures separately."
+  ]
+}

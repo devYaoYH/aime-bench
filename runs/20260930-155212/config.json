@@ -1,0 +1,23 @@
+{
+  "model": "qwen/qwen3-30b-a3b",
+  "dataset": {
+    "source": "https://huggingface.co/datasets/MathArena/aime_2025",
+    "revision": "c94da77eb22bbd6439e62a323bec18493a421302",
+    "split": "train",
+    "rows": 30,
+    "dataset_sha256": "fe7b8a157da7c1389ab0ca9ffb1536973843b8244a796d5c1f5fbb0b62a1f221",
+    "note": "Official problem statements and answers; answers are used only for local grading."
+  },
+  "concurrency": 10,
+  "max_tokens": 16384,
+  "temperature": 0.6,
+  "top_p": 0.95,
+  "top_k": 20,
+  "reasoning": {
+    "enabled": true,
+    "exclude": false
+  },
+  "grading": "local exact integer match against MathArena answer",
+  "prompt": "Solve the mathematical problem carefully. Reason step by step. End your final response with the AIME integer answer in the exact format Answer: NNN, where NNN is an integer from 0 to 999.",
+  "started_at_utc": "2026-09-30T22:52:12.046+00:00"
+}

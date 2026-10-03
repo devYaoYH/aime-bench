@@ -1,0 +1,23 @@
+{
+  "run": "20260930-155212",
+  "endpoint": "http://127.0.0.1:8091",
+  "label": "gemma-q8-explicit",
+  "capped": 8,
+  "full": 2,
+  "controls": 0,
+  "cohort": "explicit",
+  "tail_tokens": 4096,
+  "concurrency": 2,
+  "timeout": 1200,
+  "model": {
+    "repo": "ggml-org/gemma-3-1b-it-GGUF",
+    "base_model": "google/gemma-3-1b-it",
+    "revision": "f9c28bcd85737ffc5aef028638d3341d49869c27",
+    "file": "gemma-3-1b-it-Q8_0.gguf"
+  },
+  "llama": "b11352",
+  "source_count": 240,
+  "gold_in_prompts": false,
+  "selection": "capped traces containing final-answer syntax, without outcome filtering",
+  "quantization": "Q8_0 conversion of original IT checkpoint; results are specific to this variant"
+}

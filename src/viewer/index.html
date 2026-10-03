@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light">
+  <title>AIME Response Atlas</title>
+  <link rel="stylesheet" href="/viewer.css">
+</head>
+<body>
+  <header class="masthead">
+    <div class="masthead-inner">
+      <div class="brand">
+        <span class="brand-mark" aria-hidden="true"><span></span><span></span><span></span></span>
+        <div><div class="eyebrow light">Math benchmark observatory</div><h1>AIME <em>Response Atlas</em></h1></div>
+      </div>
+      <div class="run-control">
+        <span class="run-label">Run</span>
+        <span id="run-name"></span>
+      </div>
+    </div>
+    <div class="masthead-rule"></div>
+    <div class="masthead-inner meta-row"><span id="model-name">Loading run…</span><span id="run-date"></span><span id="run-config"></span></div>
+  </header>
+
+  <main id="app" class="page-shell">
+    <div id="error" class="error-banner" hidden></div>
+    <section class="overview" aria-label="Run overview">
+      <div class="overview-intro"><div class="eyebrow">Run summary</div><h2>What happened <br>across all 30 problems</h2><p id="overview-subtitle">One generated response per question, scored against the AIME answer key.</p></div>
+      <div class="metrics-grid">
+        <article class="metric-card score-card"><div class="metric-label">Pass@1</div><div id="pass-value" class="metric-value">—</div><div id="pass-detail" class="metric-sub">correct answers</div><div class="score-track"><span id="score-fill"></span></div></article>
+        <article class="metric-card"><div class="metric-label">Wall clock</div><div id="wall-value" class="metric-value">—</div><div id="wall-detail" class="metric-sub">first request → final grade</div></article>
+        <article class="metric-card"><div class="metric-label">API latency</div><div id="latency-value" class="metric-value">—</div><div class="metric-sub">median per question</div></article>
+        <article class="metric-card"><div class="metric-label">Generated output</div><div id="tokens-value" class="metric-value">—</div><div id="tokens-detail" class="metric-sub">completion tokens</div></article>
+        <article class="metric-card format-card"><div class="metric-label">Format incorrect</div><div id="format-value" class="metric-value">—</div><div class="metric-sub">final line ≠ Answer: NNN</div></article>
+        <article class="metric-card score-card expansion-metric" hidden><div class="metric-label">Pass@8</div><div id="pass8-value" class="metric-value">—</div><div id="pass8-detail" class="metric-sub">any correct of 8</div><div class="score-track"><span id="pass8-fill"></span></div></article>
+        <article class="metric-card expansion-metric" hidden><div class="metric-label">Majority vote</div><div id="vote-value" class="metric-value">—</div><div id="vote-detail" class="metric-sub">at least 5 of 8 agree</div></article>
+        <article class="metric-card expansion-metric" hidden><div class="metric-label">Seven new samples</div><div id="expansion-wall-value" class="metric-value">—</div><div id="expansion-wall-detail" class="metric-sub">30 concurrent · request → grade</div></article>
+      </div>
+    </section>
+
+    <section class="timeline-card" aria-labelledby="timeline-heading">
+      <div class="section-heading"><div><div class="eyebrow">Concurrent execution</div><h2 id="timeline-heading">Request timeline</h2></div><div class="timeline-legend"><span><i class="dot good"></i>Correct</span><span><i class="dot bad"></i>No final answer</span><span><i class="dot wrong"></i>Wrong answer</span></div></div>
+      <div id="timeline-axis" class="timeline-axis"></div>
+      <div id="timeline" class="timeline" role="list" aria-label="Question request spans"></div>
+      <p class="timeline-note" id="timeline-note">Bars show each question's API request span on the shared run clock. Select a bar to inspect its response.</p>
+    </section>
+
+    <section class="review-card" id="review-card" aria-labelledby="review-heading" hidden>
+      <div class="section-heading"><div><div class="eyebrow">Jev 1.13 / Noul decisions</div><h2 id="review-heading">Continuation outlook</h2></div><div id="review-meta" class="review-meta"></div></div>
+      <p class="review-explainer">Estimated chance that the same solver could reach a justified answer by continuing the saved trace for up to 8,192 more tokens. Compare the full trace with its first 1,500 Qwen reasoning tokens. These are model judgments, not observed success rates. The answer key was withheld.</p>
+      <div class="review-head"><span>Question</span><span>Full trace: promising</span><span>First 1.5k</span><span>Near solution</span><span>Stuck / repeating</span></div>
+      <div id="review-ranking" class="review-ranking"></div>
+    </section>
+
+    <section class="calibration-card" id="calibration-card" aria-labelledby="calibration-heading" hidden>
+      <div class="section-heading"><div><div class="eyebrow">Jev 1.13 / observed Qwen completions</div><h2 id="calibration-heading">Did Jev reject a trajectory that succeeded?</h2></div><div id="calibration-meta" class="review-meta"></div></div>
+      <p class="review-explainer">Jev saw only the first 1,500 reasoning tokens. A success within its stated 8,192-token continuation budget is a correct final answer by 9,692 total output tokens. Longer completions are shown separately because they do not test that exact budget.</p>
+      <div id="calibration-stats" class="calibration-stats"></div>
+      <div id="calibration-thresholds" class="calibration-thresholds"></div>
+    </section>
+
+    <section class="analysis-card" id="analysis-card" aria-labelledby="analysis-heading" hidden>
+      <div class="section-heading"><div><div class="eyebrow">Token length / all eight attempts</div><h2 id="analysis-heading">Reasoning length by question</h2></div><div id="analysis-meta" class="review-meta"></div></div>
+      <p class="review-explainer">Each dot is one saved Qwen reasoning trace, counted with the official Qwen3 tokenizer. A final answer can consume additional output tokens beyond the reasoning trace.</p>
+      <a id="analysis-plot-link" class="analysis-plot-link" target="_blank" rel="noopener"><img id="analysis-plot" loading="lazy" alt="Dot plot of eight Qwen reasoning-token counts for each of the 30 AIME questions, colored by correct final answer, wrong final answer, or output cap."></a>
+      <h3>What happens after a checkpoint?</h3>
+      <p class="review-explainer">Among trajectories still reasoning at the indicated token count, these are observed correct final answers from the same Qwen run. They measure the value of waiting for Qwen; a larger model's gain needs a separate test.</p>
+      <div id="analysis-checkpoints" class="analysis-checkpoints"></div>
+      <h3>Generation attempts and verification budget</h3>
+      <div id="analysis-frontier" class="analysis-frontier"></div>
+    </section>
+
+    <section class="explorer" aria-label="Question explorer">
+      <aside class="question-panel">
+        <div class="panel-title"><div><div class="eyebrow">Browse responses</div><h2>Questions <span id="visible-count">30</span></h2></div></div>
+        <div class="search-wrap"><span aria-hidden="true">⌕</span><input id="search" type="search" placeholder="Search question text or number" aria-label="Search questions"></div>
+        <div id="filters" class="filter-row" role="group" aria-label="Filter questions">
+          <button class="filter active" data-filter="all" type="button">All</button>
+          <button class="filter" data-filter="correct" type="button">Correct</button>
+          <button class="filter" data-filter="missing" type="button">No final answer</button>
+          <button class="filter" data-filter="wrong" type="button">Wrong answer</button>
+          <button class="filter" data-filter="format" type="button">Format incorrect</button>
+        </div>
+        <div id="question-list" class="question-list" role="list"></div>
+      </aside>
+
+      <article class="detail-panel" id="detail-panel" aria-live="polite">
+        <div class="empty-state">Select a question to inspect the model response.</div>
+      </article>
+    </section>
+    <footer>MathArena AIME 2025 · OpenRouter response archive · Local exact-match grading</footer>
+  </main>
+  <script src="/viewer.js" defer></script>
+</body>
+</html>
