@@ -15,7 +15,7 @@ The publisher's GB10 throughput gains therefore do not establish A100 speedups.
 See [vLLM ModelOpt support](https://docs.vllm.ai/en/stable/features/quantization/modelopt/).
 
 The default `vllm.yaml` matches the original VibeThinker profile's 65,536-token
-context and 80% VRAM budget. `vllm-baseline-16k.yaml` uses 16,384 total context
+context and 95% VRAM budget. `vllm-baseline-16k.yaml` uses 16,384 total context
 tokens for the existing naive baseline. Both allow up to 16,384 generated tokens,
 enable prefix caching and prompt-token details, and bind to `127.0.0.1:8000`.
 KV cache uses the model's BF16 dtype (`auto`). Attention and graph settings

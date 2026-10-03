@@ -1,5 +1,5 @@
 # Naive pass@4 baseline; deploy beside the normal vllm.yaml in ~/models.
-# Same weights and 80% VRAM budget; 16K total context including the prompt.
+# Same weights and 95% VRAM budget; 16K total context including the prompt.
 model: /home/azureuser/models/WeiboAI/VibeThinker-3B
 served-model-name: WeiboAI/VibeThinker-3B
 host: "127.0.0.1"
@@ -7,7 +7,7 @@ port: 8000
 dtype: bfloat16
 tensor-parallel-size: 1
 max-model-len: 16384
-gpu-memory-utilization: 0.80
+gpu-memory-utilization: 0.95
 override-generation-config: '{"max_new_tokens": 16384}'
 enable-prefix-caching: true
 enable-prompt-tokens-details: true

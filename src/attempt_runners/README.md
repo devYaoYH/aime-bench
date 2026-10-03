@@ -26,7 +26,7 @@ to `~/models/WeiboAI/VibeThinker-3B/vllm-baseline-16k.yaml` after pulling:
 
 Defaults are 30 questions in parallel, four independent samples per question,
 18 verified correct as the stopping target, and a four-request per-question
-budget. The profile sets 16K total context and an 80% GPU-memory budget. Output
+budget. The profile sets 16K total context and an 95% GPU-memory budget. Output
 limits reserve the actual prompt length. The runner uses a standard final-answer
 prompt, ignores intermediate candidates, and leaves capped responses ungraded.
 `--model-profile` selects another YAML filename within that model's directory.

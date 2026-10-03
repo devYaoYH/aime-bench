@@ -170,7 +170,7 @@ siblings; the 18th solved question cancels all remaining work. If the target is
 unmet after all four samples end, the summary records that outcome.
 
 The baseline profile sets a **16,384-token total context**, including the prompt,
-and retains the 80% GPU-memory budget. Before the official timer, `/tokenize`
+and retains the 95% GPU-memory budget. Before the official timer, `/tokenize`
 counts each served chat prompt. Each output budget is the smaller of `--max-tokens`
 and the remaining context; these prompt counts and request limits are saved.
 The configured sampling path warms at the full 120-request batch before solving.
