@@ -1,0 +1,61 @@
+{
+  "status": "complete",
+  "trials": [
+    {
+      "trial": 1,
+      "attempt_id": "20261003T230915.710605Z",
+      "output": "/home/azureuser/aime-bench-best-source-bf16-best-exact-source-20261003T230424Z/attempts/20261003T230915.710605Z",
+      "time_to_target_s": 102.98680064303335,
+      "target_reached": true,
+      "performance": {
+        "generation_requests": 45,
+        "fresh_ttft": {
+          "count": 30,
+          "median_s": 0.207269363978412,
+          "p95_s": 0.22529471502639353
+        },
+        "continuation_ttft": {
+          "count": 15,
+          "median_s": 0.16843052697367966,
+          "p95_s": 0.18496712105115876
+        },
+        "official_gpu": {
+          "sample_count": 515,
+          "start_vram_mib": 78266.1875,
+          "end_vram_mib": 78434.1875,
+          "observed_peak_vram_mib": 78434.1875,
+          "scope": "shared GPU device; sampled peak, not per-request allocation",
+          "error": null
+        },
+        "initialization_gpu": {
+          "sample_count": 228,
+          "start_vram_mib": 768.25,
+          "end_vram_mib": 78266.1875,
+          "observed_peak_vram_mib": 78578.1875,
+          "scope": "shared GPU device; sampled peak, not per-request allocation",
+          "error": null
+        }
+      },
+      "grader_timeline": {
+        "completed_queries": 19,
+        "audit_errors": [],
+        "correct": 18,
+        "wrong": 1,
+        "target_service_floor_s": 54.0,
+        "actual_service_s": 57.00226831436157,
+        "idle_between_queries_s": 40.912086486816406,
+        "first_pick_elapsed_s": 5.071691989898682,
+        "scope": "completed oracle jobs; queued/cancelled client jobs may still incur service"
+      },
+      "matched_requests": {
+        "initial_request_count": 30,
+        "different_questions": [],
+        "initial_ttft_median_s": 0.20707648247480392,
+        "initial_ttft_count": 30,
+        "model_override": false
+      }
+    }
+  ],
+  "source_commit": "bf5788f51b83db12b1607eaccb1434468822ce64",
+  "completed_at_utc": "2026-10-03T23:11:51.499+00:00"
+}

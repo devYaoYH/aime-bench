@@ -1,0 +1,114 @@
+{
+  "problem_idx": 22,
+  "started_at_utc": "2026-10-03T23:07:10.781+00:00",
+  "finished_at_utc": "2026-10-03T23:07:52.030+00:00",
+  "end_to_end_latency_s": 41.248913697956596,
+  "status": "solved",
+  "winner": {
+    "answer": 237,
+    "part": "content",
+    "kind": "literal_prose",
+    "end": 11687,
+    "line": "But earlier we got 60671 for denominator=32767. Which one is likely the answer? Let's think about typical AIME answer: answer is integer between 0 and 999 inclusive. 237 fits, 60671 does not (exceeds 999). The problem statement says \"Please reason step by step, and put your final answer within \\boxed{}.\" Also \"the probability ... is m/n where m and n are relatively prime positive integers. Find m + n.\" AIME answers are 0-999. So m+n must be <= 999. 237 is within. 60671 is not. So answer must be 237.",
+    "candidate": "237",
+    "rollout": 1,
+    "observed_at_utc": "2026-10-03T23:07:45.023+00:00",
+    "question_elapsed_s": 34.242119498958346,
+    "verification_started_at_utc": "2026-10-03T23:07:45.025+00:00",
+    "round": 1,
+    "candidate_queue_wait_s": 0.0012780649703927338,
+    "result": {
+      "dataset": {
+        "format": "jsonl",
+        "gold_field": "answer",
+        "id": "aime_2025",
+        "idx_field": "problem_idx",
+        "revision": "c94da77eb22bbd6439e62a323bec18493a421302",
+        "source": "/home/azureuser/aime-bench/grader/data/aime_2025.jsonl",
+        "year": 2025,
+        "sha256": "d5bcac5904290630fe98e3c3d1c2773260ebf59b57955382735e9ce8c0142b41"
+      },
+      "query_id": "20261003T230709.939894Z-q22-a237",
+      "seq": 11,
+      "agent_id": "20261003T230709.939894Z-q22-r1",
+      "index": 22,
+      "candidate": "237",
+      "verdict": true,
+      "queue_ahead_at_submit": 1,
+      "submitted_at": "2026-10-03T23:07:45.027725Z",
+      "picked_at": "2026-10-03T23:07:49.026228Z",
+      "answered_at": "2026-10-03T23:07:52.026341Z",
+      "queue_wait_s": 3.999,
+      "toll_s": 3.0,
+      "latency_s": 6.999
+    },
+    "verification_finished_at_utc": "2026-10-03T23:07:52.027+00:00",
+    "verification_latency_s": 7.002742246957496
+  },
+  "error": null,
+  "unique_candidates": 1,
+  "candidate_answers": [
+    "237"
+  ],
+  "rollouts": [
+    {
+      "rollout": 1,
+      "round": 1,
+      "started_at_utc": "2026-10-03T23:07:10.796+00:00",
+      "start_monotonic_s": 273078.859295057,
+      "ttft_s": 0.15019045199733227,
+      "last_token_s": 41.22519894898869,
+      "finish_reason": null,
+      "status": "cancelled",
+      "done_received": false,
+      "usage": {
+        "prompt_tokens": 159,
+        "total_tokens": 4832,
+        "completion_tokens": 4673,
+        "completion_tokens_details": null
+      },
+      "endpoint": "/v1/chat/completions",
+      "continuation_of_rollout": null,
+      "requested_max_tokens": 8192,
+      "budget_stage": 0,
+      "target_generated_tokens": 8192,
+      "http_status": 200,
+      "headers_received_s": 0.061029650969430804,
+      "generation_finished_at_utc": "2026-10-03T23:07:52.028+00:00",
+      "generation_end_monotonic_s": 273120.090937594,
+      "generation_latency_s": 41.231642536993604,
+      "generation_censored": true,
+      "generated_token_ids_count": 4673,
+      "prompt_token_ids_count": 159,
+      "cached_prompt_tokens": null,
+      "prefix_cache_hit_fraction": null,
+      "overhead": {
+        "enabled": false,
+        "timings": {},
+        "counters": {},
+        "maxima": {}
+      },
+      "finished_at_utc": "2026-10-03T23:07:52.030+00:00",
+      "end_to_end_latency_s": 41.23396032996243,
+      "end_to_end_scope": "rollout start through question verification/cancellation settlement",
+      "gpu": null
+    }
+  ],
+  "round": 1,
+  "first_solved": {
+    "problem_idx": 22,
+    "round": 1,
+    "rollout": 1,
+    "candidate": "237",
+    "first_solved_at_utc": "2026-10-03T23:07:52.028+00:00",
+    "first_solved_elapsed_s": 41.248739653034136,
+    "grader_answered_at_utc": "2026-10-03T23:07:52.026341Z",
+    "grader_query_id": "20261003T230709.939894Z-q22-a237"
+  },
+  "overhead": {
+    "enabled": false,
+    "timings": {},
+    "counters": {},
+    "maxima": {}
+  }
+}
