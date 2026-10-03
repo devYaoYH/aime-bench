@@ -8,6 +8,7 @@ from __future__ import annotations
 import argparse
 import asyncio
 from contextlib import contextmanager
+from copy import copy
 from datetime import datetime, timezone
 import fcntl
 import hashlib
@@ -35,13 +36,17 @@ PROMPT = (
 
 
 class CandidateDetector:
-    """Closed integer boxes and complete Answer: lines, independently per channel.
+    """Closed integer boxes and complete answer clauses, independently per channel.
 
     In particular, a network boundary after one digit never completes an answer.
     Markers remain prospective; correctness comes exclusively from the oracle.
     """
     box = re.compile(r'\\boxed\s*\{\s*(\d{1,3})\s*\}')
     line = re.compile(r'(?i)^\s*(?:\*\*)?Answer\s*:\s*\$?\s*(\d{1,3})\s*\$?\s*(?:\*\*)?\s*[.]?\s*$')
+
+    prose = re.compile(
+        r'(?i)\b(?:final\s+)?answer\s+(?:is|would\s+be|should\s+be|must\s+be|might\s+be)'
+        r'\s+\$?\s*(\d{1,3})\s*\$?(?=\s*(?:[.。!?;,](?:\s|$)|$))')
 
     def __init__(self):
         self.text = {'content': '', 'reasoning': ''}
@@ -64,10 +69,15 @@ class CandidateDetector:
         while '\n' in text[start:] or (eof and start < len(text)):
             end = text.find('\n', start)
             end = len(text) if end < 0 else end + 1
-            match = self.line.fullmatch(text[start:end])
+            complete_line = text[start:end]
+            match = self.line.fullmatch(complete_line)
             if match:
                 found.append({'answer': int(match[1]), 'part': part,
                               'kind': 'answer_line', 'end': end})
+            for match in self.prose.finditer(complete_line):
+                found.append({'answer': int(match[1]), 'part': part,
+                              'kind': 'literal_prose', 'end': start + match.end(),
+                              'line': complete_line.strip()})
             start = end
         self.line_start[part] = start
         return found
@@ -149,16 +159,48 @@ class GPUSampler:
                 'error': self.error}
 
 
-async def run_question(problem, args, client, output, sampler):
+def continuation_prefix(previous, folder, context_limit):
+    """Only continue a capped trajectory with complete, exact token-ID evidence."""
+    if not previous or not previous['rollouts']:
+        return None
+    last = previous['rollouts'][-1]
+    if last['status'] != 'completed' or last['finish_reason'] != 'length':
+        return None
+    token_file = folder / f'rollout-{last["rollout"]:02d}' / 'tokens.json'
+    if not token_file.exists():
+        raise RuntimeError('Cannot continue capped output without saved exact token IDs')
+    tokens = json.loads(token_file.read_text())
+    prompt, output = tokens['prompt_token_ids'], tokens['output_token_ids']
+    if not prompt or not output or not tokens['complete']:
+        raise RuntimeError('Incomplete token-ID evidence for continuation')
+    prefix = prompt + output
+    if len(prefix) >= context_limit - 1:
+        return None  # start a fresh trajectory after exhausting the context window
+    return {'prompt': prefix, 'parent_rollout': last['rollout'],
+            'visible_text': tokens['visible_text'], 'remaining_context': context_limit - len(prefix)}
+
+
+async def run_question(problem, args, client, output, sampler, *, round_no=1,
+                       rollout_offset=0, attempt_start=None, on_solved=None, target_event=None):
     index = problem['problem_idx']
     folder = output / 'trace' / f'{index:02d}'
-    folder.mkdir(parents=True)
+    folder.mkdir(parents=True, exist_ok=True)
+    previous = json.loads((folder / 'question.json').read_text()) if (folder / 'question.json').exists() else None
+    if previous and previous['status'] == 'solved':
+        raise ValueError('Solved questions must not be retried')
+    if previous and len(previous['rollouts']) + args.rollouts > args.max_attempts_per_question:
+        raise ValueError('Per-question generation attempt limit exceeded')
+    next_continuation = None
+    if args.strategy == 'coverage' and not args.no_continuation:
+        next_continuation = continuation_prefix(previous, folder, args.max_context_tokens)
     start, started = time.perf_counter(), utc_now()
     candidates = asyncio.Queue()
-    seen = set()
+    seen = set(previous.get('candidate_answers', [])) if previous else set()
     records = []
     winner = None
     question_error = None
+    solved_event = None
+    stopped_for_target = False
 
     def propose(event, rollout):
         candidate = str(event['answer'])
@@ -175,20 +217,35 @@ async def run_question(problem, args, client, output, sampler):
             {'role': 'system', 'content': PROMPT}, {'role': 'user', 'content': problem['problem']}],
             'temperature': args.temperature, 'top_p': args.top_p,
             'max_tokens': args.max_tokens, 'seed': args.seed + index * args.rollouts + rollout,
-            'stream': True, 'stream_options': {'include_usage': True}}
+            'stream': True, 'stream_options': {'include_usage': True, 'continuous_usage_stats': True},
+            'return_token_ids': args.strategy == 'coverage'}
         if args.disable_thinking:
             request['chat_template_kwargs'] = {'enable_thinking': False}
+        continuation = next_continuation
+        endpoint = '/v1/chat/completions'
+        if continuation:
+            endpoint = '/v1/completions'
+            request.pop('messages')
+            request.pop('chat_template_kwargs', None)
+            request.update(prompt=continuation['prompt'],
+                           max_tokens=min(args.max_tokens, continuation['remaining_context']))
         atomic_json(path / 'request.json', request)
         began = time.perf_counter()
-        record = {'rollout': rollout, 'started_at_utc': utc_now(), 'start_monotonic_s': began,
+        record = {'rollout': rollout, 'round': round_no, 'started_at_utc': utc_now(), 'start_monotonic_s': began,
                   'ttft_s': None, 'last_token_s': None, 'finish_reason': None,
-                  'status': 'streaming', 'done_received': False, 'usage': None}
+                  'status': 'streaming', 'done_received': False, 'usage': None,
+                  'endpoint': endpoint, 'continuation_of_rollout': continuation['parent_rollout'] if continuation else None,
+                  'requested_max_tokens': request['max_tokens']}
         detector = CandidateDetector()
         parts = {'reasoning': [], 'content': []}
+        prompt_token_ids = list(continuation['prompt']) if continuation else None
+        output_token_ids = []
+        if continuation:
+            detector.feed('content', continuation['visible_text'])
         records.append((path, record, parts))
         try:
             with (path / 'stream.jsonl').open('w') as stream_file:
-                async with client.stream('POST', args.vllm_url + '/v1/chat/completions',
+                async with client.stream('POST', args.vllm_url + endpoint,
                                          json=request, headers={'X-Request-Id': f'{output.name}-q{index}-r{rollout}'}) as response:
                     record['http_status'] = response.status_code
                     record['headers_received_s'] = time.perf_counter() - began
@@ -202,12 +259,20 @@ async def run_question(problem, args, client, output, sampler):
                         body = json.loads(payload)
                         if body.get('error'):
                             raise RuntimeError(f'vLLM stream error: {body["error"]}')
+                        if body.get('prompt_token_ids') is not None:
+                            prompt_token_ids = body['prompt_token_ids']
                         if body.get('usage'):
                             record['usage'] = body['usage']
                         for choice in body.get('choices', []):
                             if choice.get('index', 0) != 0:
                                 continue
+                            if choice.get('prompt_token_ids') is not None:
+                                prompt_token_ids = choice['prompt_token_ids']
+                            if choice.get('token_ids'):
+                                output_token_ids.extend(choice['token_ids'])
                             delta = choice.get('delta') or {}
+                            if endpoint == '/v1/completions':
+                                delta = {'content': choice.get('text', '')}
                             for part, value in [('reasoning', delta.get('reasoning_content') or delta.get('reasoning')),
                                                 ('content', delta.get('content'))]:
                                 if isinstance(value, str) and value:
@@ -241,10 +306,23 @@ async def run_question(problem, args, client, output, sampler):
             record.update(generation_finished_at_utc=utc_now(), generation_end_monotonic_s=ended,
                           generation_latency_s=ended - began,
                           generation_censored=record['status'] != 'completed' or record['finish_reason'] == 'length')
+            visible_text = ''.join(parts['reasoning']) + ''.join(parts['content'])
+            usage = record['usage'] or {}
+            cached = (usage.get('prompt_tokens_details') or {}).get('cached_tokens')
+            record.update(generated_token_ids_count=len(output_token_ids),
+                          prompt_token_ids_count=len(prompt_token_ids) if prompt_token_ids else None,
+                          cached_prompt_tokens=cached,
+                          prefix_cache_hit_fraction=cached / len(prompt_token_ids) if cached is not None and prompt_token_ids else None)
+            if args.strategy == 'coverage':
+                complete_ids = bool(prompt_token_ids and output_token_ids and
+                                    usage.get('completion_tokens') == len(output_token_ids))
+                atomic_json(path / 'tokens.json', {'prompt_token_ids': prompt_token_ids,
+                    'output_token_ids': output_token_ids, 'complete': complete_ids,
+                    'visible_text': (continuation['visible_text'] if continuation else '') + visible_text})
             atomic_json(path / 'response.json', {part: ''.join(text) for part, text in parts.items()})
             atomic_json(path / 'telemetry.json', record)
 
-    streams = [asyncio.create_task(generate(r)) for r in range(1, args.rollouts + 1)]
+    streams = [asyncio.create_task(generate(rollout_offset + r)) for r in range(1, args.rollouts + 1)]
 
     async def drained():
         try:
@@ -255,12 +333,12 @@ async def run_question(problem, args, client, output, sampler):
     producer = asyncio.create_task(drained())
     try:
         async with asyncio.timeout(args.question_timeout):
-            with (folder / 'verification.jsonl').open('w') as file:
+            with (folder / 'verification.jsonl').open('a') as file:
                 while True:
                     event = await candidates.get()
                     if event is None:
                         break
-                    event.update(verification_started_at_utc=utc_now())
+                    event.update(verification_started_at_utc=utc_now(), round=round_no)
                     verify_start = time.perf_counter()
                     try:
                         response = await client.post(args.grader_url + '/verify', json={
@@ -281,15 +359,23 @@ async def run_question(problem, args, client, output, sampler):
                         append_json(file, event)
                     if verdict['verdict']:
                         winner = event
+                        solved_event = {'problem_idx': index, 'round': round_no, 'rollout': event['rollout'],
+                                        'candidate': event['candidate'], 'first_solved_at_utc': utc_now(),
+                                        'first_solved_elapsed_s': time.perf_counter() - (attempt_start if attempt_start is not None else start),
+                                        'grader_answered_at_utc': verdict.get('answered_at'),
+                                        'grader_query_id': verdict.get('query_id')}
+                        with (output / 'solved.jsonl').open('a') as solved_file:
+                            append_json(solved_file, solved_event)
                         break
     except asyncio.CancelledError:
-        question_error = 'attempt interrupted'
+        stopped_for_target = target_event is not None and target_event.is_set()
+        question_error = None if stopped_for_target else 'attempt interrupted'
         raise
     except Exception as exc:
         question_error = f'{type(exc).__name__}: {exc}'
     finally:
         for task in streams:
-            if not task.done():
+            if not task.done() and not task.cancelling():
                 task.cancel()
         await asyncio.gather(*streams, return_exceptions=True)
         await asyncio.gather(producer, return_exceptions=True)
@@ -301,36 +387,89 @@ async def run_question(problem, args, client, output, sampler):
             atomic_json(path / 'telemetry.json', record)
         result = {'problem_idx': index, 'started_at_utc': started, 'finished_at_utc': ended_at,
                   'end_to_end_latency_s': ended - start,
-                  'status': 'error' if question_error else ('solved' if winner else 'unsolved'),
-                  'winner': winner, 'error': question_error, 'unique_candidates': len(seen),
+                  'status': 'error' if question_error else ('solved' if winner else ('stopped' if stopped_for_target else 'unsolved')),
+                  'winner': winner, 'error': question_error, 'unique_candidates': len(seen), 'candidate_answers': sorted(seen),
                   'rollouts': [record for _, record, _ in sorted(records, key=lambda r: r[1]['rollout'])]}
         if any(r['status'] == 'error' for r in result['rollouts']) and not winner:
             result['status'] = 'error'
+        result.update(round=round_no, first_solved=solved_event)
+        atomic_json(folder / f'round-{round_no:02d}.json', result)
+        rounds = (previous.get('rounds', []) if previous else []) + [
+            {k: result[k] for k in ('round', 'status', 'started_at_utc', 'finished_at_utc', 'end_to_end_latency_s', 'winner', 'error')}]
+        if previous:
+            result['rollouts'] = previous['rollouts'] + result['rollouts']
+            result['started_at_utc'] = previous['started_at_utc']
+            result['first_solved'] = previous.get('first_solved') or solved_event
+        result['rounds'] = rounds
+        result['question_start_monotonic_s'] = previous.get('question_start_monotonic_s', start) if previous else start
+        result['end_to_end_latency_s'] = ended - result['question_start_monotonic_s']
         atomic_json(folder / 'question.json', result)
-        print(f'Q{index:02d}: {result["status"]}, {ended - start:.2f}s', flush=True)
+        if solved_event and on_solved:
+            on_solved(solved_event)
+        print(f'Q{index:02d} round {round_no}: {result["status"]}, {ended - start:.2f}s', flush=True)
     return result
 
 
-async def run_questions(problems, args, client, output, sampler):
+async def run_questions(problems, args, client, output, sampler, *, round_no=1,
+                        rollout_offset=0, attempt_start=None, on_solved=None, target_event=None):
     queue = asyncio.Queue()
     for problem in problems:
         queue.put_nowait(problem)
     results = []
 
     async def worker():
-        while not queue.empty():
+        while not queue.empty() and not (target_event is not None and target_event.is_set()):
             problem = queue.get_nowait()
-            results.append(await run_question(problem, args, client, output, sampler))
+            results.append(await run_question(problem, args, client, output, sampler,
+                round_no=round_no, rollout_offset=rollout_offset, attempt_start=attempt_start,
+                on_solved=on_solved, target_event=target_event))
 
     tasks = [asyncio.create_task(worker()) for _ in range(min(args.parallelism, len(problems)))]
     try:
         await asyncio.gather(*tasks)
     finally:
         for task in tasks:
-            if not task.done():
+            if not task.done() and not task.cancelling():
                 task.cancel()
         await asyncio.gather(*tasks, return_exceptions=True)
     return sorted(results, key=lambda row: row['problem_idx'])
+
+
+async def run_coverage(problems, args, client, output, sampler, attempt_start):
+    """Barriered single-rollout rounds; stop all remaining work at the solve target."""
+    solved = set()
+    target_event = asyncio.Event()
+
+    def on_solved(event):
+        solved.add(event['problem_idx'])
+        print(f'Solved coverage: {len(solved)}/{args.target_correct}', flush=True)
+        if len(solved) >= args.target_correct:
+            target_event.set()
+
+    for round_no in range(1, min(args.max_rounds, args.max_attempts_per_question) + 1):
+        pending = [p for p in problems if p['problem_idx'] not in solved]
+        round_args = copy(args)
+        round_args.max_tokens = args.first_pass_max_tokens if round_no == 1 else args.max_tokens
+        print(f'Coverage round {round_no}: {len(pending)} questions, {round_args.max_tokens} tokens each', flush=True)
+        batch = asyncio.create_task(run_questions(pending, round_args, client, output, sampler,
+            round_no=round_no, rollout_offset=round_no - 1, attempt_start=attempt_start,
+            on_solved=on_solved, target_event=target_event))
+        target_wait = asyncio.create_task(target_event.wait())
+        try:
+            await asyncio.wait([batch, target_wait], return_when=asyncio.FIRST_COMPLETED)
+            if target_event.is_set():
+                batch.cancel()
+                await asyncio.gather(batch, return_exceptions=True)
+                break
+            result = await batch
+            if any(q['status'] == 'error' for q in result):
+                break
+        finally:
+            target_wait.cancel()
+            if not batch.done() and not batch.cancelling():
+                batch.cancel()
+            await asyncio.gather(batch, target_wait, return_exceptions=True)
+    return [json.loads(p.read_text()) for p in sorted(output.glob('trace/*/question.json'))]
 
 
 def ensure_free(port):
@@ -434,7 +573,7 @@ async def warm_inference(args, client, question_count):
         responses = await asyncio.gather(*tasks)
     finally:
         for task in tasks:
-            if not task.done():
+            if not task.done() and not task.cancelling():
                 task.cancel()
         await asyncio.gather(*tasks, return_exceptions=True)
     return {'started_at_utc': started, 'finished_at_utc': utc_now(),
@@ -460,6 +599,8 @@ async def run(args):
     try:
         problems = load_questions(args.questions)
         config['question_indices'] = [p['problem_idx'] for p in problems]
+        if args.strategy == 'coverage' and args.target_correct > len(problems):
+            raise ValueError('Target correct exceeds the number of selected questions')
         profile_path = Path(args.models_dir).expanduser() / args.model / 'vllm.yaml'
         profile_text = profile_path.read_text()
         profile = yaml.safe_load(profile_text)
@@ -467,7 +608,7 @@ async def run(args):
         if isinstance(overrides, str):
             overrides = json.loads(overrides)
         cap = overrides.get('max_new_tokens')
-        if cap is not None and args.max_tokens > cap:
+        if cap is not None and max(args.max_tokens, args.first_pass_max_tokens if args.strategy == 'coverage' else 0) > cap:
             raise ValueError(f'Requested max_tokens exceeds model profile ceiling ({cap})')
         atomic_json(output / 'model_profile.json', {'path': str(profile_path), 'yaml': profile_text,
                     'sha256': hashlib.sha256(profile_text.encode()).hexdigest()})
@@ -491,7 +632,7 @@ async def run(args):
                 if gpu_warmup.returncode:
                     raise RuntimeError('CUDA warmup failed; inspect gpu_warmup.log')
                 command = [args.vllm_binary, 'serve', '--config', str(profile_path),
-                           '--host', '127.0.0.1', '--port', str(args.vllm_port)]
+                           '--host', '127.0.0.1', '--port', str(args.vllm_port), '--enable-prompt-tokens-details']
                 config['vllm_command'] = command
                 server = services.launch(command, output / 'vllm.log')
             else:
@@ -500,6 +641,9 @@ async def run(args):
             if args.model not in [m['id'] for m in models.get('data', [])]:
                 raise RuntimeError('Inference server does not serve the requested model')
             atomic_json(output / 'server_models.json', models)
+            served = next(m for m in models['data'] if m['id'] == args.model)
+            args.max_context_tokens = int(served.get('max_model_len') or profile['max-model-len'])
+            config['max_context_tokens'] = args.max_context_tokens
             grader_config = {'dataset': {'source': str(ROOT / 'grader/data/aime_2025.jsonl'),
                              'format': 'jsonl', 'idx_field': 'problem_idx', 'gold_field': 'answer'},
                              'cost_c': args.grader_cost, 'host': '127.0.0.1', 'port': args.grader_port,
@@ -520,7 +664,10 @@ async def run(args):
             official_start = time.perf_counter()
             status = 'running'
             print('Official solving phase started', flush=True)
-            results = await run_questions(problems, args, client, output, sampler)
+            if args.strategy == 'coverage':
+                results = await run_coverage(problems, args, client, output, sampler, official_start)
+            else:
+                results = await run_questions(problems, args, client, output, sampler, attempt_start=official_start)
             status = 'completed' if all(r['status'] != 'error' for r in results) else 'failed'
             if sampler.error:
                 raise RuntimeError(f'GPU telemetry failed: {sampler.error}')
@@ -541,10 +688,15 @@ async def run(args):
                    'official_finished_at_utc': utc_now(),
                    'official_latency_s': official_end - official_start if official_start else None,
                    'initialization_and_attempt_latency_s': official_end - began,
-                   'solved': sum(r['status'] == 'solved' for r in results), 'questions_completed': len(results),
+                   'strategy': args.strategy, 'solved': sum(r['status'] == 'solved' for r in results),
+                   'questions_completed': sum(r['status'] != 'stopped' for r in results), 'questions_attempted': len(results),
+                   'target_correct': args.target_correct if args.strategy == 'coverage' else None,
+                   'target_reached': sum(r['status'] == 'solved' for r in results) >= args.target_correct if args.strategy == 'coverage' else None,
+                   'rounds_executed': max((r['round'] for r in results), default=0),
                    'questions': [{**{k: r[k] for k in ('problem_idx', 'status', 'end_to_end_latency_s', 'unique_candidates')},
                                   'verified_answer': r['winner']['candidate'] if r['winner'] else None,
-                                  'winning_rollout': r['winner']['rollout'] if r['winner'] else None} for r in results]}
+                                  'winning_rollout': r['winner']['rollout'] if r['winner'] else None,
+                                  'first_solved': r.get('first_solved')} for r in results]}
         atomic_json(output / 'summary.json', summary)
         atomic_json(output / 'config.json', config)
         await services.close()
@@ -565,8 +717,14 @@ def parse_args(argv=None):
     parser.add_argument('--vllm-port', type=int, default=8000)
     parser.add_argument('--grader-port', type=int, default=8077)
     parser.add_argument('--grader-cost', type=float, default=3.0)
-    parser.add_argument('--parallelism', type=int, default=8, help='Concurrent questions')
-    parser.add_argument('--rollouts', type=int, default=4, help='Streams per question')
+    parser.add_argument('--strategy', choices=('fanout', 'coverage'), default='fanout')
+    parser.add_argument('--parallelism', type=int, help='Concurrent questions: fanout default 8, coverage default 30')
+    parser.add_argument('--rollouts', type=int, help='Streams per question: fanout default 4, coverage requires 1')
+    parser.add_argument('--first-pass-max-tokens', type=int, default=8192)
+    parser.add_argument('--no-continuation', action='store_true', help='Coverage: use fresh samples even after capped outputs')
+    parser.add_argument('--target-correct', type=int, default=18)
+    parser.add_argument('--max-rounds', type=int, default=4, help='Coverage round bound, including first pass')
+    parser.add_argument('--max-attempts-per-question', type=int, default=4, help='Counts every generation request, including continuations')
     parser.add_argument('--questions', type=int, nargs='+', help='Smoke subset; default all 30')
     parser.add_argument('--max-tokens', type=int, default=16384)
     parser.add_argument('--temperature', type=float, default=0.8)
@@ -578,7 +736,15 @@ def parse_args(argv=None):
     parser.add_argument('--gpu-interval', type=float, default=0.2)
     parser.add_argument('--gpu-device', type=int, default=0)
     args = parser.parse_args(argv)
-    if any(getattr(args, key) <= 0 for key in ('parallelism', 'rollouts', 'max_tokens', 'startup_timeout', 'question_timeout', 'gpu_interval')):
+    if args.parallelism is None:
+        args.parallelism = 30 if args.strategy == 'coverage' else 8
+    if args.rollouts is None:
+        args.rollouts = 1 if args.strategy == 'coverage' else 4
+    if args.rollouts > args.max_attempts_per_question:
+        parser.error('Rollouts exceed the per-question attempt limit')
+    if args.strategy == 'coverage' and args.rollouts != 1:
+        parser.error('Coverage strategy requires one rollout per question per round')
+    if any(getattr(args, key) <= 0 for key in ('parallelism', 'rollouts', 'max_tokens', 'startup_timeout', 'question_timeout', 'gpu_interval', 'max_rounds', 'first_pass_max_tokens', 'target_correct', 'max_attempts_per_question')):
         parser.error('Concurrency, token budgets, timeouts, and sampling interval must be positive')
     if args.grader_cost < 0 or args.gpu_device < 0 or not 0 < args.top_p <= 1 or args.temperature < 0:
         parser.error('Invalid grader cost, GPU device, or sampling settings')
@@ -586,6 +752,7 @@ def parse_args(argv=None):
         parser.error('Use a relative organization/model ID')
     if not all(1 <= port <= 65535 for port in (args.vllm_port, args.grader_port)) or args.vllm_port == args.grader_port:
         parser.error('Service ports must be valid and distinct')
+    args.max_context_tokens = 32768  # replaced by actual /v1/models metadata during initialization
     args.vllm_url = f'http://127.0.0.1:{args.vllm_port}'
     args.grader_url = f'http://127.0.0.1:{args.grader_port}'
     return args

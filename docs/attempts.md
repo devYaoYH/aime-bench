@@ -74,10 +74,12 @@ are persisted. There are no automatic retries of partial generations.
 
 Each question worker fans out its streams, and static parsing watches both
 `content` and vLLM's `reasoning`/`reasoning_content` channels. A candidate is a
-closed integer `\\boxed{N}` anywhere in the text or a complete standalone
-`Answer: N` line (including natural terminal EOF). Chunk boundaries and token caps never terminate an incomplete
+closed integer `\\boxed{N}` anywhere in the text, a complete standalone
+`Answer: N` line, or a complete integer clause such as `the answer is 117` (including natural terminal EOF). Chunk boundaries and token caps never terminate an incomplete
 answer line. The prompt asks for prospective boxed answers as soon as available.
-The parser does not infer answers from arbitrary numbers or use the answer key.
+The parser rejects partial integers, fractions, decimal answers, and arithmetic
+expressions in these clauses. Hypothetical integer answer clauses can still become
+prospective candidates and consume grader time. It uses no answer key.
 Boxes in examples can still become candidates; only the grader decides correctness.
 
 Candidates are deduplicated within a question. Its verification consumer submits
@@ -95,6 +97,50 @@ covers both generation and grading. HTTP, malformed stream, and grader failures
 are recorded; attempts with failed questions exit unsuccessfully. A legitimate
 unsolved question is a completed experiment, not an infrastructure error.
 
+
+## Coverage-first continuation experiment
+
+```sh
+~/.venvs/vllm/bin/python -m src.attempt --model Qwen/Qwen3.5-4B \
+  --strategy coverage --first-pass-max-tokens 8192 --max-tokens 16384 \
+  --target-correct 18 --max-attempts-per-question 4
+```
+
+Coverage mode defaults to 30 concurrent questions and one streaming generation
+per question. It tries all questions in the first round, then works only on
+unsolved questions. It stops remaining work as soon as 18 questions are verified
+correct, or after each question has used its four-request budget. **Every request
+counts toward the per-question budget, including continuation segments.**
+`--max-rounds` can impose a smaller round limit. The summary explicitly reports
+whether the target was reached; exhausting the budget is a valid experiment
+outcome, not an infrastructure error.
+
+A token-capped unsolved response is continued from the exact returned prompt and
+output token IDs via `/v1/completions`, with no chat retemplating. Each continuation
+is linked to its parent rollout and respects both the server's 16,384-token output
+ceiling and the model's remaining 32,768-token context. If the trajectory ends
+naturally with a wrong/no answer, or fills its context window, the next request
+starts a fresh sample. `--no-continuation` provides a fresh-retry control.
+Incomplete token-ID evidence fails the experiment rather than silently changing
+the continuation prefix. The prefix is preserved, but sampling starts with a new
+recorded seed for the suffix rather than resuming an internal RNG state.
+
+vLLM's active request ends at the token cap. Reuse on a subsequent request depends
+on automatic prefix caching and cache retention/eviction; it is not a persistent
+GPU session. Qwen's profile explicitly enables prefix caching and prompt-token
+usage details. Each segment saves token IDs, TTFT, cached prompt tokens, reported
+cache-hit fraction, and VRAM. The experiment measures cache reuse instead of
+assuming that saved text guarantees a cache hit. See the
+[vLLM completion implementation](https://docs.vllm.ai/en/latest/api/vllm/entrypoints/openai/completion/serving/).
+
+`solved.jsonl` appends a record immediately on each first positive verdict, with
+question index, client-observed solved UTC timestamp, elapsed seconds from the
+official start, grader answer timestamp/query ID, round, and rollout. The same
+first-solved record is preserved in `trace/<index>/question.json` and the attempt
+summary. Per-round snapshots preserve outcomes and all generation records; retry
+rounds never overwrite earlier rollout directories. Previously checked candidate
+integers are deduplicated across rounds for that question.
+
 ## Artifacts and timing
 
 ```text
@@ -104,11 +150,13 @@ attempts/<UTC timestamp>/
   gpu.jsonl                           200 ms timestamped device telemetry
   gpu_warmup.log, vllm.log, grader.log  managed service logs
   grader_config.yaml, grader_audit.jsonl
+  solved.jsonl                        first-solved events linked to oracle times
   inference_warmup.json
   trace/01/                           question index, through trace/30/
-    question.json, verification.jsonl
+    question.json, verification.jsonl, round-01.json
     rollout-01/                       through rollout-04/
       request.json, stream.jsonl, response.json, telemetry.json
+      tokens.json                     coverage mode exact continuation evidence
 ```
 
 Each rollout records UTC start and generation-end timestamps, first nonempty

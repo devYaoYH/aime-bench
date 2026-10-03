@@ -12,3 +12,5 @@ reasoning-parser: qwen3
 # vLLM uses max_new_tokens here as a server-wide output-token ceiling.
 # The context window above includes both prompt and generation tokens.
 override-generation-config: '{"max_new_tokens": 16384}'
+enable-prefix-caching: true
+enable-prompt-tokens-details: true

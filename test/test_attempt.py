@@ -14,7 +14,7 @@ import unittest
 import httpx
 import yaml
 
-from src.attempt import CandidateDetector, ROOT, parse_args, ready, run_question, run_questions, sse_payloads, warm_inference
+from src.attempt import CandidateDetector, ROOT, parse_args, ready, run_question, run_questions, sse_payloads, warm_inference, run_coverage, continuation_prefix
 
 
 class FakeGPU:
@@ -60,12 +60,23 @@ class DetectorTests(unittest.TestCase):
         self.assertEqual(d.feed('reasoning', '\nAnswer: 082'), [])
         self.assertEqual(d.feed('reasoning', '', eof=True)[0]['answer'], 82)
 
+    def test_prose_answers_need_complete_delimited_integer_not_fraction_or_expression(self):
+        d = CandidateDetector()
+        self.assertEqual(d.feed('reasoning', 'Final answer is 1'), [])
+        self.assertEqual(d.feed('reasoning', '17.\n')[0]['answer'], 117)
+        self.assertEqual(d.feed('content', 'I am fairly certain the answer is 49.\n')[0]['answer'], 49)
+        for text in ['The answer is $4/17$.\n', 'The answer is 4 + 17.\n',
+                     'The answer is 1000.\n', 'The answer is 4.5.\n', 'The answer is 1,000.\n']:
+            self.assertEqual(CandidateDetector().feed('content', text), [], text)
+
     def test_invalid_args(self):
         for args in [['--parallelism', '0'], ['--max-tokens', '-1'], ['--grader-port', '8000']]:
             with redirect_stderr(io.StringIO()), self.assertRaises(SystemExit):
                 parse_args(['--model', 'Qwen/Qwen3.5-4B', *args])
         args = parse_args(['--model', 'Qwen/Qwen3.5-4B'])
         self.assertEqual((args.parallelism, args.rollouts, args.max_tokens), (8, 4, 16384))
+        coverage = parse_args(['--model', 'Qwen/Qwen3.5-4B', '--strategy', 'coverage'])
+        self.assertEqual((coverage.parallelism, coverage.rollouts, coverage.first_pass_max_tokens, coverage.max_attempts_per_question), (30, 1, 8192, 4))
 
 
 class RunnerTests(unittest.IsolatedAsyncioTestCase):
@@ -204,6 +215,94 @@ class RunnerTests(unittest.IsolatedAsyncioTestCase):
             record = json.loads((Path(tmp) / 'trace/01/question.json').read_text())
             self.assertEqual(record['error'], 'attempt interrupted')
             self.assertTrue(all(r['status'] == 'cancelled' for r in record['rollouts']))
+
+    async def test_coverage_continues_exact_tokens_and_stitches_split_answer(self):
+        requests = []
+        args = self.args(strategy='coverage', parallelism=30, rollouts=1,
+                         first_pass_max_tokens=1, max_tokens=2, target_correct=1)
+        args.max_context_tokens = 5
+        async def handler(request):
+            if request.url.path == '/verify':
+                self.assertEqual(json.loads(request.content)['candidate'], '70')
+                return httpx.Response(200, json={'verdict': True, 'query_id': 'oracle-1',
+                                                'answered_at': '2026-10-03T20:00:00Z'})
+            body = json.loads(request.content)
+            requests.append((request.url.path, body))
+            if len(requests) == 1:
+                event = {'prompt_token_ids': [10, 11], 'choices': [{'index': 0,
+                    'delta': {'reasoning_content': '\\boxed{0'}, 'token_ids': [70], 'finish_reason': 'length'}],
+                    'usage': {'prompt_tokens': 2, 'completion_tokens': 1}}
+            else:
+                event = {'choices': [{'index': 0, 'text': '70}', 'prompt_token_ids': [10, 11, 70],
+                    'token_ids': [71, 72], 'finish_reason': 'length'}],
+                    'usage': {'prompt_tokens': 3, 'completion_tokens': 2,
+                              'prompt_tokens_details': {'cached_tokens': 2}}}
+            return httpx.Response(200, stream=Stream([('data: '+json.dumps(event)+'\n\n').encode(), b'data: [DONE]\n\n']))
+        with tempfile.TemporaryDirectory() as tmp:
+            async with httpx.AsyncClient(transport=httpx.MockTransport(handler)) as client:
+                result = await run_coverage([{'problem_idx': 1, 'problem': 'test'}], args, client, Path(tmp), FakeGPU(), time.perf_counter())
+            self.assertEqual(len(requests), 2)
+            self.assertEqual(requests[1][0], '/v1/completions')
+            self.assertEqual(requests[1][1]['prompt'], [10, 11, 70])
+            self.assertNotIn('messages', requests[1][1])
+            self.assertEqual(requests[1][1]['max_tokens'], 2)
+            q = result[0]
+            self.assertEqual(q['status'], 'solved')
+            self.assertEqual(len(q['rounds']), 2)
+            self.assertEqual(q['rollouts'][1]['continuation_of_rollout'], 1)
+            self.assertEqual(q['rollouts'][1]['cached_prompt_tokens'], 2)
+            self.assertEqual(q['first_solved']['grader_query_id'], 'oracle-1')
+            events = [json.loads(line) for line in (Path(tmp)/'solved.jsonl').read_text().splitlines()]
+            self.assertEqual(len(events), 1)
+            self.assertEqual(events[0], q['first_solved'])
+
+    async def test_coverage_target_cancels_other_questions_after_solve_records_saved(self):
+        streams = []
+        args = self.args(strategy='coverage', parallelism=30, rollouts=1, target_correct=2)
+        async def handler(request):
+            if request.url.path == '/verify':
+                await asyncio.sleep(0.01)
+                return httpx.Response(200, json={'verdict': True})
+            q = int(json.loads(request.content)['messages'][1]['content'])
+            stream = Stream([chunk('\\boxed{70}' if q <= 2 else 'still thinking')], hang=True)
+            streams.append(stream)
+            return httpx.Response(200, stream=stream)
+        with tempfile.TemporaryDirectory() as tmp:
+            async with httpx.AsyncClient(transport=httpx.MockTransport(handler)) as client:
+                result = await run_coverage([{'problem_idx': q, 'problem': str(q)} for q in range(1, 6)], args, client, Path(tmp), FakeGPU(), time.perf_counter())
+            self.assertEqual(len(result), 5)
+            self.assertEqual(sum(q['status'] == 'solved' for q in result), 2)
+            self.assertEqual(sum(q['status'] == 'stopped' for q in result), 3)
+            self.assertTrue(all(s.closed for s in streams))
+            self.assertTrue(all(q['error'] is None for q in result))
+
+    async def test_coverage_budget_hard_caps_each_question_at_four_requests(self):
+        requests = []
+        args = self.args(strategy='coverage', parallelism=30, rollouts=1,
+                         target_correct=1, max_rounds=20, no_continuation=True)
+        async def handler(request):
+            self.assertNotEqual(request.url.path, '/verify')
+            requests.append(json.loads(request.content))
+            return httpx.Response(200, stream=Stream([chunk('no answer', finish='stop'), b'data: [DONE]\n\n']))
+        with tempfile.TemporaryDirectory() as tmp:
+            async with httpx.AsyncClient(transport=httpx.MockTransport(handler)) as client:
+                result = await run_coverage([{'problem_idx': 1, 'problem': 'test'}], args, client, Path(tmp), FakeGPU(), time.perf_counter())
+            self.assertEqual(len(requests), 4)
+            self.assertEqual(len(result[0]['rollouts']), 4)
+            self.assertEqual(len({r['seed'] for r in requests}), 4)
+            self.assertEqual(result[0]['status'], 'unsolved')
+
+    def test_context_exhaustion_and_incomplete_tokens(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            folder = Path(tmp)
+            (folder/'rollout-01').mkdir()
+            previous = {'rollouts': [{'rollout': 1, 'status': 'completed', 'finish_reason': 'length'}]}
+            token_file = folder/'rollout-01/tokens.json'
+            token_file.write_text(json.dumps({'prompt_token_ids': [1,2], 'output_token_ids':[3], 'complete':True, 'visible_text':'abc'}))
+            self.assertIsNone(continuation_prefix(previous, folder, 4))
+            token_file.write_text(json.dumps({'prompt_token_ids': [1,2], 'output_token_ids':[3], 'complete':False, 'visible_text':'abc'}))
+            with self.assertRaises(RuntimeError):
+                continuation_prefix(previous, folder, 10)
 
     async def test_question_parallelism_and_worker_reuse(self):
         active, peak, launched = set(), 0, []

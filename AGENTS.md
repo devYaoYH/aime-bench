@@ -41,3 +41,14 @@ Run from this repository root:
 
 Tests are offline. Some legacy tests need local ignored traces or macOS sandbox
 support; report those limitations rather than modifying fixtures to hide them.
+
+## Coverage experiments
+
+- Keep the per-question generation request cap at four initially. Continuation
+  segments count toward the cap. Stop at the configured solve target (initially
+  18), or report that the target was unmet after exhausting the budget.
+- Use 8,192 tokens for the coverage-first pass, then continue capped unsolved
+  trajectories with exact token IDs when context permits. Measure prefix-cache
+  hits and TTFT; do not assume that a completed request retains active KV state.
+- Preserve first-solved timestamps and elapsed times, linked to the grader query
+  and answer timestamp, in attempt logs and summaries.
