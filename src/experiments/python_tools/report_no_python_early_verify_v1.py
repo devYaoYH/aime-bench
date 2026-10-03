@@ -19,6 +19,8 @@ from src.experiments.python_tools.backtest_python_early_verify import (
 from src.experiments.python_tools.no_python_baseline_v1 import baseline_request
 from src.verification_replay import simulate
 
+REPORT_SLOTS = 30
+
 
 def replay(rows):
     final_questions = sorted({r['problem_idx'] for r in rows if r['final_correct']})
@@ -82,6 +84,7 @@ def render(run):
                     'The Python-stdout extension is identical to the text policy in this arm because there are no tool outputs.']
     result.update(run=str(run.relative_to(ROOT)), traces=len(rows), questions=len(config['questions']),
                   samples=[1, 2], tokenizer=tokenizer_meta, assumptions=assumptions,
+                  primary_generation_slots=REPORT_SLOTS,
                   reference_run=str(reference_dir.relative_to(ROOT)))
     atomic_json(output/'summary.json', result)
     inventory = deepcopy(rows)
@@ -91,6 +94,7 @@ def render(run):
     atomic_json(output/'candidate_inventory.json', {'rows': inventory})
     atomic_json(output/'config.json', {'runner_version': 'report_no_python_early_verify_v1',
         'tokenizer': tokenizer_meta, 'generation_slots': [60, 30, 8], 'service_s': 3,
+        'primary_generation_slots': REPORT_SLOTS,
         'policies': list(POLICIES), 'historical_replay_reproduced': True,
         'source_sha256': {name: hashlib.sha256((ROOT/name).read_bytes()).hexdigest() for name in [
             'src/answer_extraction.py', 'src/verification_replay.py',
@@ -99,7 +103,7 @@ def render(run):
     def duration(value):
         return 'target unmet' if value is None else f'{value/60:.2f} min'
     lines = ['# Matched intermediate-answer extraction: no Python versus optional Python', '',
-             'Same permissive text extraction from reasoning and content, same cached Qwen3.5 tokenizer, and same shared FIFO verifier: three seconds per distinct question-answer pair. All negative checks cost three seconds and leave inference running. The historical replay results were reproduced exactly.', '',
+             f'Primary comparison: **{REPORT_SLOTS} concurrent trajectory slots** in the offline replay. Same permissive text extraction from reasoning and content, same cached Qwen3.5 tokenizer, and same shared FIFO verifier: three seconds per distinct question-answer pair. All negative checks cost three seconds and leave inference running. The historical replay results were reproduced exactly.', '',
              '| Answer policy | Historical optional Python | No Python |', '|---|---:|---:|',
              f'| Strict final answers | {len(historical["final_correct_questions"])}/30 | {len(result["final_correct_questions"])}/30 |']
     for policy in ('markers', 'permissive', 'permissive_tools'):
@@ -107,25 +111,28 @@ def render(run):
     lines += ['', '## Estimated time to 18 verified correct questions', '',
               '| Capacity | Policy | Historical optional Python | No Python |', '|---|---|---:|---:|']
     for old, new in zip(historical['replays'], result['replays'], strict=True):
+        if new['generation_slots'] != REPORT_SLOTS:
+            continue
         lines.append(f'| {new["generation_slots"]} | {LABELS[new["policy"]]} | {duration(old["time_to_18_s"])} | {duration(new["time_to_18_s"])} |')
-    lines += ['', '![Eight-slot comparison](comparison.png)', '',
+    lines += ['', f'![{REPORT_SLOTS}-slot comparison](comparison.png)', '',
               '## Fixed observed starts, with no rescheduling or cancellation', '',
               '| Policy | Historical optional Python | No Python |', '|---|---:|---:|']
     for old, new in zip(historical['observed_start_shadow'], result['observed_start_shadow'], strict=True):
         lines.append(f'| {LABELS[new["policy"]]} | {duration(old["time_to_18_s"])} | {duration(new["time_to_18_s"])} |')
     lines += ['', f'Newly recovered no-tool questions under the same permissive text policy: {result["recovered_questions"]["permissive"]}.', '',
-              '## Eight-slot verification load', '',
+              f'## {REPORT_SLOTS}-slot verification load', '',
               '| Policy | Correct questions | Checks before 18 | Wrong checks | Peak pending checks |', '|---|---:|---:|---:|---:|']
     for r in result['replays']:
-        if r['generation_slots'] == 8:
+        if r['generation_slots'] == REPORT_SLOTS:
             lines.append(f'| {LABELS[r["policy"]]} | {r["correct_questions"]} | {r["checks_before_18"]} | {r["wrong_checks"]} | {r["peak_pending_checks"]} |')
     lines += ['', '## Limits', '',
-              'This is an offline replay using saved answers as a perfect-verifier stand-in. Intermediate arrival times are estimated from token fractions in non-streaming responses. No live intermediate grading, early cancellation, or billing savings occurred. Actual hosted durations come from different run dates. A target-unmet policy is not ranked.', '',
+              'This is an offline replay using saved answers as a perfect-verifier stand-in. Intermediate arrival times are estimated from token fractions in non-streaming responses. No live intermediate grading, early cancellation, or billing savings occurred. The original inference runs used eight concurrent trajectories; the 30-slot replay reuses their saved trajectory durations. Actual hosted durations come from different run dates. A target-unmet policy is not ranked. Alternate capacity scenarios remain in summary.json.', '',
               'Python stdout is an additional policy for the historical arm; the baseline has no stdout. The main permissive comparison uses the unchanged text policy in both arms.', '',
               'Candidate inventories retain incorrect and hypothetical proposals. Correctness annotations are added after extraction and simulation; candidates are not selected using the answer key.', '',
               'Reproduce:', '', '```sh',
               f'.venv/bin/python -m src.experiments.python_tools.report_no_python_early_verify_v1 --run {run.relative_to(ROOT)}', '```', '']
     os.environ['MPLCONFIGDIR'] = str(output/'.mplconfig')
+    os.environ['XDG_CACHE_HOME'] = str(output/'.cache')
     import matplotlib
     matplotlib.use('Agg')
     import matplotlib.pyplot as plt
@@ -133,7 +140,7 @@ def render(run):
     for ax, policy in zip(axes, ('final', 'permissive')):
         for arm, label, color in [(historical, 'Optional Python (historical)', '#227f9b'),
                                   (result, 'No Python', '#b45629')]:
-            r = next(r for r in arm['replays'] if r['generation_slots'] == 8 and r['policy'] == policy)
+            r = next(r for r in arm['replays'] if r['generation_slots'] == REPORT_SLOTS and r['policy'] == policy)
             end = max(max(s['natural_end_s'] for s in r['generation_starts']),
                       max((m['time_s'] for m in r['milestones']), default=0))/60
             xs = [0]+[m['time_s']/60 for m in r['milestones']]+[end]
@@ -144,15 +151,16 @@ def render(run):
         ax.legend(fontsize=8)
         ax.grid(alpha=.2)
         ax.spines[['top', 'right']].set_visible(False)
-    fig.suptitle('Matched offline replay · 8 trajectory slots · 3 seconds per verification')
+    fig.suptitle(f'Matched offline replay · {REPORT_SLOTS} trajectory slots · 3 seconds per verification')
     fig.savefig(output/'comparison.png', dpi=170)
     plt.close(fig)
     (output/'report.md').write_text('\n'.join(lines))
-    (output/'README.md').write_text('# No-Python intermediate-answer replay\n\nSame extractor, tokenizer, and verifier settings as the historical tool arm. See [paired report](report.md). Timing is an offline estimate; no live cancellation occurred.\n')
+    (output/'README.md').write_text(f'# No-Python intermediate-answer replay\n\nPrimary comparison: {REPORT_SLOTS} concurrent trajectory slots. Same extractor, tokenizer, and verifier settings as the historical tool arm. See [paired report](report.md). Timing is an offline estimate from the original eight-trajectory inference runs; no live cancellation occurred.\n')
     print(json.dumps({'coverage': result['coverage'], 'recovered_questions': result['recovered_questions'],
                      'historical_replay_reproduced': True,
-                     'eight_slots': [{k:r[k] for k in ['policy', 'correct_questions', 'time_to_18_s', 'wrong_checks']}
-                                    for r in result['replays'] if r['generation_slots'] == 8]}, indent=2))
+                     'report_slots': REPORT_SLOTS,
+                     'primary_replay': [{k:r[k] for k in ['policy', 'correct_questions', 'time_to_18_s', 'wrong_checks']}
+                                       for r in result['replays'] if r['generation_slots'] == REPORT_SLOTS]}, indent=2))
 
 
 if __name__ == '__main__':
