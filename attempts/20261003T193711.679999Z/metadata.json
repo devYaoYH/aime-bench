@@ -1,0 +1,71 @@
+{
+  "$schema": "../../data/attempt_metadata.schema.json",
+  "schema_version": 1,
+  "attempt_id": "20261003T193711.679999Z",
+  "label": "Qwen 4B \u00b7 parallel pass@4",
+  "intervention": {
+    "label": "Initial streaming pass@4",
+    "reference_attempt_id": null,
+    "changed_variables": [],
+    "comparison_note": "Initial Qwen baseline reached only 5 correct; time to 18 is unavailable."
+  },
+  "runner": {
+    "module": "src.attempt",
+    "version": "git:4c87c7fa62e6d5ad1480197da29fbe20945848b6",
+    "git_commit": "4c87c7fa62e6d5ad1480197da29fbe20945848b6",
+    "git_dirty": false
+  },
+  "model": {
+    "id": "Qwen/Qwen3.5-4B",
+    "revision": "851bf6e806efd8d0a36b00ddf55e13ccb7b8cd0a",
+    "quantization": "none",
+    "quantization_source": "recorded unquantized model and launch dtype",
+    "activation_dtype": "bfloat16",
+    "kv_cache_dtype": null,
+    "linear_backend": null
+  },
+  "gpu": {
+    "device": "NVIDIA A100 PCIe 80GB",
+    "device_count": 1,
+    "total_vram_mib": 81920.0,
+    "memory_utilization": 0.8,
+    "configured_envelope_mib": 65536.0
+  },
+  "controls": {
+    "dataset": "AIME 2025",
+    "question_indices": [],
+    "target_correct": 18,
+    "grader_cost_s": 3.0,
+    "grader_serial": true,
+    "max_context_tokens": 32768,
+    "max_num_seqs": null,
+    "prefix_caching": null,
+    "reasoning_parser": "qwen3",
+    "hyperparameters": {
+      "parallelism": 8,
+      "rollouts": 4,
+      "temperature": 0.8,
+      "top_p": 0.95,
+      "seed": 20261003,
+      "disable_thinking": false,
+      "question_timeout": 1800,
+      "strategy": "parallel_streaming",
+      "max_tokens": 16384,
+      "first_pass_max_tokens": 16384,
+      "max_attempts_per_question": 4,
+      "max_rounds": 1,
+      "continuation_enabled": false,
+      "answer_extraction": "streaming prospective candidates",
+      "system_prompt_sha256": "2aa7a805921df2fc0924f582937d8c14cb02be3a520361b1181dd664eb73929a"
+    }
+  },
+  "provenance": {
+    "config": "config.json",
+    "profile": "model_profile.json",
+    "profile_sha256": "43dcf54b09edc7f569d4b77f000f1d1e77636f41f909b79edcafdff2a95541a8",
+    "notes": [
+      "Normalized from saved config/profile and GPU samples. Null means unrecorded.",
+      "Device identity and intervention annotations reviewed against the saved attempt reports."
+    ]
+  }
+}

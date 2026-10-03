@@ -9,7 +9,7 @@ root with `.venv/bin/python -m <module>`. Full examples are in the
 ## Common utilities and libraries
 
 These stay directly in `src/`. Libraries are imported by experiments; only the
-dataset fetcher and viewer are user-facing utility commands.
+dataset fetcher, viewer, and metadata annotator are user-facing utility commands.
 
 | File | When to use |
 | --- | --- |
@@ -23,8 +23,10 @@ dataset fetcher and viewer are user-facing utility commands.
 | [python_tool_protocol.py](../src/python_tool_protocol.py) | Preserve native tool-call history, validate arguments, and total multi-round usage |
 | [tokenizer_utils.py](../src/tokenizer_utils.py) | Recover exact source-preserving prefixes with a caller-supplied tokenizer |
 | [fetch_dataset.py](../src/fetch_dataset.py) | Refresh MathArena problems, official keys, revision, and dataset checksum; requires network |
-| [viewer_server.py](../src/viewer_server.py) | Serve canonical attempts at `/` and the fixed baseline archive at `/exploratory` |
+| [viewer_server.py](../src/viewer_server.py) | Serve canonical attempts at `/`, aggregate results at `/results`, and the fixed archive at `/exploratory` |
 | [attempt_viewer.py](../src/attempt_viewer.py) | Read canonical summaries, rollout artifacts, verification logs, and GPU samples without running inference |
+| [attempt_metadata.py](../src/attempt_metadata.py) | Create missing `metadata.json` files after imports and validate existing intervention/control annotations |
+| [attempt_results.py](../src/attempt_results.py) | Aggregate distinct positive verdicts into measured time-to-18 and compare annotated reference controls |
 
 ## Baseline experiments
 

@@ -1,0 +1,356 @@
+{
+  "problem_idx": 26,
+  "started_at_utc": "2026-10-03T21:14:36.183+00:00",
+  "finished_at_utc": "2026-10-03T21:15:39.001+00:00",
+  "end_to_end_latency_s": 62.818312857998535,
+  "status": "solved",
+  "winner": {
+    "answer": 113,
+    "part": "content",
+    "kind": "literal_prose",
+    "end": 18737,
+    "line": "But maybe the problem expects a different answer if they consider rotations as same? However, typical AIME problems ask for the number of distinct ways, considering different pairings as distinct. Unless explicitly counting up to symmetry. Let's examine the original problem phrasing: \"Let S be the set of vertices of a regular 24-gon. Find the number of ways to draw 12 segments of equal lengths so that each vertex in S is an endpoint of exactly one of the 12 segments.\" It doesn't mention up to rotation or reflection, so each distinct set of segments (i.e., matching) is counted separately. So answer is 113.",
+    "candidate": "113",
+    "rollout": 1,
+    "observed_at_utc": "2026-10-03T21:15:35.985+00:00",
+    "question_elapsed_s": 59.802250328997616,
+    "verification_started_at_utc": "2026-10-03T21:15:35.986+00:00",
+    "round": 1,
+    "candidate_queue_wait_s": 0.0013990610023029149,
+    "result": {
+      "query_id": "20261003T211346.861294Z-q26-a113",
+      "seq": 17,
+      "agent_id": "20261003T211346.861294Z-q26-r1",
+      "index": 26,
+      "candidate": "113",
+      "verdict": true,
+      "queue_ahead_at_submit": 0,
+      "submitted_at": "2026-10-03T21:15:35.990239Z",
+      "picked_at": "2026-10-03T21:15:35.990316Z",
+      "answered_at": "2026-10-03T21:15:38.990437Z",
+      "queue_wait_s": 0.0,
+      "toll_s": 3.0,
+      "latency_s": 3.0
+    },
+    "verification_finished_at_utc": "2026-10-03T21:15:38.993+00:00",
+    "verification_latency_s": 3.0060787809779868
+  },
+  "error": null,
+  "unique_candidates": 1,
+  "candidate_answers": [
+    "113"
+  ],
+  "rollouts": [
+    {
+      "rollout": 1,
+      "round": 1,
+      "started_at_utc": "2026-10-03T21:14:36.251+00:00",
+      "start_monotonic_s": 266324.314193197,
+      "ttft_s": 1.8719037899863906,
+      "last_token_s": 62.737440028984565,
+      "finish_reason": null,
+      "status": "cancelled",
+      "done_received": false,
+      "usage": {
+        "prompt_tokens": 125,
+        "total_tokens": 5857,
+        "completion_tokens": 5732,
+        "completion_tokens_details": null
+      },
+      "endpoint": "/v1/chat/completions",
+      "continuation_of_rollout": null,
+      "requested_max_tokens": 8192,
+      "http_status": 200,
+      "headers_received_s": 0.22263957298127934,
+      "generation_finished_at_utc": "2026-10-03T21:15:38.993+00:00",
+      "generation_end_monotonic_s": 266387.056130003,
+      "generation_latency_s": 62.74193680600729,
+      "generation_censored": true,
+      "generated_token_ids_count": 5732,
+      "prompt_token_ids_count": 125,
+      "cached_prompt_tokens": null,
+      "prefix_cache_hit_fraction": null,
+      "overhead": {
+        "enabled": true,
+        "timings": {
+          "artifact_json_write": {
+            "count": 4,
+            "wall_total_s": 0.0036342479288578033,
+            "wall_max_s": 0.002968120970763266,
+            "thread_cpu_total_s": 0.003634370000014542,
+            "cpu_samples": 4
+          },
+          "stream_trace_write_flush": {
+            "count": 5733,
+            "wall_total_s": 0.2220198770519346,
+            "wall_max_s": 0.05676671798573807,
+            "thread_cpu_total_s": 0.1648270950009163,
+            "cpu_samples": 5733
+          },
+          "sse_json_decode": {
+            "count": 5733,
+            "wall_total_s": 0.06060653680469841,
+            "wall_max_s": 4.569499287754297e-05,
+            "thread_cpu_total_s": 0.06080941400003326,
+            "cpu_samples": 5733
+          },
+          "candidate_parse_enqueue": {
+            "count": 5726,
+            "wall_total_s": 0.04349377827020362,
+            "wall_max_s": 8.579000132158399e-05,
+            "thread_cpu_total_s": 0.04362491699956195,
+            "cpu_samples": 5726
+          }
+        },
+        "counters": {
+          "generation_requests": 1,
+          "sse_chunks": 5733,
+          "sse_payload_bytes": 1997682,
+          "generation_cancelled": 1
+        },
+        "maxima": {}
+      },
+      "finished_at_utc": "2026-10-03T21:15:39.001+00:00",
+      "end_to_end_latency_s": 62.749922489980236,
+      "end_to_end_scope": "rollout start through question verification/cancellation settlement",
+      "gpu": {
+        "sample_count": 313,
+        "start_vram_mib": 78302.1875,
+        "end_vram_mib": 78434.1875,
+        "observed_peak_vram_mib": 78434.1875,
+        "scope": "shared GPU device; sampled peak, not per-request allocation",
+        "error": null
+      }
+    },
+    {
+      "rollout": 2,
+      "round": 1,
+      "started_at_utc": "2026-10-03T21:14:36.252+00:00",
+      "start_monotonic_s": 266324.315406702,
+      "ttft_s": 1.9127400690340437,
+      "last_token_s": 62.73895566898864,
+      "finish_reason": null,
+      "status": "cancelled",
+      "done_received": false,
+      "usage": {
+        "prompt_tokens": 125,
+        "total_tokens": 5856,
+        "completion_tokens": 5731,
+        "completion_tokens_details": null
+      },
+      "endpoint": "/v1/chat/completions",
+      "continuation_of_rollout": null,
+      "requested_max_tokens": 8192,
+      "http_status": 200,
+      "headers_received_s": 0.325577744981274,
+      "generation_finished_at_utc": "2026-10-03T21:15:38.997+00:00",
+      "generation_end_monotonic_s": 266387.060236087,
+      "generation_latency_s": 62.74482938501751,
+      "generation_censored": true,
+      "generated_token_ids_count": 5731,
+      "prompt_token_ids_count": 125,
+      "cached_prompt_tokens": null,
+      "prefix_cache_hit_fraction": null,
+      "overhead": {
+        "enabled": true,
+        "timings": {
+          "artifact_json_write": {
+            "count": 4,
+            "wall_total_s": 0.0031625160481780767,
+            "wall_max_s": 0.0025119970086961985,
+            "thread_cpu_total_s": 0.0031627319999643078,
+            "cpu_samples": 4
+          },
+          "stream_trace_write_flush": {
+            "count": 5732,
+            "wall_total_s": 0.16386766760842875,
+            "wall_max_s": 0.00013693695655092597,
+            "thread_cpu_total_s": 0.16305689399912637,
+            "cpu_samples": 5732
+          },
+          "sse_json_decode": {
+            "count": 5732,
+            "wall_total_s": 0.060251904011238366,
+            "wall_max_s": 5.4491974879056215e-05,
+            "thread_cpu_total_s": 0.060439496998853315,
+            "cpu_samples": 5732
+          },
+          "candidate_parse_enqueue": {
+            "count": 5722,
+            "wall_total_s": 0.04304930567741394,
+            "wall_max_s": 0.00010824197670444846,
+            "thread_cpu_total_s": 0.0432166180002298,
+            "cpu_samples": 5722
+          }
+        },
+        "counters": {
+          "generation_requests": 1,
+          "sse_chunks": 5732,
+          "sse_payload_bytes": 1997121,
+          "generation_cancelled": 1
+        },
+        "maxima": {}
+      },
+      "finished_at_utc": "2026-10-03T21:15:39.001+00:00",
+      "end_to_end_latency_s": 62.74870898498921,
+      "end_to_end_scope": "rollout start through question verification/cancellation settlement",
+      "gpu": {
+        "sample_count": 313,
+        "start_vram_mib": 78302.1875,
+        "end_vram_mib": 78434.1875,
+        "observed_peak_vram_mib": 78434.1875,
+        "scope": "shared GPU device; sampled peak, not per-request allocation",
+        "error": null
+      }
+    }
+  ],
+  "round": 1,
+  "first_solved": {
+    "problem_idx": 26,
+    "round": 1,
+    "rollout": 1,
+    "candidate": "113",
+    "first_solved_at_utc": "2026-10-03T21:15:38.993+00:00",
+    "first_solved_elapsed_s": 62.817825867037755,
+    "grader_answered_at_utc": "2026-10-03T21:15:38.990437Z",
+    "grader_query_id": "20261003T211346.861294Z-q26-a113"
+  },
+  "overhead": {
+    "enabled": true,
+    "timings": {
+      "artifact_json_write": {
+        "count": 11,
+        "wall_total_s": 0.0079150689416565,
+        "wall_max_s": 0.002968120970763266,
+        "thread_cpu_total_s": 0.007917058999993287,
+        "cpu_samples": 11
+      },
+      "stream_trace_write_flush": {
+        "count": 11465,
+        "wall_total_s": 0.38588754466036335,
+        "wall_max_s": 0.05676671798573807,
+        "thread_cpu_total_s": 0.3278839890000427,
+        "cpu_samples": 11465
+      },
+      "sse_json_decode": {
+        "count": 11465,
+        "wall_total_s": 0.12085844081593677,
+        "wall_max_s": 5.4491974879056215e-05,
+        "thread_cpu_total_s": 0.12124891099888657,
+        "cpu_samples": 11465
+      },
+      "candidate_parse_enqueue": {
+        "count": 11448,
+        "wall_total_s": 0.08654308394761756,
+        "wall_max_s": 0.00010824197670444846,
+        "thread_cpu_total_s": 0.08684153499979175,
+        "cpu_samples": 11448
+      },
+      "candidate_local_queue_wait": {
+        "count": 1,
+        "wall_total_s": 0.0013990610023029149,
+        "wall_max_s": 0.0013990610023029149,
+        "thread_cpu_total_s": 0.0,
+        "cpu_samples": 0
+      },
+      "grader_queue_wait": {
+        "count": 1,
+        "wall_total_s": 0.0,
+        "wall_max_s": 0.0,
+        "thread_cpu_total_s": 0.0,
+        "cpu_samples": 0
+      },
+      "grader_service": {
+        "count": 1,
+        "wall_total_s": 3.0,
+        "wall_max_s": 3.0,
+        "thread_cpu_total_s": 0.0,
+        "cpu_samples": 0
+      },
+      "verification_http_wait": {
+        "count": 1,
+        "wall_total_s": 3.0060787809779868,
+        "wall_max_s": 3.0060787809779868,
+        "thread_cpu_total_s": 0.0,
+        "cpu_samples": 0
+      },
+      "verification_trace_write_flush": {
+        "count": 1,
+        "wall_total_s": 5.615601548925042e-05,
+        "wall_max_s": 5.615601548925042e-05,
+        "thread_cpu_total_s": 5.571299999473922e-05,
+        "cpu_samples": 1
+      },
+      "generation_cancellation_settlement": {
+        "count": 1,
+        "wall_total_s": 0.008373169985134155,
+        "wall_max_s": 0.008373169985134155,
+        "thread_cpu_total_s": 0.0,
+        "cpu_samples": 0
+      },
+      "gpu_sample_window": {
+        "count": 2,
+        "wall_total_s": 0.000343011983204633,
+        "wall_max_s": 0.00022807699861004949,
+        "thread_cpu_total_s": 0.00034314999999196516,
+        "cpu_samples": 2
+      }
+    },
+    "counters": {
+      "generation_requests": 2,
+      "sse_chunks": 11465,
+      "sse_payload_bytes": 3994803,
+      "candidate_proposals": 1,
+      "candidate_unique_enqueued": 1,
+      "verification_submitted": 1,
+      "verification_completed": 1,
+      "verification_correct": 1,
+      "generation_cancelled": 2
+    },
+    "maxima": {
+      "candidate_queue_depth": 1
+    }
+  },
+  "rounds": [
+    {
+      "round": 1,
+      "status": "solved",
+      "started_at_utc": "2026-10-03T21:14:36.183+00:00",
+      "finished_at_utc": "2026-10-03T21:15:39.001+00:00",
+      "end_to_end_latency_s": 62.818312857998535,
+      "winner": {
+        "answer": 113,
+        "part": "content",
+        "kind": "literal_prose",
+        "end": 18737,
+        "line": "But maybe the problem expects a different answer if they consider rotations as same? However, typical AIME problems ask for the number of distinct ways, considering different pairings as distinct. Unless explicitly counting up to symmetry. Let's examine the original problem phrasing: \"Let S be the set of vertices of a regular 24-gon. Find the number of ways to draw 12 segments of equal lengths so that each vertex in S is an endpoint of exactly one of the 12 segments.\" It doesn't mention up to rotation or reflection, so each distinct set of segments (i.e., matching) is counted separately. So answer is 113.",
+        "candidate": "113",
+        "rollout": 1,
+        "observed_at_utc": "2026-10-03T21:15:35.985+00:00",
+        "question_elapsed_s": 59.802250328997616,
+        "verification_started_at_utc": "2026-10-03T21:15:35.986+00:00",
+        "round": 1,
+        "candidate_queue_wait_s": 0.0013990610023029149,
+        "result": {
+          "query_id": "20261003T211346.861294Z-q26-a113",
+          "seq": 17,
+          "agent_id": "20261003T211346.861294Z-q26-r1",
+          "index": 26,
+          "candidate": "113",
+          "verdict": true,
+          "queue_ahead_at_submit": 0,
+          "submitted_at": "2026-10-03T21:15:35.990239Z",
+          "picked_at": "2026-10-03T21:15:35.990316Z",
+          "answered_at": "2026-10-03T21:15:38.990437Z",
+          "queue_wait_s": 0.0,
+          "toll_s": 3.0,
+          "latency_s": 3.0
+        },
+        "verification_finished_at_utc": "2026-10-03T21:15:38.993+00:00",
+        "verification_latency_s": 3.0060787809779868
+      },
+      "error": null
+    }
+  ],
+  "question_start_monotonic_s": 266324.245802829
+}

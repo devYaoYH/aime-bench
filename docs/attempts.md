@@ -244,6 +244,28 @@ an attempt being written locally. An unfinished JSONL tail is tolerated.
 The [exploratory archive](http://127.0.0.1:8765/exploratory) retains the original
 fixed dataset, pass@8 votes, and Jev analyses independently of canonical attempts.
 
+## Experiment metadata and overall results
+
+Every imported attempt has `metadata.json`, validated against
+[`data/attempt_metadata.schema.json`](../data/attempt_metadata.schema.json).
+`python -m src.attempt_metadata --all` creates missing files and validates existing
+annotations without overwriting them. Fill in `label`, `intervention.label`,
+`reference_attempt_id`, `changed_variables`, and `comparison_note` after review.
+The recorded model/revision, quantization, activation/KV dtype, GPU VRAM envelope,
+runner module/version/source commit, question parallelism, rollout fan-out,
+sampling, prompt hash, context, continuation budget, and grader settings make
+controls explicit. Null values mean that evidence was not recorded. Historical
+runner modules and commits are preserved even when the policy later moves.
+
+Open [Overall results](http://127.0.0.1:8765/results) to compare all local attempts.
+Times come from the eighteenth distinct first-solved event, including historical
+winner-verdict timestamp fallback. Official settlement time is shown separately;
+it is never used to fill missing target timing. Failed/interrupted/unmet attempts
+remain visible. The 54-second reference floor assumes a serial 3-second grader,
+18 correct queries, zero wrong/duplicate queries, and no initial generation delay.
+Generation can overlap grading. Individual run comparisons show observed deltas
+and all recorded setting differences; they do not establish isolated causal effects.
+
 ## Local checks
 
 ```sh

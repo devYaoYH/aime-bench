@@ -63,6 +63,15 @@ The [exploratory viewer](http://127.0.0.1:8765/exploratory) remains fixed to the
 original Qwen run `20260930-155212`, including sample votes and Jev reviews.
 Other exploratory experiment families have reports and artifacts under `runs/`.
 
+The [overall results page](http://127.0.0.1:8765/results) aggregates all saved
+attempts, plots recorded time to the eighteenth distinct positive grader verdict,
+and marks the 54-second minimum serial grader toll (18 × 3s). It links each
+intervention to its reference attempt and exposes changed and matched controls.
+Unmet targets, failed runs, and missing timing evidence remain explicitly unranked.
+Each attempt's `metadata.json` follows [the metadata schema](data/attempt_metadata.schema.json).
+After importing new attempts, run `python -m src.attempt_metadata --all`, then
+annotate the intervention/reference fields; existing annotations are preserved.
+
 ## Canonical remote attempts
 
 See [the attempt workflow](docs/attempts.md) and [repo agent instructions](AGENTS.md).

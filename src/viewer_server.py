@@ -1,6 +1,7 @@
-"""Serve canonical attempts and the fixed exploratory archive in local viewers.
+"""Serve canonical attempts, aggregate results, and the fixed exploratory archive.
 
-Open / for canonical src.attempt outputs under attempts/, or /exploratory for
+Open / for canonical src.attempt outputs, /results for intervention comparisons
+and measured time to 18, or /exploratory for
 original Qwen trajectories, self-consistency, and Jev records from the fixed run.
 It serves src/viewer assets and selected artifact APIs on 127.0.0.1:8765 by default.
 Canonical evidence is versioned; the exploratory viewer needs local raw run files.
@@ -20,6 +21,7 @@ from urllib.parse import parse_qs, unquote, urlparse
 
 from src.common import ROOT
 from src.attempt_viewer import AttemptStore
+from src.attempt_results import build_results
 RUNS = ROOT / "runs"
 VIEWER = ROOT / "src" / "viewer"
 ATTEMPTS = AttemptStore(ROOT / "attempts", ROOT / "data" / "aime_2025_problems.jsonl")
@@ -144,6 +146,10 @@ class Handler(BaseHTTPRequestHandler):
             "/attempts": ("attempts/index.html", "text/html; charset=utf-8"),
             "/attempts/viewer.css": ("attempts/viewer.css", "text/css; charset=utf-8"),
             "/attempts/viewer.js": ("attempts/viewer.js", "text/javascript; charset=utf-8"),
+            "/results": ("results/index.html", "text/html; charset=utf-8"),
+            "/results/": ("results/index.html", "text/html; charset=utf-8"),
+            "/results/viewer.css": ("results/viewer.css", "text/css; charset=utf-8"),
+            "/results/viewer.js": ("results/viewer.js", "text/javascript; charset=utf-8"),
             "/exploratory": ("exploratory/index.html", "text/html; charset=utf-8"),
             "/exploratory/": ("exploratory/index.html", "text/html; charset=utf-8"),
             "/exploratory/viewer.css": ("exploratory/viewer.css", "text/css; charset=utf-8"),
@@ -154,6 +160,9 @@ class Handler(BaseHTTPRequestHandler):
             self.send_bytes((VIEWER / filename).read_bytes(), content_type)
             return
         try:
+            if path == "/api/results":
+                self.send_json(build_results(ATTEMPTS))
+                return
             if path == "/api/attempts":
                 self.send_json(ATTEMPTS.list())
                 return

@@ -29,6 +29,11 @@
   records, question/round records, verification events, and GPU samples. Review
   artifact sizes before adding new attempts. Keep full SSE streams, grader audits,
   service logs, credentials, weights, and virtual environments out of Git.
+- After importing attempts, run `python -m src.attempt_metadata --all` and annotate
+  each `metadata.json` intervention/reference against its recorded configuration.
+  Preserve historical runner versions and source commits; unknown controls stay
+  null. The overall viewer compares distinct first-solved verdict times, including
+  the 54-second serial grader floor; do not substitute settlement or rank unmet runs.
 - To bring back results, copy only experiment artifacts (for example with `scp`),
   review them locally, and commit/push reports from the local checkout. Do not
   commit or push code from the remote machine.

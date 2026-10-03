@@ -1,0 +1,81 @@
+{
+  "rollout": 4,
+  "round": 1,
+  "started_at_utc": "2026-10-03T21:11:48.039+00:00",
+  "start_monotonic_s": 266156.10151177,
+  "ttft_s": 3.926679790019989,
+  "last_token_s": 35.20720193901798,
+  "finish_reason": null,
+  "status": "cancelled",
+  "done_received": false,
+  "usage": {
+    "prompt_tokens": 124,
+    "total_tokens": 2644,
+    "completion_tokens": 2520,
+    "completion_tokens_details": null
+  },
+  "endpoint": "/v1/chat/completions",
+  "continuation_of_rollout": null,
+  "requested_max_tokens": 8192,
+  "http_status": 200,
+  "headers_received_s": 0.6723119470407255,
+  "generation_finished_at_utc": "2026-10-03T21:12:23.291+00:00",
+  "generation_end_monotonic_s": 266191.353959364,
+  "generation_latency_s": 35.25244759401539,
+  "generation_censored": true,
+  "generated_token_ids_count": 2520,
+  "prompt_token_ids_count": 124,
+  "cached_prompt_tokens": null,
+  "prefix_cache_hit_fraction": null,
+  "overhead": {
+    "enabled": true,
+    "timings": {
+      "artifact_json_write": {
+        "count": 4,
+        "wall_total_s": 0.0017136719543486834,
+        "wall_max_s": 0.0011677289730869234,
+        "thread_cpu_total_s": 0.0017141120000004895,
+        "cpu_samples": 4
+      },
+      "stream_trace_write_flush": {
+        "count": 2520,
+        "wall_total_s": 0.059882655390538275,
+        "wall_max_s": 7.213500794023275e-05,
+        "thread_cpu_total_s": 0.059797305999919725,
+        "cpu_samples": 2520
+      },
+      "sse_json_decode": {
+        "count": 2520,
+        "wall_total_s": 0.0244493170757778,
+        "wall_max_s": 4.92630060762167e-05,
+        "thread_cpu_total_s": 0.024572638999972085,
+        "cpu_samples": 2520
+      },
+      "candidate_parse_enqueue": {
+        "count": 2517,
+        "wall_total_s": 0.0156942565809004,
+        "wall_max_s": 6.0322985518723726e-05,
+        "thread_cpu_total_s": 0.01574351800010243,
+        "cpu_samples": 2517
+      }
+    },
+    "counters": {
+      "generation_requests": 1,
+      "sse_chunks": 2520,
+      "sse_payload_bytes": 871278,
+      "generation_cancelled": 1
+    },
+    "maxima": {}
+  },
+  "finished_at_utc": "2026-10-03T21:12:23.322+00:00",
+  "end_to_end_latency_s": 35.28355554502923,
+  "end_to_end_scope": "rollout start through question verification/cancellation settlement",
+  "gpu": {
+    "sample_count": 176,
+    "start_vram_mib": 78486.1875,
+    "end_vram_mib": 78574.1875,
+    "observed_peak_vram_mib": 78574.1875,
+    "scope": "shared GPU device; sampled peak, not per-request allocation",
+    "error": null
+  }
+}

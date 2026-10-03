@@ -1,0 +1,126 @@
+"""Offline checks for event-derived targets, intervention controls, and metadata."""
+import json
+from pathlib import Path
+import tempfile
+import unittest
+
+from src.attempt_metadata import build_metadata, validate_metadata
+from src.attempt_results import build_results
+from src.attempt_viewer import AttemptStore
+from src.common import ROOT
+
+
+class AttemptResultsTests(unittest.TestCase):
+    def setUp(self):
+        self.tmp = tempfile.TemporaryDirectory()
+        self.addCleanup(self.tmp.cleanup)
+        self.root = Path(self.tmp.name)
+        self.attempts = self.root / 'attempts'
+        self.dataset = self.root / 'dataset.jsonl'
+        self.dataset.write_text(''.join(json.dumps({'problem_idx': i, 'problem': str(i)})+'\n' for i in range(1, 21)))
+        self.store = AttemptStore(self.attempts, self.dataset)
+
+    def make(self, id='control', times=None, status='completed', solved=None, reference=None, envelope=.8, metadata=True):
+        folder = self.attempts / id
+        folder.mkdir(parents=True)
+        times = times if times is not None else [3 * i for i in range(1, 19)]
+        config = {'attempt_id': id, 'model': 'test/model', 'git_commit': 'a'*40,
+                  'strategy': 'coverage', 'parallelism': 30, 'rollouts': 1,
+                  'question_indices': list(range(1, 21)), 'grader_cost': 3,
+                  'target_correct': 18, 'max_tokens': 16384,
+                  'launch_profile': {'dtype': 'bfloat16', 'gpu-memory-utilization': envelope,
+                                     'tensor-parallel-size': 1, 'max-model-len': 65536}}
+        summary = {'attempt_id': id, 'status': status, 'solved': len(times) if solved is None else solved,
+                   'official_started_at_utc': '2026-10-03T20:00:00+00:00', 'official_latency_s': 1000,
+                   'questions': [{'problem_idx': i, 'status': 'solved',
+                                  'first_solved': {'problem_idx': i, 'first_solved_elapsed_s': t}}
+                                 for i, t in enumerate(times, 1)]}
+        (folder/'config.json').write_text(json.dumps(config))
+        (folder/'summary.json').write_text(json.dumps(summary))
+        (folder/'gpu.jsonl').write_text('{"vram_total_mib":81920}\n')
+        m = build_metadata(folder)
+        m['intervention']['reference_attempt_id'] = reference
+        if metadata:
+            (folder/'metadata.json').write_text(json.dumps(m))
+        return folder, m
+
+    def test_distinct_question_verdicts_determine_target_not_settlement(self):
+        folder, _ = self.make(times=list(range(1, 20)))
+        (folder/'solved.jsonl').write_text(''.join(json.dumps({'problem_idx': 1, 'first_solved_elapsed_s': 1})+'\n' for _ in range(20)))
+        row = build_results(self.store)['attempts'][0]
+        self.assertEqual(row['time_to_18_s'], 18)
+        self.assertEqual(row['settlement_s'], 1000)
+        self.assertEqual(len(row['events']), 19)
+
+    def test_missing_timing_cannot_be_replaced_by_summary_latency(self):
+        self.make(times=[], solved=18)
+        row = build_results(self.store)['attempts'][0]
+        self.assertIsNone(row['time_to_18_s'])
+        self.assertEqual(row['status'], 'timing unavailable')
+
+    def test_unmet_and_interrupted_runs_are_not_ranked(self):
+        self.make('unmet', times=[5, 10])
+        self.make('interrupted', times=[], status='interrupted')
+        self.make('failed', times=[], status='failed')
+        result = {r['id']: r for r in build_results(self.store)['attempts']}
+        self.assertEqual(result['unmet']['status'], 'target unmet')
+        self.assertEqual(result['interrupted']['status'], 'interrupted')
+        self.assertEqual(result['failed']['status'], 'failed')
+        self.assertTrue(all(r['time_to_18_s'] is None for r in result.values()))
+
+    def test_serial_grader_floor_and_reference_delta_include_vram_change(self):
+        self.make(times=[10*i for i in range(1, 19)])
+        self.make('treatment', times=[5*i for i in range(1, 19)], reference='control', envelope=.95)
+        rows = {r['id']: r for r in build_results(self.store)['attempts']}
+        row = rows['treatment']
+        self.assertEqual(row['grader_floor_s'], 54)
+        self.assertEqual(row['above_floor_s'], 36)
+        self.assertEqual(row['comparison']['saved_s'], 90)
+        self.assertEqual(row['comparison']['reduction_pct'], 50)
+        self.assertIn('gpu.memory_utilization', [r['variable'] for r in row['comparison']['changed_controls']])
+        self.assertIn('controls.hyperparameters.parallelism', row['comparison']['matched_controls'])
+
+    def test_legacy_timestamp_fallback_and_invalid_events(self):
+        folder, _ = self.make()
+        summary = json.loads((folder/'summary.json').read_text())
+        for q in summary['questions']:
+            q['first_solved'].pop('first_solved_elapsed_s')
+            q['first_solved']['first_solved_at_utc'] = f"2026-10-03T20:00:{q['problem_idx']*3:02d}Z"
+        (folder/'summary.json').write_text(json.dumps(summary))
+        (folder/'solved.jsonl').write_text('{"problem_idx":19,"first_solved_elapsed_s":-10}\n')
+        row = build_results(self.store)['attempts'][0]
+        self.assertEqual(row['time_to_18_s'], 54)
+        self.assertIn('timestamps', row['time_source'])
+
+    def test_missing_or_invalid_metadata_is_explicit(self):
+        folder, _ = self.make(metadata=False)
+        result = build_results(self.store)
+        self.assertTrue(result['attempts'][0]['metadata_missing'])
+        self.assertIn('unannotated', result['warnings'][0])
+        (folder/'metadata.json').write_text('{"schema_version":5}')
+        result = build_results(self.store)
+        self.assertEqual(result['attempts'][0]['status'], 'invalid evidence')
+        self.assertTrue(result['warnings'])
+
+    def test_metadata_schema_bounds_and_identity(self):
+        _, m = self.make()
+        validate_metadata(m, 'control')
+        with self.assertRaisesRegex(ValueError, 'attempt_id'):
+            validate_metadata(m, 'different')
+        m['gpu']['memory_utilization'] = 1.5
+        with self.assertRaisesRegex(ValueError, 'Metadata schema'):
+            validate_metadata(m, 'control')
+
+    def test_committed_metadata_and_recorded_event_totals(self):
+        store = AttemptStore(ROOT/'attempts', ROOT/'data/aime_2025_problems.jsonl')
+        rows = build_results(store)['attempts']
+        self.assertGreaterEqual(len(rows), 6)
+        nvfp4 = next(r for r in rows if r['id'] == '20261003T205350.742196Z')
+        self.assertAlmostEqual(nvfp4['time_to_18_s'], 85.5460709920153)
+        self.assertEqual(nvfp4['metadata']['gpu']['memory_utilization'], .95)
+        self.assertEqual(nvfp4['metadata']['model']['quantization'], 'modelopt_fp4')
+        self.assertFalse(nvfp4['metadata_missing'])
+
+
+if __name__ == '__main__':
+    unittest.main()

@@ -1,0 +1,107 @@
+{
+  "$schema": "../../data/attempt_metadata.schema.json",
+  "schema_version": 1,
+  "attempt_id": "20261003T205350.742196Z",
+  "label": "VibeThinker NVFP4 \u00b7 coverage",
+  "intervention": {
+    "label": "NVFP4 + 95% VRAM envelope",
+    "reference_attempt_id": "20261003T200718.717581Z",
+    "changed_variables": [
+      "quantization: BF16 \u2192 NVFP4",
+      "VRAM envelope: 80% \u2192 95%",
+      "Marlin linear backend",
+      "model checkpoint"
+    ],
+    "comparison_note": "Same coverage policy, seed, sampling, question set, concurrency, prompt, and continuation budgets as VibeThinker BF16. Quantization, checkpoint, backend, and VRAM budget changed together; one run per configuration cannot isolate their effects."
+  },
+  "runner": {
+    "module": "src.attempt",
+    "version": "git:90641d10e1319633ec23cc743c148783e5d39703",
+    "git_commit": "90641d10e1319633ec23cc743c148783e5d39703",
+    "git_dirty": false
+  },
+  "model": {
+    "id": "r0b0tlab/VibeThinker-3B-NVFP4",
+    "revision": "2fc0013974d1a466e6a5a11839f029d5aff34dc9",
+    "quantization": "modelopt_fp4",
+    "quantization_source": "launch_profile",
+    "activation_dtype": "bfloat16",
+    "kv_cache_dtype": "auto",
+    "linear_backend": "marlin"
+  },
+  "gpu": {
+    "device": "NVIDIA A100 PCIe 80GB",
+    "device_count": 1,
+    "total_vram_mib": 81920.0,
+    "memory_utilization": 0.95,
+    "configured_envelope_mib": 77824.0
+  },
+  "controls": {
+    "dataset": "AIME 2025",
+    "question_indices": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19,
+      20,
+      21,
+      22,
+      23,
+      24,
+      25,
+      26,
+      27,
+      28,
+      29,
+      30
+    ],
+    "target_correct": 18,
+    "grader_cost_s": 3.0,
+    "grader_serial": true,
+    "max_context_tokens": 65536,
+    "max_num_seqs": null,
+    "prefix_caching": true,
+    "reasoning_parser": null,
+    "hyperparameters": {
+      "parallelism": 30,
+      "rollouts": 1,
+      "temperature": 0.8,
+      "top_p": 0.95,
+      "seed": 20261003,
+      "disable_thinking": false,
+      "question_timeout": 1800,
+      "strategy": "coverage",
+      "max_tokens": 16384,
+      "first_pass_max_tokens": 8192,
+      "max_attempts_per_question": 4,
+      "max_rounds": 4,
+      "continuation_enabled": true,
+      "answer_extraction": "streaming prospective candidates",
+      "system_prompt_sha256": "2aa7a805921df2fc0924f582937d8c14cb02be3a520361b1181dd664eb73929a"
+    }
+  },
+  "provenance": {
+    "config": "config.json",
+    "profile": "model_profile.json",
+    "profile_sha256": "5f6f43cc61143da84fcdd35f65c5ba31c814aaa314a4bc215426f03a0e451ebe",
+    "notes": [
+      "Normalized from saved config/profile and GPU samples. Null means unrecorded.",
+      "Device identity and intervention annotations reviewed against the saved attempt reports."
+    ]
+  }
+}

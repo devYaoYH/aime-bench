@@ -98,8 +98,8 @@ function renderOverview() {
     ['Median observed TTFT', seconds(median(rollouts.map(r => r.ttft_s))), 'Queue + prefill + first received output delta'],
   ];
   $('#metrics').innerHTML = cards.map(([title, value, note], i) => `<article class="metric-card ${i === 0 ? 'score-card' : ''}"><div class="metric-label">${esc(title)}</div><div class="metric-value">${esc(value)}</div><div class="metric-sub">${esc(note)}</div></article>`).join('');
-  $('#config').textContent = JSON.stringify({ config, summary }, null, 2);
-  $('#file-links').innerHTML = ['config.json', ...(summary ? ['summary.json'] : [])].map(file => `<a target="_blank" rel="noopener" href="${artifact(file)}">${file} ↗</a>`).join('');
+  $('#config').textContent = JSON.stringify({ experiment_metadata: state.overview.experiment_metadata, config, summary }, null, 2);
+  $('#file-links').innerHTML = ['config.json', ...(summary ? ['summary.json'] : []), ...(state.overview.experiment_metadata ? ['metadata.json'] : [])].map(file => `<a target="_blank" rel="noopener" href="${artifact(file)}">${file} ↗</a>`).join('');
 }
 
 function chartFrame(xmax, ymax, yLabel, paths, secondary = false) {

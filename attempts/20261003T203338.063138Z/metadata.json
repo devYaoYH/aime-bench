@@ -1,0 +1,108 @@
+{
+  "$schema": "../../data/attempt_metadata.schema.json",
+  "schema_version": 1,
+  "attempt_id": "20261003T203338.063138Z",
+  "label": "Qwen 35B GPTQ \u00b7 coverage",
+  "intervention": {
+    "label": "Larger MoE model + GPTQ Int4",
+    "reference_attempt_id": "20261003T200718.717581Z",
+    "changed_variables": [
+      "model family and capacity",
+      "quantization: BF16 \u2192 GPTQ Int4",
+      "context: 64K \u2192 32K",
+      "scheduler cap: 32 sequences",
+      "Qwen reasoning parser"
+    ],
+    "comparison_note": "Coverage settings, seed, sampling, question set, and 80% VRAM budget match VibeThinker BF16. Model, quantization, context, parser, and scheduler differ; this alternative was slower, not an improvement."
+  },
+  "runner": {
+    "module": "src.attempt",
+    "version": "git:70c00ef65065b74840354337b5fa77c3c5f96568",
+    "git_commit": "70c00ef65065b74840354337b5fa77c3c5f96568",
+    "git_dirty": false
+  },
+  "model": {
+    "id": "Qwen/Qwen3.5-35B-A3B-GPTQ-Int4",
+    "revision": "3af5ca2972faf6de1fd6f4efc4d8d319ca751e8b",
+    "quantization": "GPTQ Int4",
+    "quantization_source": "model identifier; backend inferred by vLLM",
+    "activation_dtype": "bfloat16",
+    "kv_cache_dtype": null,
+    "linear_backend": null
+  },
+  "gpu": {
+    "device": "NVIDIA A100 PCIe 80GB",
+    "device_count": 1,
+    "total_vram_mib": 81920.0,
+    "memory_utilization": 0.8,
+    "configured_envelope_mib": 65536.0
+  },
+  "controls": {
+    "dataset": "AIME 2025",
+    "question_indices": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19,
+      20,
+      21,
+      22,
+      23,
+      24,
+      25,
+      26,
+      27,
+      28,
+      29,
+      30
+    ],
+    "target_correct": 18,
+    "grader_cost_s": 3.0,
+    "grader_serial": true,
+    "max_context_tokens": 32768,
+    "max_num_seqs": 32,
+    "prefix_caching": true,
+    "reasoning_parser": "qwen3",
+    "hyperparameters": {
+      "parallelism": 30,
+      "rollouts": 1,
+      "temperature": 0.8,
+      "top_p": 0.95,
+      "seed": 20261003,
+      "disable_thinking": false,
+      "question_timeout": 1800,
+      "strategy": "coverage",
+      "max_tokens": 16384,
+      "first_pass_max_tokens": 8192,
+      "max_attempts_per_question": 4,
+      "max_rounds": 4,
+      "continuation_enabled": true,
+      "answer_extraction": "streaming prospective candidates",
+      "system_prompt_sha256": "2aa7a805921df2fc0924f582937d8c14cb02be3a520361b1181dd664eb73929a"
+    }
+  },
+  "provenance": {
+    "config": "config.json",
+    "profile": "model_profile.json",
+    "profile_sha256": "486238d363762b409ecadea432bfdb2cbeb7908c6c3570b850a0be92b2c187b0",
+    "notes": [
+      "Normalized from saved config/profile and GPU samples. Null means unrecorded.",
+      "Device identity and intervention annotations reviewed against the saved attempt reports."
+    ]
+  }
+}

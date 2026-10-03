@@ -1,0 +1,276 @@
+{
+  "problem_idx": 3,
+  "started_at_utc": "2026-10-03T21:03:18.073+00:00",
+  "finished_at_utc": "2026-10-03T21:03:38.847+00:00",
+  "end_to_end_latency_s": 20.77415893302532,
+  "status": "solved",
+  "winner": {
+    "answer": 16,
+    "part": "content",
+    "kind": "literal_prose",
+    "end": 5221,
+    "line": "But the problem asks \"Find the remainder when N is divided by 1000\". So answer is 16.",
+    "candidate": "16",
+    "rollout": 1,
+    "observed_at_utc": "2026-10-03T21:03:34.788+00:00",
+    "question_elapsed_s": 16.714517975982744,
+    "verification_started_at_utc": "2026-10-03T21:03:34.789+00:00",
+    "round": 1,
+    "candidate_queue_wait_s": 0.0009739150409586728,
+    "result": {
+      "query_id": "20261003T210230.379752Z-q3-a16",
+      "seq": 4,
+      "agent_id": "20261003T210230.379752Z-q3-r1",
+      "index": 3,
+      "candidate": "16",
+      "verdict": true,
+      "queue_ahead_at_submit": 0,
+      "submitted_at": "2026-10-03T21:03:34.793309Z",
+      "picked_at": "2026-10-03T21:03:35.843329Z",
+      "answered_at": "2026-10-03T21:03:38.843445Z",
+      "queue_wait_s": 1.05,
+      "toll_s": 3.0,
+      "latency_s": 4.05
+    },
+    "verification_finished_at_utc": "2026-10-03T21:03:38.845+00:00",
+    "verification_latency_s": 4.056071168975905
+  },
+  "error": null,
+  "unique_candidates": 1,
+  "candidate_answers": [
+    "16"
+  ],
+  "rollouts": [
+    {
+      "rollout": 1,
+      "round": 1,
+      "started_at_utc": "2026-10-03T21:03:18.089+00:00",
+      "start_monotonic_s": 265646.151657844,
+      "ttft_s": 0.15839292499003932,
+      "last_token_s": 20.752150305954274,
+      "finish_reason": null,
+      "status": "cancelled",
+      "done_received": false,
+      "usage": {
+        "prompt_tokens": 180,
+        "total_tokens": 2723,
+        "completion_tokens": 2543,
+        "completion_tokens_details": null
+      },
+      "endpoint": "/v1/chat/completions",
+      "continuation_of_rollout": null,
+      "requested_max_tokens": 8192,
+      "http_status": 200,
+      "headers_received_s": 0.06357749900780618,
+      "generation_finished_at_utc": "2026-10-03T21:03:38.845+00:00",
+      "generation_end_monotonic_s": 265666.908384435,
+      "generation_latency_s": 20.756726590974722,
+      "generation_censored": true,
+      "generated_token_ids_count": 2543,
+      "prompt_token_ids_count": 180,
+      "cached_prompt_tokens": null,
+      "prefix_cache_hit_fraction": null,
+      "overhead": {
+        "enabled": true,
+        "timings": {
+          "artifact_json_write": {
+            "count": 4,
+            "wall_total_s": 0.0019551949808374047,
+            "wall_max_s": 0.001345822005532682,
+            "thread_cpu_total_s": 0.0019560540000008175,
+            "cpu_samples": 4
+          },
+          "stream_trace_write_flush": {
+            "count": 2544,
+            "wall_total_s": 0.07287338172318414,
+            "wall_max_s": 9.16309654712677e-05,
+            "thread_cpu_total_s": 0.0726186090000035,
+            "cpu_samples": 2544
+          },
+          "sse_json_decode": {
+            "count": 2544,
+            "wall_total_s": 0.026145250943955034,
+            "wall_max_s": 4.495400935411453e-05,
+            "thread_cpu_total_s": 0.026169358000012632,
+            "cpu_samples": 2544
+          },
+          "candidate_parse_enqueue": {
+            "count": 2543,
+            "wall_total_s": 0.018512020586058497,
+            "wall_max_s": 4.402297781780362e-05,
+            "thread_cpu_total_s": 0.018528335000002172,
+            "cpu_samples": 2543
+          }
+        },
+        "counters": {
+          "generation_requests": 1,
+          "sse_chunks": 2544,
+          "sse_payload_bytes": 881196,
+          "generation_cancelled": 1
+        },
+        "maxima": {}
+      },
+      "finished_at_utc": "2026-10-03T21:03:38.847+00:00",
+      "end_to_end_latency_s": 20.75879792199703,
+      "end_to_end_scope": "rollout start through question verification/cancellation settlement",
+      "gpu": {
+        "sample_count": 104,
+        "start_vram_mib": 78266.1875,
+        "end_vram_mib": 78442.1875,
+        "observed_peak_vram_mib": 78442.1875,
+        "scope": "shared GPU device; sampled peak, not per-request allocation",
+        "error": null
+      }
+    }
+  ],
+  "round": 1,
+  "first_solved": {
+    "problem_idx": 3,
+    "round": 1,
+    "rollout": 1,
+    "candidate": "16",
+    "first_solved_at_utc": "2026-10-03T21:03:38.845+00:00",
+    "first_solved_elapsed_s": 20.7731550509925,
+    "grader_answered_at_utc": "2026-10-03T21:03:38.843445Z",
+    "grader_query_id": "20261003T210230.379752Z-q3-a16"
+  },
+  "overhead": {
+    "enabled": true,
+    "timings": {
+      "artifact_json_write": {
+        "count": 6,
+        "wall_total_s": 0.0026711849495768547,
+        "wall_max_s": 0.001345822005532682,
+        "thread_cpu_total_s": 0.0026729700000008294,
+        "cpu_samples": 6
+      },
+      "stream_trace_write_flush": {
+        "count": 2544,
+        "wall_total_s": 0.07287338172318414,
+        "wall_max_s": 9.16309654712677e-05,
+        "thread_cpu_total_s": 0.0726186090000035,
+        "cpu_samples": 2544
+      },
+      "sse_json_decode": {
+        "count": 2544,
+        "wall_total_s": 0.026145250943955034,
+        "wall_max_s": 4.495400935411453e-05,
+        "thread_cpu_total_s": 0.026169358000012632,
+        "cpu_samples": 2544
+      },
+      "candidate_parse_enqueue": {
+        "count": 2543,
+        "wall_total_s": 0.018512020586058497,
+        "wall_max_s": 4.402297781780362e-05,
+        "thread_cpu_total_s": 0.018528335000002172,
+        "cpu_samples": 2543
+      },
+      "candidate_local_queue_wait": {
+        "count": 1,
+        "wall_total_s": 0.0009739150409586728,
+        "wall_max_s": 0.0009739150409586728,
+        "thread_cpu_total_s": 0.0,
+        "cpu_samples": 0
+      },
+      "grader_queue_wait": {
+        "count": 1,
+        "wall_total_s": 1.05,
+        "wall_max_s": 1.05,
+        "thread_cpu_total_s": 0.0,
+        "cpu_samples": 0
+      },
+      "grader_service": {
+        "count": 1,
+        "wall_total_s": 3.0,
+        "wall_max_s": 3.0,
+        "thread_cpu_total_s": 0.0,
+        "cpu_samples": 0
+      },
+      "verification_http_wait": {
+        "count": 1,
+        "wall_total_s": 4.056071168975905,
+        "wall_max_s": 4.056071168975905,
+        "thread_cpu_total_s": 0.0,
+        "cpu_samples": 0
+      },
+      "verification_trace_write_flush": {
+        "count": 1,
+        "wall_total_s": 5.2569026593118906e-05,
+        "wall_max_s": 5.2569026593118906e-05,
+        "thread_cpu_total_s": 5.235699999950327e-05,
+        "cpu_samples": 1
+      },
+      "generation_cancellation_settlement": {
+        "count": 1,
+        "wall_total_s": 0.0023609029594808817,
+        "wall_max_s": 0.0023609029594808817,
+        "thread_cpu_total_s": 0.0,
+        "cpu_samples": 0
+      },
+      "gpu_sample_window": {
+        "count": 1,
+        "wall_total_s": 9.336502989754081e-05,
+        "wall_max_s": 9.336502989754081e-05,
+        "thread_cpu_total_s": 9.323400000127435e-05,
+        "cpu_samples": 1
+      }
+    },
+    "counters": {
+      "generation_requests": 1,
+      "sse_chunks": 2544,
+      "sse_payload_bytes": 881196,
+      "candidate_proposals": 6,
+      "candidate_unique_enqueued": 1,
+      "verification_submitted": 1,
+      "candidate_duplicates_suppressed": 5,
+      "verification_completed": 1,
+      "verification_correct": 1,
+      "generation_cancelled": 1
+    },
+    "maxima": {
+      "candidate_queue_depth": 1
+    }
+  },
+  "rounds": [
+    {
+      "round": 1,
+      "status": "solved",
+      "started_at_utc": "2026-10-03T21:03:18.073+00:00",
+      "finished_at_utc": "2026-10-03T21:03:38.847+00:00",
+      "end_to_end_latency_s": 20.77415893302532,
+      "winner": {
+        "answer": 16,
+        "part": "content",
+        "kind": "literal_prose",
+        "end": 5221,
+        "line": "But the problem asks \"Find the remainder when N is divided by 1000\". So answer is 16.",
+        "candidate": "16",
+        "rollout": 1,
+        "observed_at_utc": "2026-10-03T21:03:34.788+00:00",
+        "question_elapsed_s": 16.714517975982744,
+        "verification_started_at_utc": "2026-10-03T21:03:34.789+00:00",
+        "round": 1,
+        "candidate_queue_wait_s": 0.0009739150409586728,
+        "result": {
+          "query_id": "20261003T210230.379752Z-q3-a16",
+          "seq": 4,
+          "agent_id": "20261003T210230.379752Z-q3-r1",
+          "index": 3,
+          "candidate": "16",
+          "verdict": true,
+          "queue_ahead_at_submit": 0,
+          "submitted_at": "2026-10-03T21:03:34.793309Z",
+          "picked_at": "2026-10-03T21:03:35.843329Z",
+          "answered_at": "2026-10-03T21:03:38.843445Z",
+          "queue_wait_s": 1.05,
+          "toll_s": 3.0,
+          "latency_s": 4.05
+        },
+        "verification_finished_at_utc": "2026-10-03T21:03:38.845+00:00",
+        "verification_latency_s": 4.056071168975905
+      },
+      "error": null
+    }
+  ],
+  "question_start_monotonic_s": 265646.136296833
+}

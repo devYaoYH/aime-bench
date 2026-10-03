@@ -1,0 +1,5 @@
+{
+  "path": "/home/azureuser/models/WeiboAI/VibeThinker-3B/vllm-baseline-16k.yaml",
+  "yaml": "# Naive pass@4 baseline; deploy beside the normal vllm.yaml in ~/models.\n# Same weights and 95% VRAM budget; 16K total context including the prompt.\nmodel: /home/azureuser/models/WeiboAI/VibeThinker-3B\nserved-model-name: WeiboAI/VibeThinker-3B\nhost: \"127.0.0.1\"\nport: 8000\ndtype: bfloat16\ntensor-parallel-size: 1\nmax-model-len: 16384\ngpu-memory-utilization: 0.95\noverride-generation-config: '{\"max_new_tokens\": 16384}'\nenable-prefix-caching: true\nenable-prompt-tokens-details: true\n",
+  "sha256": "4f65f11fd1ad10b9f6247f8c5916ed6c5cb0a26248d824507903ee4df2023de2"
+}

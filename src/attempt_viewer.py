@@ -13,7 +13,7 @@ import re
 
 SAFE_ID = re.compile(r"^[A-Za-z0-9][A-Za-z0-9._-]*$")
 ROLLOUT_FILES = {"request.json", "response.json", "telemetry.json", "tokens.json", "stream.jsonl"}
-ATTEMPT_FILES = {"config.json", "summary.json", "solved.jsonl", "gpu.jsonl"}
+ATTEMPT_FILES = {"config.json", "summary.json", "metadata.json", "solved.jsonl", "gpu.jsonl"}
 
 
 def json_file(path, default=None):
@@ -146,6 +146,7 @@ class AttemptStore:
                               "verification_count": len(detail["verification"]) if detail["trace_available"] else None})
         events = self.lines(folder, "solved.jsonl")
         return {"attempt": metadata, "config": config, "summary": summary,
+                "experiment_metadata": self.read(folder, "metadata.json"),
                 "questions": questions, "solved_events": events}
 
     def rollout(self, name, index, number):
