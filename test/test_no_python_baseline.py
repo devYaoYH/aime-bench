@@ -9,6 +9,9 @@ import httpx
 from src.common import OPENROUTER_URL
 from src.experiments.python_tools.no_python_baseline_v1 import baseline_case, baseline_request
 from src.python_tool_protocol import SYSTEM
+from src.experiments.python_tools.backtest_python_early_verify import adapt_record
+from src.experiments.python_tools.report_no_python_early_verify_v1 import replay
+from test.test_python_early_verify import CharacterTokenizer
 
 
 class BaselineTests(unittest.IsolatedAsyncioTestCase):
@@ -64,6 +67,30 @@ class BaselineTests(unittest.IsolatedAsyncioTestCase):
             self.assertEqual(result['status'], 'error')
             self.assertFalse(result['correct'])
             self.assertEqual(result['tool_executions'], [])
+
+    def test_same_intermediate_extractor_recovers_capped_no_tool_trace(self):
+        record = {'problem_idx': 1, 'sample_idx': 1, 'problem': 'Find the number.',
+                  'started_at_utc': '2026-10-03T00:00:00+00:00', 'elapsed_s': 20,
+                  'candidate': None, 'correct': False, 'gold_answer': 7,
+                  'status': 'generation_budget_exhausted', 'tool_executions': [],
+                  'rounds': [{'number': 1, 'started_at_utc': '2026-10-03T00:00:00+00:00',
+                              'latency_s': 20, 'response': {'choices': [{'message': {
+                                  'reasoning': 'The answer is 7.\n', 'content': None}}],
+                                  'usage': {'completion_tokens': 100}}}]}
+        original = deepcopy(record)
+        row = adapt_record(record, CharacterTokenizer(), 'no-tool.json')
+        results = replay([row])
+        self.assertEqual(record, original)
+        self.assertEqual(results['final_correct_questions'], [])
+        self.assertEqual(results['coverage']['permissive'], [1])
+        self.assertEqual(results['recovered_questions']['permissive'], [1])
+        self.assertEqual(results['coverage']['permissive_tools'], [1])
+        for result in results['replays']:
+            self.assertIsNone(result['time_to_18_s'])
+            if result['policy'] == 'final':
+                self.assertEqual(result['correct_questions'], 0)
+            elif result['policy'] in ('permissive', 'permissive_tools'):
+                self.assertEqual(result['correct_questions'], 1)
 
 
 if __name__ == '__main__':

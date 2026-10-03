@@ -31,5 +31,6 @@ see the [experiment guide](../docs/experiments.md).
 | [python-tool-qwen35-pilot](python-tool-qwen35-pilot/README.md) | Initial optional-Python paired pilot |
 | [python-tool-qwen35-pilot-v2](python-tool-qwen35-pilot-v2/README.md) | Corrected Python paired pilot |
 | [python-tool-qwen35-pass2-auto](python-tool-qwen35-pass2-auto/README.md) | Full optional-Python AIME pass@2 profile |
+| [no-python-qwen35-pass2-parasail-20261003](no-python-qwen35-pass2-parasail-20261003/README.md) | Matched no-Python Qwen3.5 baseline with OpenRouter/Parasail frozen |
 | [python-tool-qwen35-pass2-auto/early_verify_pass2](python-tool-qwen35-pass2-auto/early_verify_pass2/README.md) | Python pass@2 early-verification replay |
 | [Reflex-8](qwen35-4b-no-thinking-pass8-20261003/README.md) | System 1 quick-answer probe with eight no-thinking Qwen3.5-4B samples per AIME question |

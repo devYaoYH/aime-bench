@@ -349,8 +349,19 @@ protect the comparison; unfinished paid records block relaunch.
 .venv/bin/python -m unittest test.test_no_python_baseline test.test_python_tool_profile -v
 .venv/bin/python -m src.experiments.python_tools.no_python_baseline_v1 --prepare-only
 .venv/bin/python -m src.experiments.python_tools.no_python_baseline_v1
+.venv/bin/python -m src.experiments.python_tools.report_no_python_baseline_v1
+.venv/bin/python -m src.experiments.python_tools.report_no_python_early_verify_v1
 ```
 
 The historical and baseline runs occur at different times. Matching provider and
 seeds cannot freeze provider load, backend changes, or stochastic token output.
 Interpret hosted latency differences descriptively.
+
+The intermediate-answer comparison reuses `adapt_record`, `extract_events`,
+`policy_rows`, and the shared three-second verification replay without changing
+the historical tool analysis. It validates the cached Qwen3.5 tokenizer hash and
+reproduces the historical extraction and replay metrics before comparing both
+arms. Reasoning and content are scanned; capped traces can contribute intermediate
+candidates. Report final-only, literal markers, permissive text, and the separate
+Python-stdout extension. Arrival times and cancellation are offline estimates;
+there is no live grader or early stop during the 60 inference requests.
