@@ -8,6 +8,7 @@ import yaml
 from src.experiments.replicate_best_v1 import controls, reset_cache
 from src.attempt_runners.speedrun_v2 import parse_args
 from src.attempt_runners.speedrun_v4 import parse_args as parse_dynamic
+from src.attempt_runners.speedrun_v5 import parse_args as parse_paused
 
 
 class BestReplicationTests(unittest.TestCase):
@@ -49,6 +50,17 @@ class BestReplicationTests(unittest.TestCase):
         changed = controls("WeiboAI/VibeThinker-3B", seed=20261004)
         self.assertEqual([i for i, (a, b) in enumerate(zip(original, changed)) if a != b], [original.index('--seed') + 1])
         self.assertEqual(parse_args(changed).seed, 20261004)
+
+    def test_pending_verdict_policy_matches_dynamic30_request_controls(self):
+        model = 'r0b0tlab/VibeThinker-3B-NVFP4'
+        control = controls(model, policy='dynamic30', model_profile='vllm-flashinfer.yaml')
+        paused = controls(model, policy='paused30', model_profile='vllm-flashinfer.yaml')
+        self.assertEqual(control, paused)
+        args = parse_paused(paused)
+        self.assertEqual(args.max_attempts_per_question, 4)
+        self.assertEqual(args.max_concurrent_requests, 30)
+        self.assertEqual(args.token_budgets, [8192, 16384])
+        self.assertEqual(args.schedule, 'suspend_pending_verdict')
 
     def test_attention_profile_retains_precision_budget_and_request_controls(self):
         model = 'r0b0tlab/VibeThinker-3B-NVFP4'

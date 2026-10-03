@@ -1,0 +1,43 @@
+{
+  "runner": "src.attempt_runners.speedrun_v5",
+  "reference_attempt": "20261003T211557.382358Z",
+  "description": "Start 30x1, reallocate up to 30 GPU streams, suspend all streams for a question with a pending candidate verdict, resume exact observed prefixes after wrong answers. Four generation requests per question including every resumption.",
+  "argv": [
+    "--model",
+    "r0b0tlab/VibeThinker-3B-NVFP4",
+    "--model-profile",
+    "vllm-flashinfer.yaml",
+    "--parallelism",
+    "30",
+    "--rollouts",
+    "1",
+    "--max-concurrent-requests",
+    "30",
+    "--first-pass-max-tokens",
+    "8192",
+    "--max-tokens",
+    "16384",
+    "--token-budgets",
+    "8192",
+    "16384",
+    "--max-attempts-per-question",
+    "4",
+    "--target-correct",
+    "18",
+    "--temperature",
+    "0.8",
+    "--top-p",
+    "0.95",
+    "--seed",
+    "20261003",
+    "--seed-stride",
+    "4",
+    "--benchmark"
+  ],
+  "changed_controls": [
+    "v5 pending-verdict suspension and resumption",
+    "Dynamic30 allocation with cumulative 8K/16K budgets instead of reference barrier 8K plus 16K additional",
+    "NVFP4 weights and FlashInfer attention, BF16 activation/KV",
+    "Benchmark mode and buffered client traces"
+  ]
+}

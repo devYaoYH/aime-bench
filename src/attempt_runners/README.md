@@ -167,6 +167,29 @@ ceiling. Deploy it to the model directory after pulling, and record the backend
 as a separate intervention; request payload equality alone does not make this
 an exact server-configuration replication.
 
+## Pending-verdict suspension v5
+
+`python -m src.experiments.replicate_best_v1 --model r0b0tlab/VibeThinker-3B-NVFP4 --model-profile vllm-flashinfer.yaml --policy paused30 --trials 3`
+tests the isolated `speedrun_v5` policy. It starts 30×1 and reallocates at most
+30 active streams. When a new candidate appears, it closes every stream for that
+question before submitting verification and admits no new streams for it while
+verdicts are pending. Correct verdicts discard paused prefixes. Wrong verdicts
+make the exact client-observed token IDs eligible for resumption; unseen server
+tokens are discarded. Multiple candidates received together are checked serially
+before generation resumes. Missing token IDs fail a needed resumption rather
+than reconstructing text. Every new/resumed request counts toward the cap of
+four per question. Defaults use cumulative 8K/16K output budgets.
+
+The policy retains streaming candidate extraction, deduplication, verified
+first-solved timestamps, target cancellation and benchmark storage behavior.
+Allocation traces record suspensions, verdicts and request admissions; paused
+rollout telemetry distinguishes incomplete generations from natural completion.
+The manifest is `configs/experiments/vibe-nvfp4-pending-verdict30-v5.json`.
+Compared with `--policy dynamic30` on the same model/profile it changes suspension
+behavior; compared with the historical barrier runner it also changes scheduling
+and continuation budget semantics. There is no measured speedup until remote
+results validate it. The canonical runner and historical versions are preserved.
+
 `python -m src.attempt_runners.speedrun_v3 --model WeiboAI/VibeThinker-3B --benchmark`
 starts one 8K request for every selected question. The first client grader
 submission releases three fresh sibling requests per still-unsolved question,

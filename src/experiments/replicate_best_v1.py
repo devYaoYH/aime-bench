@@ -16,6 +16,7 @@ import httpx
 from src.common import ROOT, utc_now
 from src.attempt_runners import speedrun_v2 as runner
 from src.attempt_runners import speedrun_v4 as dynamic_runner
+from src.attempt_runners import speedrun_v5 as paused_runner
 from src.attempt_runners._ports_v1 import ensure_free
 from src.attempt_runners._runtime_v1 import Services, attempt_lock, ready
 
@@ -24,8 +25,9 @@ REFERENCE = "20261003T211557.382358Z"
 
 
 def controls(model, benchmark=True, policy="reference", seed=20261003, model_profile="vllm.yaml"):
-    manifest = (MANIFEST if policy == "reference" else
-                ROOT / "configs/experiments/vibe-bf16-dynamic30-8k-v4.json")
+    manifest = {"reference": MANIFEST,
+                "dynamic30": ROOT / "configs/experiments/vibe-bf16-dynamic30-8k-v4.json",
+                "paused30": ROOT / "configs/experiments/vibe-nvfp4-pending-verdict30-v5.json"}[policy]
     argv = json.loads(manifest.read_text())["argv"]
     argv[argv.index("--model") + 1] = model
     argv[argv.index("--seed") + 1] = str(seed)
@@ -75,7 +77,8 @@ def save(path, data):
 
 
 async def execute(options):
-    module = runner if options.policy == "reference" else dynamic_runner
+    module = {"reference": runner, "dynamic30": dynamic_runner,
+              "paused30": paused_runner}[options.policy]
     seeds = options.seeds or [20261003] * options.trials
     argv = controls(options.model, benchmark=not options.profiled_control, policy=options.policy, seed=seeds[0], model_profile=options.model_profile)
     args = module.parse_args(argv)
@@ -153,8 +156,8 @@ def main():
     parser.add_argument("--seeds", type=int, nargs='+', help="One declared seed per trial; default repeats the reference seed")
     parser.add_argument("--threshold-s", type=float, default=75)
     parser.add_argument("--profiled-control", action="store_true", help="Restore original profiling and immediate trace writes for the matched control")
-    parser.add_argument("--policy", choices=["reference", "dynamic30"], default="reference",
-                        help="Reference barrier control, or reallocate solved slots while retaining only 30 active requests")
+    parser.add_argument("--policy", choices=["reference", "dynamic30", "paused30"], default="reference",
+                        help="Reference barrier, dynamic30, or release streams while candidate verdicts are pending")
     parser.add_argument("--batch", default="best-replication-" + datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ"))
     options = parser.parse_args()
     if options.trials < 1 or options.threshold_s <= 0 or Path(options.batch).name != options.batch:
