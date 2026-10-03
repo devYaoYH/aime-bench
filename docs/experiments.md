@@ -116,7 +116,7 @@ The completed results and per-question vote distributions are in
 [SELF_CONSISTENCY.md](reports/self-consistency.md). Elapsed wall time is calculated from
 the saved UTC timestamps so that laptop sleep is included.
 
-## Local Qwen3.5-4B no-thinking pass@8
+## Reflex-8: local Qwen3.5-4B quick answers
 
 On callosum, launch the Qwen vLLM config in `~/models/Qwen/Qwen3.5-4B/vllm.yaml`,
 then collect eight short-answer samples for each of the same 30 problems:

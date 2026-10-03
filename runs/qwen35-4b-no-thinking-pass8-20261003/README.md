@@ -1,6 +1,8 @@
-# Local Qwen3.5-4B no-thinking pass@8
+# Reflex-8
 
-Eight independent short-answer samples for each of the 30 MathArena AIME 2025 questions, collected on the callosum A100 through vLLM with the Qwen chat template's thinking mode disabled.
+**Digest:** A System 1 probe for easy AIME wins: take eight quick, no-thinking Qwen3.5-4B answers per question and vote. Only 2 of 30 questions reached 4-of-8 agreement; neither agreed answer was correct, and no unique top-vote answer was correct.
+
+Eight independent short-answer samples for each of the 30 MathArena AIME 2025 questions were collected on the callosum A100 through vLLM with the Qwen chat template's thinking mode disabled.
 
 - **Producer:** [src.experiments.local_qwen.no_thinking_pass8](../../src/experiments/local_qwen/no_thinking_pass8.py).
 - **Repair producer:** [src.experiments.local_qwen.repair_missing](../../src/experiments/local_qwen/repair_missing.py) can continue the seed sequence for any slot without a parseable answer; its separate source commit and attempts are appended to the saved provenance.
