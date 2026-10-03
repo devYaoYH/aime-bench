@@ -332,3 +332,25 @@ starts. Results, source quotes, a false-positive audit, and plots are in
 `runs/python-tool-qwen35-pass2-auto/early_verify_pass2/`. No inference or grader
 is called. If needed, cache the official tokenizer as `.local/tokenizers/qwen35.json`
 and its pinned source metadata as `.local/tokenizers/qwen35-source.json` first.
+
+## Matched Qwen3.5 no-Python baseline (v1)
+
+`src.experiments.python_tools.no_python_baseline_v1` runs locally against
+OpenRouter, preserving every first request in `runs/python-tool-qwen35-pass2-auto/`
+except the Python tool definition, tool choice, and tool-specific system suffix.
+Parasail routing, disabled fallbacks, required parameter support, thinking,
+sampling, per-question/sample seeds, 16,384 output tokens, eight concurrent
+trajectories, and all 60 attempts match the historical optional-tool arm.
+Responses must identify the same model and Parasail. No model code is executed;
+only complete final answers are counted. Saved request hashes and the runner hash
+protect the comparison; unfinished paid records block relaunch.
+
+```sh
+.venv/bin/python -m unittest test.test_no_python_baseline test.test_python_tool_profile -v
+.venv/bin/python -m src.experiments.python_tools.no_python_baseline_v1 --prepare-only
+.venv/bin/python -m src.experiments.python_tools.no_python_baseline_v1
+```
+
+The historical and baseline runs occur at different times. Matching provider and
+seeds cannot freeze provider load, backend changes, or stochastic token output.
+Interpret hosted latency differences descriptively.
