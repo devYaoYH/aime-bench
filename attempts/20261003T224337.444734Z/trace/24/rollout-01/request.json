@@ -1,0 +1,23 @@
+{
+  "model": "WeiboAI/VibeThinker-3B",
+  "messages": [
+    {
+      "role": "system",
+      "content": "Solve the AIME problem. Whenever you have a prospective answer to the original problem, immediately emit it as \\boxed{N}, where N is an integer from 0 to 999. You may continue checking your work afterward. End with your final boxed answer."
+    },
+    {
+      "role": "user",
+      "content": "There are $n$ values of $x$ in the interval $0 < x < 2\\pi$ where $f(x) = \\sin\\left(7\\pi \\cdot \\sin(5x)\\right) = 0$. For $t$ of these $n$ values of $x$, the graph of $y = f(x)$ is tangent to the $x$-axis. Find $n + t$."
+    }
+  ],
+  "temperature": 0.8,
+  "top_p": 0.95,
+  "max_tokens": 8192,
+  "seed": 20261100,
+  "stream": true,
+  "stream_options": {
+    "include_usage": true,
+    "continuous_usage_stats": true
+  },
+  "return_token_ids": true
+}

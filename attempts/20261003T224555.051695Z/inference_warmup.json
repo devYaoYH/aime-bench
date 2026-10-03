@@ -1,0 +1,1839 @@
+{
+  "started_at_utc": "2026-10-03T22:45:55.588+00:00",
+  "finished_at_utc": "2026-10-03T22:45:55.886+00:00",
+  "latency_s": 0.29795098898466676,
+  "batch_size": 30,
+  "tokens_per_request": 32,
+  "requests": [
+    {
+      "request": {
+        "model": "WeiboAI/VibeThinker-3B",
+        "messages": [
+          {
+            "role": "user",
+            "content": "Compute 1 + 1."
+          }
+        ],
+        "max_tokens": 32,
+        "min_tokens": 32,
+        "temperature": 0.8,
+        "top_p": 0.95,
+        "seed": 20260973,
+        "stream": false
+      },
+      "response": {
+        "id": "chatcmpl-bb5bf0360af10184",
+        "object": "chat.completion",
+        "created": 1791067555,
+        "model": "WeiboAI/VibeThinker-3B",
+        "choices": [
+          {
+            "index": 0,
+            "message": {
+              "role": "assistant",
+              "content": "<think>The user asks: \"Compute 1 + 1.\" That's a trivial arithmetic problem. The instructions: \"You are an intelligent assistant designed to write",
+              "refusal": null,
+              "annotations": null,
+              "audio": null,
+              "function_call": null,
+              "reasoning": null
+            },
+            "logprobs": null,
+            "finish_reason": "length",
+            "stop_reason": null,
+            "token_ids": null,
+            "routed_experts": null
+          }
+        ],
+        "service_tier": null,
+        "system_fingerprint": "vllm-0.30.1rc1.dev623+g4ac0d0eac-e7b14593",
+        "usage": {
+          "prompt_tokens": 26,
+          "total_tokens": 58,
+          "completion_tokens": 32,
+          "prompt_tokens_details": {
+            "cached_tokens": 0,
+            "created_cache_tokens": 16,
+            "multimodal_tokens": null
+          },
+          "completion_tokens_details": null
+        },
+        "prompt_logprobs": null,
+        "prompt_token_ids": null,
+        "prompt_text": null,
+        "kv_transfer_params": null,
+        "ec_transfer_params": null,
+        "metrics": null
+      }
+    },
+    {
+      "request": {
+        "model": "WeiboAI/VibeThinker-3B",
+        "messages": [
+          {
+            "role": "user",
+            "content": "Compute 1 + 1."
+          }
+        ],
+        "max_tokens": 32,
+        "min_tokens": 32,
+        "temperature": 0.8,
+        "top_p": 0.95,
+        "seed": 20260974,
+        "stream": false
+      },
+      "response": {
+        "id": "chatcmpl-8ea20306d044311f",
+        "object": "chat.completion",
+        "created": 1791067555,
+        "model": "WeiboAI/VibeThinker-3B",
+        "choices": [
+          {
+            "index": 0,
+            "message": {
+              "role": "assistant",
+              "content": "<think>We need to answer: \"Compute 1 + 1.\" The user likely expects 2. However, we need to follow instructions: provide reasoning step",
+              "refusal": null,
+              "annotations": null,
+              "audio": null,
+              "function_call": null,
+              "reasoning": null
+            },
+            "logprobs": null,
+            "finish_reason": "length",
+            "stop_reason": null,
+            "token_ids": null,
+            "routed_experts": null
+          }
+        ],
+        "service_tier": null,
+        "system_fingerprint": "vllm-0.30.1rc1.dev623+g4ac0d0eac-e7b14593",
+        "usage": {
+          "prompt_tokens": 26,
+          "total_tokens": 58,
+          "completion_tokens": 32,
+          "prompt_tokens_details": {
+            "cached_tokens": 16,
+            "created_cache_tokens": 0,
+            "multimodal_tokens": null
+          },
+          "completion_tokens_details": null
+        },
+        "prompt_logprobs": null,
+        "prompt_token_ids": null,
+        "prompt_text": null,
+        "kv_transfer_params": null,
+        "ec_transfer_params": null,
+        "metrics": null
+      }
+    },
+    {
+      "request": {
+        "model": "WeiboAI/VibeThinker-3B",
+        "messages": [
+          {
+            "role": "user",
+            "content": "Compute 1 + 1."
+          }
+        ],
+        "max_tokens": 32,
+        "min_tokens": 32,
+        "temperature": 0.8,
+        "top_p": 0.95,
+        "seed": 20260975,
+        "stream": false
+      },
+      "response": {
+        "id": "chatcmpl-954d224fe234a72b",
+        "object": "chat.completion",
+        "created": 1791067555,
+        "model": "WeiboAI/VibeThinker-3B",
+        "choices": [
+          {
+            "index": 0,
+            "message": {
+              "role": "assistant",
+              "content": "<think>The user asks: \"Compute 1 + 1.\" That's trivial: answer is 2. But the prompt says \"Please reason step by step",
+              "refusal": null,
+              "annotations": null,
+              "audio": null,
+              "function_call": null,
+              "reasoning": null
+            },
+            "logprobs": null,
+            "finish_reason": "length",
+            "stop_reason": null,
+            "token_ids": null,
+            "routed_experts": null
+          }
+        ],
+        "service_tier": null,
+        "system_fingerprint": "vllm-0.30.1rc1.dev623+g4ac0d0eac-e7b14593",
+        "usage": {
+          "prompt_tokens": 26,
+          "total_tokens": 58,
+          "completion_tokens": 32,
+          "prompt_tokens_details": {
+            "cached_tokens": 16,
+            "created_cache_tokens": 0,
+            "multimodal_tokens": null
+          },
+          "completion_tokens_details": null
+        },
+        "prompt_logprobs": null,
+        "prompt_token_ids": null,
+        "prompt_text": null,
+        "kv_transfer_params": null,
+        "ec_transfer_params": null,
+        "metrics": null
+      }
+    },
+    {
+      "request": {
+        "model": "WeiboAI/VibeThinker-3B",
+        "messages": [
+          {
+            "role": "user",
+            "content": "Compute 1 + 1."
+          }
+        ],
+        "max_tokens": 32,
+        "min_tokens": 32,
+        "temperature": 0.8,
+        "top_p": 0.95,
+        "seed": 20260976,
+        "stream": false
+      },
+      "response": {
+        "id": "chatcmpl-a49e99bbd59673ab",
+        "object": "chat.completion",
+        "created": 1791067555,
+        "model": "WeiboAI/VibeThinker-3B",
+        "choices": [
+          {
+            "index": 0,
+            "message": {
+              "role": "assistant",
+              "content": "<think>The user asks: \"Compute 1 + 1.\" This is a straightforward arithmetic question. The answer is 2. The user also asks to \"",
+              "refusal": null,
+              "annotations": null,
+              "audio": null,
+              "function_call": null,
+              "reasoning": null
+            },
+            "logprobs": null,
+            "finish_reason": "length",
+            "stop_reason": null,
+            "token_ids": null,
+            "routed_experts": null
+          }
+        ],
+        "service_tier": null,
+        "system_fingerprint": "vllm-0.30.1rc1.dev623+g4ac0d0eac-e7b14593",
+        "usage": {
+          "prompt_tokens": 26,
+          "total_tokens": 58,
+          "completion_tokens": 32,
+          "prompt_tokens_details": {
+            "cached_tokens": 16,
+            "created_cache_tokens": 0,
+            "multimodal_tokens": null
+          },
+          "completion_tokens_details": null
+        },
+        "prompt_logprobs": null,
+        "prompt_token_ids": null,
+        "prompt_text": null,
+        "kv_transfer_params": null,
+        "ec_transfer_params": null,
+        "metrics": null
+      }
+    },
+    {
+      "request": {
+        "model": "WeiboAI/VibeThinker-3B",
+        "messages": [
+          {
+            "role": "user",
+            "content": "Compute 1 + 1."
+          }
+        ],
+        "max_tokens": 32,
+        "min_tokens": 32,
+        "temperature": 0.8,
+        "top_p": 0.95,
+        "seed": 20260977,
+        "stream": false
+      },
+      "response": {
+        "id": "chatcmpl-8fbb1ba5d831e945",
+        "object": "chat.completion",
+        "created": 1791067555,
+        "model": "WeiboAI/VibeThinker-3B",
+        "choices": [
+          {
+            "index": 0,
+            "message": {
+              "role": "assistant",
+              "content": "<think>The user asks: \"Compute 1 + 1.\" This is a straightforward arithmetic question. We need to respond with the answer. The instructions: \"",
+              "refusal": null,
+              "annotations": null,
+              "audio": null,
+              "function_call": null,
+              "reasoning": null
+            },
+            "logprobs": null,
+            "finish_reason": "length",
+            "stop_reason": null,
+            "token_ids": null,
+            "routed_experts": null
+          }
+        ],
+        "service_tier": null,
+        "system_fingerprint": "vllm-0.30.1rc1.dev623+g4ac0d0eac-e7b14593",
+        "usage": {
+          "prompt_tokens": 26,
+          "total_tokens": 58,
+          "completion_tokens": 32,
+          "prompt_tokens_details": {
+            "cached_tokens": 16,
+            "created_cache_tokens": 0,
+            "multimodal_tokens": null
+          },
+          "completion_tokens_details": null
+        },
+        "prompt_logprobs": null,
+        "prompt_token_ids": null,
+        "prompt_text": null,
+        "kv_transfer_params": null,
+        "ec_transfer_params": null,
+        "metrics": null
+      }
+    },
+    {
+      "request": {
+        "model": "WeiboAI/VibeThinker-3B",
+        "messages": [
+          {
+            "role": "user",
+            "content": "Compute 1 + 1."
+          }
+        ],
+        "max_tokens": 32,
+        "min_tokens": 32,
+        "temperature": 0.8,
+        "top_p": 0.95,
+        "seed": 20260978,
+        "stream": false
+      },
+      "response": {
+        "id": "chatcmpl-8fdb4b53aefc4fbc",
+        "object": "chat.completion",
+        "created": 1791067555,
+        "model": "WeiboAI/VibeThinker-3B",
+        "choices": [
+          {
+            "index": 0,
+            "message": {
+              "role": "assistant",
+              "content": "<think>The user asks: \"Compute 1 + 1.\" That's trivial: answer 2. But the instruction: \"Please reason step by step,",
+              "refusal": null,
+              "annotations": null,
+              "audio": null,
+              "function_call": null,
+              "reasoning": null
+            },
+            "logprobs": null,
+            "finish_reason": "length",
+            "stop_reason": null,
+            "token_ids": null,
+            "routed_experts": null
+          }
+        ],
+        "service_tier": null,
+        "system_fingerprint": "vllm-0.30.1rc1.dev623+g4ac0d0eac-e7b14593",
+        "usage": {
+          "prompt_tokens": 26,
+          "total_tokens": 58,
+          "completion_tokens": 32,
+          "prompt_tokens_details": {
+            "cached_tokens": 16,
+            "created_cache_tokens": 0,
+            "multimodal_tokens": null
+          },
+          "completion_tokens_details": null
+        },
+        "prompt_logprobs": null,
+        "prompt_token_ids": null,
+        "prompt_text": null,
+        "kv_transfer_params": null,
+        "ec_transfer_params": null,
+        "metrics": null
+      }
+    },
+    {
+      "request": {
+        "model": "WeiboAI/VibeThinker-3B",
+        "messages": [
+          {
+            "role": "user",
+            "content": "Compute 1 + 1."
+          }
+        ],
+        "max_tokens": 32,
+        "min_tokens": 32,
+        "temperature": 0.8,
+        "top_p": 0.95,
+        "seed": 20260979,
+        "stream": false
+      },
+      "response": {
+        "id": "chatcmpl-a748530b0d0f269e",
+        "object": "chat.completion",
+        "created": 1791067555,
+        "model": "WeiboAI/VibeThinker-3B",
+        "choices": [
+          {
+            "index": 0,
+            "message": {
+              "role": "assistant",
+              "content": "<think>We need to compute 1 + 1. The answer is 2. The question is trivial. However the instruction says: \"Please reason step by",
+              "refusal": null,
+              "annotations": null,
+              "audio": null,
+              "function_call": null,
+              "reasoning": null
+            },
+            "logprobs": null,
+            "finish_reason": "length",
+            "stop_reason": null,
+            "token_ids": null,
+            "routed_experts": null
+          }
+        ],
+        "service_tier": null,
+        "system_fingerprint": "vllm-0.30.1rc1.dev623+g4ac0d0eac-e7b14593",
+        "usage": {
+          "prompt_tokens": 26,
+          "total_tokens": 58,
+          "completion_tokens": 32,
+          "prompt_tokens_details": {
+            "cached_tokens": 16,
+            "created_cache_tokens": 0,
+            "multimodal_tokens": null
+          },
+          "completion_tokens_details": null
+        },
+        "prompt_logprobs": null,
+        "prompt_token_ids": null,
+        "prompt_text": null,
+        "kv_transfer_params": null,
+        "ec_transfer_params": null,
+        "metrics": null
+      }
+    },
+    {
+      "request": {
+        "model": "WeiboAI/VibeThinker-3B",
+        "messages": [
+          {
+            "role": "user",
+            "content": "Compute 1 + 1."
+          }
+        ],
+        "max_tokens": 32,
+        "min_tokens": 32,
+        "temperature": 0.8,
+        "top_p": 0.95,
+        "seed": 20260980,
+        "stream": false
+      },
+      "response": {
+        "id": "chatcmpl-a4d8fdbd5003cef7",
+        "object": "chat.completion",
+        "created": 1791067555,
+        "model": "WeiboAI/VibeThinker-3B",
+        "choices": [
+          {
+            "index": 0,
+            "message": {
+              "role": "assistant",
+              "content": "<think>We need to answer the question: \"Compute 1 + 1.\" The user asks: \"Compute 1 + 1. Please reason step by",
+              "refusal": null,
+              "annotations": null,
+              "audio": null,
+              "function_call": null,
+              "reasoning": null
+            },
+            "logprobs": null,
+            "finish_reason": "length",
+            "stop_reason": null,
+            "token_ids": null,
+            "routed_experts": null
+          }
+        ],
+        "service_tier": null,
+        "system_fingerprint": "vllm-0.30.1rc1.dev623+g4ac0d0eac-e7b14593",
+        "usage": {
+          "prompt_tokens": 26,
+          "total_tokens": 58,
+          "completion_tokens": 32,
+          "prompt_tokens_details": {
+            "cached_tokens": 16,
+            "created_cache_tokens": 0,
+            "multimodal_tokens": null
+          },
+          "completion_tokens_details": null
+        },
+        "prompt_logprobs": null,
+        "prompt_token_ids": null,
+        "prompt_text": null,
+        "kv_transfer_params": null,
+        "ec_transfer_params": null,
+        "metrics": null
+      }
+    },
+    {
+      "request": {
+        "model": "WeiboAI/VibeThinker-3B",
+        "messages": [
+          {
+            "role": "user",
+            "content": "Compute 1 + 1."
+          }
+        ],
+        "max_tokens": 32,
+        "min_tokens": 32,
+        "temperature": 0.8,
+        "top_p": 0.95,
+        "seed": 20260981,
+        "stream": false
+      },
+      "response": {
+        "id": "chatcmpl-bda38d0ab55df723",
+        "object": "chat.completion",
+        "created": 1791067555,
+        "model": "WeiboAI/VibeThinker-3B",
+        "choices": [
+          {
+            "index": 0,
+            "message": {
+              "role": "assistant",
+              "content": "<think>The user asks: \"Compute 1 + 1.\" This is trivial: answer is 2. However, the system wants a thorough step-by-step",
+              "refusal": null,
+              "annotations": null,
+              "audio": null,
+              "function_call": null,
+              "reasoning": null
+            },
+            "logprobs": null,
+            "finish_reason": "length",
+            "stop_reason": null,
+            "token_ids": null,
+            "routed_experts": null
+          }
+        ],
+        "service_tier": null,
+        "system_fingerprint": "vllm-0.30.1rc1.dev623+g4ac0d0eac-e7b14593",
+        "usage": {
+          "prompt_tokens": 26,
+          "total_tokens": 58,
+          "completion_tokens": 32,
+          "prompt_tokens_details": {
+            "cached_tokens": 16,
+            "created_cache_tokens": 0,
+            "multimodal_tokens": null
+          },
+          "completion_tokens_details": null
+        },
+        "prompt_logprobs": null,
+        "prompt_token_ids": null,
+        "prompt_text": null,
+        "kv_transfer_params": null,
+        "ec_transfer_params": null,
+        "metrics": null
+      }
+    },
+    {
+      "request": {
+        "model": "WeiboAI/VibeThinker-3B",
+        "messages": [
+          {
+            "role": "user",
+            "content": "Compute 1 + 1."
+          }
+        ],
+        "max_tokens": 32,
+        "min_tokens": 32,
+        "temperature": 0.8,
+        "top_p": 0.95,
+        "seed": 20260982,
+        "stream": false
+      },
+      "response": {
+        "id": "chatcmpl-87dd1a3877b1c0c4",
+        "object": "chat.completion",
+        "created": 1791067555,
+        "model": "WeiboAI/VibeThinker-3B",
+        "choices": [
+          {
+            "index": 0,
+            "message": {
+              "role": "assistant",
+              "content": "<think>The user asks: \"Compute 1 + 1.\" That's a trivial arithmetic problem. The answer is 2. However, the instructions: we",
+              "refusal": null,
+              "annotations": null,
+              "audio": null,
+              "function_call": null,
+              "reasoning": null
+            },
+            "logprobs": null,
+            "finish_reason": "length",
+            "stop_reason": null,
+            "token_ids": null,
+            "routed_experts": null
+          }
+        ],
+        "service_tier": null,
+        "system_fingerprint": "vllm-0.30.1rc1.dev623+g4ac0d0eac-e7b14593",
+        "usage": {
+          "prompt_tokens": 26,
+          "total_tokens": 58,
+          "completion_tokens": 32,
+          "prompt_tokens_details": {
+            "cached_tokens": 16,
+            "created_cache_tokens": 0,
+            "multimodal_tokens": null
+          },
+          "completion_tokens_details": null
+        },
+        "prompt_logprobs": null,
+        "prompt_token_ids": null,
+        "prompt_text": null,
+        "kv_transfer_params": null,
+        "ec_transfer_params": null,
+        "metrics": null
+      }
+    },
+    {
+      "request": {
+        "model": "WeiboAI/VibeThinker-3B",
+        "messages": [
+          {
+            "role": "user",
+            "content": "Compute 1 + 1."
+          }
+        ],
+        "max_tokens": 32,
+        "min_tokens": 32,
+        "temperature": 0.8,
+        "top_p": 0.95,
+        "seed": 20260983,
+        "stream": false
+      },
+      "response": {
+        "id": "chatcmpl-9d8e013c77e3bc37",
+        "object": "chat.completion",
+        "created": 1791067555,
+        "model": "WeiboAI/VibeThinker-3B",
+        "choices": [
+          {
+            "index": 0,
+            "message": {
+              "role": "assistant",
+              "content": "<think>The user asks: \"Compute 1 + 1.\" This is a simple arithmetic question, answer is 2.\n\nBut the user wants me to \"",
+              "refusal": null,
+              "annotations": null,
+              "audio": null,
+              "function_call": null,
+              "reasoning": null
+            },
+            "logprobs": null,
+            "finish_reason": "length",
+            "stop_reason": null,
+            "token_ids": null,
+            "routed_experts": null
+          }
+        ],
+        "service_tier": null,
+        "system_fingerprint": "vllm-0.30.1rc1.dev623+g4ac0d0eac-e7b14593",
+        "usage": {
+          "prompt_tokens": 26,
+          "total_tokens": 58,
+          "completion_tokens": 32,
+          "prompt_tokens_details": {
+            "cached_tokens": 16,
+            "created_cache_tokens": 0,
+            "multimodal_tokens": null
+          },
+          "completion_tokens_details": null
+        },
+        "prompt_logprobs": null,
+        "prompt_token_ids": null,
+        "prompt_text": null,
+        "kv_transfer_params": null,
+        "ec_transfer_params": null,
+        "metrics": null
+      }
+    },
+    {
+      "request": {
+        "model": "WeiboAI/VibeThinker-3B",
+        "messages": [
+          {
+            "role": "user",
+            "content": "Compute 1 + 1."
+          }
+        ],
+        "max_tokens": 32,
+        "min_tokens": 32,
+        "temperature": 0.8,
+        "top_p": 0.95,
+        "seed": 20260984,
+        "stream": false
+      },
+      "response": {
+        "id": "chatcmpl-ba2ed8864d31d1ad",
+        "object": "chat.completion",
+        "created": 1791067555,
+        "model": "WeiboAI/VibeThinker-3B",
+        "choices": [
+          {
+            "index": 0,
+            "message": {
+              "role": "assistant",
+              "content": "<think>The user asks: \"Compute 1 + 1.\" It's a trivial arithmetic question: result is 2. The user likely expects answer 2",
+              "refusal": null,
+              "annotations": null,
+              "audio": null,
+              "function_call": null,
+              "reasoning": null
+            },
+            "logprobs": null,
+            "finish_reason": "length",
+            "stop_reason": null,
+            "token_ids": null,
+            "routed_experts": null
+          }
+        ],
+        "service_tier": null,
+        "system_fingerprint": "vllm-0.30.1rc1.dev623+g4ac0d0eac-e7b14593",
+        "usage": {
+          "prompt_tokens": 26,
+          "total_tokens": 58,
+          "completion_tokens": 32,
+          "prompt_tokens_details": {
+            "cached_tokens": 16,
+            "created_cache_tokens": 0,
+            "multimodal_tokens": null
+          },
+          "completion_tokens_details": null
+        },
+        "prompt_logprobs": null,
+        "prompt_token_ids": null,
+        "prompt_text": null,
+        "kv_transfer_params": null,
+        "ec_transfer_params": null,
+        "metrics": null
+      }
+    },
+    {
+      "request": {
+        "model": "WeiboAI/VibeThinker-3B",
+        "messages": [
+          {
+            "role": "user",
+            "content": "Compute 1 + 1."
+          }
+        ],
+        "max_tokens": 32,
+        "min_tokens": 32,
+        "temperature": 0.8,
+        "top_p": 0.95,
+        "seed": 20260985,
+        "stream": false
+      },
+      "response": {
+        "id": "chatcmpl-86a455db5034856f",
+        "object": "chat.completion",
+        "created": 1791067555,
+        "model": "WeiboAI/VibeThinker-3B",
+        "choices": [
+          {
+            "index": 0,
+            "message": {
+              "role": "assistant",
+              "content": "<think>We need to produce a solution to the problem: \"Compute 1 + 1.\" It's a trivial arithmetic problem. The instructions: identify key components",
+              "refusal": null,
+              "annotations": null,
+              "audio": null,
+              "function_call": null,
+              "reasoning": null
+            },
+            "logprobs": null,
+            "finish_reason": "length",
+            "stop_reason": null,
+            "token_ids": null,
+            "routed_experts": null
+          }
+        ],
+        "service_tier": null,
+        "system_fingerprint": "vllm-0.30.1rc1.dev623+g4ac0d0eac-e7b14593",
+        "usage": {
+          "prompt_tokens": 26,
+          "total_tokens": 58,
+          "completion_tokens": 32,
+          "prompt_tokens_details": {
+            "cached_tokens": 16,
+            "created_cache_tokens": 0,
+            "multimodal_tokens": null
+          },
+          "completion_tokens_details": null
+        },
+        "prompt_logprobs": null,
+        "prompt_token_ids": null,
+        "prompt_text": null,
+        "kv_transfer_params": null,
+        "ec_transfer_params": null,
+        "metrics": null
+      }
+    },
+    {
+      "request": {
+        "model": "WeiboAI/VibeThinker-3B",
+        "messages": [
+          {
+            "role": "user",
+            "content": "Compute 1 + 1."
+          }
+        ],
+        "max_tokens": 32,
+        "min_tokens": 32,
+        "temperature": 0.8,
+        "top_p": 0.95,
+        "seed": 20260986,
+        "stream": false
+      },
+      "response": {
+        "id": "chatcmpl-a787822c2925fda1",
+        "object": "chat.completion",
+        "created": 1791067555,
+        "model": "WeiboAI/VibeThinker-3B",
+        "choices": [
+          {
+            "index": 0,
+            "message": {
+              "role": "assistant",
+              "content": "<think>The user asks: \"Compute 1 + 1.\" The request is straightforward: 1 + 1 = 2. The user is asking a",
+              "refusal": null,
+              "annotations": null,
+              "audio": null,
+              "function_call": null,
+              "reasoning": null
+            },
+            "logprobs": null,
+            "finish_reason": "length",
+            "stop_reason": null,
+            "token_ids": null,
+            "routed_experts": null
+          }
+        ],
+        "service_tier": null,
+        "system_fingerprint": "vllm-0.30.1rc1.dev623+g4ac0d0eac-e7b14593",
+        "usage": {
+          "prompt_tokens": 26,
+          "total_tokens": 58,
+          "completion_tokens": 32,
+          "prompt_tokens_details": {
+            "cached_tokens": 16,
+            "created_cache_tokens": 0,
+            "multimodal_tokens": null
+          },
+          "completion_tokens_details": null
+        },
+        "prompt_logprobs": null,
+        "prompt_token_ids": null,
+        "prompt_text": null,
+        "kv_transfer_params": null,
+        "ec_transfer_params": null,
+        "metrics": null
+      }
+    },
+    {
+      "request": {
+        "model": "WeiboAI/VibeThinker-3B",
+        "messages": [
+          {
+            "role": "user",
+            "content": "Compute 1 + 1."
+          }
+        ],
+        "max_tokens": 32,
+        "min_tokens": 32,
+        "temperature": 0.8,
+        "top_p": 0.95,
+        "seed": 20260987,
+        "stream": false
+      },
+      "response": {
+        "id": "chatcmpl-9a8d8484212c8961",
+        "object": "chat.completion",
+        "created": 1791067555,
+        "model": "WeiboAI/VibeThinker-3B",
+        "choices": [
+          {
+            "index": 0,
+            "message": {
+              "role": "assistant",
+              "content": "<think>The user asks: \"Compute 1 + 1.\" That's trivial: 2. We need to provide reasoning step by step and final answer in",
+              "refusal": null,
+              "annotations": null,
+              "audio": null,
+              "function_call": null,
+              "reasoning": null
+            },
+            "logprobs": null,
+            "finish_reason": "length",
+            "stop_reason": null,
+            "token_ids": null,
+            "routed_experts": null
+          }
+        ],
+        "service_tier": null,
+        "system_fingerprint": "vllm-0.30.1rc1.dev623+g4ac0d0eac-e7b14593",
+        "usage": {
+          "prompt_tokens": 26,
+          "total_tokens": 58,
+          "completion_tokens": 32,
+          "prompt_tokens_details": {
+            "cached_tokens": 16,
+            "created_cache_tokens": 0,
+            "multimodal_tokens": null
+          },
+          "completion_tokens_details": null
+        },
+        "prompt_logprobs": null,
+        "prompt_token_ids": null,
+        "prompt_text": null,
+        "kv_transfer_params": null,
+        "ec_transfer_params": null,
+        "metrics": null
+      }
+    },
+    {
+      "request": {
+        "model": "WeiboAI/VibeThinker-3B",
+        "messages": [
+          {
+            "role": "user",
+            "content": "Compute 1 + 1."
+          }
+        ],
+        "max_tokens": 32,
+        "min_tokens": 32,
+        "temperature": 0.8,
+        "top_p": 0.95,
+        "seed": 20260988,
+        "stream": false
+      },
+      "response": {
+        "id": "chatcmpl-80a2c383f5f410d7",
+        "object": "chat.completion",
+        "created": 1791067555,
+        "model": "WeiboAI/VibeThinker-3B",
+        "choices": [
+          {
+            "index": 0,
+            "message": {
+              "role": "assistant",
+              "content": "<think>We have a user query: \"Compute 1 + 1.\" The user wants a step-by-step reasoning and put the final answer within \\boxed{}",
+              "refusal": null,
+              "annotations": null,
+              "audio": null,
+              "function_call": null,
+              "reasoning": null
+            },
+            "logprobs": null,
+            "finish_reason": "length",
+            "stop_reason": null,
+            "token_ids": null,
+            "routed_experts": null
+          }
+        ],
+        "service_tier": null,
+        "system_fingerprint": "vllm-0.30.1rc1.dev623+g4ac0d0eac-e7b14593",
+        "usage": {
+          "prompt_tokens": 26,
+          "total_tokens": 58,
+          "completion_tokens": 32,
+          "prompt_tokens_details": {
+            "cached_tokens": 16,
+            "created_cache_tokens": 0,
+            "multimodal_tokens": null
+          },
+          "completion_tokens_details": null
+        },
+        "prompt_logprobs": null,
+        "prompt_token_ids": null,
+        "prompt_text": null,
+        "kv_transfer_params": null,
+        "ec_transfer_params": null,
+        "metrics": null
+      }
+    },
+    {
+      "request": {
+        "model": "WeiboAI/VibeThinker-3B",
+        "messages": [
+          {
+            "role": "user",
+            "content": "Compute 1 + 1."
+          }
+        ],
+        "max_tokens": 32,
+        "min_tokens": 32,
+        "temperature": 0.8,
+        "top_p": 0.95,
+        "seed": 20260989,
+        "stream": false
+      },
+      "response": {
+        "id": "chatcmpl-9e9c2fd0ae5642d2",
+        "object": "chat.completion",
+        "created": 1791067555,
+        "model": "WeiboAI/VibeThinker-3B",
+        "choices": [
+          {
+            "index": 0,
+            "message": {
+              "role": "assistant",
+              "content": "<think>The user asks: \"Compute 1 + 1.\" That's trivial: 2. They also ask to reason step by step and put final answer",
+              "refusal": null,
+              "annotations": null,
+              "audio": null,
+              "function_call": null,
+              "reasoning": null
+            },
+            "logprobs": null,
+            "finish_reason": "length",
+            "stop_reason": null,
+            "token_ids": null,
+            "routed_experts": null
+          }
+        ],
+        "service_tier": null,
+        "system_fingerprint": "vllm-0.30.1rc1.dev623+g4ac0d0eac-e7b14593",
+        "usage": {
+          "prompt_tokens": 26,
+          "total_tokens": 58,
+          "completion_tokens": 32,
+          "prompt_tokens_details": {
+            "cached_tokens": 16,
+            "created_cache_tokens": 0,
+            "multimodal_tokens": null
+          },
+          "completion_tokens_details": null
+        },
+        "prompt_logprobs": null,
+        "prompt_token_ids": null,
+        "prompt_text": null,
+        "kv_transfer_params": null,
+        "ec_transfer_params": null,
+        "metrics": null
+      }
+    },
+    {
+      "request": {
+        "model": "WeiboAI/VibeThinker-3B",
+        "messages": [
+          {
+            "role": "user",
+            "content": "Compute 1 + 1."
+          }
+        ],
+        "max_tokens": 32,
+        "min_tokens": 32,
+        "temperature": 0.8,
+        "top_p": 0.95,
+        "seed": 20260990,
+        "stream": false
+      },
+      "response": {
+        "id": "chatcmpl-8b1fe38c2d2bc0a5",
+        "object": "chat.completion",
+        "created": 1791067555,
+        "model": "WeiboAI/VibeThinker-3B",
+        "choices": [
+          {
+            "index": 0,
+            "message": {
+              "role": "assistant",
+              "content": "<think>The user asks: \"Compute 1 + 1.\" This is trivial: 2. They want step-by-step reasoning and final answer in \\boxed",
+              "refusal": null,
+              "annotations": null,
+              "audio": null,
+              "function_call": null,
+              "reasoning": null
+            },
+            "logprobs": null,
+            "finish_reason": "length",
+            "stop_reason": null,
+            "token_ids": null,
+            "routed_experts": null
+          }
+        ],
+        "service_tier": null,
+        "system_fingerprint": "vllm-0.30.1rc1.dev623+g4ac0d0eac-e7b14593",
+        "usage": {
+          "prompt_tokens": 26,
+          "total_tokens": 58,
+          "completion_tokens": 32,
+          "prompt_tokens_details": {
+            "cached_tokens": 16,
+            "created_cache_tokens": 0,
+            "multimodal_tokens": null
+          },
+          "completion_tokens_details": null
+        },
+        "prompt_logprobs": null,
+        "prompt_token_ids": null,
+        "prompt_text": null,
+        "kv_transfer_params": null,
+        "ec_transfer_params": null,
+        "metrics": null
+      }
+    },
+    {
+      "request": {
+        "model": "WeiboAI/VibeThinker-3B",
+        "messages": [
+          {
+            "role": "user",
+            "content": "Compute 1 + 1."
+          }
+        ],
+        "max_tokens": 32,
+        "min_tokens": 32,
+        "temperature": 0.8,
+        "top_p": 0.95,
+        "seed": 20260991,
+        "stream": false
+      },
+      "response": {
+        "id": "chatcmpl-997c28bbaf056d5c",
+        "object": "chat.completion",
+        "created": 1791067555,
+        "model": "WeiboAI/VibeThinker-3B",
+        "choices": [
+          {
+            "index": 0,
+            "message": {
+              "role": "assistant",
+              "content": "<think>The user asks: \"Compute 1 + 1.\" That's trivial: answer is 2. They want step-by-step reasoning and final answer within",
+              "refusal": null,
+              "annotations": null,
+              "audio": null,
+              "function_call": null,
+              "reasoning": null
+            },
+            "logprobs": null,
+            "finish_reason": "length",
+            "stop_reason": null,
+            "token_ids": null,
+            "routed_experts": null
+          }
+        ],
+        "service_tier": null,
+        "system_fingerprint": "vllm-0.30.1rc1.dev623+g4ac0d0eac-e7b14593",
+        "usage": {
+          "prompt_tokens": 26,
+          "total_tokens": 58,
+          "completion_tokens": 32,
+          "prompt_tokens_details": {
+            "cached_tokens": 16,
+            "created_cache_tokens": 0,
+            "multimodal_tokens": null
+          },
+          "completion_tokens_details": null
+        },
+        "prompt_logprobs": null,
+        "prompt_token_ids": null,
+        "prompt_text": null,
+        "kv_transfer_params": null,
+        "ec_transfer_params": null,
+        "metrics": null
+      }
+    },
+    {
+      "request": {
+        "model": "WeiboAI/VibeThinker-3B",
+        "messages": [
+          {
+            "role": "user",
+            "content": "Compute 1 + 1."
+          }
+        ],
+        "max_tokens": 32,
+        "min_tokens": 32,
+        "temperature": 0.8,
+        "top_p": 0.95,
+        "seed": 20260992,
+        "stream": false
+      },
+      "response": {
+        "id": "chatcmpl-a2d791322d790499",
+        "object": "chat.completion",
+        "created": 1791067555,
+        "model": "WeiboAI/VibeThinker-3B",
+        "choices": [
+          {
+            "index": 0,
+            "message": {
+              "role": "assistant",
+              "content": "<think>We have a user asking: \"Compute 1 + 1.\" They want step-by-step reasoning and put the final answer within \\boxed{}. The answer",
+              "refusal": null,
+              "annotations": null,
+              "audio": null,
+              "function_call": null,
+              "reasoning": null
+            },
+            "logprobs": null,
+            "finish_reason": "length",
+            "stop_reason": null,
+            "token_ids": null,
+            "routed_experts": null
+          }
+        ],
+        "service_tier": null,
+        "system_fingerprint": "vllm-0.30.1rc1.dev623+g4ac0d0eac-e7b14593",
+        "usage": {
+          "prompt_tokens": 26,
+          "total_tokens": 58,
+          "completion_tokens": 32,
+          "prompt_tokens_details": {
+            "cached_tokens": 16,
+            "created_cache_tokens": 0,
+            "multimodal_tokens": null
+          },
+          "completion_tokens_details": null
+        },
+        "prompt_logprobs": null,
+        "prompt_token_ids": null,
+        "prompt_text": null,
+        "kv_transfer_params": null,
+        "ec_transfer_params": null,
+        "metrics": null
+      }
+    },
+    {
+      "request": {
+        "model": "WeiboAI/VibeThinker-3B",
+        "messages": [
+          {
+            "role": "user",
+            "content": "Compute 1 + 1."
+          }
+        ],
+        "max_tokens": 32,
+        "min_tokens": 32,
+        "temperature": 0.8,
+        "top_p": 0.95,
+        "seed": 20260993,
+        "stream": false
+      },
+      "response": {
+        "id": "chatcmpl-a2b5ff9e465f3c17",
+        "object": "chat.completion",
+        "created": 1791067555,
+        "model": "WeiboAI/VibeThinker-3B",
+        "choices": [
+          {
+            "index": 0,
+            "message": {
+              "role": "assistant",
+              "content": "<think>We have a prompt: \"Compute 1 + 1. Please reason step by step, and put your final answer within \\boxed{}.\"\n\nWe need",
+              "refusal": null,
+              "annotations": null,
+              "audio": null,
+              "function_call": null,
+              "reasoning": null
+            },
+            "logprobs": null,
+            "finish_reason": "length",
+            "stop_reason": null,
+            "token_ids": null,
+            "routed_experts": null
+          }
+        ],
+        "service_tier": null,
+        "system_fingerprint": "vllm-0.30.1rc1.dev623+g4ac0d0eac-e7b14593",
+        "usage": {
+          "prompt_tokens": 26,
+          "total_tokens": 58,
+          "completion_tokens": 32,
+          "prompt_tokens_details": {
+            "cached_tokens": 16,
+            "created_cache_tokens": 0,
+            "multimodal_tokens": null
+          },
+          "completion_tokens_details": null
+        },
+        "prompt_logprobs": null,
+        "prompt_token_ids": null,
+        "prompt_text": null,
+        "kv_transfer_params": null,
+        "ec_transfer_params": null,
+        "metrics": null
+      }
+    },
+    {
+      "request": {
+        "model": "WeiboAI/VibeThinker-3B",
+        "messages": [
+          {
+            "role": "user",
+            "content": "Compute 1 + 1."
+          }
+        ],
+        "max_tokens": 32,
+        "min_tokens": 32,
+        "temperature": 0.8,
+        "top_p": 0.95,
+        "seed": 20260994,
+        "stream": false
+      },
+      "response": {
+        "id": "chatcmpl-8d5d3bd3ded3cbdd",
+        "object": "chat.completion",
+        "created": 1791067555,
+        "model": "WeiboAI/VibeThinker-3B",
+        "choices": [
+          {
+            "index": 0,
+            "message": {
+              "role": "assistant",
+              "content": "<think>The user asks: \"Compute 1 + 1.\" They want the answer. It's trivial: 2.\n\nBut the instruction: \"Please reason",
+              "refusal": null,
+              "annotations": null,
+              "audio": null,
+              "function_call": null,
+              "reasoning": null
+            },
+            "logprobs": null,
+            "finish_reason": "length",
+            "stop_reason": null,
+            "token_ids": null,
+            "routed_experts": null
+          }
+        ],
+        "service_tier": null,
+        "system_fingerprint": "vllm-0.30.1rc1.dev623+g4ac0d0eac-e7b14593",
+        "usage": {
+          "prompt_tokens": 26,
+          "total_tokens": 58,
+          "completion_tokens": 32,
+          "prompt_tokens_details": {
+            "cached_tokens": 16,
+            "created_cache_tokens": 0,
+            "multimodal_tokens": null
+          },
+          "completion_tokens_details": null
+        },
+        "prompt_logprobs": null,
+        "prompt_token_ids": null,
+        "prompt_text": null,
+        "kv_transfer_params": null,
+        "ec_transfer_params": null,
+        "metrics": null
+      }
+    },
+    {
+      "request": {
+        "model": "WeiboAI/VibeThinker-3B",
+        "messages": [
+          {
+            "role": "user",
+            "content": "Compute 1 + 1."
+          }
+        ],
+        "max_tokens": 32,
+        "min_tokens": 32,
+        "temperature": 0.8,
+        "top_p": 0.95,
+        "seed": 20260995,
+        "stream": false
+      },
+      "response": {
+        "id": "chatcmpl-a312d5262d9c74a2",
+        "object": "chat.completion",
+        "created": 1791067555,
+        "model": "WeiboAI/VibeThinker-3B",
+        "choices": [
+          {
+            "index": 0,
+            "message": {
+              "role": "assistant",
+              "content": "<think>The user asks: \"Compute 1 + 1.\" They want to compute the sum of 1 and 1. The answer is 2.",
+              "refusal": null,
+              "annotations": null,
+              "audio": null,
+              "function_call": null,
+              "reasoning": null
+            },
+            "logprobs": null,
+            "finish_reason": "length",
+            "stop_reason": null,
+            "token_ids": null,
+            "routed_experts": null
+          }
+        ],
+        "service_tier": null,
+        "system_fingerprint": "vllm-0.30.1rc1.dev623+g4ac0d0eac-e7b14593",
+        "usage": {
+          "prompt_tokens": 26,
+          "total_tokens": 58,
+          "completion_tokens": 32,
+          "prompt_tokens_details": {
+            "cached_tokens": 16,
+            "created_cache_tokens": 0,
+            "multimodal_tokens": null
+          },
+          "completion_tokens_details": null
+        },
+        "prompt_logprobs": null,
+        "prompt_token_ids": null,
+        "prompt_text": null,
+        "kv_transfer_params": null,
+        "ec_transfer_params": null,
+        "metrics": null
+      }
+    },
+    {
+      "request": {
+        "model": "WeiboAI/VibeThinker-3B",
+        "messages": [
+          {
+            "role": "user",
+            "content": "Compute 1 + 1."
+          }
+        ],
+        "max_tokens": 32,
+        "min_tokens": 32,
+        "temperature": 0.8,
+        "top_p": 0.95,
+        "seed": 20260996,
+        "stream": false
+      },
+      "response": {
+        "id": "chatcmpl-aac85c56d3510c20",
+        "object": "chat.completion",
+        "created": 1791067555,
+        "model": "WeiboAI/VibeThinker-3B",
+        "choices": [
+          {
+            "index": 0,
+            "message": {
+              "role": "assistant",
+              "content": "<think>We have a user request: \"Compute 1 + 1.\" The user wants step-by-step reasoning and put the final answer within \\boxed{}. This",
+              "refusal": null,
+              "annotations": null,
+              "audio": null,
+              "function_call": null,
+              "reasoning": null
+            },
+            "logprobs": null,
+            "finish_reason": "length",
+            "stop_reason": null,
+            "token_ids": null,
+            "routed_experts": null
+          }
+        ],
+        "service_tier": null,
+        "system_fingerprint": "vllm-0.30.1rc1.dev623+g4ac0d0eac-e7b14593",
+        "usage": {
+          "prompt_tokens": 26,
+          "total_tokens": 58,
+          "completion_tokens": 32,
+          "prompt_tokens_details": {
+            "cached_tokens": 16,
+            "created_cache_tokens": 0,
+            "multimodal_tokens": null
+          },
+          "completion_tokens_details": null
+        },
+        "prompt_logprobs": null,
+        "prompt_token_ids": null,
+        "prompt_text": null,
+        "kv_transfer_params": null,
+        "ec_transfer_params": null,
+        "metrics": null
+      }
+    },
+    {
+      "request": {
+        "model": "WeiboAI/VibeThinker-3B",
+        "messages": [
+          {
+            "role": "user",
+            "content": "Compute 1 + 1."
+          }
+        ],
+        "max_tokens": 32,
+        "min_tokens": 32,
+        "temperature": 0.8,
+        "top_p": 0.95,
+        "seed": 20260997,
+        "stream": false
+      },
+      "response": {
+        "id": "chatcmpl-997f3c8b7bf72cea",
+        "object": "chat.completion",
+        "created": 1791067555,
+        "model": "WeiboAI/VibeThinker-3B",
+        "choices": [
+          {
+            "index": 0,
+            "message": {
+              "role": "assistant",
+              "content": "<think>The user asks: \"Compute 1 + 1.\" Very simple. They want answer: 2. They also ask to reason step by step,",
+              "refusal": null,
+              "annotations": null,
+              "audio": null,
+              "function_call": null,
+              "reasoning": null
+            },
+            "logprobs": null,
+            "finish_reason": "length",
+            "stop_reason": null,
+            "token_ids": null,
+            "routed_experts": null
+          }
+        ],
+        "service_tier": null,
+        "system_fingerprint": "vllm-0.30.1rc1.dev623+g4ac0d0eac-e7b14593",
+        "usage": {
+          "prompt_tokens": 26,
+          "total_tokens": 58,
+          "completion_tokens": 32,
+          "prompt_tokens_details": {
+            "cached_tokens": 16,
+            "created_cache_tokens": 0,
+            "multimodal_tokens": null
+          },
+          "completion_tokens_details": null
+        },
+        "prompt_logprobs": null,
+        "prompt_token_ids": null,
+        "prompt_text": null,
+        "kv_transfer_params": null,
+        "ec_transfer_params": null,
+        "metrics": null
+      }
+    },
+    {
+      "request": {
+        "model": "WeiboAI/VibeThinker-3B",
+        "messages": [
+          {
+            "role": "user",
+            "content": "Compute 1 + 1."
+          }
+        ],
+        "max_tokens": 32,
+        "min_tokens": 32,
+        "temperature": 0.8,
+        "top_p": 0.95,
+        "seed": 20260998,
+        "stream": false
+      },
+      "response": {
+        "id": "chatcmpl-880a809f6fa22c53",
+        "object": "chat.completion",
+        "created": 1791067555,
+        "model": "WeiboAI/VibeThinker-3B",
+        "choices": [
+          {
+            "index": 0,
+            "message": {
+              "role": "assistant",
+              "content": "<think>The user asks: \"Compute 1 + 1.\" That is trivial: answer is 2. However we must consider the policies: The user is",
+              "refusal": null,
+              "annotations": null,
+              "audio": null,
+              "function_call": null,
+              "reasoning": null
+            },
+            "logprobs": null,
+            "finish_reason": "length",
+            "stop_reason": null,
+            "token_ids": null,
+            "routed_experts": null
+          }
+        ],
+        "service_tier": null,
+        "system_fingerprint": "vllm-0.30.1rc1.dev623+g4ac0d0eac-e7b14593",
+        "usage": {
+          "prompt_tokens": 26,
+          "total_tokens": 58,
+          "completion_tokens": 32,
+          "prompt_tokens_details": {
+            "cached_tokens": 16,
+            "created_cache_tokens": 0,
+            "multimodal_tokens": null
+          },
+          "completion_tokens_details": null
+        },
+        "prompt_logprobs": null,
+        "prompt_token_ids": null,
+        "prompt_text": null,
+        "kv_transfer_params": null,
+        "ec_transfer_params": null,
+        "metrics": null
+      }
+    },
+    {
+      "request": {
+        "model": "WeiboAI/VibeThinker-3B",
+        "messages": [
+          {
+            "role": "user",
+            "content": "Compute 1 + 1."
+          }
+        ],
+        "max_tokens": 32,
+        "min_tokens": 32,
+        "temperature": 0.8,
+        "top_p": 0.95,
+        "seed": 20260999,
+        "stream": false
+      },
+      "response": {
+        "id": "chatcmpl-acc70635564bf31a",
+        "object": "chat.completion",
+        "created": 1791067555,
+        "model": "WeiboAI/VibeThinker-3B",
+        "choices": [
+          {
+            "index": 0,
+            "message": {
+              "role": "assistant",
+              "content": "<think>The user asks: \"Compute 1 + 1.\" That is trivial: result is 2. However the system instructions: \"You are an intelligent",
+              "refusal": null,
+              "annotations": null,
+              "audio": null,
+              "function_call": null,
+              "reasoning": null
+            },
+            "logprobs": null,
+            "finish_reason": "length",
+            "stop_reason": null,
+            "token_ids": null,
+            "routed_experts": null
+          }
+        ],
+        "service_tier": null,
+        "system_fingerprint": "vllm-0.30.1rc1.dev623+g4ac0d0eac-e7b14593",
+        "usage": {
+          "prompt_tokens": 26,
+          "total_tokens": 58,
+          "completion_tokens": 32,
+          "prompt_tokens_details": {
+            "cached_tokens": 16,
+            "created_cache_tokens": 0,
+            "multimodal_tokens": null
+          },
+          "completion_tokens_details": null
+        },
+        "prompt_logprobs": null,
+        "prompt_token_ids": null,
+        "prompt_text": null,
+        "kv_transfer_params": null,
+        "ec_transfer_params": null,
+        "metrics": null
+      }
+    },
+    {
+      "request": {
+        "model": "WeiboAI/VibeThinker-3B",
+        "messages": [
+          {
+            "role": "user",
+            "content": "Compute 1 + 1."
+          }
+        ],
+        "max_tokens": 32,
+        "min_tokens": 32,
+        "temperature": 0.8,
+        "top_p": 0.95,
+        "seed": 20261000,
+        "stream": false
+      },
+      "response": {
+        "id": "chatcmpl-80e89bd8ad824fec",
+        "object": "chat.completion",
+        "created": 1791067555,
+        "model": "WeiboAI/VibeThinker-3B",
+        "choices": [
+          {
+            "index": 0,
+            "message": {
+              "role": "assistant",
+              "content": "<think>We are asked: Compute 1 + 1. This is trivial: answer is 2. However, the problem may be a trick? The instruction",
+              "refusal": null,
+              "annotations": null,
+              "audio": null,
+              "function_call": null,
+              "reasoning": null
+            },
+            "logprobs": null,
+            "finish_reason": "length",
+            "stop_reason": null,
+            "token_ids": null,
+            "routed_experts": null
+          }
+        ],
+        "service_tier": null,
+        "system_fingerprint": "vllm-0.30.1rc1.dev623+g4ac0d0eac-e7b14593",
+        "usage": {
+          "prompt_tokens": 26,
+          "total_tokens": 58,
+          "completion_tokens": 32,
+          "prompt_tokens_details": {
+            "cached_tokens": 16,
+            "created_cache_tokens": 0,
+            "multimodal_tokens": null
+          },
+          "completion_tokens_details": null
+        },
+        "prompt_logprobs": null,
+        "prompt_token_ids": null,
+        "prompt_text": null,
+        "kv_transfer_params": null,
+        "ec_transfer_params": null,
+        "metrics": null
+      }
+    },
+    {
+      "request": {
+        "model": "WeiboAI/VibeThinker-3B",
+        "messages": [
+          {
+            "role": "user",
+            "content": "Compute 1 + 1."
+          }
+        ],
+        "max_tokens": 32,
+        "min_tokens": 32,
+        "temperature": 0.8,
+        "top_p": 0.95,
+        "seed": 20261001,
+        "stream": false
+      },
+      "response": {
+        "id": "chatcmpl-af81205d7d6d0128",
+        "object": "chat.completion",
+        "created": 1791067555,
+        "model": "WeiboAI/VibeThinker-3B",
+        "choices": [
+          {
+            "index": 0,
+            "message": {
+              "role": "assistant",
+              "content": "<think>The user asks: \"Compute 1 + 1.\" That's trivial: answer 2. Provide step-by-step reasoning. The instructions: we must",
+              "refusal": null,
+              "annotations": null,
+              "audio": null,
+              "function_call": null,
+              "reasoning": null
+            },
+            "logprobs": null,
+            "finish_reason": "length",
+            "stop_reason": null,
+            "token_ids": null,
+            "routed_experts": null
+          }
+        ],
+        "service_tier": null,
+        "system_fingerprint": "vllm-0.30.1rc1.dev623+g4ac0d0eac-e7b14593",
+        "usage": {
+          "prompt_tokens": 26,
+          "total_tokens": 58,
+          "completion_tokens": 32,
+          "prompt_tokens_details": {
+            "cached_tokens": 16,
+            "created_cache_tokens": 0,
+            "multimodal_tokens": null
+          },
+          "completion_tokens_details": null
+        },
+        "prompt_logprobs": null,
+        "prompt_token_ids": null,
+        "prompt_text": null,
+        "kv_transfer_params": null,
+        "ec_transfer_params": null,
+        "metrics": null
+      }
+    },
+    {
+      "request": {
+        "model": "WeiboAI/VibeThinker-3B",
+        "messages": [
+          {
+            "role": "user",
+            "content": "Compute 1 + 1."
+          }
+        ],
+        "max_tokens": 32,
+        "min_tokens": 32,
+        "temperature": 0.8,
+        "top_p": 0.95,
+        "seed": 20261002,
+        "stream": false
+      },
+      "response": {
+        "id": "chatcmpl-affb679c183d207f",
+        "object": "chat.completion",
+        "created": 1791067555,
+        "model": "WeiboAI/VibeThinker-3B",
+        "choices": [
+          {
+            "index": 0,
+            "message": {
+              "role": "assistant",
+              "content": "<think>The user asks: \"Compute 1 + 1.\" That's trivial: answer is 2. But they ask to \"Please reason step by step",
+              "refusal": null,
+              "annotations": null,
+              "audio": null,
+              "function_call": null,
+              "reasoning": null
+            },
+            "logprobs": null,
+            "finish_reason": "length",
+            "stop_reason": null,
+            "token_ids": null,
+            "routed_experts": null
+          }
+        ],
+        "service_tier": null,
+        "system_fingerprint": "vllm-0.30.1rc1.dev623+g4ac0d0eac-e7b14593",
+        "usage": {
+          "prompt_tokens": 26,
+          "total_tokens": 58,
+          "completion_tokens": 32,
+          "prompt_tokens_details": {
+            "cached_tokens": 16,
+            "created_cache_tokens": 0,
+            "multimodal_tokens": null
+          },
+          "completion_tokens_details": null
+        },
+        "prompt_logprobs": null,
+        "prompt_token_ids": null,
+        "prompt_text": null,
+        "kv_transfer_params": null,
+        "ec_transfer_params": null,
+        "metrics": null
+      }
+    }
+  ]
+}
