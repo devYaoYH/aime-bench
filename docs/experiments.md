@@ -116,6 +116,25 @@ The completed results and per-question vote distributions are in
 [SELF_CONSISTENCY.md](reports/self-consistency.md). Elapsed wall time is calculated from
 the saved UTC timestamps so that laptop sleep is included.
 
+## Local Qwen3.5-4B no-thinking pass@8
+
+On callosum, launch the Qwen vLLM config in `~/models/Qwen/Qwen3.5-4B/vllm.yaml`,
+then collect eight short-answer samples for each of the same 30 problems:
+
+```bash
+~/.venvs/vllm/bin/python -m src.experiments.local_qwen.no_thinking_pass8
+```
+
+This sends up to 240 independent requests concurrently with
+`chat_template_kwargs.enable_thinking=false` and distinct seeds. Each response
+is asked for one integer, with a 64-token cap. Full requests, responses, and
+retries stay in ignored `runs/qwen35-4b-no-thinking-pass8-20261003/questions/`.
+The versioned `config.json` records model and source revisions, the launch-config
+hash, sampling, prompt, and grading rules; `samples.csv` and `summary.json` hold
+the candidate and vote data. A question has 4-of-8 agreement if any parseable
+answer receives at least four votes. A 4–4 tie is reported separately because it
+does not select one answer. See the [run provenance note](../runs/qwen35-4b-no-thinking-pass8-20261003/README.md).
+
 ## Reasoning-length and escalation analysis
 
 Plot the exact Qwen-tokenized reasoning length of all eight attempts per
