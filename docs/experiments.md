@@ -37,7 +37,7 @@ reasoning tokens; any separately reported reasoning count is a subset.
 python3 -m src.viewer_server
 ```
 
-Open [http://127.0.0.1:8765](http://127.0.0.1:8765). The viewer is fixed to the original
+Open [the exploratory archive](http://127.0.0.1:8765/exploratory). This viewer is fixed to the original
 run `20260930-155212`, shows its wall clock and concurrent request timeline, and
 lets you filter questions by correctness, missing answers, or strict output format. Select
 a question to inspect its API latency, output length, tokens, final response,
@@ -45,7 +45,8 @@ reasoning trace, and raw API response. “Format incorrect” means the final li
 did not follow the requested `Answer: NNN` syntax. It is independent of whether
 an answer was extracted from a `\\boxed{...}` expression and graded correct.
 The local server exposes only viewer assets and
-run JSON files; it does not serve `.env`.
+run JSON files; it does not serve `.env`. The root page is the separate
+canonical attempt viewer described in [the attempt workflow](attempts.md#viewer).
 
 ## Jev continuation review
 

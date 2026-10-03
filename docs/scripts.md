@@ -23,7 +23,8 @@ dataset fetcher and viewer are user-facing utility commands.
 | [python_tool_protocol.py](../src/python_tool_protocol.py) | Preserve native tool-call history, validate arguments, and total multi-round usage |
 | [tokenizer_utils.py](../src/tokenizer_utils.py) | Recover exact source-preserving prefixes with a caller-supplied tokenizer |
 | [fetch_dataset.py](../src/fetch_dataset.py) | Refresh MathArena problems, official keys, revision, and dataset checksum; requires network |
-| [viewer_server.py](../src/viewer_server.py) | Inspect locally saved baseline responses, votes, and Jev judgments in the browser |
+| [viewer_server.py](../src/viewer_server.py) | Serve canonical attempts at `/` and the fixed baseline archive at `/exploratory` |
+| [attempt_viewer.py](../src/attempt_viewer.py) | Read canonical summaries, rollout artifacts, verification logs, and GPU samples without running inference |
 
 ## Baseline experiments
 

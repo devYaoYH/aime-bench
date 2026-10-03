@@ -11,7 +11,7 @@ grades against the official answer key.
 ```text
 src/                 Common utilities and reusable libraries
   experiments/       Runners grouped by research question
-  viewer/            Response viewer assets
+  viewer/            Canonical attempt viewer and fixed exploratory archive
 data/                Problem statements, answer key, provenance, scope annotations
 runs/                Saved experiment records, generated reports, and plots
 attempts/            Canonical remote attempts, traces, and telemetry
@@ -53,9 +53,14 @@ Browse saved responses locally:
 .venv/bin/python -m src.viewer_server
 ```
 
-Open [the response viewer](http://127.0.0.1:8765). It shows the original Qwen run `20260930-155212`,
-sample votes, and Jev reviews. Other experiment families have reports and
-artifacts under `runs/`.
+Open [canonical attempts](http://127.0.0.1:8765) to select locally available
+`attempts/` artifacts and inspect oracle outcomes, trajectories, continuations,
+timing, and GPU telemetry. Compact summaries work without raw traces; detailed
+views need a local copy of the attempt's `trace/` directory. Refresh rereads files.
+
+The [exploratory viewer](http://127.0.0.1:8765/exploratory) remains fixed to the
+original Qwen run `20260930-155212`, including sample votes and Jev reviews.
+Other exploratory experiment families have reports and artifacts under `runs/`.
 
 ## Canonical remote attempts
 

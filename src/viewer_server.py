@@ -1,8 +1,8 @@
-"""Serve saved baseline responses, votes, and Jev reviews through a local viewer.
+"""Serve canonical attempts and the fixed exploratory archive in local viewers.
 
-Use this utility to inspect original Qwen trajectories, API timing, usage,
-reasoning, and completed-answer grades alongside self-consistency/Jev records.
-It serves src/viewer assets and selected run APIs on 127.0.0.1:8765 by default.
+Open / for canonical src.attempt outputs under attempts/, or /exploratory for
+original Qwen trajectories, self-consistency, and Jev records from the fixed run.
+It serves src/viewer assets and selected artifact APIs on 127.0.0.1:8765 by default.
 Detailed views require ignored raw run files, which are absent from a fresh clone.
 The server does not make inference calls or expose .env. Start it with:
     python -m src.viewer_server
@@ -15,12 +15,14 @@ from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 import json
 from pathlib import Path
 import re
-from urllib.parse import unquote, urlparse
+from urllib.parse import parse_qs, unquote, urlparse
 
 
 from src.common import ROOT
+from src.attempt_viewer import AttemptStore
 RUNS = ROOT / "runs"
 VIEWER = ROOT / "src" / "viewer"
+ATTEMPTS = AttemptStore(ROOT / "attempts", ROOT / "data" / "aime_2025_problems.jsonl")
 SAFE_RUN = re.compile(r"^[A-Za-z0-9][A-Za-z0-9._-]*$")
 QUESTION = re.compile(r"^/api/runs/([^/]+)/questions/(\d{1,3})$")
 JEV_REVIEW = re.compile(r"^/api/runs/([^/]+)/jev-review/(\d{1,3})$")
@@ -130,17 +132,47 @@ class Handler(BaseHTTPRequestHandler):
         self.send_bytes(json.dumps(value, ensure_ascii=False).encode(), "application/json; charset=utf-8", status)
 
     def do_GET(self) -> None:
-        path = unquote(urlparse(self.path).path)
+        parsed = urlparse(self.path)
+        path = unquote(parsed.path)
+        if path == "/" and parse_qs(parsed.query).get("run") == ["20260930-155212"]:
+            self.send_response(303)
+            self.send_header("Location", "/exploratory?" + parsed.query)
+            self.end_headers()
+            return
         assets = {
-            "/": ("index.html", "text/html; charset=utf-8"),
-            "/viewer.css": ("viewer.css", "text/css; charset=utf-8"),
-            "/viewer.js": ("viewer.js", "text/javascript; charset=utf-8"),
+            "/": ("attempts/index.html", "text/html; charset=utf-8"),
+            "/attempts": ("attempts/index.html", "text/html; charset=utf-8"),
+            "/attempts/viewer.css": ("attempts/viewer.css", "text/css; charset=utf-8"),
+            "/attempts/viewer.js": ("attempts/viewer.js", "text/javascript; charset=utf-8"),
+            "/exploratory": ("exploratory/index.html", "text/html; charset=utf-8"),
+            "/exploratory/": ("exploratory/index.html", "text/html; charset=utf-8"),
+            "/exploratory/viewer.css": ("exploratory/viewer.css", "text/css; charset=utf-8"),
+            "/exploratory/viewer.js": ("exploratory/viewer.js", "text/javascript; charset=utf-8"),
         }
         if path in assets:
             filename, content_type = assets[path]
             self.send_bytes((VIEWER / filename).read_bytes(), content_type)
             return
         try:
+            if path == "/api/attempts":
+                self.send_json(ATTEMPTS.list())
+                return
+            if match := re.fullmatch(r"/api/attempts/([^/]+)/overview", path):
+                self.send_json(ATTEMPTS.overview(match[1]))
+                return
+            if match := re.fullmatch(r"/api/attempts/([^/]+)/gpu", path):
+                self.send_json(ATTEMPTS.gpu(match[1]))
+                return
+            if match := re.fullmatch(r"/api/attempts/([^/]+)/questions/(\d+)", path):
+                self.send_json(ATTEMPTS.question(match[1], int(match[2])))
+                return
+            if match := re.fullmatch(r"/api/attempts/([^/]+)/questions/(\d+)/rollouts/(\d+)", path):
+                self.send_json(ATTEMPTS.rollout(match[1], int(match[2]), int(match[3])))
+                return
+            if match := re.fullmatch(r"/api/attempts/([^/]+)/files/(.+)", path):
+                artifact = ATTEMPTS.artifact(match[1], match[2])
+                self.send_bytes(artifact.read_bytes(), "application/json; charset=utf-8" if artifact.suffix == ".json" else "application/x-ndjson; charset=utf-8")
+                return
             if match := OVERVIEW.fullmatch(path):
                 self.send_json(build_overview(match.group(1)))
                 return

@@ -186,6 +186,29 @@ The grader audit contains gold answers and remains an ignored raw artifact.
 Only attempt configs, summaries, and README reports are Git-allowlisted; raw
 traces stay on the remote unless explicitly copied for local analysis.
 
+## Viewer
+
+Run `.venv/bin/python -m src.viewer_server` locally and open
+[canonical attempts](http://127.0.0.1:8765). The viewer discovers canonical
+directories under `attempts/` and offers question and rollout inspection,
+positive-verdict timing, request/response evidence, continuation ancestry,
+cache/TTFT counters, and sampled device VRAM/utilization. The first solve chart
+uses saved oracle events; older attempts use their recorded winning-verdict
+timestamps when available. Missing usage and censored generations are labeled.
+
+Configs and summaries alone provide an overview. For detailed inspection, copy
+the selected attempt's `trace/` directory from callosum; `request.json`,
+`response.json`, `telemetry.json`, `question.json`, and `verification.jsonl` are
+enough for the main views. Copy `gpu.jsonl` and `solved.jsonl` for device plots and
+first-solve events. `tokens.json` is optional exact-continuation evidence;
+full `stream.jsonl` files are optional and much larger. These raw artifacts stay
+ignored by Git. The viewer never connects to the VM or launches services.
+"Refresh files" rereads the local copy, with optional five-second polling for
+an attempt being written locally. An unfinished JSONL tail is tolerated.
+
+The [exploratory archive](http://127.0.0.1:8765/exploratory) retains the original
+fixed dataset, pass@8 votes, and Jev analyses independently of canonical attempts.
+
 ## Local checks
 
 ```sh
