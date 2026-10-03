@@ -31,13 +31,17 @@ function comparisonPlot(history) {
   const width=1080,height=410,left=86,right=30,top=40,bottom=80;
   const span=Math.max(points.at(-1).start_ms-points[0].start_ms,60000),padding=span*.035;
   const xmin=points[0].start_ms-padding,xmax=points.at(-1).start_ms+padding;
-  const max=Math.ceil(Math.max(60,...points.map(r=>r.time_to_18_s))/60)*60;
+  const min=50,peak=Math.max(60,...points.map(r=>r.time_to_18_s));
+  const step=Math.max(10,Math.ceil((peak-min)/70)*10),max=min+Math.ceil((peak-min)/step)*step;
   const x=t=>left+(t-xmin)/(xmax-xmin)*(width-left-right);
-  const y=t=>height-bottom-t/max*(height-top-bottom);
+  const y=t=>height-bottom-(t-min)/(max-min)*(height-top-bottom);
   let svg=`<svg class="comparison-chart" viewBox="0 0 ${width} ${height}" role="img" aria-label="Attempt start timestamp versus end-to-end time to 18 verified correct answers, with a dotted best-so-far Pareto step and a horizontal 54 second grader floor"><text x="${left}" y="18">Time to 18 verified correct answers (seconds)</text>`;
+  for(let t=min;t<=max;t+=step){
+    svg+=`<line class="grid" x1="${left}" x2="${width-right}" y1="${y(t)}" y2="${y(t)}"/><text text-anchor="end" x="${left-12}" y="${y(t)+4}">${t}s</text>`;
+  }
   for(let i=0;i<=6;i++){
-    const t=max*i/6,stamp=xmin+(xmax-xmin)*i/6;
-    svg+=`<line class="grid" x1="${left}" x2="${width-right}" y1="${y(t)}" y2="${y(t)}"/><text text-anchor="end" x="${left-12}" y="${y(t)+4}">${Math.round(t)}s</text><line class="grid" x1="${x(stamp)}" x2="${x(stamp)}" y1="${top}" y2="${height-bottom}"/><text text-anchor="middle" x="${x(stamp)}" y="${height-bottom+26}">${esc(historyTick.format(stamp))}</text>`;
+    const stamp=xmin+(xmax-xmin)*i/6;
+    svg+=`<line class="grid" x1="${x(stamp)}" x2="${x(stamp)}" y1="${top}" y2="${height-bottom}"/><text text-anchor="middle" x="${x(stamp)}" y="${height-bottom+26}">${esc(historyTick.format(stamp))}</text>`;
   }
   svg+=`<text text-anchor="middle" x="${left+(width-left-right)/2}" y="${height-12}">Attempt started · America/Los_Angeles · ${esc(new Intl.DateTimeFormat('en-US',{timeZone:'America/Los_Angeles',month:'short',day:'numeric',year:'numeric'}).format(points[0].start_ms))}</text>`;
   const floor=results.reference_floor_s;
