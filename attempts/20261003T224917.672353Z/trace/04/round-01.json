@@ -1,0 +1,244 @@
+{
+  "problem_idx": 4,
+  "started_at_utc": "2026-10-03T22:49:18.595+00:00",
+  "finished_at_utc": "2026-10-03T22:49:41.043+00:00",
+  "end_to_end_latency_s": 22.4476330599864,
+  "status": "solved",
+  "winner": {
+    "answer": 117,
+    "part": "content",
+    "kind": "literal_prose",
+    "end": 4102,
+    "line": "Thus answer is 117. Let's double-check boundaries: Are there any points on each line where x or y are exactly at the boundaries? For line 3x+2y=0: k from -33 to 33 gives x = 2k from -66 to 66 (even). y = -3k from -99 to 99. All within [-100,100]. At k=33, (66,-99). At k=-33, (-66,99). At k=34 would be (68,-102) which fails y bound. So correct.",
+    "candidate": "117",
+    "rollout": 1,
+    "observed_at_utc": "2026-10-03T22:49:32.741+00:00",
+    "question_elapsed_s": 14.145694727019873,
+    "verification_started_at_utc": "2026-10-03T22:49:32.741+00:00",
+    "round": 1,
+    "candidate_queue_wait_s": 7.839698810130358e-05,
+    "result": {
+      "dataset": {
+        "format": "jsonl",
+        "gold_field": "answer",
+        "id": "aime_2025",
+        "idx_field": "problem_idx",
+        "revision": "c94da77eb22bbd6439e62a323bec18493a421302",
+        "source": "/home/azureuser/aime-bench/grader/data/aime_2025.jsonl",
+        "year": 2025,
+        "sha256": "d5bcac5904290630fe98e3c3d1c2773260ebf59b57955382735e9ce8c0142b41"
+      },
+      "query_id": "20261003T224917.672353Z-q4-a117",
+      "seq": 5,
+      "agent_id": "20261003T224917.672353Z-q4-r1",
+      "index": 4,
+      "candidate": "117",
+      "verdict": true,
+      "queue_ahead_at_submit": 1,
+      "submitted_at": "2026-10-03T22:49:32.747110Z",
+      "picked_at": "2026-10-03T22:49:38.038873Z",
+      "answered_at": "2026-10-03T22:49:41.038997Z",
+      "queue_wait_s": 5.292,
+      "toll_s": 3.0,
+      "latency_s": 8.292
+    },
+    "verification_finished_at_utc": "2026-10-03T22:49:41.040+00:00",
+    "verification_latency_s": 8.298968970018905
+  },
+  "error": null,
+  "unique_candidates": 1,
+  "candidate_answers": [
+    "117"
+  ],
+  "rollouts": [
+    {
+      "rollout": 1,
+      "round": 1,
+      "started_at_utc": "2026-10-03T22:49:18.625+00:00",
+      "start_monotonic_s": 272006.687811682,
+      "ttft_s": 0.1350781610235572,
+      "last_token_s": 22.40824826597236,
+      "finish_reason": null,
+      "status": "cancelled",
+      "done_received": false,
+      "usage": {
+        "prompt_tokens": 124,
+        "total_tokens": 2868,
+        "completion_tokens": 2744,
+        "completion_tokens_details": null
+      },
+      "endpoint": "/v1/chat/completions",
+      "continuation_of_rollout": null,
+      "requested_max_tokens": 8192,
+      "http_status": 200,
+      "headers_received_s": 0.06149726500734687,
+      "generation_finished_at_utc": "2026-10-03T22:49:41.040+00:00",
+      "generation_end_monotonic_s": 272029.103423876,
+      "generation_latency_s": 22.415612193988636,
+      "generation_censored": true,
+      "generated_token_ids_count": 2744,
+      "prompt_token_ids_count": 124,
+      "cached_prompt_tokens": null,
+      "prefix_cache_hit_fraction": null,
+      "overhead": {
+        "enabled": true,
+        "timings": {
+          "artifact_json_write": {
+            "count": 4,
+            "wall_total_s": 0.0020264359773136675,
+            "wall_max_s": 0.0014301390037871897,
+            "thread_cpu_total_s": 0.0020270850000005947,
+            "cpu_samples": 4
+          },
+          "stream_trace_write_flush": {
+            "count": 2745,
+            "wall_total_s": 0.084592133120168,
+            "wall_max_s": 8.694303687661886e-05,
+            "thread_cpu_total_s": 0.08421316599996165,
+            "cpu_samples": 2745
+          },
+          "sse_json_decode": {
+            "count": 2745,
+            "wall_total_s": 0.030044332786928862,
+            "wall_max_s": 5.098595283925533e-05,
+            "thread_cpu_total_s": 0.030186576000027943,
+            "cpu_samples": 2745
+          },
+          "candidate_parse_enqueue": {
+            "count": 2744,
+            "wall_total_s": 0.019547670206520706,
+            "wall_max_s": 6.030302029103041e-05,
+            "thread_cpu_total_s": 0.019581724999966132,
+            "cpu_samples": 2744
+          }
+        },
+        "counters": {
+          "generation_requests": 1,
+          "sse_chunks": 2745,
+          "sse_payload_bytes": 949851,
+          "generation_cancelled": 1
+        },
+        "maxima": {}
+      },
+      "finished_at_utc": "2026-10-03T22:49:41.043+00:00",
+      "end_to_end_latency_s": 22.41794306098018,
+      "end_to_end_scope": "rollout start through question verification/cancellation settlement",
+      "gpu": {
+        "sample_count": 113,
+        "start_vram_mib": 78266.1875,
+        "end_vram_mib": 78442.1875,
+        "observed_peak_vram_mib": 78442.1875,
+        "scope": "shared GPU device; sampled peak, not per-request allocation",
+        "error": null
+      }
+    }
+  ],
+  "round": 1,
+  "first_solved": {
+    "problem_idx": 4,
+    "round": 1,
+    "rollout": 1,
+    "candidate": "117",
+    "first_solved_at_utc": "2026-10-03T22:49:41.040+00:00",
+    "first_solved_elapsed_s": 22.44766718399478,
+    "grader_answered_at_utc": "2026-10-03T22:49:41.038997Z",
+    "grader_query_id": "20261003T224917.672353Z-q4-a117"
+  },
+  "overhead": {
+    "enabled": true,
+    "timings": {
+      "artifact_json_write": {
+        "count": 5,
+        "wall_total_s": 0.00235474098008126,
+        "wall_max_s": 0.0014301390037871897,
+        "thread_cpu_total_s": 0.0023560280000036737,
+        "cpu_samples": 5
+      },
+      "stream_trace_write_flush": {
+        "count": 2745,
+        "wall_total_s": 0.084592133120168,
+        "wall_max_s": 8.694303687661886e-05,
+        "thread_cpu_total_s": 0.08421316599996165,
+        "cpu_samples": 2745
+      },
+      "sse_json_decode": {
+        "count": 2745,
+        "wall_total_s": 0.030044332786928862,
+        "wall_max_s": 5.098595283925533e-05,
+        "thread_cpu_total_s": 0.030186576000027943,
+        "cpu_samples": 2745
+      },
+      "candidate_parse_enqueue": {
+        "count": 2744,
+        "wall_total_s": 0.019547670206520706,
+        "wall_max_s": 6.030302029103041e-05,
+        "thread_cpu_total_s": 0.019581724999966132,
+        "cpu_samples": 2744
+      },
+      "candidate_local_queue_wait": {
+        "count": 1,
+        "wall_total_s": 7.839698810130358e-05,
+        "wall_max_s": 7.839698810130358e-05,
+        "thread_cpu_total_s": 0.0,
+        "cpu_samples": 0
+      },
+      "grader_queue_wait": {
+        "count": 1,
+        "wall_total_s": 5.292,
+        "wall_max_s": 5.292,
+        "thread_cpu_total_s": 0.0,
+        "cpu_samples": 0
+      },
+      "grader_service": {
+        "count": 1,
+        "wall_total_s": 3.0,
+        "wall_max_s": 3.0,
+        "thread_cpu_total_s": 0.0,
+        "cpu_samples": 0
+      },
+      "verification_http_wait": {
+        "count": 1,
+        "wall_total_s": 8.298968970018905,
+        "wall_max_s": 8.298968970018905,
+        "thread_cpu_total_s": 0.0,
+        "cpu_samples": 0
+      },
+      "verification_trace_write_flush": {
+        "count": 1,
+        "wall_total_s": 5.6746997870504856e-05,
+        "wall_max_s": 5.6746997870504856e-05,
+        "thread_cpu_total_s": 5.646500000011656e-05,
+        "cpu_samples": 1
+      },
+      "generation_cancellation_settlement": {
+        "count": 1,
+        "wall_total_s": 0.0026072549517266452,
+        "wall_max_s": 0.0026072549517266452,
+        "thread_cpu_total_s": 0.0,
+        "cpu_samples": 0
+      },
+      "gpu_sample_window": {
+        "count": 1,
+        "wall_total_s": 4.567601718008518e-05,
+        "wall_max_s": 4.567601718008518e-05,
+        "thread_cpu_total_s": 4.5515000000051486e-05,
+        "cpu_samples": 1
+      }
+    },
+    "counters": {
+      "generation_requests": 1,
+      "sse_chunks": 2745,
+      "sse_payload_bytes": 949851,
+      "candidate_proposals": 8,
+      "candidate_unique_enqueued": 1,
+      "verification_submitted": 1,
+      "candidate_duplicates_suppressed": 7,
+      "verification_completed": 1,
+      "verification_correct": 1,
+      "generation_cancelled": 1
+    },
+    "maxima": {
+      "candidate_queue_depth": 1
+    }
+  }
+}

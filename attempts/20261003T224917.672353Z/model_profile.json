@@ -1,0 +1,5 @@
+{
+  "path": "/home/azureuser/models/WeiboAI/VibeThinker-3B/vllm.yaml",
+  "yaml": "# Callosum A100 profile. Deploy to ~/models/WeiboAI/VibeThinker-3B/vllm.yaml.\n# Weights: Hugging Face revision 77bd2cced09193c8b9a59a32bd8577bbd1f3e01c.\nmodel: /home/azureuser/models/WeiboAI/VibeThinker-3B\nserved-model-name: WeiboAI/VibeThinker-3B\nhost: \"127.0.0.1\"\nport: 8000\ndtype: bfloat16\ntensor-parallel-size: 1\nmax-model-len: 65536\ngpu-memory-utilization: 0.95\noverride-generation-config: '{\"max_new_tokens\": 16384}'\nenable-prefix-caching: true\nenable-prompt-tokens-details: true\n",
+  "sha256": "0f08a0c04cdf53db83502b7e8086323cf7b9724c7bb7982fa2bc9f4b8308824a"
+}

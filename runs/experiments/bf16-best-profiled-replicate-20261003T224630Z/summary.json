@@ -1,0 +1,183 @@
+{
+  "status": "complete",
+  "trials": [
+    {
+      "trial": 1,
+      "attempt_id": "20261003T224917.672353Z",
+      "cache_reset": {
+        "success": true,
+        "at_utc": "2026-10-03T22:49:17.671+00:00"
+      },
+      "target_reached": true,
+      "time_to_target_s": 116.28082345199073,
+      "performance": {
+        "generation_requests": 47,
+        "fresh_ttft": {
+          "count": 30,
+          "median_s": 0.18348329700529575,
+          "p95_s": 0.2499060100526549
+        },
+        "continuation_ttft": {
+          "count": 17,
+          "median_s": 0.19842948601581156,
+          "p95_s": 0.22074119199533015
+        },
+        "official_gpu": {
+          "sample_count": 581,
+          "start_vram_mib": 78266.1875,
+          "end_vram_mib": 78442.1875,
+          "observed_peak_vram_mib": 78442.1875,
+          "scope": "shared GPU device; sampled peak, not per-request allocation",
+          "error": null
+        },
+        "initialization_gpu": {
+          "sample_count": 5,
+          "start_vram_mib": 78246.1875,
+          "end_vram_mib": 78266.1875,
+          "observed_peak_vram_mib": 78266.1875,
+          "scope": "shared GPU device; sampled peak, not per-request allocation",
+          "error": null
+        }
+      },
+      "grader_timeline": {
+        "completed_queries": 20,
+        "audit_errors": [],
+        "correct": 18,
+        "wrong": 2,
+        "target_service_floor_s": 54.0,
+        "actual_service_s": 60.00238823890686,
+        "idle_between_queries_s": 51.92370676994324,
+        "first_pick_elapsed_s": 4.353847026824951,
+        "scope": "completed oracle jobs; queued/cancelled client jobs may still incur service"
+      },
+      "matched_requests": {
+        "initial_request_count": 30,
+        "different_questions": [],
+        "initial_ttft_median_s": 0.18333686247933656,
+        "initial_ttft_count": 30,
+        "model_override": false
+      }
+    },
+    {
+      "trial": 2,
+      "attempt_id": "20261003T225115.111184Z",
+      "cache_reset": {
+        "success": true,
+        "at_utc": "2026-10-03T22:51:15.110+00:00"
+      },
+      "target_reached": true,
+      "time_to_target_s": 150.06680695002433,
+      "performance": {
+        "generation_requests": 46,
+        "fresh_ttft": {
+          "count": 30,
+          "median_s": 0.16188909800257534,
+          "p95_s": 0.23717705300077796
+        },
+        "continuation_ttft": {
+          "count": 16,
+          "median_s": 0.18352081399643794,
+          "p95_s": 0.19639530801214278
+        },
+        "official_gpu": {
+          "sample_count": 750,
+          "start_vram_mib": 78442.1875,
+          "end_vram_mib": 78442.1875,
+          "observed_peak_vram_mib": 78442.1875,
+          "scope": "shared GPU device; sampled peak, not per-request allocation",
+          "error": null
+        },
+        "initialization_gpu": {
+          "sample_count": 5,
+          "start_vram_mib": 78442.1875,
+          "end_vram_mib": 78442.1875,
+          "observed_peak_vram_mib": 78442.1875,
+          "scope": "shared GPU device; sampled peak, not per-request allocation",
+          "error": null
+        }
+      },
+      "grader_timeline": {
+        "completed_queries": 18,
+        "audit_errors": [],
+        "correct": 18,
+        "wrong": 0,
+        "target_service_floor_s": 54.0,
+        "actual_service_s": 54.00205874443054,
+        "idle_between_queries_s": 91.67552518844604,
+        "first_pick_elapsed_s": 4.389161109924316,
+        "scope": "completed oracle jobs; queued/cancelled client jobs may still incur service"
+      },
+      "matched_requests": {
+        "initial_request_count": 30,
+        "different_questions": [],
+        "initial_ttft_median_s": 0.16113584148115478,
+        "initial_ttft_count": 30,
+        "model_override": false
+      }
+    },
+    {
+      "trial": 3,
+      "attempt_id": "20261003T225346.318962Z",
+      "cache_reset": {
+        "success": true,
+        "at_utc": "2026-10-03T22:53:46.317+00:00"
+      },
+      "target_reached": true,
+      "time_to_target_s": 152.00736279698322,
+      "performance": {
+        "generation_requests": 45,
+        "fresh_ttft": {
+          "count": 30,
+          "median_s": 0.16806504799751565,
+          "p95_s": 0.24703188997227699
+        },
+        "continuation_ttft": {
+          "count": 15,
+          "median_s": 0.17033358401386067,
+          "p95_s": 0.1859959450084716
+        },
+        "official_gpu": {
+          "sample_count": 760,
+          "start_vram_mib": 78442.1875,
+          "end_vram_mib": 78442.1875,
+          "observed_peak_vram_mib": 78442.1875,
+          "scope": "shared GPU device; sampled peak, not per-request allocation",
+          "error": null
+        },
+        "initialization_gpu": {
+          "sample_count": 5,
+          "start_vram_mib": 78442.1875,
+          "end_vram_mib": 78442.1875,
+          "observed_peak_vram_mib": 78442.1875,
+          "scope": "shared GPU device; sampled peak, not per-request allocation",
+          "error": null
+        }
+      },
+      "grader_timeline": {
+        "completed_queries": 19,
+        "audit_errors": [],
+        "correct": 18,
+        "wrong": 1,
+        "target_service_floor_s": 54.0,
+        "actual_service_s": 57.00210165977478,
+        "idle_between_queries_s": 90.23256754875183,
+        "first_pick_elapsed_s": 4.772353887557983,
+        "scope": "completed oracle jobs; queued/cancelled client jobs may still incur service"
+      },
+      "matched_requests": {
+        "initial_request_count": 30,
+        "different_questions": [],
+        "initial_ttft_median_s": 0.1672055275121238,
+        "initial_ttft_count": 30,
+        "model_override": false
+      }
+    }
+  ],
+  "reference_attempt": "20261003T211557.382358Z",
+  "completed_at_utc": "2026-10-03T22:56:19.460+00:00",
+  "target_reached_trials": 3,
+  "near_reference_trials": 0,
+  "median_time_to_target_s": 150.06680695002433,
+  "min_time_to_target_s": 116.28082345199073,
+  "max_time_to_target_s": 152.00736279698322
+}
