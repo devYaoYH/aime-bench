@@ -153,7 +153,7 @@ def save_samples_csv(path: Path, records: list[dict]) -> None:
     ]
     temp = path.with_suffix(".csv.tmp")
     with temp.open("w", newline="") as handle:
-        writer = csv.DictWriter(handle, fieldnames=columns)
+        writer = csv.DictWriter(handle, fieldnames=columns, lineterminator="\n")
         writer.writeheader()
         for record in records:
             writer.writerow({name: record.get(name) for name in columns})

@@ -29,3 +29,5 @@ All 30 questions have eight parseable candidate integers (240 total). The initia
 The two agreement cases were Q20: `96` received 4 votes versus gold `336`; and Q26: `1` received 5 votes versus gold `113`. Thus the requested 4-of-8 agreement count is **2**, and **0** of those agreed answers are correct. The two isolated correct samples were on Q10 and Q29; neither question reached four votes for that answer.
 
 The `summary.json` wall-clock span includes the pause between initial collection and the targeted repair. It is not an inference-only latency measurement. `samples.csv` is the versioned per-sample candidate table; the ignored `questions/` records preserve each exact request, full response, and retry for audit.
+
+The versioned CSV uses LF line endings; this formatting normalization did not change any candidate values.
