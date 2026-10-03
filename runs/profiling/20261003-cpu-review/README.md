@@ -101,6 +101,14 @@ changed. This pair supports lower measured CPU use and correct buffered storage;
 it does not demonstrate a wall-time improvement attributable to instrumentation.
 See the [benchmark result and paired audit](../../experiments/nvfp4-30x1-16k-benchmark-20261003T215349Z/README.md).
 
+## Decode throughput under concurrency
+
+The [observed throughput report](../20261003-decode-throughput/README.md)
+uses prior BF16 sweep engine counters to plot aggregate and per-active-request
+decoding rates against sampled running concurrency. Those historical observations
+include changing contexts and cancellations; they are not a fixed-context scaling
+benchmark.
+
 ## Evidence and reproduction
 
 - [Prior sweep analysis](../../speedrun_sweeps/bf16-95pct-20261003T210226Z/analysis.json)
