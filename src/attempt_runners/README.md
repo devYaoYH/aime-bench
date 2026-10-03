@@ -146,6 +146,14 @@ requests, then reallocates solved slots using v4 while retaining only 30 active
 streams, an 8K/16K cumulative budget ladder, the standard server profile and the
 original four-request cap. This changes solving policy and is an optimization
 comparison, not a matched replication of the barrier control.
+`python -m src.experiments.replay_best_source_v1 --trials 1` checks the remaining
+source-version difference: it creates a detached Git checkout at the reference's
+recorded commit and runs the original v1 with fresh managed services, profiling
+and immediate writes. The primary checkout lock is held throughout. The source
+checkout is retained with raw experiment evidence; it contains no edited source.
+Grader Python is reused from the primary checkout's environment, while grader
+source/data come from the historical checkout. Each initial request and recorded
+source commit is checked against the reference after the run.
 
 `python -m src.attempt_runners.speedrun_v3 --model WeiboAI/VibeThinker-3B --benchmark`
 starts one 8K request for every selected question. The first client grader
