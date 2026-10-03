@@ -1,0 +1,164 @@
+{
+  "problem_idx": 2,
+  "started_at_utc": "2026-10-03T21:54:56.181+00:00",
+  "finished_at_utc": "2026-10-03T21:56:40.118+00:00",
+  "end_to_end_latency_s": 103.93706862803083,
+  "status": "solved",
+  "winner": {
+    "answer": 588,
+    "part": "content",
+    "kind": "literal_prose",
+    "end": 40601,
+    "line": "Thus the area of the heptagon (including sign) is 588. So answer is 588.",
+    "candidate": "588",
+    "rollout": 1,
+    "observed_at_utc": "2026-10-03T21:56:37.105+00:00",
+    "question_elapsed_s": 100.92421949101845,
+    "verification_started_at_utc": "2026-10-03T21:56:37.105+00:00",
+    "round": 1,
+    "candidate_queue_wait_s": 0.00010083895176649094,
+    "result": {
+      "dataset": {
+        "format": "jsonl",
+        "gold_field": "answer",
+        "id": "aime_2025",
+        "idx_field": "problem_idx",
+        "revision": "c94da77eb22bbd6439e62a323bec18493a421302",
+        "source": "/home/azureuser/aime-bench/grader/data/aime_2025.jsonl",
+        "year": 2025,
+        "sha256": "d5bcac5904290630fe98e3c3d1c2773260ebf59b57955382735e9ce8c0142b41"
+      },
+      "query_id": "20261003T215349.326138Z-q2-a588",
+      "seq": 18,
+      "agent_id": "20261003T215349.326138Z-q2-r1",
+      "index": 2,
+      "candidate": "588",
+      "verdict": true,
+      "queue_ahead_at_submit": 0,
+      "submitted_at": "2026-10-03T21:56:37.108866Z",
+      "picked_at": "2026-10-03T21:56:37.108951Z",
+      "answered_at": "2026-10-03T21:56:40.109077Z",
+      "queue_wait_s": 0.0,
+      "toll_s": 3.0,
+      "latency_s": 3.0
+    },
+    "verification_finished_at_utc": "2026-10-03T21:56:40.110+00:00",
+    "verification_latency_s": 3.005000280973036
+  },
+  "error": null,
+  "unique_candidates": 1,
+  "candidate_answers": [
+    "588"
+  ],
+  "rollouts": [
+    {
+      "rollout": 1,
+      "round": 1,
+      "started_at_utc": "2026-10-03T21:54:56.185+00:00",
+      "start_monotonic_s": 268744.248133379,
+      "ttft_s": 0.11776610201923177,
+      "last_token_s": 103.91599694802426,
+      "finish_reason": null,
+      "status": "cancelled",
+      "done_received": false,
+      "usage": {
+        "prompt_tokens": 707,
+        "total_tokens": 14423,
+        "completion_tokens": 13716,
+        "completion_tokens_details": null
+      },
+      "endpoint": "/v1/chat/completions",
+      "continuation_of_rollout": null,
+      "requested_max_tokens": 16384,
+      "http_status": 200,
+      "headers_received_s": 0.05449957802193239,
+      "generation_finished_at_utc": "2026-10-03T21:56:40.111+00:00",
+      "generation_end_monotonic_s": 268848.17377131,
+      "generation_latency_s": 103.92563793103909,
+      "generation_censored": true,
+      "generated_token_ids_count": 13716,
+      "prompt_token_ids_count": 707,
+      "cached_prompt_tokens": null,
+      "prefix_cache_hit_fraction": null,
+      "overhead": {
+        "enabled": false,
+        "timings": {},
+        "counters": {},
+        "maxima": {}
+      },
+      "finished_at_utc": "2026-10-03T21:56:40.118+00:00",
+      "end_to_end_latency_s": 103.93275740003446,
+      "end_to_end_scope": "rollout start through question verification/cancellation settlement",
+      "gpu": null
+    }
+  ],
+  "round": 1,
+  "first_solved": {
+    "problem_idx": 2,
+    "round": 1,
+    "rollout": 1,
+    "candidate": "588",
+    "first_solved_at_utc": "2026-10-03T21:56:40.110+00:00",
+    "first_solved_elapsed_s": 103.93080596497748,
+    "grader_answered_at_utc": "2026-10-03T21:56:40.109077Z",
+    "grader_query_id": "20261003T215349.326138Z-q2-a588"
+  },
+  "overhead": {
+    "enabled": false,
+    "timings": {},
+    "counters": {},
+    "maxima": {}
+  },
+  "rounds": [
+    {
+      "round": 1,
+      "status": "solved",
+      "started_at_utc": "2026-10-03T21:54:56.181+00:00",
+      "finished_at_utc": "2026-10-03T21:56:40.118+00:00",
+      "end_to_end_latency_s": 103.93706862803083,
+      "winner": {
+        "answer": 588,
+        "part": "content",
+        "kind": "literal_prose",
+        "end": 40601,
+        "line": "Thus the area of the heptagon (including sign) is 588. So answer is 588.",
+        "candidate": "588",
+        "rollout": 1,
+        "observed_at_utc": "2026-10-03T21:56:37.105+00:00",
+        "question_elapsed_s": 100.92421949101845,
+        "verification_started_at_utc": "2026-10-03T21:56:37.105+00:00",
+        "round": 1,
+        "candidate_queue_wait_s": 0.00010083895176649094,
+        "result": {
+          "dataset": {
+            "format": "jsonl",
+            "gold_field": "answer",
+            "id": "aime_2025",
+            "idx_field": "problem_idx",
+            "revision": "c94da77eb22bbd6439e62a323bec18493a421302",
+            "source": "/home/azureuser/aime-bench/grader/data/aime_2025.jsonl",
+            "year": 2025,
+            "sha256": "d5bcac5904290630fe98e3c3d1c2773260ebf59b57955382735e9ce8c0142b41"
+          },
+          "query_id": "20261003T215349.326138Z-q2-a588",
+          "seq": 18,
+          "agent_id": "20261003T215349.326138Z-q2-r1",
+          "index": 2,
+          "candidate": "588",
+          "verdict": true,
+          "queue_ahead_at_submit": 0,
+          "submitted_at": "2026-10-03T21:56:37.108866Z",
+          "picked_at": "2026-10-03T21:56:37.108951Z",
+          "answered_at": "2026-10-03T21:56:40.109077Z",
+          "queue_wait_s": 0.0,
+          "toll_s": 3.0,
+          "latency_s": 3.0
+        },
+        "verification_finished_at_utc": "2026-10-03T21:56:40.110+00:00",
+        "verification_latency_s": 3.005000280973036
+      },
+      "error": null
+    }
+  ],
+  "question_start_monotonic_s": 268744.243822151
+}

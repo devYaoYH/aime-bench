@@ -85,9 +85,21 @@ Example, using the existing NVFP4 model profile:
 ```
 
 The ready-to-use [benchmark configuration](../../../configs/experiments/vibe-nvfp4-30x1-16k-benchmark-v2.json)
-records these controls. This change did not launch another GPU experiment or
-relabel previous results. New benchmark trials must be compared as a distinct
-telemetry/storage configuration.
+records these controls. Benchmark trials are recorded as a distinct
+telemetry/storage configuration; historical results retain their original settings.
+
+## Remote benchmark-mode result
+
+The matched NVFP4 30×1 / 16K rerun reached 18 correct in **106.931s**, compared
+with 106.570s for the profiling-on control. Official runner CPU fell from
+52.606 to 37.509 CPU-s (28.7%), while final trace flushing took 1.943s outside
+official timing. Peak runner RAM was 269.8 MiB. The grader waited 45.808s between
+checks; the final two answers arrived late.
+
+All 30 request JSONs and prompt IDs match, but all 30 observed output paths
+changed. This pair supports lower measured CPU use and correct buffered storage;
+it does not demonstrate a wall-time improvement attributable to instrumentation.
+See the [benchmark result and paired audit](../../experiments/nvfp4-30x1-16k-benchmark-20261003T215349Z/README.md).
 
 ## Evidence and reproduction
 

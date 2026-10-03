@@ -1,0 +1,164 @@
+{
+  "problem_idx": 18,
+  "started_at_utc": "2026-10-03T21:54:56.183+00:00",
+  "finished_at_utc": "2026-10-03T21:56:00.549+00:00",
+  "end_to_end_latency_s": 64.36595431400929,
+  "status": "solved",
+  "winner": {
+    "answer": 82,
+    "part": "content",
+    "kind": "literal_prose",
+    "end": 27054,
+    "line": "Thus answer should be 82. However we need to double-check if we haven't missed any constraints or double counted. Let's verify with direct enumeration for sanity: We can manually test some sample assignments to ensure the formulas match. Let's check a few:",
+    "candidate": "82",
+    "rollout": 1,
+    "observed_at_utc": "2026-10-03T21:55:56.881+00:00",
+    "question_elapsed_s": 60.6983424500213,
+    "verification_started_at_utc": "2026-10-03T21:55:56.881+00:00",
+    "round": 1,
+    "candidate_queue_wait_s": 0.00011402403470128775,
+    "result": {
+      "dataset": {
+        "format": "jsonl",
+        "gold_field": "answer",
+        "id": "aime_2025",
+        "idx_field": "problem_idx",
+        "revision": "c94da77eb22bbd6439e62a323bec18493a421302",
+        "source": "/home/azureuser/aime-bench/grader/data/aime_2025.jsonl",
+        "year": 2025,
+        "sha256": "d5bcac5904290630fe98e3c3d1c2773260ebf59b57955382735e9ce8c0142b41"
+      },
+      "query_id": "20261003T215349.326138Z-q18-a82",
+      "seq": 17,
+      "agent_id": "20261003T215349.326138Z-q18-r1",
+      "index": 18,
+      "candidate": "82",
+      "verdict": true,
+      "queue_ahead_at_submit": 0,
+      "submitted_at": "2026-10-03T21:55:56.884959Z",
+      "picked_at": "2026-10-03T21:55:57.543796Z",
+      "answered_at": "2026-10-03T21:56:00.543912Z",
+      "queue_wait_s": 0.659,
+      "toll_s": 3.0,
+      "latency_s": 3.659
+    },
+    "verification_finished_at_utc": "2026-10-03T21:56:00.545+00:00",
+    "verification_latency_s": 3.6632971089566126
+  },
+  "error": null,
+  "unique_candidates": 1,
+  "candidate_answers": [
+    "82"
+  ],
+  "rollouts": [
+    {
+      "rollout": 1,
+      "round": 1,
+      "started_at_utc": "2026-10-03T21:54:56.206+00:00",
+      "start_monotonic_s": 268744.269078715,
+      "ttft_s": 0.1609690230106935,
+      "last_token_s": 64.33641990501201,
+      "finish_reason": null,
+      "status": "cancelled",
+      "done_received": false,
+      "usage": {
+        "prompt_tokens": 337,
+        "total_tokens": 9215,
+        "completion_tokens": 8878,
+        "completion_tokens_details": null
+      },
+      "endpoint": "/v1/chat/completions",
+      "continuation_of_rollout": null,
+      "requested_max_tokens": 16384,
+      "http_status": 200,
+      "headers_received_s": 0.040793707012198865,
+      "generation_finished_at_utc": "2026-10-03T21:56:00.545+00:00",
+      "generation_end_monotonic_s": 268808.608093181,
+      "generation_latency_s": 64.33901446597883,
+      "generation_censored": true,
+      "generated_token_ids_count": 8878,
+      "prompt_token_ids_count": 337,
+      "cached_prompt_tokens": null,
+      "prefix_cache_hit_fraction": null,
+      "overhead": {
+        "enabled": false,
+        "timings": {},
+        "counters": {},
+        "maxima": {}
+      },
+      "finished_at_utc": "2026-10-03T21:56:00.549+00:00",
+      "end_to_end_latency_s": 64.3428181129857,
+      "end_to_end_scope": "rollout start through question verification/cancellation settlement",
+      "gpu": null
+    }
+  ],
+  "round": 1,
+  "first_solved": {
+    "problem_idx": 18,
+    "round": 1,
+    "rollout": 1,
+    "candidate": "82",
+    "first_solved_at_utc": "2026-10-03T21:56:00.545+00:00",
+    "first_solved_elapsed_s": 64.36534691596171,
+    "grader_answered_at_utc": "2026-10-03T21:56:00.543912Z",
+    "grader_query_id": "20261003T215349.326138Z-q18-a82"
+  },
+  "overhead": {
+    "enabled": false,
+    "timings": {},
+    "counters": {},
+    "maxima": {}
+  },
+  "rounds": [
+    {
+      "round": 1,
+      "status": "solved",
+      "started_at_utc": "2026-10-03T21:54:56.183+00:00",
+      "finished_at_utc": "2026-10-03T21:56:00.549+00:00",
+      "end_to_end_latency_s": 64.36595431400929,
+      "winner": {
+        "answer": 82,
+        "part": "content",
+        "kind": "literal_prose",
+        "end": 27054,
+        "line": "Thus answer should be 82. However we need to double-check if we haven't missed any constraints or double counted. Let's verify with direct enumeration for sanity: We can manually test some sample assignments to ensure the formulas match. Let's check a few:",
+        "candidate": "82",
+        "rollout": 1,
+        "observed_at_utc": "2026-10-03T21:55:56.881+00:00",
+        "question_elapsed_s": 60.6983424500213,
+        "verification_started_at_utc": "2026-10-03T21:55:56.881+00:00",
+        "round": 1,
+        "candidate_queue_wait_s": 0.00011402403470128775,
+        "result": {
+          "dataset": {
+            "format": "jsonl",
+            "gold_field": "answer",
+            "id": "aime_2025",
+            "idx_field": "problem_idx",
+            "revision": "c94da77eb22bbd6439e62a323bec18493a421302",
+            "source": "/home/azureuser/aime-bench/grader/data/aime_2025.jsonl",
+            "year": 2025,
+            "sha256": "d5bcac5904290630fe98e3c3d1c2773260ebf59b57955382735e9ce8c0142b41"
+          },
+          "query_id": "20261003T215349.326138Z-q18-a82",
+          "seq": 17,
+          "agent_id": "20261003T215349.326138Z-q18-r1",
+          "index": 18,
+          "candidate": "82",
+          "verdict": true,
+          "queue_ahead_at_submit": 0,
+          "submitted_at": "2026-10-03T21:55:56.884959Z",
+          "picked_at": "2026-10-03T21:55:57.543796Z",
+          "answered_at": "2026-10-03T21:56:00.543912Z",
+          "queue_wait_s": 0.659,
+          "toll_s": 3.0,
+          "latency_s": 3.659
+        },
+        "verification_finished_at_utc": "2026-10-03T21:56:00.545+00:00",
+        "verification_latency_s": 3.6632971089566126
+      },
+      "error": null
+    }
+  ],
+  "question_start_monotonic_s": 268744.245942514
+}
