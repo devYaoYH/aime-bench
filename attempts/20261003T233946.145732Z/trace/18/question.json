@@ -1,0 +1,215 @@
+{
+  "problem_idx": 18,
+  "started_at_utc": "2026-10-03T23:39:46.936+00:00",
+  "finished_at_utc": "2026-10-03T23:40:53.444+00:00",
+  "end_to_end_latency_s": 66.50841793295695,
+  "status": "solved",
+  "winner": {
+    "answer": 82,
+    "part": "content",
+    "kind": "literal_prose",
+    "end": 30617,
+    "line": "Thus answer should be 82. However, need to double-check for any missing constraints: We assumed that each outer edge pair can be assigned arbitrarily as long as their sum equals R. But we must verify that the outer edges are distinct variables, each appears in only one square, so indeed each pair (like H0_0 and V0_0 for BL) are independent except they must sum to R. So there are exactly f(R) ways: 1 if R=0 or 2, 2 if R=1. That is correct.",
+    "candidate": "82",
+    "rollout": 2,
+    "observed_at_utc": "2026-10-03T23:40:50.437+00:00",
+    "question_elapsed_s": 7.02510330901714,
+    "verification_started_at_utc": "2026-10-03T23:40:50.438+00:00",
+    "round": 2,
+    "candidate_queue_wait_s": 0.0006877889973111451,
+    "result": {
+      "dataset": {
+        "format": "jsonl",
+        "gold_field": "answer",
+        "id": "aime_2025",
+        "idx_field": "problem_idx",
+        "revision": "c94da77eb22bbd6439e62a323bec18493a421302",
+        "source": "/home/azureuser/aime-bench/grader/data/aime_2025.jsonl",
+        "year": 2025,
+        "sha256": "d5bcac5904290630fe98e3c3d1c2773260ebf59b57955382735e9ce8c0142b41"
+      },
+      "query_id": "20261003T233946.145732Z-q18-a82",
+      "seq": 17,
+      "agent_id": "20261003T233946.145732Z-q18-r2",
+      "index": 18,
+      "candidate": "82",
+      "verdict": true,
+      "queue_ahead_at_submit": 0,
+      "submitted_at": "2026-10-03T23:40:50.439765Z",
+      "picked_at": "2026-10-03T23:40:50.439845Z",
+      "answered_at": "2026-10-03T23:40:53.439971Z",
+      "queue_wait_s": 0.0,
+      "toll_s": 3.0,
+      "latency_s": 3.0
+    },
+    "verification_finished_at_utc": "2026-10-03T23:40:53.441+00:00",
+    "verification_latency_s": 3.002834268962033
+  },
+  "error": null,
+  "unique_candidates": 1,
+  "candidate_answers": [
+    "82"
+  ],
+  "rollouts": [
+    {
+      "rollout": 1,
+      "round": 1,
+      "started_at_utc": "2026-10-03T23:39:46.948+00:00",
+      "start_monotonic_s": 275035.010820497,
+      "ttft_s": 0.15502260701032355,
+      "last_token_s": 56.38254759000847,
+      "finish_reason": "length",
+      "status": "completed",
+      "done_received": true,
+      "usage": {
+        "prompt_tokens": 337,
+        "total_tokens": 8529,
+        "completion_tokens": 8192,
+        "prompt_tokens_details": {
+          "cached_tokens": 64,
+          "created_cache_tokens": 272
+        }
+      },
+      "endpoint": "/v1/chat/completions",
+      "continuation_of_rollout": null,
+      "requested_max_tokens": 8192,
+      "http_status": 200,
+      "headers_received_s": 0.03481872397242114,
+      "generation_finished_at_utc": "2026-10-03T23:40:43.333+00:00",
+      "generation_end_monotonic_s": 275091.39639053,
+      "generation_latency_s": 56.385570032987744,
+      "generation_censored": true,
+      "generated_token_ids_count": 8192,
+      "prompt_token_ids_count": 337,
+      "cached_prompt_tokens": 64,
+      "prefix_cache_hit_fraction": 0.18991097922848665,
+      "overhead": {
+        "enabled": false,
+        "timings": {},
+        "counters": {},
+        "maxima": {}
+      },
+      "finished_at_utc": "2026-10-03T23:40:43.365+00:00",
+      "end_to_end_latency_s": 56.41722184896935,
+      "end_to_end_scope": "rollout start through question verification/cancellation settlement",
+      "gpu": null
+    },
+    {
+      "rollout": 2,
+      "round": 2,
+      "started_at_utc": "2026-10-03T23:40:43.473+00:00",
+      "start_monotonic_s": 275091.535841989,
+      "ttft_s": 0.17476054799044505,
+      "last_token_s": 9.962900358019397,
+      "finish_reason": null,
+      "status": "cancelled",
+      "done_received": false,
+      "usage": {
+        "prompt_tokens": 8529,
+        "total_tokens": 9849,
+        "completion_tokens": 1320
+      },
+      "endpoint": "/v1/completions",
+      "continuation_of_rollout": 1,
+      "requested_max_tokens": 16384,
+      "http_status": 200,
+      "headers_received_s": 0.06774718803353608,
+      "generation_finished_at_utc": "2026-10-03T23:40:53.441+00:00",
+      "generation_end_monotonic_s": 275101.504156822,
+      "generation_latency_s": 9.968314833007753,
+      "generation_censored": true,
+      "generated_token_ids_count": 1320,
+      "prompt_token_ids_count": 8529,
+      "cached_prompt_tokens": null,
+      "prefix_cache_hit_fraction": null,
+      "overhead": {
+        "enabled": false,
+        "timings": {},
+        "counters": {},
+        "maxima": {}
+      },
+      "finished_at_utc": "2026-10-03T23:40:53.444+00:00",
+      "end_to_end_latency_s": 9.971458874002565,
+      "end_to_end_scope": "rollout start through question verification/cancellation settlement",
+      "gpu": null
+    }
+  ],
+  "round": 2,
+  "first_solved": {
+    "problem_idx": 18,
+    "round": 2,
+    "rollout": 2,
+    "candidate": "82",
+    "first_solved_at_utc": "2026-10-03T23:40:53.441+00:00",
+    "first_solved_elapsed_s": 66.50859526597196,
+    "grader_answered_at_utc": "2026-10-03T23:40:53.439971Z",
+    "grader_query_id": "20261003T233946.145732Z-q18-a82"
+  },
+  "overhead": {
+    "enabled": false,
+    "timings": {},
+    "counters": {},
+    "maxima": {}
+  },
+  "rounds": [
+    {
+      "round": 1,
+      "status": "unsolved",
+      "started_at_utc": "2026-10-03T23:39:46.936+00:00",
+      "finished_at_utc": "2026-10-03T23:40:43.365+00:00",
+      "end_to_end_latency_s": 56.429159415944014,
+      "winner": null,
+      "error": null
+    },
+    {
+      "round": 2,
+      "status": "solved",
+      "started_at_utc": "2026-10-03T23:40:43.412+00:00",
+      "finished_at_utc": "2026-10-03T23:40:53.444+00:00",
+      "end_to_end_latency_s": 10.032213739992585,
+      "winner": {
+        "answer": 82,
+        "part": "content",
+        "kind": "literal_prose",
+        "end": 30617,
+        "line": "Thus answer should be 82. However, need to double-check for any missing constraints: We assumed that each outer edge pair can be assigned arbitrarily as long as their sum equals R. But we must verify that the outer edges are distinct variables, each appears in only one square, so indeed each pair (like H0_0 and V0_0 for BL) are independent except they must sum to R. So there are exactly f(R) ways: 1 if R=0 or 2, 2 if R=1. That is correct.",
+        "candidate": "82",
+        "rollout": 2,
+        "observed_at_utc": "2026-10-03T23:40:50.437+00:00",
+        "question_elapsed_s": 7.02510330901714,
+        "verification_started_at_utc": "2026-10-03T23:40:50.438+00:00",
+        "round": 2,
+        "candidate_queue_wait_s": 0.0006877889973111451,
+        "result": {
+          "dataset": {
+            "format": "jsonl",
+            "gold_field": "answer",
+            "id": "aime_2025",
+            "idx_field": "problem_idx",
+            "revision": "c94da77eb22bbd6439e62a323bec18493a421302",
+            "source": "/home/azureuser/aime-bench/grader/data/aime_2025.jsonl",
+            "year": 2025,
+            "sha256": "d5bcac5904290630fe98e3c3d1c2773260ebf59b57955382735e9ce8c0142b41"
+          },
+          "query_id": "20261003T233946.145732Z-q18-a82",
+          "seq": 17,
+          "agent_id": "20261003T233946.145732Z-q18-r2",
+          "index": 18,
+          "candidate": "82",
+          "verdict": true,
+          "queue_ahead_at_submit": 0,
+          "submitted_at": "2026-10-03T23:40:50.439765Z",
+          "picked_at": "2026-10-03T23:40:50.439845Z",
+          "answered_at": "2026-10-03T23:40:53.439971Z",
+          "queue_wait_s": 0.0,
+          "toll_s": 3.0,
+          "latency_s": 3.0
+        },
+        "verification_finished_at_utc": "2026-10-03T23:40:53.441+00:00",
+        "verification_latency_s": 3.002834268962033
+      },
+      "error": null
+    }
+  ],
+  "question_start_monotonic_s": 275034.99888293
+}

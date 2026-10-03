@@ -1,0 +1,115 @@
+{
+  "problem_idx": 12,
+  "started_at_utc": "2026-10-03T23:33:18.430+00:00",
+  "finished_at_utc": "2026-10-03T23:34:15.727+00:00",
+  "end_to_end_latency_s": 57.297510781965684,
+  "status": "solved",
+  "winner": {
+    "answer": 510,
+    "part": "content",
+    "kind": "literal_prose",
+    "end": 24644,
+    "line": "Thus answer is 510. However, we must verify that we didn't miss any factor due to scaling of the coordinate transformation from (x,y) to coordinates on plane. Actually the mapping (x,y) -> (x,y,z) where z = 75 - x - y is a linear map from R^2 to the plane. The map is (x,y) -> (x,y,75 - x - y). This map is an affine embedding. The area scaling factor of this map (the Jacobian of the mapping from (x,y) coordinates to the plane) is equal to the magnitude of the cross product of the partial derivatives of the parametrization. The parametric representation: r(x,y) = (x, y, 75 - x - y). Then r_x = (1, 0, -1), r_y = (0, 1, -1). The cross product r_x × r_y = determinant |i j k; 1 0 -1; 0 1 -1| = i*(0*(-1) - (-1)*1) - j*(1*(-1) - (-1)*0) + k*(1*1 - 0*0) = i*(0 + 1) - j*(-1 - 0) + k*(1 - 0) = (1, 1, 1). So magnitude = sqrt(1^2 + 1^2 + 1^2) = sqrt(3). That is the area scaling factor: area in the plane = sqrt(3) times area in the parameter domain (the xy-plane). Indeed, that matches the factor we used. So area = sqrt(3) * area in xy-plane.",
+    "candidate": "510",
+    "rollout": 1,
+    "observed_at_utc": "2026-10-03T23:34:12.724+00:00",
+    "question_elapsed_s": 54.2938327419688,
+    "verification_started_at_utc": "2026-10-03T23:34:12.724+00:00",
+    "round": 1,
+    "candidate_queue_wait_s": 9.403598960489035e-05,
+    "result": {
+      "dataset": {
+        "format": "jsonl",
+        "gold_field": "answer",
+        "id": "aime_2025",
+        "idx_field": "problem_idx",
+        "revision": "c94da77eb22bbd6439e62a323bec18493a421302",
+        "source": "/home/azureuser/aime-bench/grader/data/aime_2025.jsonl",
+        "year": 2025,
+        "sha256": "d5bcac5904290630fe98e3c3d1c2773260ebf59b57955382735e9ce8c0142b41"
+      },
+      "query_id": "20261003T233317.639206Z-q12-a510",
+      "seq": 17,
+      "agent_id": "20261003T233317.639206Z-q12-r1",
+      "index": 12,
+      "candidate": "510",
+      "verdict": true,
+      "queue_ahead_at_submit": 0,
+      "submitted_at": "2026-10-03T23:34:12.725922Z",
+      "picked_at": "2026-10-03T23:34:12.726017Z",
+      "answered_at": "2026-10-03T23:34:15.726135Z",
+      "queue_wait_s": 0.0,
+      "toll_s": 3.0,
+      "latency_s": 3.0
+    },
+    "verification_finished_at_utc": "2026-10-03T23:34:15.727+00:00",
+    "verification_latency_s": 3.0033331440063193
+  },
+  "error": null,
+  "unique_candidates": 1,
+  "candidate_answers": [
+    "510"
+  ],
+  "rollouts": [
+    {
+      "rollout": 1,
+      "round": 1,
+      "started_at_utc": "2026-10-03T23:33:18.440+00:00",
+      "start_monotonic_s": 274646.503166872,
+      "ttft_s": 0.2824405569699593,
+      "last_token_s": 56.08071641699644,
+      "finish_reason": "length",
+      "status": "completed",
+      "done_received": true,
+      "usage": {
+        "prompt_tokens": 179,
+        "total_tokens": 8371,
+        "completion_tokens": 8192,
+        "prompt_tokens_details": {
+          "cached_tokens": 64,
+          "created_cache_tokens": 112
+        }
+      },
+      "endpoint": "/v1/chat/completions",
+      "continuation_of_rollout": null,
+      "requested_max_tokens": 8192,
+      "http_status": 200,
+      "headers_received_s": 0.08043464296497405,
+      "generation_finished_at_utc": "2026-10-03T23:34:14.535+00:00",
+      "generation_end_monotonic_s": 274702.597971727,
+      "generation_latency_s": 56.09480485500535,
+      "generation_censored": true,
+      "generated_token_ids_count": 8192,
+      "prompt_token_ids_count": 179,
+      "cached_prompt_tokens": 64,
+      "prefix_cache_hit_fraction": 0.3575418994413408,
+      "overhead": {
+        "enabled": false,
+        "timings": {},
+        "counters": {},
+        "maxima": {}
+      },
+      "finished_at_utc": "2026-10-03T23:34:15.727+00:00",
+      "end_to_end_latency_s": 57.2870794669725,
+      "end_to_end_scope": "rollout start through question verification/cancellation settlement",
+      "gpu": null
+    }
+  ],
+  "round": 1,
+  "first_solved": {
+    "problem_idx": 12,
+    "round": 1,
+    "rollout": 1,
+    "candidate": "510",
+    "first_solved_at_utc": "2026-10-03T23:34:15.727+00:00",
+    "first_solved_elapsed_s": 57.30046395602403,
+    "grader_answered_at_utc": "2026-10-03T23:34:15.726135Z",
+    "grader_query_id": "20261003T233317.639206Z-q12-a510"
+  },
+  "overhead": {
+    "enabled": false,
+    "timings": {},
+    "counters": {},
+    "maxima": {}
+  }
+}

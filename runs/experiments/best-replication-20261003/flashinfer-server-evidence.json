@@ -1,0 +1,143 @@
+{
+  "nvfp4-flashinfer-best-replicate-20261003T233008Z": {
+    "backend": [
+      "(EngineCore pid=120756) INFO 10-03 23:30:48 [__init__.py:1186] Using MarlinNvFp4LinearKernel for NVFP4 GEMM",
+      "(EngineCore pid=120756) INFO 10-03 23:30:49 [cuda.py:466] Using AttentionBackendEnum.FLASHINFER backend."
+    ],
+    "compile": [
+      "(EngineCore pid=120756) INFO 10-03 23:31:15 [monitor.py:62] [backbone] torch.compile took 23.19 s in total"
+    ],
+    "warnings": [
+      "(EngineCore pid=120756) INFO 10-03 23:31:30 [jit_monitor.py:84] Kernel JIT monitor activated; monitored JIT compilations during inference will use mode=warn.",
+      "(EngineCore pid=120756) WARNING 10-03 23:31:33 [jit_monitor.py:140] Triton kernel JIT compilation during inference: _topp_sb_stats_kernel. This causes a latency spike; consider extending warmup to cover this shape/config.",
+      "(EngineCore pid=120756) WARNING 10-03 23:31:34 [jit_monitor.py:140] Triton kernel JIT compilation during inference: _topp_sb_step_kernel. This causes a latency spike; consider extending warmup to cover this shape/config.",
+      "(EngineCore pid=120756) WARNING 10-03 23:31:35 [jit_monitor.py:140] Triton kernel JIT compilation during inference: _topp_sb_mask_kernel. This causes a latency spike; consider extending warmup to cover this shape/config.",
+      "(EngineCore pid=120756) WARNING 10-03 23:31:35 [jit_monitor.py:140] Triton kernel JIT compilation during inference: _gumbel_sample_kernel. This causes a latency spike; consider extending warmup to cover this shape/config."
+    ],
+    "throughput": [
+      "(APIServer pid=120493) INFO 10-03 23:31:42 [loggers.py:328] Engine 000: Avg prompt throughput: 570.0 tokens/s, Avg generation throughput: 1028.6 tokens/s, Running: 30 reqs, Waiting: 0 reqs, GPU KV cache usage: 0.8%, Prefix cache hit rate: 27.2%",
+      "(APIServer pid=120493) INFO 10-03 23:31:52 [loggers.py:328] Engine 000: Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 4802.2 tokens/s, Running: 28 reqs, Waiting: 0 reqs, GPU KV cache usage: 3.0%, Prefix cache hit rate: 27.2%",
+      "(APIServer pid=120493) INFO 10-03 23:32:02 [loggers.py:328] Engine 000: Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 3916.3 tokens/s, Running: 24 reqs, Waiting: 0 reqs, GPU KV cache usage: 4.3%, Prefix cache hit rate: 27.2%",
+      "(APIServer pid=120493) INFO 10-03 23:32:12 [loggers.py:328] Engine 000: Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 3168.2 tokens/s, Running: 20 reqs, Waiting: 0 reqs, GPU KV cache usage: 5.0%, Prefix cache hit rate: 27.2%",
+      "(APIServer pid=120493) INFO 10-03 23:32:22 [loggers.py:328] Engine 000: Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 2600.0 tokens/s, Running: 18 reqs, Waiting: 0 reqs, GPU KV cache usage: 5.6%, Prefix cache hit rate: 27.2%",
+      "(APIServer pid=120493) INFO 10-03 23:32:32 [loggers.py:328] Engine 000: Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 2261.3 tokens/s, Running: 15 reqs, Waiting: 0 reqs, GPU KV cache usage: 5.7%, Prefix cache hit rate: 27.2%",
+      "(APIServer pid=120493) INFO 10-03 23:32:42 [loggers.py:328] Engine 000: Avg prompt throughput: 11.0 tokens/s, Avg generation throughput: 1678.6 tokens/s, Running: 15 reqs, Waiting: 0 reqs, GPU KV cache usage: 6.5%, Prefix cache hit rate: 95.4%",
+      "(APIServer pid=120493) INFO 10-03 23:32:52 [loggers.py:328] Engine 000: Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 1928.3 tokens/s, Running: 14 reqs, Waiting: 0 reqs, GPU KV cache usage: 7.0%, Prefix cache hit rate: 95.4%",
+      "(APIServer pid=120493) INFO 10-03 23:33:02 [loggers.py:328] Engine 000: Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 1781.9 tokens/s, Running: 14 reqs, Waiting: 0 reqs, GPU KV cache usage: 7.8%, Prefix cache hit rate: 95.4%",
+      "(APIServer pid=120493) INFO 10-03 23:33:12 [loggers.py:328] Engine 000: Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 1683.6 tokens/s, Running: 13 reqs, Waiting: 0 reqs, GPU KV cache usage: 8.0%, Prefix cache hit rate: 95.4%",
+      "(APIServer pid=120493) INFO 10-03 23:33:22 [loggers.py:328] Engine 000: Avg prompt throughput: 619.3 tokens/s, Avg generation throughput: 2705.6 tokens/s, Running: 30 reqs, Waiting: 0 reqs, GPU KV cache usage: 1.3%, Prefix cache hit rate: 27.2%",
+      "(APIServer pid=120493) INFO 10-03 23:33:32 [loggers.py:328] Engine 000: Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 4618.2 tokens/s, Running: 27 reqs, Waiting: 0 reqs, GPU KV cache usage: 3.3%, Prefix cache hit rate: 27.2%",
+      "(APIServer pid=120493) INFO 10-03 23:33:42 [loggers.py:328] Engine 000: Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 3758.9 tokens/s, Running: 23 reqs, Waiting: 0 reqs, GPU KV cache usage: 4.5%, Prefix cache hit rate: 27.2%",
+      "(APIServer pid=120493) INFO 10-03 23:33:52 [loggers.py:328] Engine 000: Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 3049.8 tokens/s, Running: 20 reqs, Waiting: 0 reqs, GPU KV cache usage: 5.2%, Prefix cache hit rate: 27.2%",
+      "(APIServer pid=120493) INFO 10-03 23:34:02 [loggers.py:328] Engine 000: Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 2532.8 tokens/s, Running: 17 reqs, Waiting: 0 reqs, GPU KV cache usage: 5.5%, Prefix cache hit rate: 27.2%",
+      "(APIServer pid=120493) INFO 10-03 23:34:12 [loggers.py:328] Engine 000: Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 2212.6 tokens/s, Running: 14 reqs, Waiting: 0 reqs, GPU KV cache usage: 5.5%, Prefix cache hit rate: 27.2%",
+      "(APIServer pid=120493) INFO 10-03 23:34:22 [loggers.py:328] Engine 000: Avg prompt throughput: 10.6 tokens/s, Avg generation throughput: 1635.7 tokens/s, Running: 13 reqs, Waiting: 0 reqs, GPU KV cache usage: 5.9%, Prefix cache hit rate: 94.7%",
+      "(APIServer pid=120493) INFO 10-03 23:34:32 [loggers.py:328] Engine 000: Avg prompt throughput: 619.3 tokens/s, Avg generation throughput: 3781.1 tokens/s, Running: 30 reqs, Waiting: 0 reqs, GPU KV cache usage: 2.0%, Prefix cache hit rate: 27.2%",
+      "(APIServer pid=120493) INFO 10-03 23:34:42 [loggers.py:328] Engine 000: Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 4336.1 tokens/s, Running: 26 reqs, Waiting: 0 reqs, GPU KV cache usage: 3.7%, Prefix cache hit rate: 27.2%",
+      "(APIServer pid=120493) INFO 10-03 23:34:52 [loggers.py:328] Engine 000: Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 3496.5 tokens/s, Running: 22 reqs, Waiting: 0 reqs, GPU KV cache usage: 4.7%, Prefix cache hit rate: 27.2%",
+      "(APIServer pid=120493) INFO 10-03 23:35:02 [loggers.py:328] Engine 000: Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 2885.0 tokens/s, Running: 19 reqs, Waiting: 0 reqs, GPU KV cache usage: 5.3%, Prefix cache hit rate: 27.2%",
+      "(APIServer pid=120493) INFO 10-03 23:35:12 [loggers.py:328] Engine 000: Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 2419.1 tokens/s, Running: 16 reqs, Waiting: 0 reqs, GPU KV cache usage: 5.5%, Prefix cache hit rate: 27.2%",
+      "(APIServer pid=120493) INFO 10-03 23:35:22 [loggers.py:328] Engine 000: Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 1894.1 tokens/s, Running: 0 reqs, Waiting: 0 reqs, GPU KV cache usage: 0.0%, Prefix cache hit rate: 27.2%"
+    ],
+    "shutdown": [
+      "(EngineCore pid=120756) INFO 10-03 23:35:31 [core.py:1412] [shutdown] EngineCore: trigger received signal=SIGTERM",
+      "(APIServer pid=120493) INFO 10-03 23:35:31 [launcher.py:128] [shutdown] API server: shutdown triggered",
+      "(APIServer pid=120493) INFO 10-03 23:35:31 [launcher.py:144] [shutdown] API server: stopping engine client mode=abort timeout=0s",
+      "(EngineCore pid=120756) INFO 10-03 23:35:31 [core.py:1561] [shutdown] EngineCore: start mode=abort timeout=0s",
+      "(EngineCore pid=120756) INFO 10-03 23:35:31 [core.py:1592] [shutdown] EngineCore: request processing complete; starting resource teardown",
+      "(EngineCore pid=120756) INFO 10-03 23:35:31 [core.py:1425] [shutdown] EngineCore: exiting busy loop",
+      "(APIServer pid=120493) INFO 10-03 23:35:31 [core_client.py:762] [shutdown] MPClient: start timeout=0s",
+      "(APIServer pid=120493) INFO 10-03 23:35:31 [core_client.py:764] [shutdown] MPClient: stopping engine manager",
+      "(APIServer pid=120493) INFO 10-03 23:35:31 [utils.py:655] [shutdown] Process manager: send sigterm to process EngineCore",
+      "(APIServer pid=120493) WARNING 10-03 23:35:31 [utils.py:675] [shutdown] Process manager: force killing remaining processes count=1",
+      "(APIServer pid=120493) WARNING 10-03 23:35:31 [utils.py:680] [shutdown] Process manager: force killing remaining process EngineCore pid 120756",
+      "(APIServer pid=120493) INFO 10-03 23:35:31 [core_client.py:766] [shutdown] MPClient: engine manager stopped",
+      "(APIServer pid=120493) INFO 10-03 23:35:31 [core_client.py:767] [shutdown] MPClient: cleaning up background resources",
+      "(APIServer pid=120493) INFO 10-03 23:35:31 [core_client.py:769] [shutdown] MPClient: complete",
+      "(APIServer pid=120493) INFO 10-03 23:35:31 [launcher.py:153] [shutdown] API server: engine client stopped",
+      "(APIServer pid=120493) INFO 10-03 23:35:31 [launcher.py:156] [shutdown] API server: signalling HTTP server shutdown",
+      "(APIServer pid=120493) INFO 10-03 23:35:31 [launcher.py:178] [shutdown] API server: shutting down FastAPI HTTP server",
+      "INFO:     Waiting for application shutdown.",
+      "INFO:     Application shutdown complete.",
+      "/usr/lib/python3.12/multiprocessing/resource_tracker.py:254: UserWarning: resource_tracker: There appear to be 1 leaked semaphore objects to clean up at shutdown"
+    ]
+  },
+  "nvfp4-flashinfer-validation-20261003T233628Z": {
+    "backend": [
+      "(EngineCore pid=122317) INFO 10-03 23:37:08 [__init__.py:1186] Using MarlinNvFp4LinearKernel for NVFP4 GEMM",
+      "(EngineCore pid=122317) INFO 10-03 23:37:09 [cuda.py:466] Using AttentionBackendEnum.FLASHINFER backend."
+    ],
+    "compile": [
+      "(EngineCore pid=122317) INFO 10-03 23:37:12 [monitor.py:62] [backbone] torch.compile took 0.20 s in total"
+    ],
+    "warnings": [
+      "(EngineCore pid=122317) INFO 10-03 23:37:24 [jit_monitor.py:84] Kernel JIT monitor activated; monitored JIT compilations during inference will use mode=warn.",
+      "(EngineCore pid=122317) WARNING 10-03 23:37:27 [jit_monitor.py:140] Triton kernel JIT compilation during inference: _topp_sb_stats_kernel. This causes a latency spike; consider extending warmup to cover this shape/config.",
+      "(EngineCore pid=122317) WARNING 10-03 23:37:27 [jit_monitor.py:140] Triton kernel JIT compilation during inference: _topp_sb_step_kernel. This causes a latency spike; consider extending warmup to cover this shape/config.",
+      "(EngineCore pid=122317) WARNING 10-03 23:37:27 [jit_monitor.py:140] Triton kernel JIT compilation during inference: _topp_sb_mask_kernel. This causes a latency spike; consider extending warmup to cover this shape/config.",
+      "(EngineCore pid=122317) WARNING 10-03 23:37:27 [jit_monitor.py:140] Triton kernel JIT compilation during inference: _gumbel_sample_kernel. This causes a latency spike; consider extending warmup to cover this shape/config."
+    ],
+    "throughput": [
+      "(APIServer pid=122108) INFO 10-03 23:37:36 [loggers.py:328] Engine 000: Avg prompt throughput: 571.0 tokens/s, Avg generation throughput: 4131.5 tokens/s, Running: 29 reqs, Waiting: 0 reqs, GPU KV cache usage: 2.3%, Prefix cache hit rate: 27.2%",
+      "(APIServer pid=122108) INFO 10-03 23:37:46 [loggers.py:328] Engine 000: Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 4147.6 tokens/s, Running: 25 reqs, Waiting: 0 reqs, GPU KV cache usage: 3.9%, Prefix cache hit rate: 27.2%",
+      "(APIServer pid=122108) INFO 10-03 23:37:56 [loggers.py:328] Engine 000: Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 3403.1 tokens/s, Running: 22 reqs, Waiting: 0 reqs, GPU KV cache usage: 4.9%, Prefix cache hit rate: 27.2%",
+      "(APIServer pid=122108) INFO 10-03 23:38:06 [loggers.py:328] Engine 000: Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 2770.8 tokens/s, Running: 19 reqs, Waiting: 0 reqs, GPU KV cache usage: 5.5%, Prefix cache hit rate: 27.2%",
+      "(APIServer pid=122108) INFO 10-03 23:38:16 [loggers.py:328] Engine 000: Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 2333.3 tokens/s, Running: 17 reqs, Waiting: 0 reqs, GPU KV cache usage: 6.0%, Prefix cache hit rate: 27.2%",
+      "(APIServer pid=122108) INFO 10-03 23:38:26 [loggers.py:328] Engine 000: Avg prompt throughput: 13.2 tokens/s, Avg generation throughput: 1949.4 tokens/s, Running: 16 reqs, Waiting: 0 reqs, GPU KV cache usage: 6.6%, Prefix cache hit rate: 95.6%",
+      "(APIServer pid=122108) INFO 10-03 23:38:36 [loggers.py:328] Engine 000: Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 2031.3 tokens/s, Running: 15 reqs, Waiting: 0 reqs, GPU KV cache usage: 7.1%, Prefix cache hit rate: 95.6%",
+      "(APIServer pid=122108) INFO 10-03 23:38:46 [loggers.py:328] Engine 000: Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 1867.3 tokens/s, Running: 14 reqs, Waiting: 0 reqs, GPU KV cache usage: 7.5%, Prefix cache hit rate: 95.6%",
+      "(APIServer pid=122108) INFO 10-03 23:38:56 [loggers.py:328] Engine 000: Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 1731.6 tokens/s, Running: 14 reqs, Waiting: 0 reqs, GPU KV cache usage: 8.3%, Prefix cache hit rate: 95.6%",
+      "(APIServer pid=122108) INFO 10-03 23:39:06 [loggers.py:328] Engine 000: Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 1651.8 tokens/s, Running: 14 reqs, Waiting: 0 reqs, GPU KV cache usage: 9.1%, Prefix cache hit rate: 95.6%",
+      "(APIServer pid=122108) INFO 10-03 23:39:16 [loggers.py:328] Engine 000: Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 1584.6 tokens/s, Running: 14 reqs, Waiting: 0 reqs, GPU KV cache usage: 9.8%, Prefix cache hit rate: 95.6%",
+      "(APIServer pid=122108) INFO 10-03 23:39:26 [loggers.py:328] Engine 000: Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 1525.8 tokens/s, Running: 14 reqs, Waiting: 0 reqs, GPU KV cache usage: 10.6%, Prefix cache hit rate: 95.6%",
+      "(APIServer pid=122108) INFO 10-03 23:39:36 [loggers.py:328] Engine 000: Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 1472.5 tokens/s, Running: 14 reqs, Waiting: 0 reqs, GPU KV cache usage: 11.3%, Prefix cache hit rate: 95.6%",
+      "(APIServer pid=122108) INFO 10-03 23:39:46 [loggers.py:328] Engine 000: Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 1016.3 tokens/s, Running: 0 reqs, Waiting: 0 reqs, GPU KV cache usage: 0.0%, Prefix cache hit rate: 95.6%",
+      "(APIServer pid=122108) INFO 10-03 23:39:56 [loggers.py:328] Engine 000: Avg prompt throughput: 619.2 tokens/s, Avg generation throughput: 4777.4 tokens/s, Running: 29 reqs, Waiting: 0 reqs, GPU KV cache usage: 2.5%, Prefix cache hit rate: 27.2%",
+      "(APIServer pid=122108) INFO 10-03 23:40:06 [loggers.py:328] Engine 000: Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 4132.7 tokens/s, Running: 25 reqs, Waiting: 0 reqs, GPU KV cache usage: 4.0%, Prefix cache hit rate: 27.2%",
+      "(APIServer pid=122108) INFO 10-03 23:40:16 [loggers.py:328] Engine 000: Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 3407.0 tokens/s, Running: 22 reqs, Waiting: 0 reqs, GPU KV cache usage: 5.0%, Prefix cache hit rate: 27.2%",
+      "(APIServer pid=122108) INFO 10-03 23:40:26 [loggers.py:328] Engine 000: Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 2841.7 tokens/s, Running: 20 reqs, Waiting: 0 reqs, GPU KV cache usage: 5.9%, Prefix cache hit rate: 27.2%",
+      "(APIServer pid=122108) INFO 10-03 23:40:36 [loggers.py:328] Engine 000: Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 2398.7 tokens/s, Running: 15 reqs, Waiting: 0 reqs, GPU KV cache usage: 5.3%, Prefix cache hit rate: 27.2%",
+      "(APIServer pid=122108) INFO 10-03 23:40:46 [loggers.py:328] Engine 000: Avg prompt throughput: 11.0 tokens/s, Avg generation throughput: 2049.4 tokens/s, Running: 15 reqs, Waiting: 0 reqs, GPU KV cache usage: 6.3%, Prefix cache hit rate: 95.4%",
+      "(APIServer pid=122108) INFO 10-03 23:40:56 [loggers.py:328] Engine 000: Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 1955.9 tokens/s, Running: 14 reqs, Waiting: 0 reqs, GPU KV cache usage: 6.8%, Prefix cache hit rate: 95.4%",
+      "(APIServer pid=122108) INFO 10-03 23:41:06 [loggers.py:328] Engine 000: Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 1800.3 tokens/s, Running: 14 reqs, Waiting: 0 reqs, GPU KV cache usage: 7.7%, Prefix cache hit rate: 95.4%",
+      "(APIServer pid=122108) INFO 10-03 23:41:16 [loggers.py:328] Engine 000: Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 1330.5 tokens/s, Running: 0 reqs, Waiting: 0 reqs, GPU KV cache usage: 0.0%, Prefix cache hit rate: 95.4%",
+      "(APIServer pid=122108) INFO 10-03 23:41:26 [loggers.py:328] Engine 000: Avg prompt throughput: 619.3 tokens/s, Avg generation throughput: 4662.3 tokens/s, Running: 29 reqs, Waiting: 0 reqs, GPU KV cache usage: 2.4%, Prefix cache hit rate: 27.2%",
+      "(APIServer pid=122108) INFO 10-03 23:41:36 [loggers.py:328] Engine 000: Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 4177.1 tokens/s, Running: 26 reqs, Waiting: 0 reqs, GPU KV cache usage: 4.1%, Prefix cache hit rate: 27.2%",
+      "(APIServer pid=122108) INFO 10-03 23:41:46 [loggers.py:328] Engine 000: Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 3390.6 tokens/s, Running: 22 reqs, Waiting: 0 reqs, GPU KV cache usage: 5.0%, Prefix cache hit rate: 27.2%",
+      "(APIServer pid=122108) INFO 10-03 23:41:56 [loggers.py:328] Engine 000: Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 2801.1 tokens/s, Running: 19 reqs, Waiting: 0 reqs, GPU KV cache usage: 5.5%, Prefix cache hit rate: 27.2%",
+      "(APIServer pid=122108) INFO 10-03 23:42:06 [loggers.py:328] Engine 000: Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 2363.0 tokens/s, Running: 16 reqs, Waiting: 0 reqs, GPU KV cache usage: 5.7%, Prefix cache hit rate: 27.2%",
+      "(APIServer pid=122108) INFO 10-03 23:42:16 [loggers.py:328] Engine 000: Avg prompt throughput: 10.4 tokens/s, Avg generation throughput: 1991.0 tokens/s, Running: 13 reqs, Waiting: 0 reqs, GPU KV cache usage: 5.5%, Prefix cache hit rate: 94.7%",
+      "(APIServer pid=122108) INFO 10-03 23:42:26 [loggers.py:328] Engine 000: Avg prompt throughput: 619.2 tokens/s, Avg generation throughput: 3873.7 tokens/s, Running: 30 reqs, Waiting: 0 reqs, GPU KV cache usage: 2.1%, Prefix cache hit rate: 27.2%",
+      "(APIServer pid=122108) INFO 10-03 23:42:36 [loggers.py:328] Engine 000: Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 4322.4 tokens/s, Running: 26 reqs, Waiting: 0 reqs, GPU KV cache usage: 3.7%, Prefix cache hit rate: 27.2%",
+      "(APIServer pid=122108) INFO 10-03 23:42:46 [loggers.py:328] Engine 000: Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 3507.3 tokens/s, Running: 23 reqs, Waiting: 0 reqs, GPU KV cache usage: 4.9%, Prefix cache hit rate: 27.2%",
+      "(APIServer pid=122108) INFO 10-03 23:42:56 [loggers.py:328] Engine 000: Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 2901.0 tokens/s, Running: 20 reqs, Waiting: 0 reqs, GPU KV cache usage: 5.6%, Prefix cache hit rate: 27.2%",
+      "(APIServer pid=122108) INFO 10-03 23:43:06 [loggers.py:328] Engine 000: Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 2419.2 tokens/s, Running: 16 reqs, Waiting: 0 reqs, GPU KV cache usage: 5.5%, Prefix cache hit rate: 27.2%",
+      "(APIServer pid=122108) INFO 10-03 23:43:16 [loggers.py:328] Engine 000: Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 1917.7 tokens/s, Running: 0 reqs, Waiting: 0 reqs, GPU KV cache usage: 0.0%, Prefix cache hit rate: 27.2%",
+      "(APIServer pid=122108) INFO 10-03 23:43:26 [loggers.py:328] Engine 000: Avg prompt throughput: 11.9 tokens/s, Avg generation throughput: 1587.6 tokens/s, Running: 13 reqs, Waiting: 0 reqs, GPU KV cache usage: 5.9%, Prefix cache hit rate: 95.0%",
+      "(APIServer pid=122108) INFO 10-03 23:43:36 [loggers.py:328] Engine 000: Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 1788.6 tokens/s, Running: 13 reqs, Waiting: 0 reqs, GPU KV cache usage: 6.8%, Prefix cache hit rate: 95.0%",
+      "(APIServer pid=122108) INFO 10-03 23:43:46 [loggers.py:328] Engine 000: Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 1553.3 tokens/s, Running: 0 reqs, Waiting: 0 reqs, GPU KV cache usage: 0.0%, Prefix cache hit rate: 95.0%"
+    ],
+    "shutdown": [
+      "(EngineCore pid=122317) INFO 10-03 23:43:47 [core.py:1412] [shutdown] EngineCore: trigger received signal=SIGTERM",
+      "(APIServer pid=122108) INFO 10-03 23:43:47 [launcher.py:128] [shutdown] API server: shutdown triggered",
+      "(APIServer pid=122108) INFO 10-03 23:43:47 [launcher.py:144] [shutdown] API server: stopping engine client mode=abort timeout=0s",
+      "(EngineCore pid=122317) INFO 10-03 23:43:47 [core.py:1561] [shutdown] EngineCore: start mode=abort timeout=0s",
+      "(EngineCore pid=122317) INFO 10-03 23:43:47 [core.py:1592] [shutdown] EngineCore: request processing complete; starting resource teardown",
+      "(EngineCore pid=122317) INFO 10-03 23:43:47 [core.py:1425] [shutdown] EngineCore: exiting busy loop",
+      "(APIServer pid=122108) INFO 10-03 23:43:47 [core_client.py:762] [shutdown] MPClient: start timeout=0s",
+      "(APIServer pid=122108) INFO 10-03 23:43:47 [core_client.py:764] [shutdown] MPClient: stopping engine manager",
+      "(APIServer pid=122108) INFO 10-03 23:43:47 [utils.py:655] [shutdown] Process manager: send sigterm to process EngineCore",
+      "(APIServer pid=122108) WARNING 10-03 23:43:47 [utils.py:675] [shutdown] Process manager: force killing remaining processes count=1",
+      "(APIServer pid=122108) WARNING 10-03 23:43:47 [utils.py:680] [shutdown] Process manager: force killing remaining process EngineCore pid 122317",
+      "(APIServer pid=122108) INFO 10-03 23:43:47 [core_client.py:766] [shutdown] MPClient: engine manager stopped",
+      "(APIServer pid=122108) INFO 10-03 23:43:47 [core_client.py:767] [shutdown] MPClient: cleaning up background resources",
+      "(APIServer pid=122108) INFO 10-03 23:43:47 [core_client.py:769] [shutdown] MPClient: complete",
+      "(APIServer pid=122108) INFO 10-03 23:43:47 [launcher.py:153] [shutdown] API server: engine client stopped",
+      "(APIServer pid=122108) INFO 10-03 23:43:47 [launcher.py:156] [shutdown] API server: signalling HTTP server shutdown",
+      "(APIServer pid=122108) INFO 10-03 23:43:47 [launcher.py:178] [shutdown] API server: shutting down FastAPI HTTP server",
+      "INFO:     Waiting for application shutdown.",
+      "INFO:     Application shutdown complete.",
+      "/usr/lib/python3.12/multiprocessing/resource_tracker.py:254: UserWarning: resource_tracker: There appear to be 1 leaked semaphore objects to clean up at shutdown"
+    ]
+  }
+}

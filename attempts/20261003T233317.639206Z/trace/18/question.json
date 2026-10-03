@@ -1,0 +1,164 @@
+{
+  "problem_idx": 18,
+  "started_at_utc": "2026-10-03T23:33:18.431+00:00",
+  "finished_at_utc": "2026-10-03T23:34:12.561+00:00",
+  "end_to_end_latency_s": 54.130179275991395,
+  "status": "solved",
+  "winner": {
+    "answer": 82,
+    "part": "content",
+    "kind": "literal_prose",
+    "end": 21716,
+    "line": "But before concluding, we must consider whether any colorings counted may be considered identical under some symmetry? The problem asks \"Find the number of such colorings.\" Usually colorings are considered distinct assignments of colors to edges, no factoring out symmetries unless specified. So answer should be 82.",
+    "candidate": "82",
+    "rollout": 1,
+    "observed_at_utc": "2026-10-03T23:34:06.651+00:00",
+    "question_elapsed_s": 48.22021132102236,
+    "verification_started_at_utc": "2026-10-03T23:34:06.651+00:00",
+    "round": 1,
+    "candidate_queue_wait_s": 0.00015010102652013302,
+    "result": {
+      "dataset": {
+        "format": "jsonl",
+        "gold_field": "answer",
+        "id": "aime_2025",
+        "idx_field": "problem_idx",
+        "revision": "c94da77eb22bbd6439e62a323bec18493a421302",
+        "source": "/home/azureuser/aime-bench/grader/data/aime_2025.jsonl",
+        "year": 2025,
+        "sha256": "d5bcac5904290630fe98e3c3d1c2773260ebf59b57955382735e9ce8c0142b41"
+      },
+      "query_id": "20261003T233317.639206Z-q18-a82",
+      "seq": 16,
+      "agent_id": "20261003T233317.639206Z-q18-r1",
+      "index": 18,
+      "candidate": "82",
+      "verdict": true,
+      "queue_ahead_at_submit": 0,
+      "submitted_at": "2026-10-03T23:34:06.654338Z",
+      "picked_at": "2026-10-03T23:34:09.556056Z",
+      "answered_at": "2026-10-03T23:34:12.556168Z",
+      "queue_wait_s": 2.902,
+      "toll_s": 3.0,
+      "latency_s": 5.902
+    },
+    "verification_finished_at_utc": "2026-10-03T23:34:12.557+00:00",
+    "verification_latency_s": 5.9059532129904255
+  },
+  "error": null,
+  "unique_candidates": 1,
+  "candidate_answers": [
+    "82"
+  ],
+  "rollouts": [
+    {
+      "rollout": 1,
+      "round": 1,
+      "started_at_utc": "2026-10-03T23:33:18.444+00:00",
+      "start_monotonic_s": 274646.50690705,
+      "ttft_s": 0.1538847380434163,
+      "last_token_s": 54.10963449004339,
+      "finish_reason": null,
+      "status": "cancelled",
+      "done_received": false,
+      "usage": {
+        "prompt_tokens": 337,
+        "total_tokens": 8253,
+        "completion_tokens": 7916,
+        "completion_tokens_details": null
+      },
+      "endpoint": "/v1/chat/completions",
+      "continuation_of_rollout": null,
+      "requested_max_tokens": 8192,
+      "http_status": 200,
+      "headers_received_s": 0.03426822001347318,
+      "generation_finished_at_utc": "2026-10-03T23:34:12.557+00:00",
+      "generation_end_monotonic_s": 274700.620299782,
+      "generation_latency_s": 54.11339273204794,
+      "generation_censored": true,
+      "generated_token_ids_count": 7916,
+      "prompt_token_ids_count": 337,
+      "cached_prompt_tokens": null,
+      "prefix_cache_hit_fraction": null,
+      "overhead": {
+        "enabled": false,
+        "timings": {},
+        "counters": {},
+        "maxima": {}
+      },
+      "finished_at_utc": "2026-10-03T23:34:12.561+00:00",
+      "end_to_end_latency_s": 54.11678194301203,
+      "end_to_end_scope": "rollout start through question verification/cancellation settlement",
+      "gpu": null
+    }
+  ],
+  "round": 1,
+  "first_solved": {
+    "problem_idx": 18,
+    "round": 1,
+    "rollout": 1,
+    "candidate": "82",
+    "first_solved_at_utc": "2026-10-03T23:34:12.557+00:00",
+    "first_solved_elapsed_s": 54.130241312028375,
+    "grader_answered_at_utc": "2026-10-03T23:34:12.556168Z",
+    "grader_query_id": "20261003T233317.639206Z-q18-a82"
+  },
+  "overhead": {
+    "enabled": false,
+    "timings": {},
+    "counters": {},
+    "maxima": {}
+  },
+  "rounds": [
+    {
+      "round": 1,
+      "status": "solved",
+      "started_at_utc": "2026-10-03T23:33:18.431+00:00",
+      "finished_at_utc": "2026-10-03T23:34:12.561+00:00",
+      "end_to_end_latency_s": 54.130179275991395,
+      "winner": {
+        "answer": 82,
+        "part": "content",
+        "kind": "literal_prose",
+        "end": 21716,
+        "line": "But before concluding, we must consider whether any colorings counted may be considered identical under some symmetry? The problem asks \"Find the number of such colorings.\" Usually colorings are considered distinct assignments of colors to edges, no factoring out symmetries unless specified. So answer should be 82.",
+        "candidate": "82",
+        "rollout": 1,
+        "observed_at_utc": "2026-10-03T23:34:06.651+00:00",
+        "question_elapsed_s": 48.22021132102236,
+        "verification_started_at_utc": "2026-10-03T23:34:06.651+00:00",
+        "round": 1,
+        "candidate_queue_wait_s": 0.00015010102652013302,
+        "result": {
+          "dataset": {
+            "format": "jsonl",
+            "gold_field": "answer",
+            "id": "aime_2025",
+            "idx_field": "problem_idx",
+            "revision": "c94da77eb22bbd6439e62a323bec18493a421302",
+            "source": "/home/azureuser/aime-bench/grader/data/aime_2025.jsonl",
+            "year": 2025,
+            "sha256": "d5bcac5904290630fe98e3c3d1c2773260ebf59b57955382735e9ce8c0142b41"
+          },
+          "query_id": "20261003T233317.639206Z-q18-a82",
+          "seq": 16,
+          "agent_id": "20261003T233317.639206Z-q18-r1",
+          "index": 18,
+          "candidate": "82",
+          "verdict": true,
+          "queue_ahead_at_submit": 0,
+          "submitted_at": "2026-10-03T23:34:06.654338Z",
+          "picked_at": "2026-10-03T23:34:09.556056Z",
+          "answered_at": "2026-10-03T23:34:12.556168Z",
+          "queue_wait_s": 2.902,
+          "toll_s": 3.0,
+          "latency_s": 5.902
+        },
+        "verification_finished_at_utc": "2026-10-03T23:34:12.557+00:00",
+        "verification_latency_s": 5.9059532129904255
+      },
+      "error": null
+    }
+  ],
+  "question_start_monotonic_s": 274646.493509717
+}

@@ -19,6 +19,8 @@ BATCHES = [
     ("BF16 recycle 30", "bf16-dynamic30-replicate-20261003T225437Z"),
     ("BF16 exact source", "bf16-best-exact-source-20261003T230424Z"),
     ("NVFP4 varied seed", "nvfp4-30x1-seed-comparison-20261003T231357Z"),
+    ("NVFP4 FlashInfer", "nvfp4-flashinfer-best-replicate-20261003T233008Z"),
+    ("FlashInfer validation", "nvfp4-flashinfer-validation-20261003T233628Z"),
 ]
 
 
@@ -68,7 +70,7 @@ def main():
     for i, r in enumerate(rows):
         a.text(r["time_to_target_s"] + 1.5, i, f"{r['time_to_target_s']:.1f}s", va="center", fontsize=8)
         b.scatter(r["initial_ttft_median_s"] * 1000, i,
-                  color="#8756a5" if "NVFP4" in r["label"] else "#287caf", s=32)
+                  color="#8756a5" if "NVFP4" in r["label"] or "FlashInfer" in r["label"] else "#287caf", s=32)
     a.axvline(rows[0]["time_to_target_s"], color="#304050", linestyle="--", linewidth=1.2)
     a.set_yticks(range(len(rows)), [r["label"] for r in rows])
     a.invert_yaxis()
@@ -77,9 +79,16 @@ def main():
     a.set_title("The extra time is mostly waiting for correct candidates", loc="left", fontsize=11)
     a.legend(loc="upper left", bbox_to_anchor=(0, -0.12), ncols=3, frameon=False, fontsize=8)
     a.grid(axis="x", alpha=.18)
-    b.set_xlim(70, 300)
-    b.set_xticks([100, 200, 300])
-    b.set_xlabel("Median initial TTFT (ms)")
+    maximum_ttft = max(r["initial_ttft_median_s"] * 1000 for r in rows)
+    if maximum_ttft > 600:
+        b.set_xscale("log")
+        b.set_xlim(70, maximum_ttft * 1.25)
+        b.set_xticks([100, 300, 1000, 3000], ["100", "300", "1000", "3000"])
+        b.set_xlabel("Median initial TTFT (ms, log scale)")
+    else:
+        b.set_xlim(70, max(300, maximum_ttft * 1.15))
+        b.set_xticks([100, 200, 300])
+        b.set_xlabel("Median initial TTFT (ms)")
     b.set_title("First 30 requests", fontsize=10)
     b.grid(axis="x", alpha=.18)
     fig.suptitle("Best-run replication: original and completed comparisons", x=.02, ha="left", fontsize=15, weight="bold")

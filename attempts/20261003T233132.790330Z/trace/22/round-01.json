@@ -1,0 +1,112 @@
+{
+  "problem_idx": 22,
+  "started_at_utc": "2026-10-03T23:31:37.235+00:00",
+  "finished_at_utc": "2026-10-03T23:32:08.467+00:00",
+  "end_to_end_latency_s": 31.231705497018993,
+  "status": "solved",
+  "winner": {
+    "answer": 237,
+    "part": "content",
+    "kind": "literal_prose",
+    "end": 7739,
+    "line": "But wait, we must double-check that the probability is defined as m/n where m,n are relatively prime positive integers. So indeed m=109, n=128, m+n=237. So answer is 237.",
+    "candidate": "237",
+    "rollout": 1,
+    "observed_at_utc": "2026-10-03T23:31:57.827+00:00",
+    "question_elapsed_s": 20.591831294994336,
+    "verification_started_at_utc": "2026-10-03T23:31:57.827+00:00",
+    "round": 1,
+    "candidate_queue_wait_s": 0.0003918549627996981,
+    "result": {
+      "dataset": {
+        "format": "jsonl",
+        "gold_field": "answer",
+        "id": "aime_2025",
+        "idx_field": "problem_idx",
+        "revision": "c94da77eb22bbd6439e62a323bec18493a421302",
+        "source": "/home/azureuser/aime-bench/grader/data/aime_2025.jsonl",
+        "year": 2025,
+        "sha256": "d5bcac5904290630fe98e3c3d1c2773260ebf59b57955382735e9ce8c0142b41"
+      },
+      "query_id": "20261003T233132.790330Z-q22-a237",
+      "seq": 8,
+      "agent_id": "20261003T233132.790330Z-q22-r1",
+      "index": 22,
+      "candidate": "237",
+      "verdict": true,
+      "queue_ahead_at_submit": 2,
+      "submitted_at": "2026-10-03T23:31:57.829987Z",
+      "picked_at": "2026-10-03T23:32:05.462054Z",
+      "answered_at": "2026-10-03T23:32:08.462171Z",
+      "queue_wait_s": 7.632,
+      "toll_s": 3.0,
+      "latency_s": 10.632
+    },
+    "verification_finished_at_utc": "2026-10-03T23:32:08.464+00:00",
+    "verification_latency_s": 10.637285472010262
+  },
+  "error": null,
+  "unique_candidates": 1,
+  "candidate_answers": [
+    "237"
+  ],
+  "rollouts": [
+    {
+      "rollout": 1,
+      "round": 1,
+      "started_at_utc": "2026-10-03T23:31:37.249+00:00",
+      "start_monotonic_s": 274545.311757477,
+      "ttft_s": 3.5527113240095787,
+      "last_token_s": 31.213956751977094,
+      "finish_reason": null,
+      "status": "cancelled",
+      "done_received": false,
+      "usage": {
+        "prompt_tokens": 159,
+        "total_tokens": 4468,
+        "completion_tokens": 4309,
+        "completion_tokens_details": null
+      },
+      "endpoint": "/v1/chat/completions",
+      "continuation_of_rollout": null,
+      "requested_max_tokens": 8192,
+      "http_status": 200,
+      "headers_received_s": 0.05772605002857745,
+      "generation_finished_at_utc": "2026-10-03T23:32:08.465+00:00",
+      "generation_end_monotonic_s": 274576.527839682,
+      "generation_latency_s": 31.216082205006387,
+      "generation_censored": true,
+      "generated_token_ids_count": 4309,
+      "prompt_token_ids_count": 159,
+      "cached_prompt_tokens": null,
+      "prefix_cache_hit_fraction": null,
+      "overhead": {
+        "enabled": false,
+        "timings": {},
+        "counters": {},
+        "maxima": {}
+      },
+      "finished_at_utc": "2026-10-03T23:32:08.467+00:00",
+      "end_to_end_latency_s": 31.21790053200675,
+      "end_to_end_scope": "rollout start through question verification/cancellation settlement",
+      "gpu": null
+    }
+  ],
+  "round": 1,
+  "first_solved": {
+    "problem_idx": 22,
+    "round": 1,
+    "rollout": 1,
+    "candidate": "237",
+    "first_solved_at_utc": "2026-10-03T23:32:08.465+00:00",
+    "first_solved_elapsed_s": 31.233282732020598,
+    "grader_answered_at_utc": "2026-10-03T23:32:08.462171Z",
+    "grader_query_id": "20261003T233132.790330Z-q22-a237"
+  },
+  "overhead": {
+    "enabled": false,
+    "timings": {},
+    "counters": {},
+    "maxima": {}
+  }
+}
