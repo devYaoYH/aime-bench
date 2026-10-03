@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "runner": "src.attempt_runners.speedrun_v2",
+  "description": "Replicate the fastest completed AIME 2025 first-18 run with optional profiling disabled and buffered traces.",
+  "reference_attempt": "20261003T211557.382358Z",
+  "changed_controls": [
+    "Optional profiling and GPU sampling disabled",
+    "Client traces buffered in RAM until official timing ends",
+    "speedrun_v2 storage integration; same solving policy"
+  ],
+  "argv": [
+    "--model",
+    "WeiboAI/VibeThinker-3B",
+    "--model-profile",
+    "vllm.yaml",
+    "--parallelism",
+    "30",
+    "--rollouts",
+    "1",
+    "--schedule",
+    "barrier",
+    "--first-pass-max-tokens",
+    "8192",
+    "--max-tokens",
+    "16384",
+    "--target-correct",
+    "18",
+    "--max-attempts-per-question",
+    "4",
+    "--max-rounds",
+    "4",
+    "--temperature",
+    "0.8",
+    "--top-p",
+    "0.95",
+    "--seed",
+    "20261003",
+    "--benchmark"
+  ]
+}
