@@ -1,0 +1,103 @@
+{
+  "attempt_id": "20261003T220008.957658Z",
+  "runner_id": "speedrun_v2",
+  "source_commit": "e1f8e4847d5ec1eb0a798517abc2e87d617a3eaf",
+  "git_dirty": false,
+  "model": "WeiboAI/VibeThinker-3B",
+  "profile_utilization": 0.95,
+  "context_length": 65536,
+  "parallelism": 30,
+  "rollouts": 1,
+  "schedule": "barrier",
+  "status": "completed",
+  "solved": 18,
+  "first18_s": 113.62524503498571,
+  "official_s": 113.68233120499644,
+  "init_and_official_s": 180.59955620998517,
+  "generation_requests": 44,
+  "max_requests_per_question": 2,
+  "generation_status_counts": {
+    "cancelled": 30,
+    "completed": 14
+  },
+  "requests_by_round": {
+    "1": 30,
+    "2": 14
+  },
+  "completed_checks": 21,
+  "correct_checks": 18,
+  "wrong_checks": 3,
+  "check_kind_counts": {
+    "boxed": 9,
+    "literal_prose": 13
+  },
+  "grader_client_latency": {
+    "count": 22,
+    "median": 5.3426022909989115,
+    "p95": 10.578214275999926,
+    "max": 14.797006490000058,
+    "sum": 133.29491140093887
+  },
+  "grader_queue_wait": {
+    "count": 21,
+    "median": 2.568,
+    "p95": 9.181,
+    "max": 11.793,
+    "sum": 69.774
+  },
+  "grader_timeline": {
+    "completed_queries": 21,
+    "audit_errors": [],
+    "correct": 18,
+    "wrong": 3,
+    "target_service_floor_s": 54.0,
+    "actual_service_s": 63.00251293182373,
+    "idle_between_queries_s": 45.58216714859009,
+    "first_pick_elapsed_s": 5.039927959442139,
+    "scope": "completed oracle jobs; queued/cancelled client jobs may still incur service"
+  },
+  "fresh_ttft": {
+    "count": 30,
+    "median": 0.17441290646092966,
+    "p95": 0.22544313600519672,
+    "max": 0.23579775099642575,
+    "sum": 5.096987791999709
+  },
+  "continuation_ttft": {
+    "count": 14,
+    "median": 0.17403365348582156,
+    "p95": 0.19191324099665508,
+    "max": 0.19597534200875089,
+    "sum": 2.4634267080109566
+  },
+  "gpu_official_peak_mib": null,
+  "gpu_all_peak_mib": null,
+  "sampled_engine_max": {},
+  "logged_kv_peak_pct": 7.8,
+  "oom_lines": [],
+  "overhead": {
+    "schema_version": 1,
+    "enabled": false,
+    "timings": {},
+    "counters": {},
+    "maxima": {},
+    "runner_process": {
+      "user_s": 30.805373,
+      "system_s": 4.608771,
+      "peak_rss_mib": 248.8125,
+      "official_user_s": 30.604108,
+      "official_system_s": 3.295695
+    },
+    "event_loop_lag": {},
+    "first_verification_submit_elapsed_s": null,
+    "engine": {
+      "samples": 0,
+      "errors": [],
+      "first": {},
+      "last": {},
+      "observed_max": {}
+    },
+    "scope": "runner CPU/IO only; async wall waits overlap; engine counters include warmup baseline"
+  },
+  "error": null
+}

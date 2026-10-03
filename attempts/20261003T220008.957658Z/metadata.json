@@ -1,0 +1,126 @@
+{
+  "$schema": "../../data/attempt_metadata.schema.json",
+  "schema_version": 1,
+  "attempt_id": "20261003T220008.957658Z",
+  "label": "VibeThinker BF16 · best-control replication · benchmark",
+  "intervention": {
+    "label": "Replicate best BF16 30×1 run with benchmark mode",
+    "reference_attempt_id": "20261003T211557.382358Z",
+    "changed_variables": [
+      "Optional profiling and GPU sampling disabled",
+      "Client traces buffered in RAM until end",
+      "speedrun_v2 storage integration; same solving policy"
+    ],
+    "comparison_note": "Same model/profile at 95%, 30×1 barrier concurrency, AIME 2025, 8192 first pass / 16384 later, sampling/seed, prompt and four-request cap. A single stochastic replication; generated outputs and continuation counts can differ."
+  },
+  "runner": {
+    "module": "src.attempt_runners.speedrun_v2",
+    "version": "speedrun_v2",
+    "git_commit": "e1f8e4847d5ec1eb0a798517abc2e87d617a3eaf",
+    "git_dirty": false
+  },
+  "model": {
+    "id": "WeiboAI/VibeThinker-3B",
+    "revision": "77bd2cced09193c8b9a59a32bd8577bbd1f3e01c",
+    "quantization": "none",
+    "quantization_source": "recorded unquantized model and launch dtype",
+    "activation_dtype": "bfloat16",
+    "kv_cache_dtype": null,
+    "linear_backend": null
+  },
+  "gpu": {
+    "device": null,
+    "device_count": 1,
+    "total_vram_mib": null,
+    "memory_utilization": 0.95,
+    "configured_envelope_mib": null
+  },
+  "controls": {
+    "dataset": "AIME 2025",
+    "question_indices": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19,
+      20,
+      21,
+      22,
+      23,
+      24,
+      25,
+      26,
+      27,
+      28,
+      29,
+      30
+    ],
+    "target_correct": 18,
+    "grader_cost_s": 3.0,
+    "grader_serial": true,
+    "max_context_tokens": 65536,
+    "max_num_seqs": null,
+    "prefix_caching": true,
+    "reasoning_parser": null,
+    "hyperparameters": {
+      "parallelism": 30,
+      "rollouts": 1,
+      "temperature": 0.8,
+      "top_p": 0.95,
+      "seed": 20261003,
+      "disable_thinking": false,
+      "question_timeout": 1800,
+      "schedule": "barrier",
+      "no_overhead_profile": true,
+      "overhead_interval": 0.05,
+      "engine_metrics_interval": 1.0,
+      "benchmark": true,
+      "buffer_traces": true,
+      "no_gpu_telemetry": true,
+      "strategy": "speedrun_v2",
+      "max_tokens": 16384,
+      "first_pass_max_tokens": 8192,
+      "max_attempts_per_question": 4,
+      "max_rounds": 4,
+      "continuation_enabled": true,
+      "answer_extraction": "streaming prospective candidates",
+      "system_prompt_sha256": "2aa7a805921df2fc0924f582937d8c14cb02be3a520361b1181dd664eb73929a"
+    }
+  },
+  "provenance": {
+    "dataset": {
+      "id": "aime_2025",
+      "year": 2025,
+      "role": "development",
+      "source": "https://huggingface.co/datasets/MathArena/aime_2025",
+      "revision": "c94da77eb22bbd6439e62a323bec18493a421302",
+      "split": "train",
+      "rows": 30,
+      "prompt_path": "data/aime_2025_problems.jsonl",
+      "prompt_sha256": "fe7b8a157da7c1389ab0ca9ffb1536973843b8244a796d5c1f5fbb0b62a1f221",
+      "grader_path": "grader/data/aime_2025.jsonl",
+      "grader_sha256": "d5bcac5904290630fe98e3c3d1c2773260ebf59b57955382735e9ce8c0142b41",
+      "inferred_from_legacy_runner": false
+    },
+    "config": "config.json",
+    "profile": "model_profile.json",
+    "profile_sha256": "0f08a0c04cdf53db83502b7e8086323cf7b9724c7bb7982fa2bc9f4b8308824a",
+    "notes": [
+      "Normalized from saved config/profile and GPU samples. Null means unrecorded."
+    ]
+  }
+}

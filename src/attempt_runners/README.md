@@ -122,3 +122,22 @@ Scores and the exact plan are saved in `runs/speedrun_sweeps/<timestamp>/`.
 Rankings use official solving time to 18 verified correct, excluding startup and
 warmup; initialization time is recorded separately. No speedup has been measured
 for this new sweep until it is actually executed on the remote GPU.
+
+## Grader-triggered staged fan-out v3
+
+`python -m src.attempt_runners.speedrun_v3 --model WeiboAI/VibeThinker-3B --benchmark`
+starts one 8K request for every selected question. The first client grader
+submission releases three fresh sibling requests per still-unsolved question,
+without awaiting its verdict. Expansion also waits until every initial request
+has started. Peak fan-out is up to 30×4; solved questions and the global target
+cancel siblings. Request seeds retain the four-request stride, and deduplication
+and one pending verification per question remain shared across all four samples.
+
+This is a single fresh-sample round with no continuations: the four-request cap
+leaves none available after expansion. If no candidate appears anywhere, it ends
+unmet after initial streams finish instead of waiting forever. A question stream
+error aborts the attempt and cleans up siblings. All selected questions must fit
+in `--parallelism`; smoke subsets are supported. `fanout.json` records the trigger
+and each question's expansion time, even in RAM-buffered benchmark mode.
+Warmup covers the initial 30 streams, matching the best 30×1 control. The v1/v2
+and canonical policies stay unchanged.
