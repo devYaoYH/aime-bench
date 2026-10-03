@@ -18,6 +18,7 @@ BATCHES = [
     ("NVFP4 benchmark", "nvfp4-best-warm-replicate-20261003T224630Z"),
     ("BF16 recycle 30", "bf16-dynamic30-replicate-20261003T225437Z"),
     ("BF16 exact source", "bf16-best-exact-source-20261003T230424Z"),
+    ("NVFP4 varied seed", "nvfp4-30x1-seed-comparison-20261003T231357Z"),
 ]
 
 
@@ -56,7 +57,7 @@ def main():
                      "grader_idle_s": g["idle_between_queries_s"], "wrong_checks": g["wrong"]})
     (OUTPUT / "analysis.json").write_text(json.dumps({"reference": reference, "groups": groups, "trials": rows}, indent=2) + "\n")
     plt.rcParams.update({"font.size": 9, "axes.spines.top": False, "axes.spines.right": False})
-    fig, (a, b) = plt.subplots(1, 2, figsize=(13.6, 7.5), gridspec_kw={"width_ratios": [3.5, 1]}, sharey=True)
+    fig, (a, b) = plt.subplots(1, 2, figsize=(13.6, max(7.5, len(rows) * .45 + 1.2)), gridspec_kw={"width_ratios": [3.5, 1]}, sharey=True)
     colors = ["#8b98a7", "#287caf", "#e9ac42"]
     left = [0] * len(rows)
     for key, label, color in zip(["first_pick_s", "grader_service_s", "grader_idle_s"],
@@ -86,6 +87,8 @@ def main():
     fig.tight_layout(rect=[0, .045, 1, .95])
     for suffix in ["png", "svg", "pdf"]:
         fig.savefig(OUTPUT / f"timing-comparison.{suffix}", dpi=180, bbox_inches="tight")
+    svg = OUTPUT / "timing-comparison.svg"
+    svg.write_text("\n".join(line.rstrip() for line in svg.read_text().splitlines()) + "\n")
     plt.close(fig)
     print(OUTPUT)
 

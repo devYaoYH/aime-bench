@@ -1,0 +1,215 @@
+{
+  "problem_idx": 26,
+  "started_at_utc": "2026-10-03T23:20:44.205+00:00",
+  "finished_at_utc": "2026-10-03T23:21:53.501+00:00",
+  "end_to_end_latency_s": 69.2962717639748,
+  "status": "solved",
+  "winner": {
+    "answer": 113,
+    "part": "content",
+    "kind": "literal_prose",
+    "end": 29496,
+    "line": "Thus the answer would be 113. However, we need to double-check that we haven't double-counted configurations due to each d being counted as distinct length but maybe some matchings are counted multiple times because the same set of segments can be realized by different d? For a given matching, the chord lengths are all equal; if there is a matching where all chords have length d, then the chord lengths are determined by d (or equivalently by the step size). Could the same set of segments be realized by two different d values? That would require that the same segment can be considered as both a chord of length d and a chord of length e (with d != e). But chord length depends on the minimal central angle: a segment connecting vertices i and j has a unique step distance (the smaller of (j-i) mod n and (i-j) mod n). So each segment has a unique d ∈ {1,...,12}. So a set of segments all having the same length must have that each segment has the same d. So the matching cannot be realized with two different d values. So no double counting across d.",
+    "candidate": "113",
+    "rollout": 2,
+    "observed_at_utc": "2026-10-03T23:21:50.494+00:00",
+    "question_elapsed_s": 6.9797275989549235,
+    "verification_started_at_utc": "2026-10-03T23:21:50.495+00:00",
+    "round": 2,
+    "candidate_queue_wait_s": 0.0004884150112047791,
+    "result": {
+      "dataset": {
+        "format": "jsonl",
+        "gold_field": "answer",
+        "id": "aime_2025",
+        "idx_field": "problem_idx",
+        "revision": "c94da77eb22bbd6439e62a323bec18493a421302",
+        "source": "/home/azureuser/aime-bench/grader/data/aime_2025.jsonl",
+        "year": 2025,
+        "sha256": "d5bcac5904290630fe98e3c3d1c2773260ebf59b57955382735e9ce8c0142b41"
+      },
+      "query_id": "20261003T232043.406577Z-q26-a113",
+      "seq": 16,
+      "agent_id": "20261003T232043.406577Z-q26-r2",
+      "index": 26,
+      "candidate": "113",
+      "verdict": true,
+      "queue_ahead_at_submit": 0,
+      "submitted_at": "2026-10-03T23:21:50.496689Z",
+      "picked_at": "2026-10-03T23:21:50.496783Z",
+      "answered_at": "2026-10-03T23:21:53.496907Z",
+      "queue_wait_s": 0.0,
+      "toll_s": 3.0,
+      "latency_s": 3.0
+    },
+    "verification_finished_at_utc": "2026-10-03T23:21:53.498+00:00",
+    "verification_latency_s": 3.002833314007148
+  },
+  "error": null,
+  "unique_candidates": 1,
+  "candidate_answers": [
+    "113"
+  ],
+  "rollouts": [
+    {
+      "rollout": 1,
+      "round": 1,
+      "started_at_utc": "2026-10-03T23:20:44.222+00:00",
+      "start_monotonic_s": 273892.28473971,
+      "ttft_s": 0.22791368101025,
+      "last_token_s": 59.214745443023276,
+      "finish_reason": "length",
+      "status": "completed",
+      "done_received": true,
+      "usage": {
+        "prompt_tokens": 125,
+        "total_tokens": 8317,
+        "completion_tokens": 8192,
+        "prompt_tokens_details": {
+          "cached_tokens": 64,
+          "created_cache_tokens": 48
+        }
+      },
+      "endpoint": "/v1/chat/completions",
+      "continuation_of_rollout": null,
+      "requested_max_tokens": 8192,
+      "http_status": 200,
+      "headers_received_s": 0.05135948199313134,
+      "generation_finished_at_utc": "2026-10-03T23:21:43.442+00:00",
+      "generation_end_monotonic_s": 273951.504859873,
+      "generation_latency_s": 59.220120162994135,
+      "generation_censored": true,
+      "generated_token_ids_count": 8192,
+      "prompt_token_ids_count": 125,
+      "cached_prompt_tokens": 64,
+      "prefix_cache_hit_fraction": 0.512,
+      "overhead": {
+        "enabled": false,
+        "timings": {},
+        "counters": {},
+        "maxima": {}
+      },
+      "finished_at_utc": "2026-10-03T23:21:43.473+00:00",
+      "end_to_end_latency_s": 59.25119674904272,
+      "end_to_end_scope": "rollout start through question verification/cancellation settlement",
+      "gpu": null
+    },
+    {
+      "rollout": 2,
+      "round": 2,
+      "started_at_utc": "2026-10-03T23:21:43.578+00:00",
+      "start_monotonic_s": 273951.640981296,
+      "ttft_s": 0.18129599397070706,
+      "last_token_s": 9.914214427000843,
+      "finish_reason": null,
+      "status": "cancelled",
+      "done_received": false,
+      "usage": {
+        "prompt_tokens": 8317,
+        "total_tokens": 9567,
+        "completion_tokens": 1250
+      },
+      "endpoint": "/v1/completions",
+      "continuation_of_rollout": 1,
+      "requested_max_tokens": 16384,
+      "http_status": 200,
+      "headers_received_s": 0.057450080988928676,
+      "generation_finished_at_utc": "2026-10-03T23:21:53.498+00:00",
+      "generation_end_monotonic_s": 273961.561110535,
+      "generation_latency_s": 9.920129238977097,
+      "generation_censored": true,
+      "generated_token_ids_count": 1250,
+      "prompt_token_ids_count": 8317,
+      "cached_prompt_tokens": null,
+      "prefix_cache_hit_fraction": null,
+      "overhead": {
+        "enabled": false,
+        "timings": {},
+        "counters": {},
+        "maxima": {}
+      },
+      "finished_at_utc": "2026-10-03T23:21:53.501+00:00",
+      "end_to_end_latency_s": 9.923070459975861,
+      "end_to_end_scope": "rollout start through question verification/cancellation settlement",
+      "gpu": null
+    }
+  ],
+  "round": 2,
+  "first_solved": {
+    "problem_idx": 26,
+    "round": 2,
+    "rollout": 2,
+    "candidate": "113",
+    "first_solved_at_utc": "2026-10-03T23:21:53.498+00:00",
+    "first_solved_elapsed_s": 69.2978653999744,
+    "grader_answered_at_utc": "2026-10-03T23:21:53.496907Z",
+    "grader_query_id": "20261003T232043.406577Z-q26-a113"
+  },
+  "overhead": {
+    "enabled": false,
+    "timings": {},
+    "counters": {},
+    "maxima": {}
+  },
+  "rounds": [
+    {
+      "round": 1,
+      "status": "unsolved",
+      "started_at_utc": "2026-10-03T23:20:44.205+00:00",
+      "finished_at_utc": "2026-10-03T23:21:43.473+00:00",
+      "end_to_end_latency_s": 59.26815646700561,
+      "winner": null,
+      "error": null
+    },
+    {
+      "round": 2,
+      "status": "solved",
+      "started_at_utc": "2026-10-03T23:21:43.515+00:00",
+      "finished_at_utc": "2026-10-03T23:21:53.501+00:00",
+      "end_to_end_latency_s": 9.986461952968966,
+      "winner": {
+        "answer": 113,
+        "part": "content",
+        "kind": "literal_prose",
+        "end": 29496,
+        "line": "Thus the answer would be 113. However, we need to double-check that we haven't double-counted configurations due to each d being counted as distinct length but maybe some matchings are counted multiple times because the same set of segments can be realized by different d? For a given matching, the chord lengths are all equal; if there is a matching where all chords have length d, then the chord lengths are determined by d (or equivalently by the step size). Could the same set of segments be realized by two different d values? That would require that the same segment can be considered as both a chord of length d and a chord of length e (with d != e). But chord length depends on the minimal central angle: a segment connecting vertices i and j has a unique step distance (the smaller of (j-i) mod n and (i-j) mod n). So each segment has a unique d ∈ {1,...,12}. So a set of segments all having the same length must have that each segment has the same d. So the matching cannot be realized with two different d values. So no double counting across d.",
+        "candidate": "113",
+        "rollout": 2,
+        "observed_at_utc": "2026-10-03T23:21:50.494+00:00",
+        "question_elapsed_s": 6.9797275989549235,
+        "verification_started_at_utc": "2026-10-03T23:21:50.495+00:00",
+        "round": 2,
+        "candidate_queue_wait_s": 0.0004884150112047791,
+        "result": {
+          "dataset": {
+            "format": "jsonl",
+            "gold_field": "answer",
+            "id": "aime_2025",
+            "idx_field": "problem_idx",
+            "revision": "c94da77eb22bbd6439e62a323bec18493a421302",
+            "source": "/home/azureuser/aime-bench/grader/data/aime_2025.jsonl",
+            "year": 2025,
+            "sha256": "d5bcac5904290630fe98e3c3d1c2773260ebf59b57955382735e9ce8c0142b41"
+          },
+          "query_id": "20261003T232043.406577Z-q26-a113",
+          "seq": 16,
+          "agent_id": "20261003T232043.406577Z-q26-r2",
+          "index": 26,
+          "candidate": "113",
+          "verdict": true,
+          "queue_ahead_at_submit": 0,
+          "submitted_at": "2026-10-03T23:21:50.496689Z",
+          "picked_at": "2026-10-03T23:21:50.496783Z",
+          "answered_at": "2026-10-03T23:21:53.496907Z",
+          "queue_wait_s": 0.0,
+          "toll_s": 3.0,
+          "latency_s": 3.0
+        },
+        "verification_finished_at_utc": "2026-10-03T23:21:53.498+00:00",
+        "verification_latency_s": 3.002833314007148
+      },
+      "error": null
+    }
+  ],
+  "question_start_monotonic_s": 273892.267779992
+}
