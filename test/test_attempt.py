@@ -155,6 +155,17 @@ class RunnerTests(unittest.IsolatedAsyncioTestCase):
             self.assertEqual(result['status'], 'solved')
             self.assertTrue(any(r['done_received'] for r in result['rollouts']))
 
+    async def test_token_cap_does_not_complete_a_partial_answer_number(self):
+        async def handler(request):
+            self.assertNotEqual(request.url.path, '/verify')
+            return httpx.Response(200, stream=Stream([chunk('Answer: 7'),
+                chunk('', finish='length'), b'data: [DONE]\n\n']))
+        with tempfile.TemporaryDirectory() as tmp:
+            async with httpx.AsyncClient(transport=httpx.MockTransport(handler)) as client:
+                result = await run_question({'problem_idx': 1, 'problem': 'test'}, self.args(), client, Path(tmp), FakeGPU())
+            self.assertEqual((result['status'], result['unique_candidates']), ('unsolved', 0))
+            self.assertTrue(all(r['generation_censored'] for r in result['rollouts']))
+
     async def test_errors_and_timeout_persist_partial_traces(self):
         for mode in ['malformed', 'http', 'timeout', 'grader']:
             streams = []

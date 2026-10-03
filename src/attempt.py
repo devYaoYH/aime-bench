@@ -219,10 +219,15 @@ async def run_question(problem, args, client, output, sampler):
                                         propose(event, rollout)
                             if choice.get('finish_reason'):
                                 record['finish_reason'] = choice['finish_reason']
+                    if record['finish_reason'] in ('error', 'abort'):
+                        raise RuntimeError(f'vLLM terminated with {record["finish_reason"]}')
                     if record['done_received'] or record['finish_reason'] in ('stop', 'length'):
-                        for part in parts:
-                            for event in detector.feed(part, '', eof=True):
-                                propose(event, rollout)
+                        # A token cap may cut Answer: 070 after the first digit.
+                        # Only a natural stream end can complete an unfinished line.
+                        if record['finish_reason'] != 'length':
+                            for part in parts:
+                                for event in detector.feed(part, '', eof=True):
+                                    propose(event, rollout)
                         record['status'] = 'completed'
                     else:
                         raise RuntimeError('Stream ended without DONE or a terminal finish reason')

@@ -75,8 +75,8 @@ are persisted. There are no automatic retries of partial generations.
 Each question worker fans out its streams, and static parsing watches both
 `content` and vLLM's `reasoning`/`reasoning_content` channels. A candidate is a
 closed integer `\\boxed{N}` anywhere in the text or a complete standalone
-`Answer: N` line (including true terminal EOF). Chunk boundaries never terminate
-an integer. The prompt asks for prospective boxed answers as soon as available.
+`Answer: N` line (including natural terminal EOF). Chunk boundaries and token caps never terminate an incomplete
+answer line. The prompt asks for prospective boxed answers as soon as available.
 The parser does not infer answers from arbitrary numbers or use the answer key.
 Boxes in examples can still become candidates; only the grader decides correctness.
 
