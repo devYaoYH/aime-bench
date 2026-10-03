@@ -17,6 +17,41 @@ TARGET = 18
 FLOOR_S = 54.0
 
 
+def first_grader_request(store, attempt_id, overview):
+    """Find the earliest recorded request start, including wrong/cancelled jobs.
+
+    Use client dispatch timestamps; fall back to the grader's receipt timestamp
+    when client timing is absent. Never infer a request from its verdict time.
+    """
+    start = overview['attempt']['started_at_utc']
+    if not start:
+        return None
+    try:
+        origin = datetime.fromisoformat(start.replace('Z', '+00:00'))
+    except (ValueError, TypeError):
+        return None
+    candidates = []
+    folder = store.folder(attempt_id)
+    for question in overview['questions']:
+        path = f"trace/{question['problem_idx']:02d}/verification.jsonl"
+        for event in store.lines(folder, path):
+            timestamp = event.get('verification_started_at_utc')
+            source = 'client verification_started_at_utc'
+            if not timestamp:
+                timestamp = (event.get('result') or {}).get('submitted_at')
+                source = 'grader submitted_at (receipt timestamp)'
+            if not isinstance(timestamp, str):
+                continue
+            try:
+                elapsed = (datetime.fromisoformat(timestamp.replace('Z', '+00:00')) - origin).total_seconds()
+            except (ValueError, TypeError):
+                continue
+            if math.isfinite(elapsed) and elapsed >= 0:
+                candidates.append({'elapsed_s': elapsed, 'at_utc': timestamp,
+                                   'source': source, 'problem_idx': question['problem_idx']})
+    return min(candidates, key=lambda r: r['elapsed_s']) if candidates else None
+
+
 def solve_events(overview):
     start = overview['attempt']['started_at_utc']
     times = {}
@@ -65,6 +100,7 @@ def build_results(store):
                 warnings.append(f"{attempt['id']}: metadata.json missing; settings derived from config, intervention unannotated.")
             validate_metadata(metadata, attempt['id'])
             events = solve_events(overview)
+            first_request = first_grader_request(store, attempt['id'], overview)
             time = events[TARGET - 1]['elapsed_s'] if len(events) >= TARGET else None
             summary = overview['summary'] or {}
             solved = summary.get('solved', sum(q['status'] == 'solved' for q in overview['questions']))
@@ -83,6 +119,8 @@ def build_results(store):
                          'started_at_utc': attempt['started_at_utc'],
                          'attempt_started_at_utc': overview['config'].get('initialization_started_at_utc') or attempt['started_at_utc'],
                          'time_to_18_s': time, 'time_source': events[TARGET - 1]['source'] if time is not None else None,
+                         'first_grader_request_s': first_request['elapsed_s'] if first_request else None,
+                         'first_grader_request': first_request,
                          'settlement_s': attempt['official_latency_s'], 'events': events,
                          'grader_floor_s': floor, 'above_floor_s': time - floor if time is not None and floor is not None else None,
                          'comparison': None})
@@ -90,7 +128,8 @@ def build_results(store):
             warnings.append(f"{attempt['id']}: {exc}")
             rows.append({'id': attempt['id'], 'metadata': None, 'status': 'invalid evidence',
                          'attempt_status': attempt['status'], 'solved': attempt['solved'],
-                         'time_to_18_s': None, 'events': [], 'comparison': None})
+                         'time_to_18_s': None, 'first_grader_request_s': None,
+                         'first_grader_request': None, 'events': [], 'comparison': None})
     by_id = {row['id']: row for row in rows}
     for row in rows:
         if not row['metadata']:

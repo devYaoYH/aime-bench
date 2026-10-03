@@ -60,6 +60,42 @@ function historyLegend(history) {
   const bestIds=new Set(history.frontier.map(r=>r.id));
   return history.points.map(r=>`<a class="history-item" href="${attemptLink(r)}"><span class="history-number" style="background:${colors[(r.plot_number-1)%colors.length]}">${r.plot_number}</span><span><strong>${esc(r.metadata.label)}</strong><small>${sec(r.time_to_18_s)} · ${esc(historyDate.format(r.start_ms))}${bestIds.has(r.id)?' · new best':''}</small><small>${esc(r.metadata.intervention.label)}</small></span></a>`).join('');
 }
+function initialLatencyHistory(rows) {
+  const inventory=rows.map(r=>({...r,start_ms:Date.parse(r.attempt_started_at_utc??r.started_at_utc)}))
+    .filter(r=>r.metadata && Number.isFinite(r.start_ms))
+    .sort((a,b)=>a.start_ms-b.start_ms || a.id.localeCompare(b.id))
+    .map((r,i)=>({...r,initial_number:i+1}));
+  const points=inventory.filter(r=>Number.isFinite(r.first_grader_request_s) && r.first_grader_request_s>=0);
+  return {points,unavailable:rows.filter(r=>!points.some(p=>p.id===r.id))};
+}
+function initialLatencyPlot(history) {
+  const {points}=history;
+  if(!points.length)return '<div class="chart-empty">No recorded first grader request timing is available.</div>';
+  const width=1080,height=410,left=86,right=30,top=40,bottom=80;
+  const span=Math.max(points.at(-1).start_ms-points[0].start_ms,60000),padding=span*.035;
+  const xmin=points[0].start_ms-padding,xmax=points.at(-1).start_ms+padding;
+  const peak=Math.max(5,...points.map(r=>r.first_grader_request_s));
+  const step=Math.max(5,Math.ceil(peak/30)*5),max=Math.ceil(peak/step)*step;
+  const x=t=>left+(t-xmin)/(xmax-xmin)*(width-left-right);
+  const y=t=>height-bottom-t/max*(height-top-bottom);
+  let svg=`<svg class="comparison-chart" viewBox="0 0 ${width} ${height}" role="img" aria-label="Attempt start timestamp versus time to first grader request, from the official clock start after warmup"><text x="${left}" y="18">Time to first grader request (seconds)</text>`;
+  for(let t=0;t<=max;t+=step){
+    svg+=`<line class="grid" x1="${left}" x2="${width-right}" y1="${y(t)}" y2="${y(t)}"/><text text-anchor="end" x="${left-12}" y="${y(t)+4}">${t}s</text>`;
+  }
+  for(let i=0;i<=6;i++){
+    const stamp=xmin+(xmax-xmin)*i/6;
+    svg+=`<line class="grid" x1="${x(stamp)}" x2="${x(stamp)}" y1="${top}" y2="${height-bottom}"/><text text-anchor="middle" x="${x(stamp)}" y="${height-bottom+26}">${esc(historyTick.format(stamp))}</text>`;
+  }
+  svg+=`<text text-anchor="middle" x="${left+(width-left-right)/2}" y="${height-12}">Attempt started · America/Los_Angeles · ${esc(new Intl.DateTimeFormat('en-US',{timeZone:'America/Los_Angeles',month:'short',day:'numeric',year:'numeric'}).format(points[0].start_ms))}</text>`;
+  points.forEach(r=>{
+    const description=`${r.metadata.label} · first grader request ${sec(r.first_grader_request_s)} · started ${historyDate.format(r.start_ms)} · ${r.first_grader_request?.source??'recorded request timestamp'}`;
+    svg+=`<a class="attempt-dot-link" href="${attemptLink(r)}" aria-label="${esc(description)}"><title>${esc(description)}</title><circle class="attempt-dot initial-dot" data-attempt="${esc(r.id)}" cx="${x(r.start_ms)}" cy="${y(r.first_grader_request_s)}" r="10" fill="${colors[(r.initial_number-1)%colors.length]}"/><text class="dot-number initial-number" text-anchor="middle" x="${x(r.start_ms)}" y="${y(r.first_grader_request_s)+3}">A${r.initial_number}</text></a>`;
+  });
+  return svg+'</svg>';
+}
+function initialLatencyLegend(history) {
+  return history.points.map(r=>`<a class="history-item" href="${attemptLink(r)}"><span class="history-number initial-number" style="background:${colors[(r.initial_number-1)%colors.length]}">A${r.initial_number}</span><span><strong>${esc(r.metadata.label)}</strong><small>${sec(r.first_grader_request_s)} · ${esc(historyDate.format(r.start_ms))}</small><small>${esc(r.metadata.intervention.label)} · ${esc(r.status)}</small></span></a>`).join('');
+}
 function interventionCards(rows) {
   const comparisons=rows.filter(r=>r.metadata && r.comparison?.saved_s!=null);
   if(!comparisons.length)return '<p class="detail-note">Annotate a reference attempt in metadata.json to compare interventions.</p>';
@@ -98,6 +134,9 @@ async function refresh(){
     const history=attemptHistory(rows);
     $('#comparison-plot').innerHTML=comparisonPlot(history);$('#history-legend').innerHTML=historyLegend(history);$('#floor-note').textContent=results.floor_note;
     $('#baseline-note').innerHTML=history.baselines.length?`Separate baselines excluded from this plot: ${history.baselines.map(r=>`<a href="${attemptLink(r)}">${r.plot_number}. ${esc(r.metadata.label)}</a> (${sec(r.time_to_18_s)})`).join(' · ')}. Their records remain in the full attempt table below.`:'';
+    const initial=initialLatencyHistory(rows);
+    $('#initial-plot').innerHTML=initialLatencyPlot(initial);$('#initial-legend').innerHTML=initialLatencyLegend(initial);
+    $('#initial-unavailable').innerHTML=initial.unavailable.length?`Request timing unavailable: ${initial.unavailable.map(r=>`<a href="${attemptLink(r)}">${esc(r.metadata?.label??r.id)}</a> (${esc(r.status)})`).join(' · ')}.`:'';
     $('#excluded-note').textContent=rows.filter(r=>r.time_to_18_s==null || !Number.isFinite(Date.parse(r.attempt_started_at_utc??r.started_at_utc))).map(r=>`${r.metadata?.label??r.id}: ${r.time_to_18_s==null?r.status:'start timestamp unavailable'}${r.solved!=null?` (${r.solved} correct)`:''}`).join(' · ');
     $('#interventions').innerHTML=interventionCards(rows);$('#attempt-rows').innerHTML=controlsTable(rows);renderProgress();$('#content').hidden=false;
   }catch(e){$('#error').textContent=e.message;$('#error').hidden=false;}finally{$('#refresh').disabled=false;}

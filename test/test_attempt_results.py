@@ -83,6 +83,35 @@ class AttemptResultsTests(unittest.TestCase):
         self.assertEqual(result['failed']['status'], 'failed')
         self.assertTrue(all(r['time_to_18_s'] is None for r in result.values()))
 
+    def test_first_request_includes_wrong_and_cancelled_jobs_before_verdicts(self):
+        folder, _ = self.make(times=[], status='interrupted')
+        events = [
+            {'verification_started_at_utc': '2026-10-03T20:00:09Z', 'result': {'verdict': True}},
+            {'verification_started_at_utc': '2026-10-03T20:00:04Z', 'result': {'verdict': False}},
+            {'verification_started_at_utc': '2026-10-03T20:00:02.500Z', 'cancelled': True},
+            {'verification_started_at_utc': 'bad timestamp'},
+            {'verification_started_at_utc': '2026-10-03T19:59:59Z'},
+            {'verification_finished_at_utc': '2026-10-03T20:00:01Z'}]
+        trace = folder / 'trace/01'
+        trace.mkdir(parents=True)
+        (trace/'verification.jsonl').write_text(''.join(json.dumps(e)+'\n' for e in events))
+        row = build_results(self.store)['attempts'][0]
+        self.assertEqual(row['first_grader_request_s'], 2.5)
+        self.assertEqual(row['first_grader_request']['problem_idx'], 1)
+        self.assertEqual(row['first_grader_request']['source'], 'client verification_started_at_utc')
+        self.assertIsNone(row['time_to_18_s'])
+
+    def test_first_request_receipt_fallback_and_missing_timing(self):
+        folder, _ = self.make()
+        self.assertIsNone(build_results(self.store)['attempts'][0]['first_grader_request_s'])
+        trace = folder / 'trace/02'
+        trace.mkdir(parents=True)
+        (trace/'verification.jsonl').write_text(json.dumps({'result': {
+            'submitted_at': '2026-10-03T20:00:07.125Z', 'picked_at': '2026-10-03T20:00:09Z'}})+'\n')
+        row = build_results(self.store)['attempts'][0]
+        self.assertEqual(row['first_grader_request_s'], 7.125)
+        self.assertIn('receipt timestamp', row['first_grader_request']['source'])
+
     def test_serial_grader_floor_and_reference_delta_include_vram_change(self):
         self.make(times=[10*i for i in range(1, 19)])
         self.make('treatment', times=[5*i for i in range(1, 19)], reference='control', envelope=.95)
@@ -135,6 +164,7 @@ class AttemptResultsTests(unittest.TestCase):
         self.assertEqual(nvfp4['metadata']['gpu']['memory_utilization'], .95)
         self.assertEqual(nvfp4['metadata']['model']['quantization'], 'modelopt_fp4')
         self.assertFalse(nvfp4['metadata_missing'])
+        self.assertAlmostEqual(nvfp4['first_grader_request_s'], 10.114)
 
 
 if __name__ == '__main__':

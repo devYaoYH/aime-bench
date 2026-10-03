@@ -57,4 +57,22 @@ assert.match(filteredSvg,/>50s<\/text>/,'Y-axis must start at 50 seconds');
 assert.doesNotMatch(filteredSvg,/>0s<\/text>/);
 const filteredFloor=filteredSvg.match(/class="floor-line"[^>]* y1="([^"]+)"/);
 assert.ok(Math.abs(Number(filteredFloor[1])-(330-4/50*290))<1e-9,'54-second floor must use the shifted scale');
+context.rows=[
+  {...row('20261003T202152.418590Z','2026-10-03T20:21:00Z',336),first_grader_request_s:30},
+  {...row('interrupted','2026-10-03T20:20:00Z',null),first_grader_request_s:0},
+  {...row('missing','2026-10-03T20:22:00Z',92),first_grader_request_s:null},
+  {...row('invalid','bad timestamp',92),first_grader_request_s:5},
+  {...row('negative','2026-10-03T20:23:00Z',92),first_grader_request_s:-1}];
+const initial=JSON.parse(JSON.stringify(vm.runInContext('initialLatencyHistory(rows)',context)));
+assert.deepEqual(initial.points.map(r=>r.id),['interrupted','20261003T202152.418590Z']);
+assert.deepEqual(initial.points.map(r=>r.initial_number),[1,2]);
+assert.equal(initial.unavailable.length,3);
+const initialSvg=vm.runInContext('initialLatencyPlot(initialLatencyHistory(rows))',context);
+assert.equal((initialSvg.match(/class="attempt-dot initial-dot"/g)||[]).length,2);
+assert.match(initialSvg,/>0s<\/text>/);
+assert.match(initialSvg,/>A1<\/text>/);
+assert.match(initialSvg,/Time to first grader request \(seconds\)/);
+assert.doesNotMatch(initialSvg,/floor-line|pareto-frontier|NaN|Infinity/);
+context.rows=[];
+assert.match(vm.runInContext('initialLatencyPlot(initialLatencyHistory(rows))',context),/No recorded first grader request/);
 console.log('Results history checks passed: chronological points, strict running minimum, timestamps, floor, and SVG.');
