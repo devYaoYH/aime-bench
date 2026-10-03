@@ -1,0 +1,1086 @@
+{
+  "status": "interrupted",
+  "finished_at_utc": "2026-10-03T21:19:42.337+00:00",
+  "cells": [
+    {
+      "cell_id": "cell-01",
+      "parameters": {
+        "parallelism": 30,
+        "rollouts": 4,
+        "temperature": 0.8,
+        "top_p": 0.95,
+        "seed": 20261003,
+        "schedule": "eager"
+      },
+      "attempt_id": "20261003T211054.387701Z",
+      "status": "completed",
+      "error": null,
+      "target_reached": true,
+      "solved": 18,
+      "time_to_target_s": 114.61539082898526,
+      "official_latency_s": 114.9607949120109,
+      "grader_timeline": {
+        "completed_queries": 19,
+        "audit_errors": [],
+        "correct": 18,
+        "wrong": 1,
+        "target_service_floor_s": 54.0,
+        "actual_service_s": 57.002185106277466,
+        "idle_between_queries_s": 46.27884078025818,
+        "first_pick_elapsed_s": 11.332206010818481,
+        "scope": "completed oracle jobs; queued/cancelled client jobs may still incur service"
+      },
+      "performance": {
+        "generation_requests": 120,
+        "fresh_ttft": {
+          "count": 120,
+          "median_s": 3.853536157985218,
+          "p95_s": 4.003289419983048
+        },
+        "continuation_ttft": {
+          "count": 0,
+          "median_s": null,
+          "p95_s": null
+        },
+        "official_gpu": {
+          "sample_count": 571,
+          "start_vram_mib": 78486.1875,
+          "end_vram_mib": 78574.1875,
+          "observed_peak_vram_mib": 78574.1875,
+          "scope": "shared GPU device; sampled peak, not per-request allocation",
+          "error": null
+        },
+        "initialization_gpu": {
+          "sample_count": 255,
+          "start_vram_mib": 768.25,
+          "end_vram_mib": 78486.1875,
+          "observed_peak_vram_mib": 78578.1875,
+          "scope": "shared GPU device; sampled peak, not per-request allocation",
+          "error": null
+        }
+      },
+      "overhead": {
+        "schema_version": 1,
+        "enabled": true,
+        "timings": {
+          "initialization_gpu_warmup_wait": {
+            "count": 1,
+            "wall_total_s": 4.040401074977126,
+            "wall_max_s": 4.040401074977126,
+            "thread_cpu_total_s": 0.0,
+            "cpu_samples": 0
+          },
+          "initialization_server_ready_wait": {
+            "count": 1,
+            "wall_total_s": 42.66023289097939,
+            "wall_max_s": 42.66023289097939,
+            "thread_cpu_total_s": 0.0,
+            "cpu_samples": 0
+          },
+          "initialization_grader_ready_wait": {
+            "count": 1,
+            "wall_total_s": 0.5038628850015812,
+            "wall_max_s": 0.5038628850015812,
+            "thread_cpu_total_s": 0.0,
+            "cpu_samples": 0
+          },
+          "initialization_inference_warmup_wait": {
+            "count": 1,
+            "wall_total_s": 3.7133267049794085,
+            "wall_max_s": 3.7133267049794085,
+            "thread_cpu_total_s": 0.0,
+            "cpu_samples": 0
+          },
+          "artifact_json_write": {
+            "count": 660,
+            "wall_total_s": 0.4520806470536627,
+            "wall_max_s": 0.012597109016496688,
+            "thread_cpu_total_s": 0.4391756170000335,
+            "cpu_samples": 660
+          },
+          "engine_metrics_http_wait": {
+            "count": 104,
+            "wall_total_s": 7.591245469870046,
+            "wall_max_s": 0.9739511880325153,
+            "thread_cpu_total_s": 0.0,
+            "cpu_samples": 0
+          },
+          "engine_metrics_parse_write": {
+            "count": 104,
+            "wall_total_s": 0.052282310905866325,
+            "wall_max_s": 0.0006524230120703578,
+            "thread_cpu_total_s": 0.05226159100000727,
+            "cpu_samples": 104
+          },
+          "stream_trace_write_flush": {
+            "count": 607441,
+            "wall_total_s": 16.4831586885266,
+            "wall_max_s": 0.08505823399173096,
+            "thread_cpu_total_s": 16.284148060002668,
+            "cpu_samples": 607441
+          },
+          "sse_json_decode": {
+            "count": 607441,
+            "wall_total_s": 6.180446640995797,
+            "wall_max_s": 0.00017691199900582433,
+            "thread_cpu_total_s": 6.196215883995474,
+            "cpu_samples": 607441
+          },
+          "candidate_parse_enqueue": {
+            "count": 605721,
+            "wall_total_s": 4.584639181499369,
+            "wall_max_s": 0.00017273396952077746,
+            "thread_cpu_total_s": 4.602230590002541,
+            "cpu_samples": 605721
+          },
+          "candidate_local_queue_wait": {
+            "count": 19,
+            "wall_total_s": 0.30771649902453646,
+            "wall_max_s": 0.08853457198711112,
+            "thread_cpu_total_s": 0.0,
+            "cpu_samples": 0
+          },
+          "grader_queue_wait": {
+            "count": 19,
+            "wall_total_s": 64.582,
+            "wall_max_s": 10.595,
+            "thread_cpu_total_s": 0.0,
+            "cpu_samples": 0
+          },
+          "grader_service": {
+            "count": 19,
+            "wall_total_s": 57.0,
+            "wall_max_s": 3.0,
+            "thread_cpu_total_s": 0.0,
+            "cpu_samples": 0
+          },
+          "verification_http_wait": {
+            "count": 19,
+            "wall_total_s": 125.24351519084303,
+            "wall_max_s": 13.789150586002506,
+            "thread_cpu_total_s": 0.0,
+            "cpu_samples": 0
+          },
+          "verification_trace_write_flush": {
+            "count": 19,
+            "wall_total_s": 0.0010260960552841425,
+            "wall_max_s": 6.635504541918635e-05,
+            "thread_cpu_total_s": 0.0010199070000034283,
+            "cpu_samples": 19
+          },
+          "generation_cancellation_settlement": {
+            "count": 30,
+            "wall_total_s": 3.802814010065049,
+            "wall_max_s": 0.2625746950507164,
+            "thread_cpu_total_s": 0.0,
+            "cpu_samples": 0
+          },
+          "gpu_sample_window": {
+            "count": 120,
+            "wall_total_s": 0.02164617396192625,
+            "wall_max_s": 0.00037741701817139983,
+            "thread_cpu_total_s": 0.021673067999966378,
+            "cpu_samples": 120
+          }
+        },
+        "counters": {
+          "generation_requests": 120,
+          "sse_chunks": 607441,
+          "sse_payload_bytes": 211302164,
+          "candidate_proposals": 74,
+          "candidate_unique_enqueued": 19,
+          "verification_submitted": 19,
+          "candidate_duplicates_suppressed": 55,
+          "verification_completed": 19,
+          "verification_correct": 18,
+          "generation_cancelled": 120,
+          "verification_wrong": 1
+        },
+        "maxima": {
+          "candidate_queue_depth": 1
+        },
+        "runner_process": {
+          "user_s": 83.530062,
+          "system_s": 11.20128,
+          "peak_rss_mib": 100.3125,
+          "official_user_s": 83.018468,
+          "official_system_s": 11.116229
+        },
+        "event_loop_lag": {
+          "official": {
+            "count": 1703,
+            "mean_s": 0.01748674665499097,
+            "max_s": 0.6162036050227471,
+            "recent_p95_s": 0.067133420961909,
+            "p95_sample_count": 1703
+          }
+        },
+        "first_verification_submit_elapsed_s": 10.204620181000791,
+        "engine": {
+          "samples": 104,
+          "errors": [],
+          "first": {
+            "vllm:num_requests_running{engine=\"0\",model_name=\"WeiboAI/VibeThinker-3B\"}": 0.0,
+            "vllm:num_requests_waiting{engine=\"0\",model_name=\"WeiboAI/VibeThinker-3B\"}": 0.0,
+            "vllm:kv_cache_usage_perc{engine=\"0\",model_name=\"WeiboAI/VibeThinker-3B\"}": 0.0,
+            "vllm:prefix_cache_queries_total{engine=\"0\",model_name=\"WeiboAI/VibeThinker-3B\"}": 3120.0,
+            "vllm:prefix_cache_hits_total{engine=\"0\",model_name=\"WeiboAI/VibeThinker-3B\"}": 1904.0,
+            "vllm:num_preemptions_total{engine=\"0\",model_name=\"WeiboAI/VibeThinker-3B\"}": 0.0,
+            "vllm:prompt_tokens_total{engine=\"0\",model_name=\"WeiboAI/VibeThinker-3B\"}": 3120.0,
+            "vllm:generation_tokens_total{engine=\"0\",model_name=\"WeiboAI/VibeThinker-3B\"}": 3840.0,
+            "vllm:time_to_first_token_seconds_count{engine=\"0\",model_name=\"WeiboAI/VibeThinker-3B\"}": 120.0,
+            "vllm:time_to_first_token_seconds_sum{engine=\"0\",model_name=\"WeiboAI/VibeThinker-3B\"}": 377.1636972427368,
+            "vllm:request_queue_time_seconds_count{engine=\"0\",model_name=\"WeiboAI/VibeThinker-3B\"}": 120.0,
+            "vllm:request_queue_time_seconds_sum{engine=\"0\",model_name=\"WeiboAI/VibeThinker-3B\"}": 0.03466180490795523,
+            "vllm:request_prefill_time_seconds_sum{engine=\"0\",model_name=\"WeiboAI/VibeThinker-3B\"}": 163.4861912833294,
+            "vllm:request_decode_time_seconds_sum{engine=\"0\",model_name=\"WeiboAI/VibeThinker-3B\"}": 30.541444162721746
+          },
+          "last": {
+            "vllm:num_requests_running{engine=\"0\",model_name=\"WeiboAI/VibeThinker-3B\"}": 52.0,
+            "vllm:num_requests_waiting{engine=\"0\",model_name=\"WeiboAI/VibeThinker-3B\"}": 0.0,
+            "vllm:kv_cache_usage_perc{engine=\"0\",model_name=\"WeiboAI/VibeThinker-3B\"}": 0.19382348933578064,
+            "vllm:prefix_cache_queries_total{engine=\"0\",model_name=\"WeiboAI/VibeThinker-3B\"}": 34056.0,
+            "vllm:prefix_cache_hits_total{engine=\"0\",model_name=\"WeiboAI/VibeThinker-3B\"}": 26272.0,
+            "vllm:num_preemptions_total{engine=\"0\",model_name=\"WeiboAI/VibeThinker-3B\"}": 0.0,
+            "vllm:prompt_tokens_total{engine=\"0\",model_name=\"WeiboAI/VibeThinker-3B\"}": 34056.0,
+            "vllm:generation_tokens_total{engine=\"0\",model_name=\"WeiboAI/VibeThinker-3B\"}": 609073.0,
+            "vllm:time_to_first_token_seconds_count{engine=\"0\",model_name=\"WeiboAI/VibeThinker-3B\"}": 240.0,
+            "vllm:time_to_first_token_seconds_sum{engine=\"0\",model_name=\"WeiboAI/VibeThinker-3B\"}": 633.0636620521545,
+            "vllm:request_queue_time_seconds_count{engine=\"0\",model_name=\"WeiboAI/VibeThinker-3B\"}": 120.0,
+            "vllm:request_queue_time_seconds_sum{engine=\"0\",model_name=\"WeiboAI/VibeThinker-3B\"}": 0.03466180490795523,
+            "vllm:request_prefill_time_seconds_sum{engine=\"0\",model_name=\"WeiboAI/VibeThinker-3B\"}": 163.4861912833294,
+            "vllm:request_decode_time_seconds_sum{engine=\"0\",model_name=\"WeiboAI/VibeThinker-3B\"}": 30.541444162721746
+          },
+          "observed_max": {
+            "vllm:num_requests_running{engine=\"0\",model_name=\"WeiboAI/VibeThinker-3B\"}": 120.0,
+            "vllm:num_requests_waiting{engine=\"0\",model_name=\"WeiboAI/VibeThinker-3B\"}": 38.0,
+            "vllm:kv_cache_usage_perc{engine=\"0\",model_name=\"WeiboAI/VibeThinker-3B\"}": 0.20043602670663574,
+            "vllm:prefix_cache_queries_total{engine=\"0\",model_name=\"WeiboAI/VibeThinker-3B\"}": 34056.0,
+            "vllm:prefix_cache_hits_total{engine=\"0\",model_name=\"WeiboAI/VibeThinker-3B\"}": 26272.0,
+            "vllm:num_preemptions_total{engine=\"0\",model_name=\"WeiboAI/VibeThinker-3B\"}": 0.0,
+            "vllm:prompt_tokens_total{engine=\"0\",model_name=\"WeiboAI/VibeThinker-3B\"}": 34056.0,
+            "vllm:generation_tokens_total{engine=\"0\",model_name=\"WeiboAI/VibeThinker-3B\"}": 609073.0,
+            "vllm:time_to_first_token_seconds_count{engine=\"0\",model_name=\"WeiboAI/VibeThinker-3B\"}": 240.0,
+            "vllm:time_to_first_token_seconds_sum{engine=\"0\",model_name=\"WeiboAI/VibeThinker-3B\"}": 633.0636620521545,
+            "vllm:request_queue_time_seconds_count{engine=\"0\",model_name=\"WeiboAI/VibeThinker-3B\"}": 120.0,
+            "vllm:request_queue_time_seconds_sum{engine=\"0\",model_name=\"WeiboAI/VibeThinker-3B\"}": 0.03466180490795523,
+            "vllm:request_prefill_time_seconds_sum{engine=\"0\",model_name=\"WeiboAI/VibeThinker-3B\"}": 163.4861912833294,
+            "vllm:request_decode_time_seconds_sum{engine=\"0\",model_name=\"WeiboAI/VibeThinker-3B\"}": 30.541444162721746
+          }
+        },
+        "scope": "runner CPU/IO only; async wall waits overlap; engine counters include warmup baseline"
+      },
+      "rank": 3
+    },
+    {
+      "cell_id": "cell-02",
+      "parameters": {
+        "parallelism": 30,
+        "rollouts": 2,
+        "temperature": 0.8,
+        "top_p": 0.95,
+        "seed": 20261003,
+        "schedule": "eager"
+      },
+      "attempt_id": "20261003T211346.861294Z",
+      "status": "completed",
+      "error": null,
+      "target_reached": true,
+      "solved": 18,
+      "time_to_target_s": 77.02886824501911,
+      "official_latency_s": 77.18592790403636,
+      "grader_timeline": {
+        "completed_queries": 19,
+        "audit_errors": [],
+        "correct": 18,
+        "wrong": 1,
+        "target_service_floor_s": 54.0,
+        "actual_service_s": 57.00228452682495,
+        "idle_between_queries_s": 10.773748397827148,
+        "first_pick_elapsed_s": 9.252778053283691,
+        "scope": "completed oracle jobs; queued/cancelled client jobs may still incur service"
+      },
+      "performance": {
+        "generation_requests": 60,
+        "fresh_ttft": {
+          "count": 60,
+          "median_s": 1.8853848439757712,
+          "p95_s": 1.9365612010005862
+        },
+        "continuation_ttft": {
+          "count": 0,
+          "median_s": null,
+          "p95_s": null
+        },
+        "official_gpu": {
+          "sample_count": 384,
+          "start_vram_mib": 78302.1875,
+          "end_vram_mib": 78434.1875,
+          "observed_peak_vram_mib": 78434.1875,
+          "scope": "shared GPU device; sampled peak, not per-request allocation",
+          "error": null
+        },
+        "initialization_gpu": {
+          "sample_count": 234,
+          "start_vram_mib": 768.25,
+          "end_vram_mib": 78302.1875,
+          "observed_peak_vram_mib": 78578.1875,
+          "scope": "shared GPU device; sampled peak, not per-request allocation",
+          "error": null
+        }
+      },
+      "overhead": {
+        "schema_version": 1,
+        "enabled": true,
+        "timings": {
+          "initialization_gpu_warmup_wait": {
+            "count": 1,
+            "wall_total_s": 4.03707249002764,
+            "wall_max_s": 4.03707249002764,
+            "thread_cpu_total_s": 0.0,
+            "cpu_samples": 0
+          },
+          "initialization_server_ready_wait": {
+            "count": 1,
+            "wall_total_s": 40.130400978028774,
+            "wall_max_s": 40.130400978028774,
+            "thread_cpu_total_s": 0.0,
+            "cpu_samples": 0
+          },
+          "initialization_grader_ready_wait": {
+            "count": 1,
+            "wall_total_s": 0.5038452299777418,
+            "wall_max_s": 0.5038452299777418,
+            "thread_cpu_total_s": 0.0,
+            "cpu_samples": 0
+          },
+          "initialization_inference_warmup_wait": {
+            "count": 1,
+            "wall_total_s": 1.999854086956475,
+            "wall_max_s": 1.999854086956475,
+            "thread_cpu_total_s": 0.0,
+            "cpu_samples": 0
+          },
+          "artifact_json_write": {
+            "count": 360,
+            "wall_total_s": 0.22665921156294644,
+            "wall_max_s": 0.003513342991936952,
+            "thread_cpu_total_s": 0.22674895199993728,
+            "cpu_samples": 360
+          },
+          "engine_metrics_http_wait": {
+            "count": 76,
+            "wall_total_s": 1.1982781968545169,
+            "wall_max_s": 0.11719203600659966,
+            "thread_cpu_total_s": 0.0,
+            "cpu_samples": 0
+          },
+          "engine_metrics_parse_write": {
+            "count": 76,
+            "wall_total_s": 0.037094513594638556,
+            "wall_max_s": 0.0005875809583812952,
+            "thread_cpu_total_s": 0.03708297599993671,
+            "cpu_samples": 76
+          },
+          "stream_trace_write_flush": {
+            "count": 302866,
+            "wall_total_s": 9.05485823948402,
+            "wall_max_s": 0.08842814096715301,
+            "thread_cpu_total_s": 8.865624554005834,
+            "cpu_samples": 302866
+          },
+          "sse_json_decode": {
+            "count": 302866,
+            "wall_total_s": 3.258077726815827,
+            "wall_max_s": 7.459998596459627e-05,
+            "thread_cpu_total_s": 3.2661290760011354,
+            "cpu_samples": 302866
+          },
+          "candidate_parse_enqueue": {
+            "count": 302017,
+            "wall_total_s": 2.30796531989472,
+            "wall_max_s": 0.00018203200306743383,
+            "thread_cpu_total_s": 2.316855856997009,
+            "cpu_samples": 302017
+          },
+          "candidate_local_queue_wait": {
+            "count": 19,
+            "wall_total_s": 0.028331272944342345,
+            "wall_max_s": 0.004069498041644692,
+            "thread_cpu_total_s": 0.0,
+            "cpu_samples": 0
+          },
+          "grader_queue_wait": {
+            "count": 19,
+            "wall_total_s": 77.68699999999998,
+            "wall_max_s": 13.562,
+            "thread_cpu_total_s": 0.0,
+            "cpu_samples": 0
+          },
+          "grader_service": {
+            "count": 19,
+            "wall_total_s": 57.0,
+            "wall_max_s": 3.0,
+            "thread_cpu_total_s": 0.0,
+            "cpu_samples": 0
+          },
+          "verification_http_wait": {
+            "count": 19,
+            "wall_total_s": 135.11044175602729,
+            "wall_max_s": 16.57470626500435,
+            "thread_cpu_total_s": 0.0,
+            "cpu_samples": 0
+          },
+          "verification_trace_write_flush": {
+            "count": 19,
+            "wall_total_s": 0.0010884779621846974,
+            "wall_max_s": 8.912698831409216e-05,
+            "thread_cpu_total_s": 0.0010818650000743446,
+            "cpu_samples": 19
+          },
+          "generation_cancellation_settlement": {
+            "count": 30,
+            "wall_total_s": 1.491525256598834,
+            "wall_max_s": 0.11842429195530713,
+            "thread_cpu_total_s": 0.0,
+            "cpu_samples": 0
+          },
+          "gpu_sample_window": {
+            "count": 60,
+            "wall_total_s": 0.008388298039790243,
+            "wall_max_s": 0.00027879199478775263,
+            "thread_cpu_total_s": 0.00839221700003634,
+            "cpu_samples": 60
+          }
+        },
+        "counters": {
+          "generation_requests": 60,
+          "sse_chunks": 302866,
+          "sse_payload_bytes": 105321471,
+          "candidate_proposals": 65,
+          "candidate_unique_enqueued": 19,
+          "verification_submitted": 19,
+          "candidate_duplicates_suppressed": 46,
+          "verification_completed": 19,
+          "verification_correct": 18,
+          "generation_cancelled": 60,
+          "verification_wrong": 1
+        },
+        "maxima": {
+          "candidate_queue_depth": 1
+        },
+        "runner_process": {
+          "user_s": 48.761960999999985,
+          "system_s": 7.115408,
+          "peak_rss_mib": 100.3125,
+          "official_user_s": 48.52328,
+          "official_system_s": 7.069482000000001
+        },
+        "event_loop_lag": {
+          "official": {
+            "count": 1406,
+            "mean_s": 0.00488555037880523,
+            "max_s": 0.177092031983193,
+            "recent_p95_s": 0.019316913036163896,
+            "p95_sample_count": 1406
+          }
+        },
+        "first_verification_submit_elapsed_s": 9.184098896046635,
+        "engine": {
+          "samples": 76,
+          "errors": [],
+          "first": {
+            "vllm:num_requests_running{engine=\"0\",model_name=\"WeiboAI/VibeThinker-3B\"}": 0.0,
+            "vllm:num_requests_waiting{engine=\"0\",model_name=\"WeiboAI/VibeThinker-3B\"}": 0.0,
+            "vllm:kv_cache_usage_perc{engine=\"0\",model_name=\"WeiboAI/VibeThinker-3B\"}": 0.0,
+            "vllm:prefix_cache_queries_total{engine=\"0\",model_name=\"WeiboAI/VibeThinker-3B\"}": 1560.0,
+            "vllm:prefix_cache_hits_total{engine=\"0\",model_name=\"WeiboAI/VibeThinker-3B\"}": 944.0,
+            "vllm:num_preemptions_total{engine=\"0\",model_name=\"WeiboAI/VibeThinker-3B\"}": 0.0,
+            "vllm:prompt_tokens_total{engine=\"0\",model_name=\"WeiboAI/VibeThinker-3B\"}": 1560.0,
+            "vllm:generation_tokens_total{engine=\"0\",model_name=\"WeiboAI/VibeThinker-3B\"}": 1920.0,
+            "vllm:time_to_first_token_seconds_count{engine=\"0\",model_name=\"WeiboAI/VibeThinker-3B\"}": 60.0,
+            "vllm:time_to_first_token_seconds_sum{engine=\"0\",model_name=\"WeiboAI/VibeThinker-3B\"}": 96.93669176101685,
+            "vllm:request_queue_time_seconds_count{engine=\"0\",model_name=\"WeiboAI/VibeThinker-3B\"}": 60.0,
+            "vllm:request_queue_time_seconds_sum{engine=\"0\",model_name=\"WeiboAI/VibeThinker-3B\"}": 0.00505038391565904,
+            "vllm:request_prefill_time_seconds_sum{engine=\"0\",model_name=\"WeiboAI/VibeThinker-3B\"}": 25.91422505112132,
+            "vllm:request_decode_time_seconds_sum{engine=\"0\",model_name=\"WeiboAI/VibeThinker-3B\"}": 16.99173884902848
+          },
+          "last": {
+            "vllm:num_requests_running{engine=\"0\",model_name=\"WeiboAI/VibeThinker-3B\"}": 26.0,
+            "vllm:num_requests_waiting{engine=\"0\",model_name=\"WeiboAI/VibeThinker-3B\"}": 0.0,
+            "vllm:kv_cache_usage_perc{engine=\"0\",model_name=\"WeiboAI/VibeThinker-3B\"}": 0.09220682413856673,
+            "vllm:prefix_cache_queries_total{engine=\"0\",model_name=\"WeiboAI/VibeThinker-3B\"}": 17028.0,
+            "vllm:prefix_cache_hits_total{engine=\"0\",model_name=\"WeiboAI/VibeThinker-3B\"}": 10304.0,
+            "vllm:num_preemptions_total{engine=\"0\",model_name=\"WeiboAI/VibeThinker-3B\"}": 0.0,
+            "vllm:prompt_tokens_total{engine=\"0\",model_name=\"WeiboAI/VibeThinker-3B\"}": 17028.0,
+            "vllm:generation_tokens_total{engine=\"0\",model_name=\"WeiboAI/VibeThinker-3B\"}": 303712.0,
+            "vllm:time_to_first_token_seconds_count{engine=\"0\",model_name=\"WeiboAI/VibeThinker-3B\"}": 120.0,
+            "vllm:time_to_first_token_seconds_sum{engine=\"0\",model_name=\"WeiboAI/VibeThinker-3B\"}": 193.32245135307312,
+            "vllm:request_queue_time_seconds_count{engine=\"0\",model_name=\"WeiboAI/VibeThinker-3B\"}": 60.0,
+            "vllm:request_queue_time_seconds_sum{engine=\"0\",model_name=\"WeiboAI/VibeThinker-3B\"}": 0.00505038391565904,
+            "vllm:request_prefill_time_seconds_sum{engine=\"0\",model_name=\"WeiboAI/VibeThinker-3B\"}": 25.91422505112132,
+            "vllm:request_decode_time_seconds_sum{engine=\"0\",model_name=\"WeiboAI/VibeThinker-3B\"}": 16.99173884902848
+          },
+          "observed_max": {
+            "vllm:num_requests_running{engine=\"0\",model_name=\"WeiboAI/VibeThinker-3B\"}": 60.0,
+            "vllm:num_requests_waiting{engine=\"0\",model_name=\"WeiboAI/VibeThinker-3B\"}": 0.0,
+            "vllm:kv_cache_usage_perc{engine=\"0\",model_name=\"WeiboAI/VibeThinker-3B\"}": 0.09220682413856673,
+            "vllm:prefix_cache_queries_total{engine=\"0\",model_name=\"WeiboAI/VibeThinker-3B\"}": 17028.0,
+            "vllm:prefix_cache_hits_total{engine=\"0\",model_name=\"WeiboAI/VibeThinker-3B\"}": 10304.0,
+            "vllm:num_preemptions_total{engine=\"0\",model_name=\"WeiboAI/VibeThinker-3B\"}": 0.0,
+            "vllm:prompt_tokens_total{engine=\"0\",model_name=\"WeiboAI/VibeThinker-3B\"}": 17028.0,
+            "vllm:generation_tokens_total{engine=\"0\",model_name=\"WeiboAI/VibeThinker-3B\"}": 303712.0,
+            "vllm:time_to_first_token_seconds_count{engine=\"0\",model_name=\"WeiboAI/VibeThinker-3B\"}": 120.0,
+            "vllm:time_to_first_token_seconds_sum{engine=\"0\",model_name=\"WeiboAI/VibeThinker-3B\"}": 193.32245135307312,
+            "vllm:request_queue_time_seconds_count{engine=\"0\",model_name=\"WeiboAI/VibeThinker-3B\"}": 60.0,
+            "vllm:request_queue_time_seconds_sum{engine=\"0\",model_name=\"WeiboAI/VibeThinker-3B\"}": 0.00505038391565904,
+            "vllm:request_prefill_time_seconds_sum{engine=\"0\",model_name=\"WeiboAI/VibeThinker-3B\"}": 25.91422505112132,
+            "vllm:request_decode_time_seconds_sum{engine=\"0\",model_name=\"WeiboAI/VibeThinker-3B\"}": 16.99173884902848
+          }
+        },
+        "scope": "runner CPU/IO only; async wall waits overlap; engine counters include warmup baseline"
+      },
+      "rank": 2
+    },
+    {
+      "cell_id": "cell-03",
+      "parameters": {
+        "parallelism": 30,
+        "rollouts": 1,
+        "schedule": "barrier",
+        "temperature": 0.8,
+        "top_p": 0.95,
+        "seed": 20261003
+      },
+      "attempt_id": "20261003T211557.382358Z",
+      "status": "completed",
+      "error": null,
+      "target_reached": true,
+      "solved": 18,
+      "time_to_target_s": 71.13476684101624,
+      "official_latency_s": 71.22618429601425,
+      "grader_timeline": {
+        "completed_queries": 18,
+        "audit_errors": [],
+        "correct": 18,
+        "wrong": 0,
+        "target_service_floor_s": 54.0,
+        "actual_service_s": 54.002068281173706,
+        "idle_between_queries_s": 12.076358556747437,
+        "first_pick_elapsed_s": 5.055338144302368,
+        "scope": "completed oracle jobs; queued/cancelled client jobs may still incur service"
+      },
+      "performance": {
+        "generation_requests": 30,
+        "fresh_ttft": {
+          "count": 30,
+          "median_s": 0.15895711304619908,
+          "p95_s": 0.24790337798185647
+        },
+        "continuation_ttft": {
+          "count": 0,
+          "median_s": null,
+          "p95_s": null
+        },
+        "official_gpu": {
+          "sample_count": 356,
+          "start_vram_mib": 78266.1875,
+          "end_vram_mib": 78434.1875,
+          "observed_peak_vram_mib": 78434.1875,
+          "scope": "shared GPU device; sampled peak, not per-request allocation",
+          "error": null
+        },
+        "initialization_gpu": {
+          "sample_count": 225,
+          "start_vram_mib": 768.25,
+          "end_vram_mib": 78266.1875,
+          "observed_peak_vram_mib": 78578.1875,
+          "scope": "shared GPU device; sampled peak, not per-request allocation",
+          "error": null
+        }
+      },
+      "overhead": {
+        "schema_version": 1,
+        "enabled": true,
+        "timings": {
+          "initialization_gpu_warmup_wait": {
+            "count": 1,
+            "wall_total_s": 4.004532676015515,
+            "wall_max_s": 4.004532676015515,
+            "thread_cpu_total_s": 0.0,
+            "cpu_samples": 0
+          },
+          "initialization_server_ready_wait": {
+            "count": 1,
+            "wall_total_s": 40.130465462978464,
+            "wall_max_s": 40.130465462978464,
+            "thread_cpu_total_s": 0.0,
+            "cpu_samples": 0
+          },
+          "initialization_grader_ready_wait": {
+            "count": 1,
+            "wall_total_s": 0.5042694080038927,
+            "wall_max_s": 0.5042694080038927,
+            "thread_cpu_total_s": 0.0,
+            "cpu_samples": 0
+          },
+          "initialization_inference_warmup_wait": {
+            "count": 1,
+            "wall_total_s": 0.31589138600975275,
+            "wall_max_s": 0.31589138600975275,
+            "thread_cpu_total_s": 0.0,
+            "cpu_samples": 0
+          },
+          "artifact_json_write": {
+            "count": 210,
+            "wall_total_s": 0.1342811599606648,
+            "wall_max_s": 0.004055188037455082,
+            "thread_cpu_total_s": 0.13437101199986046,
+            "cpu_samples": 210
+          },
+          "engine_metrics_http_wait": {
+            "count": 71,
+            "wall_total_s": 0.5610524417716078,
+            "wall_max_s": 0.06354000099236146,
+            "thread_cpu_total_s": 0.0,
+            "cpu_samples": 0
+          },
+          "engine_metrics_parse_write": {
+            "count": 71,
+            "wall_total_s": 0.033891473547555506,
+            "wall_max_s": 0.0005945640150457621,
+            "thread_cpu_total_s": 0.033875703999996176,
+            "cpu_samples": 71
+          },
+          "stream_trace_write_flush": {
+            "count": 176712,
+            "wall_total_s": 5.524298645963427,
+            "wall_max_s": 0.06113475398160517,
+            "thread_cpu_total_s": 5.40921702099871,
+            "cpu_samples": 176712
+          },
+          "sse_json_decode": {
+            "count": 176712,
+            "wall_total_s": 1.9466957495315,
+            "wall_max_s": 0.0001189130125567317,
+            "thread_cpu_total_s": 1.9515062479969458,
+            "cpu_samples": 176712
+          },
+          "candidate_parse_enqueue": {
+            "count": 176169,
+            "wall_total_s": 1.4616468910244294,
+            "wall_max_s": 0.00021898100385442376,
+            "thread_cpu_total_s": 1.4667285619984796,
+            "cpu_samples": 176169
+          },
+          "candidate_local_queue_wait": {
+            "count": 19,
+            "wall_total_s": 0.010278006084263325,
+            "wall_max_s": 0.0017212660168297589,
+            "thread_cpu_total_s": 0.0,
+            "cpu_samples": 0
+          },
+          "grader_queue_wait": {
+            "count": 18,
+            "wall_total_s": 52.15599999999999,
+            "wall_max_s": 9.508,
+            "thread_cpu_total_s": 0.0,
+            "cpu_samples": 0
+          },
+          "grader_service": {
+            "count": 18,
+            "wall_total_s": 54.0,
+            "wall_max_s": 3.0,
+            "thread_cpu_total_s": 0.0,
+            "cpu_samples": 0
+          },
+          "verification_http_wait": {
+            "count": 19,
+            "wall_total_s": 110.38055443402845,
+            "wall_max_s": 12.510640626947861,
+            "thread_cpu_total_s": 0.0,
+            "cpu_samples": 0
+          },
+          "verification_trace_write_flush": {
+            "count": 19,
+            "wall_total_s": 0.001040921255480498,
+            "wall_max_s": 7.905904203653336e-05,
+            "thread_cpu_total_s": 0.0010359990000381458,
+            "cpu_samples": 19
+          },
+          "generation_cancellation_settlement": {
+            "count": 30,
+            "wall_total_s": 0.8191557551035658,
+            "wall_max_s": 0.06906670494936407,
+            "thread_cpu_total_s": 0.0,
+            "cpu_samples": 0
+          },
+          "gpu_sample_window": {
+            "count": 30,
+            "wall_total_s": 0.004340380197390914,
+            "wall_max_s": 0.00023255503037944436,
+            "thread_cpu_total_s": 0.004341056999919601,
+            "cpu_samples": 30
+          }
+        },
+        "counters": {
+          "generation_requests": 30,
+          "sse_chunks": 176712,
+          "sse_payload_bytes": 61478401,
+          "candidate_proposals": 45,
+          "candidate_unique_enqueued": 19,
+          "verification_submitted": 19,
+          "candidate_duplicates_suppressed": 26,
+          "verification_completed": 18,
+          "verification_correct": 18,
+          "generation_cancelled": 30,
+          "verification_cancelled": 1
+        },
+        "maxima": {
+          "candidate_queue_depth": 1
+        },
+        "runner_process": {
+          "user_s": 30.08540400000001,
+          "system_s": 4.534516,
+          "peak_rss_mib": 100.3125,
+          "official_user_s": 29.898725000000013,
+          "official_system_s": 4.502054000000001
+        },
+        "event_loop_lag": {
+          "official": {
+            "count": 1385,
+            "mean_s": 0.0014161788296990015,
+            "max_s": 0.06656206399202347,
+            "recent_p95_s": 0.0032653610105626285,
+            "p95_sample_count": 1385
+          }
+        },
+        "first_verification_submit_elapsed_s": 5.048043160990346,
+        "engine": {
+          "samples": 71,
+          "errors": [],
+          "first": {
+            "vllm:num_requests_running{engine=\"0\",model_name=\"WeiboAI/VibeThinker-3B\"}": 0.0,
+            "vllm:num_requests_waiting{engine=\"0\",model_name=\"WeiboAI/VibeThinker-3B\"}": 0.0,
+            "vllm:kv_cache_usage_perc{engine=\"0\",model_name=\"WeiboAI/VibeThinker-3B\"}": 0.0,
+            "vllm:prefix_cache_queries_total{engine=\"0\",model_name=\"WeiboAI/VibeThinker-3B\"}": 780.0,
+            "vllm:prefix_cache_hits_total{engine=\"0\",model_name=\"WeiboAI/VibeThinker-3B\"}": 464.0,
+            "vllm:num_preemptions_total{engine=\"0\",model_name=\"WeiboAI/VibeThinker-3B\"}": 0.0,
+            "vllm:prompt_tokens_total{engine=\"0\",model_name=\"WeiboAI/VibeThinker-3B\"}": 780.0,
+            "vllm:generation_tokens_total{engine=\"0\",model_name=\"WeiboAI/VibeThinker-3B\"}": 960.0,
+            "vllm:time_to_first_token_seconds_count{engine=\"0\",model_name=\"WeiboAI/VibeThinker-3B\"}": 30.0,
+            "vllm:time_to_first_token_seconds_sum{engine=\"0\",model_name=\"WeiboAI/VibeThinker-3B\"}": 1.7427220344543457,
+            "vllm:request_queue_time_seconds_count{engine=\"0\",model_name=\"WeiboAI/VibeThinker-3B\"}": 30.0,
+            "vllm:request_queue_time_seconds_sum{engine=\"0\",model_name=\"WeiboAI/VibeThinker-3B\"}": 0.0011570177739486098,
+            "vllm:request_prefill_time_seconds_sum{engine=\"0\",model_name=\"WeiboAI/VibeThinker-3B\"}": 0.8519274809514172,
+            "vllm:request_decode_time_seconds_sum{engine=\"0\",model_name=\"WeiboAI/VibeThinker-3B\"}": 6.428564245346934
+          },
+          "last": {
+            "vllm:num_requests_running{engine=\"0\",model_name=\"WeiboAI/VibeThinker-3B\"}": 13.0,
+            "vllm:num_requests_waiting{engine=\"0\",model_name=\"WeiboAI/VibeThinker-3B\"}": 0.0,
+            "vllm:kv_cache_usage_perc{engine=\"0\",model_name=\"WeiboAI/VibeThinker-3B\"}": 0.05366975786090422,
+            "vllm:prefix_cache_queries_total{engine=\"0\",model_name=\"WeiboAI/VibeThinker-3B\"}": 8514.0,
+            "vllm:prefix_cache_hits_total{engine=\"0\",model_name=\"WeiboAI/VibeThinker-3B\"}": 2320.0,
+            "vllm:num_preemptions_total{engine=\"0\",model_name=\"WeiboAI/VibeThinker-3B\"}": 0.0,
+            "vllm:prompt_tokens_total{engine=\"0\",model_name=\"WeiboAI/VibeThinker-3B\"}": 8514.0,
+            "vllm:generation_tokens_total{engine=\"0\",model_name=\"WeiboAI/VibeThinker-3B\"}": 176995.0,
+            "vllm:time_to_first_token_seconds_count{engine=\"0\",model_name=\"WeiboAI/VibeThinker-3B\"}": 60.0,
+            "vllm:time_to_first_token_seconds_sum{engine=\"0\",model_name=\"WeiboAI/VibeThinker-3B\"}": 5.37623405456543,
+            "vllm:request_queue_time_seconds_count{engine=\"0\",model_name=\"WeiboAI/VibeThinker-3B\"}": 30.0,
+            "vllm:request_queue_time_seconds_sum{engine=\"0\",model_name=\"WeiboAI/VibeThinker-3B\"}": 0.0011570177739486098,
+            "vllm:request_prefill_time_seconds_sum{engine=\"0\",model_name=\"WeiboAI/VibeThinker-3B\"}": 0.8519274809514172,
+            "vllm:request_decode_time_seconds_sum{engine=\"0\",model_name=\"WeiboAI/VibeThinker-3B\"}": 6.428564245346934
+          },
+          "observed_max": {
+            "vllm:num_requests_running{engine=\"0\",model_name=\"WeiboAI/VibeThinker-3B\"}": 30.0,
+            "vllm:num_requests_waiting{engine=\"0\",model_name=\"WeiboAI/VibeThinker-3B\"}": 0.0,
+            "vllm:kv_cache_usage_perc{engine=\"0\",model_name=\"WeiboAI/VibeThinker-3B\"}": 0.05915215248110417,
+            "vllm:prefix_cache_queries_total{engine=\"0\",model_name=\"WeiboAI/VibeThinker-3B\"}": 8514.0,
+            "vllm:prefix_cache_hits_total{engine=\"0\",model_name=\"WeiboAI/VibeThinker-3B\"}": 2320.0,
+            "vllm:num_preemptions_total{engine=\"0\",model_name=\"WeiboAI/VibeThinker-3B\"}": 0.0,
+            "vllm:prompt_tokens_total{engine=\"0\",model_name=\"WeiboAI/VibeThinker-3B\"}": 8514.0,
+            "vllm:generation_tokens_total{engine=\"0\",model_name=\"WeiboAI/VibeThinker-3B\"}": 176995.0,
+            "vllm:time_to_first_token_seconds_count{engine=\"0\",model_name=\"WeiboAI/VibeThinker-3B\"}": 60.0,
+            "vllm:time_to_first_token_seconds_sum{engine=\"0\",model_name=\"WeiboAI/VibeThinker-3B\"}": 5.37623405456543,
+            "vllm:request_queue_time_seconds_count{engine=\"0\",model_name=\"WeiboAI/VibeThinker-3B\"}": 30.0,
+            "vllm:request_queue_time_seconds_sum{engine=\"0\",model_name=\"WeiboAI/VibeThinker-3B\"}": 0.0011570177739486098,
+            "vllm:request_prefill_time_seconds_sum{engine=\"0\",model_name=\"WeiboAI/VibeThinker-3B\"}": 0.8519274809514172,
+            "vllm:request_decode_time_seconds_sum{engine=\"0\",model_name=\"WeiboAI/VibeThinker-3B\"}": 6.428564245346934
+          }
+        },
+        "scope": "runner CPU/IO only; async wall waits overlap; engine counters include warmup baseline"
+      },
+      "rank": 1
+    },
+    {
+      "cell_id": "cell-04",
+      "parameters": {
+        "parallelism": 30,
+        "rollouts": 1,
+        "temperature": 0.8,
+        "top_p": 0.95,
+        "seed": 20261003,
+        "schedule": "eager"
+      },
+      "attempt_id": "20261003T211800.426093Z",
+      "status": "interrupted",
+      "error": "Sweep interrupted",
+      "target_reached": false,
+      "solved": 13,
+      "time_to_target_s": null,
+      "official_latency_s": 50.312278264027555,
+      "grader_timeline": {
+        "completed_queries": 14,
+        "audit_errors": [],
+        "correct": 14,
+        "wrong": 0,
+        "target_service_floor_s": 54.0,
+        "actual_service_s": 42.00167489051819,
+        "idle_between_queries_s": 1.6144261360168457,
+        "first_pick_elapsed_s": 6.654207944869995,
+        "scope": "completed oracle jobs; queued/cancelled client jobs may still incur service"
+      },
+      "performance": {
+        "generation_requests": 30,
+        "fresh_ttft": {
+          "count": 30,
+          "median_s": 0.19592449703486636,
+          "p95_s": 0.2354733599931933
+        },
+        "continuation_ttft": {
+          "count": 0,
+          "median_s": null,
+          "p95_s": null
+        },
+        "official_gpu": {
+          "sample_count": 252,
+          "start_vram_mib": 78266.1875,
+          "end_vram_mib": 78426.1875,
+          "observed_peak_vram_mib": 78426.1875,
+          "scope": "shared GPU device; sampled peak, not per-request allocation",
+          "error": null
+        },
+        "initialization_gpu": {
+          "sample_count": 225,
+          "start_vram_mib": 768.25,
+          "end_vram_mib": 78266.1875,
+          "observed_peak_vram_mib": 78578.1875,
+          "scope": "shared GPU device; sampled peak, not per-request allocation",
+          "error": null
+        }
+      },
+      "overhead": {
+        "schema_version": 1,
+        "enabled": true,
+        "timings": {
+          "initialization_gpu_warmup_wait": {
+            "count": 1,
+            "wall_total_s": 4.035512223024853,
+            "wall_max_s": 4.035512223024853,
+            "thread_cpu_total_s": 0.0,
+            "cpu_samples": 0
+          },
+          "initialization_server_ready_wait": {
+            "count": 1,
+            "wall_total_s": 40.12570557399886,
+            "wall_max_s": 40.12570557399886,
+            "thread_cpu_total_s": 0.0,
+            "cpu_samples": 0
+          },
+          "initialization_grader_ready_wait": {
+            "count": 1,
+            "wall_total_s": 0.5038145030266605,
+            "wall_max_s": 0.5038145030266605,
+            "thread_cpu_total_s": 0.0,
+            "cpu_samples": 0
+          },
+          "initialization_inference_warmup_wait": {
+            "count": 1,
+            "wall_total_s": 0.3238442110014148,
+            "wall_max_s": 0.3238442110014148,
+            "thread_cpu_total_s": 0.0,
+            "cpu_samples": 0
+          },
+          "artifact_json_write": {
+            "count": 210,
+            "wall_total_s": 0.11649299412965775,
+            "wall_max_s": 0.003254977986216545,
+            "thread_cpu_total_s": 0.11654362899960802,
+            "cpu_samples": 210
+          },
+          "engine_metrics_http_wait": {
+            "count": 50,
+            "wall_total_s": 0.4301327910507098,
+            "wall_max_s": 0.06592363503295928,
+            "thread_cpu_total_s": 0.0,
+            "cpu_samples": 0
+          },
+          "engine_metrics_parse_write": {
+            "count": 50,
+            "wall_total_s": 0.023998150951229036,
+            "wall_max_s": 0.0005985010066069663,
+            "thread_cpu_total_s": 0.023988989000173433,
+            "cpu_samples": 50
+          },
+          "stream_trace_write_flush": {
+            "count": 143148,
+            "wall_total_s": 4.381680041144136,
+            "wall_max_s": 0.004838727007154375,
+            "thread_cpu_total_s": 4.354863699004255,
+            "cpu_samples": 143148
+          },
+          "sse_json_decode": {
+            "count": 143148,
+            "wall_total_s": 1.5698821658734232,
+            "wall_max_s": 0.00012810499174520373,
+            "thread_cpu_total_s": 1.5736210110068214,
+            "cpu_samples": 143148
+          },
+          "candidate_parse_enqueue": {
+            "count": 142710,
+            "wall_total_s": 1.1605091562960297,
+            "wall_max_s": 0.00016525998944416642,
+            "thread_cpu_total_s": 1.1646146099972157,
+            "cpu_samples": 142710
+          },
+          "candidate_local_queue_wait": {
+            "count": 15,
+            "wall_total_s": 0.009199104038998485,
+            "wall_max_s": 0.0013171469909138978,
+            "thread_cpu_total_s": 0.0,
+            "cpu_samples": 0
+          },
+          "grader_queue_wait": {
+            "count": 13,
+            "wall_total_s": 28.584000000000003,
+            "wall_max_s": 5.31,
+            "thread_cpu_total_s": 0.0,
+            "cpu_samples": 0
+          },
+          "grader_service": {
+            "count": 13,
+            "wall_total_s": 39.0,
+            "wall_max_s": 3.0,
+            "thread_cpu_total_s": 0.0,
+            "cpu_samples": 0
+          },
+          "verification_http_wait": {
+            "count": 15,
+            "wall_total_s": 74.44180768501246,
+            "wall_max_s": 8.313540966017172,
+            "thread_cpu_total_s": 0.0,
+            "cpu_samples": 0
+          },
+          "verification_trace_write_flush": {
+            "count": 15,
+            "wall_total_s": 0.0008228220976889133,
+            "wall_max_s": 7.993902545422316e-05,
+            "thread_cpu_total_s": 0.0008170030000371753,
+            "cpu_samples": 15
+          },
+          "generation_cancellation_settlement": {
+            "count": 30,
+            "wall_total_s": 1.250223446113523,
+            "wall_max_s": 0.07860724197234958,
+            "thread_cpu_total_s": 0.0,
+            "cpu_samples": 0
+          },
+          "gpu_sample_window": {
+            "count": 30,
+            "wall_total_s": 0.0035079718800261617,
+            "wall_max_s": 0.00020397204207256436,
+            "thread_cpu_total_s": 0.0035064689999160237,
+            "cpu_samples": 30
+          }
+        },
+        "counters": {
+          "generation_requests": 30,
+          "sse_chunks": 143148,
+          "sse_payload_bytes": 49776296,
+          "candidate_proposals": 31,
+          "candidate_unique_enqueued": 15,
+          "verification_submitted": 15,
+          "candidate_duplicates_suppressed": 16,
+          "verification_completed": 13,
+          "verification_correct": 13,
+          "generation_cancelled": 30,
+          "verification_cancelled": 2
+        },
+        "maxima": {
+          "candidate_queue_depth": 1
+        },
+        "runner_process": {
+          "user_s": 24.28272199999998,
+          "system_s": 3.649541000000003,
+          "peak_rss_mib": 100.3125,
+          "official_user_s": 24.10322499999998,
+          "official_system_s": 3.614463999999998
+        },
+        "event_loop_lag": {
+          "official": {
+            "count": 975,
+            "mean_s": 0.0015943250553801848,
+            "max_s": 0.03155501501169056,
+            "recent_p95_s": 0.0034210309968329966,
+            "p95_sample_count": 975
+          }
+        },
+        "first_verification_submit_elapsed_s": 6.6465798420249484,
+        "engine": {
+          "samples": 50,
+          "errors": [],
+          "first": {
+            "vllm:num_requests_running{engine=\"0\",model_name=\"WeiboAI/VibeThinker-3B\"}": 0.0,
+            "vllm:num_requests_waiting{engine=\"0\",model_name=\"WeiboAI/VibeThinker-3B\"}": 0.0,
+            "vllm:kv_cache_usage_perc{engine=\"0\",model_name=\"WeiboAI/VibeThinker-3B\"}": 0.0,
+            "vllm:prefix_cache_queries_total{engine=\"0\",model_name=\"WeiboAI/VibeThinker-3B\"}": 780.0,
+            "vllm:prefix_cache_hits_total{engine=\"0\",model_name=\"WeiboAI/VibeThinker-3B\"}": 464.0,
+            "vllm:num_preemptions_total{engine=\"0\",model_name=\"WeiboAI/VibeThinker-3B\"}": 0.0,
+            "vllm:prompt_tokens_total{engine=\"0\",model_name=\"WeiboAI/VibeThinker-3B\"}": 780.0,
+            "vllm:generation_tokens_total{engine=\"0\",model_name=\"WeiboAI/VibeThinker-3B\"}": 960.0,
+            "vllm:time_to_first_token_seconds_count{engine=\"0\",model_name=\"WeiboAI/VibeThinker-3B\"}": 30.0,
+            "vllm:time_to_first_token_seconds_sum{engine=\"0\",model_name=\"WeiboAI/VibeThinker-3B\"}": 1.7588779926300049,
+            "vllm:request_queue_time_seconds_count{engine=\"0\",model_name=\"WeiboAI/VibeThinker-3B\"}": 30.0,
+            "vllm:request_queue_time_seconds_sum{engine=\"0\",model_name=\"WeiboAI/VibeThinker-3B\"}": 0.0009707718272693455,
+            "vllm:request_prefill_time_seconds_sum{engine=\"0\",model_name=\"WeiboAI/VibeThinker-3B\"}": 0.8277178094140254,
+            "vllm:request_decode_time_seconds_sum{engine=\"0\",model_name=\"WeiboAI/VibeThinker-3B\"}": 6.645335501816589
+          },
+          "last": {
+            "vllm:num_requests_running{engine=\"0\",model_name=\"WeiboAI/VibeThinker-3B\"}": 17.0,
+            "vllm:num_requests_waiting{engine=\"0\",model_name=\"WeiboAI/VibeThinker-3B\"}": 0.0,
+            "vllm:kv_cache_usage_perc{engine=\"0\",model_name=\"WeiboAI/VibeThinker-3B\"}": 0.05096863653487016,
+            "vllm:prefix_cache_queries_total{engine=\"0\",model_name=\"WeiboAI/VibeThinker-3B\"}": 8514.0,
+            "vllm:prefix_cache_hits_total{engine=\"0\",model_name=\"WeiboAI/VibeThinker-3B\"}": 2320.0,
+            "vllm:num_preemptions_total{engine=\"0\",model_name=\"WeiboAI/VibeThinker-3B\"}": 0.0,
+            "vllm:prompt_tokens_total{engine=\"0\",model_name=\"WeiboAI/VibeThinker-3B\"}": 8514.0,
+            "vllm:generation_tokens_total{engine=\"0\",model_name=\"WeiboAI/VibeThinker-3B\"}": 142789.0,
+            "vllm:time_to_first_token_seconds_count{engine=\"0\",model_name=\"WeiboAI/VibeThinker-3B\"}": 60.0,
+            "vllm:time_to_first_token_seconds_sum{engine=\"0\",model_name=\"WeiboAI/VibeThinker-3B\"}": 5.384373188018799,
+            "vllm:request_queue_time_seconds_count{engine=\"0\",model_name=\"WeiboAI/VibeThinker-3B\"}": 30.0,
+            "vllm:request_queue_time_seconds_sum{engine=\"0\",model_name=\"WeiboAI/VibeThinker-3B\"}": 0.0009707718272693455,
+            "vllm:request_prefill_time_seconds_sum{engine=\"0\",model_name=\"WeiboAI/VibeThinker-3B\"}": 0.8277178094140254,
+            "vllm:request_decode_time_seconds_sum{engine=\"0\",model_name=\"WeiboAI/VibeThinker-3B\"}": 6.645335501816589
+          },
+          "observed_max": {
+            "vllm:num_requests_running{engine=\"0\",model_name=\"WeiboAI/VibeThinker-3B\"}": 30.0,
+            "vllm:num_requests_waiting{engine=\"0\",model_name=\"WeiboAI/VibeThinker-3B\"}": 0.0,
+            "vllm:kv_cache_usage_perc{engine=\"0\",model_name=\"WeiboAI/VibeThinker-3B\"}": 0.05096863653487016,
+            "vllm:prefix_cache_queries_total{engine=\"0\",model_name=\"WeiboAI/VibeThinker-3B\"}": 8514.0,
+            "vllm:prefix_cache_hits_total{engine=\"0\",model_name=\"WeiboAI/VibeThinker-3B\"}": 2320.0,
+            "vllm:num_preemptions_total{engine=\"0\",model_name=\"WeiboAI/VibeThinker-3B\"}": 0.0,
+            "vllm:prompt_tokens_total{engine=\"0\",model_name=\"WeiboAI/VibeThinker-3B\"}": 8514.0,
+            "vllm:generation_tokens_total{engine=\"0\",model_name=\"WeiboAI/VibeThinker-3B\"}": 142789.0,
+            "vllm:time_to_first_token_seconds_count{engine=\"0\",model_name=\"WeiboAI/VibeThinker-3B\"}": 60.0,
+            "vllm:time_to_first_token_seconds_sum{engine=\"0\",model_name=\"WeiboAI/VibeThinker-3B\"}": 5.384373188018799,
+            "vllm:request_queue_time_seconds_count{engine=\"0\",model_name=\"WeiboAI/VibeThinker-3B\"}": 30.0,
+            "vllm:request_queue_time_seconds_sum{engine=\"0\",model_name=\"WeiboAI/VibeThinker-3B\"}": 0.0009707718272693455,
+            "vllm:request_prefill_time_seconds_sum{engine=\"0\",model_name=\"WeiboAI/VibeThinker-3B\"}": 0.8277178094140254,
+            "vllm:request_decode_time_seconds_sum{engine=\"0\",model_name=\"WeiboAI/VibeThinker-3B\"}": 6.645335501816589
+          }
+        },
+        "scope": "runner CPU/IO only; async wall waits overlap; engine counters include warmup baseline"
+      },
+      "rank": null
+    }
+  ]
+}

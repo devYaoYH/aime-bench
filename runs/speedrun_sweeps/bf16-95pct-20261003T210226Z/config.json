@@ -1,0 +1,131 @@
+{
+  "batch_id": "bf16-95pct-20261003T210226Z",
+  "started_at_utc": "2026-10-03T21:02:26.311559+00:00",
+  "source_commit": "7f2d726bc757fc10a25f6212b8a975e9acaa41a0",
+  "model": "WeiboAI/VibeThinker-3B",
+  "gpu_memory_utilization": 0.95,
+  "profiles": {
+    "vllm.yaml": {
+      "path": "/home/azureuser/models/WeiboAI/VibeThinker-3B/vllm.yaml",
+      "sha256": "0f08a0c04cdf53db83502b7e8086323cf7b9724c7bb7982fa2bc9f4b8308824a"
+    },
+    "vllm-baseline-16k.yaml": {
+      "path": "/home/azureuser/models/WeiboAI/VibeThinker-3B/vllm-baseline-16k.yaml",
+      "sha256": "4f65f11fd1ad10b9f6247f8c5916ed6c5cb0a26248d824507903ee4df2023de2"
+    }
+  },
+  "commands": {
+    "coverage": "/home/azureuser/.venvs/vllm/bin/python -u -m src.attempt --model WeiboAI/VibeThinker-3B --temperature 0.8 --top-p 0.95 --seed 20261003 --target-correct 18 --max-attempts-per-question 4 --strategy coverage --parallelism 30 --rollouts 1 --first-pass-max-tokens 8192 --max-tokens 16384 --max-rounds 4",
+    "naive": "/home/azureuser/.venvs/vllm/bin/python -u -m src.attempt_runners.naive_pass4_v1 --model WeiboAI/VibeThinker-3B --temperature 0.8 --top-p 0.95 --seed 20261003 --target-correct 18 --max-attempts-per-question 4 --parallelism 30 --rollouts 4 --max-tokens 16384",
+    "grid": "/home/azureuser/.venvs/vllm/bin/python -u -m src.attempt_runners.sweep_speedrun_v1 --execute --output /home/azureuser/aime-bench/runs/speedrun_sweeps/bf16-95pct-20261003T210226Z/grid"
+  },
+  "order": [
+    "coverage",
+    "naive",
+    "grid"
+  ],
+  "shell_command": "set -euo pipefail\ncd /home/azureuser/aime-bench\ntrap 'rc=$?; printf \"%s\\n\" \"$rc\" > /home/azureuser/aime-bench/runs/speedrun_sweeps/bf16-95pct-20261003T210226Z/batch.exit' EXIT\nif [ -n \"$(nvidia-smi --query-compute-apps=pid --format=csv,noheader)\" ]; then\n  printf \"GPU occupied before coverage; deferring batch\\n\" >&2\n  exit 1\nfi\nprintf 'coverage\n' > /home/azureuser/aime-bench/runs/speedrun_sweeps/bf16-95pct-20261003T210226Z/stage\n/home/azureuser/.venvs/vllm/bin/python -u -m src.attempt --model WeiboAI/VibeThinker-3B --temperature 0.8 --top-p 0.95 --seed 20261003 --target-correct 18 --max-attempts-per-question 4 --strategy coverage --parallelism 30 --rollouts 1 --first-pass-max-tokens 8192 --max-tokens 16384 --max-rounds 4 > /home/azureuser/aime-bench/runs/speedrun_sweeps/bf16-95pct-20261003T210226Z/coverage.log 2>&1\nif [ -n \"$(nvidia-smi --query-compute-apps=pid --format=csv,noheader)\" ]; then\n  printf \"GPU occupied before naive; deferring batch\\n\" >&2\n  exit 1\nfi\nprintf 'naive\n' > /home/azureuser/aime-bench/runs/speedrun_sweeps/bf16-95pct-20261003T210226Z/stage\n/home/azureuser/.venvs/vllm/bin/python -u -m src.attempt_runners.naive_pass4_v1 --model WeiboAI/VibeThinker-3B --temperature 0.8 --top-p 0.95 --seed 20261003 --target-correct 18 --max-attempts-per-question 4 --parallelism 30 --rollouts 4 --max-tokens 16384 > /home/azureuser/aime-bench/runs/speedrun_sweeps/bf16-95pct-20261003T210226Z/naive.log 2>&1\nif [ -n \"$(nvidia-smi --query-compute-apps=pid --format=csv,noheader)\" ]; then\n  printf \"GPU occupied before grid; deferring batch\\n\" >&2\n  exit 1\nfi\nprintf 'grid\n' > /home/azureuser/aime-bench/runs/speedrun_sweeps/bf16-95pct-20261003T210226Z/stage\n/home/azureuser/.venvs/vllm/bin/python -u -m src.attempt_runners.sweep_speedrun_v1 --execute --output /home/azureuser/aime-bench/runs/speedrun_sweeps/bf16-95pct-20261003T210226Z/grid > /home/azureuser/aime-bench/runs/speedrun_sweeps/bf16-95pct-20261003T210226Z/grid.log 2>&1\nprintf \"completed\\n\" > /home/azureuser/aime-bench/runs/speedrun_sweeps/bf16-95pct-20261003T210226Z/stage\n",
+  "comparison": "Original coverage and naive baselines followed by eight pruned speedrun cells",
+  "amendments": [
+    {
+      "timestamp_utc": "2026-10-03T21:05:21.866124+00:00",
+      "reason": "User requested skipping 8 x 1 and 8 x 2 before grid launch",
+      "sweep_commit": "338eb69c344d2cdfc438f44816c0ef0c5d8ec83f",
+      "sweep_cells": 8,
+      "excluded_parameters": [
+        {
+          "parallelism": 8,
+          "rollouts": 1
+        },
+        {
+          "parallelism": 8,
+          "rollouts": 2
+        }
+      ]
+    },
+    {
+      "timestamp_utc": "2026-10-03T21:10:54.204445+00:00",
+      "reason": "User cancelled naive rerun and prioritized 30 x 4, then highest question parallelism",
+      "sweep_commit": "bf5788f51b83db12b1607eaccb1434468822ce64",
+      "sweep_order": [
+        {
+          "parallelism": 30,
+          "rollouts": 4,
+          "temperature": 0.8,
+          "top_p": 0.95,
+          "seed": 20261003,
+          "schedule": "eager"
+        },
+        {
+          "parallelism": 30,
+          "rollouts": 2,
+          "temperature": 0.8,
+          "top_p": 0.95,
+          "seed": 20261003,
+          "schedule": "eager"
+        },
+        {
+          "parallelism": 30,
+          "rollouts": 1,
+          "schedule": "barrier",
+          "temperature": 0.8,
+          "top_p": 0.95,
+          "seed": 20261003
+        },
+        {
+          "parallelism": 30,
+          "rollouts": 1,
+          "temperature": 0.8,
+          "top_p": 0.95,
+          "seed": 20261003,
+          "schedule": "eager"
+        },
+        {
+          "parallelism": 16,
+          "rollouts": 4,
+          "temperature": 0.8,
+          "top_p": 0.95,
+          "seed": 20261003,
+          "schedule": "eager"
+        },
+        {
+          "parallelism": 16,
+          "rollouts": 2,
+          "temperature": 0.8,
+          "top_p": 0.95,
+          "seed": 20261003,
+          "schedule": "eager"
+        },
+        {
+          "parallelism": 16,
+          "rollouts": 1,
+          "temperature": 0.8,
+          "top_p": 0.95,
+          "seed": 20261003,
+          "schedule": "eager"
+        },
+        {
+          "parallelism": 8,
+          "rollouts": 4,
+          "temperature": 0.8,
+          "top_p": 0.95,
+          "seed": 20261003,
+          "schedule": "eager"
+        }
+      ],
+      "naive_status": "interrupted by user request; traces preserved"
+    }
+  ],
+  "resumes": [
+    {
+      "timestamp_utc": "2026-10-03T21:06:46.119406+00:00",
+      "reason": "Naive startup port probe failed immediately after coverage cleanup; ports now confirmed free",
+      "remaining_stages": [
+        "naive",
+        "grid"
+      ],
+      "shell_command": "set -euo pipefail\ncd /home/azureuser/aime-bench\ntrap 'rc=$?; printf \"%s\\n\" \"$rc\" > /home/azureuser/aime-bench/runs/speedrun_sweeps/bf16-95pct-20261003T210226Z/batch.exit' EXIT\nif [ -n \"$(nvidia-smi --query-compute-apps=pid --format=csv,noheader)\" ]; then\n  exit 1\nfi\nprintf 'naive\n' > /home/azureuser/aime-bench/runs/speedrun_sweeps/bf16-95pct-20261003T210226Z/stage\n/home/azureuser/.venvs/vllm/bin/python -u -m src.attempt_runners.naive_pass4_v1 --model WeiboAI/VibeThinker-3B --temperature 0.8 --top-p 0.95 --seed 20261003 --target-correct 18 --max-attempts-per-question 4 --parallelism 30 --rollouts 4 --max-tokens 16384 > /home/azureuser/aime-bench/runs/speedrun_sweeps/bf16-95pct-20261003T210226Z/naive.log 2>&1\nif [ -n \"$(nvidia-smi --query-compute-apps=pid --format=csv,noheader)\" ]; then\n  exit 1\nfi\nprintf 'grid\n' > /home/azureuser/aime-bench/runs/speedrun_sweeps/bf16-95pct-20261003T210226Z/stage\n/home/azureuser/.venvs/vllm/bin/python -u -m src.attempt_runners.sweep_speedrun_v1 --execute --output /home/azureuser/aime-bench/runs/speedrun_sweeps/bf16-95pct-20261003T210226Z/grid > /home/azureuser/aime-bench/runs/speedrun_sweeps/bf16-95pct-20261003T210226Z/grid.log 2>&1\nprintf \"completed\\n\" > /home/azureuser/aime-bench/runs/speedrun_sweeps/bf16-95pct-20261003T210226Z/stage\n",
+      "failed_attempt_id": "20261003T210502.392028Z"
+    }
+  ]
+}
