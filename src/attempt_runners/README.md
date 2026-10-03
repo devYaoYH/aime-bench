@@ -139,6 +139,8 @@ which binds only to loopback. Summaries retain every trial, including failures;
 the default 75-second comparison threshold is a reporting aid, not proof that
 the 71-second result has been reproduced reliably. No optional GPU/engine
 polling is added to the official solving window.
+Use `--profiled-control` to restore the reference's profiling, GPU/engine samples
+and immediate trace writes while keeping identical sampling and solving controls.
 
 `python -m src.attempt_runners.speedrun_v3 --model WeiboAI/VibeThinker-3B --benchmark`
 starts one 8K request for every selected question. The first client grader

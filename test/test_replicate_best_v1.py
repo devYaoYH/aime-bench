@@ -24,6 +24,14 @@ class BestReplicationTests(unittest.TestCase):
         b = controls("r0b0tlab/VibeThinker-3B-NVFP4")
         self.assertEqual([i for i,(x,y) in enumerate(zip(a,b)) if x != y], [a.index("--model") + 1])
 
+    def test_original_profiled_control_restores_storage_and_sampler(self):
+        args = parse_args(controls("WeiboAI/VibeThinker-3B", benchmark=False))
+        self.assertFalse(args.benchmark)
+        self.assertFalse(args.buffer_traces)
+        self.assertFalse(args.no_overhead_profile)
+        self.assertFalse(args.no_gpu_telemetry)
+        self.assertEqual((args.parallelism, args.rollouts, args.schedule), (30, 1, "barrier"))
+
 
 class CacheResetTests(unittest.IsolatedAsyncioTestCase):
     async def test_retries_held_blocks_without_forcing_running_reset(self):

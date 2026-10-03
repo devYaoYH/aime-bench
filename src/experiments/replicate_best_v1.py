@@ -22,9 +22,11 @@ MANIFEST = ROOT / "configs/experiments/vibe-bf16-best-30x1-benchmark-v2.json"
 REFERENCE = "20261003T211557.382358Z"
 
 
-def controls(model):
+def controls(model, benchmark=True):
     argv = json.loads(MANIFEST.read_text())["argv"]
     argv[argv.index("--model") + 1] = model
+    if not benchmark:
+        argv.remove("--benchmark")
     return argv + ["--reuse-server"]
 
 
@@ -66,14 +68,15 @@ def save(path, data):
 
 
 async def execute(options):
-    args = runner.parse_args(controls(options.model))
+    argv = controls(options.model, benchmark=not options.profiled_control)
+    args = runner.parse_args(argv)
     batch = ROOT / "runs/experiments" / options.batch
     batch.mkdir(parents=True, exist_ok=False)
     profile = Path(args.models_dir).expanduser() / args.model / args.model_profile
     config = {"driver": "replicate_best_v1", "started_at_utc": utc_now(),
               "reference_attempt": REFERENCE, "trials_requested": options.trials,
               "near_reference_threshold_s": options.threshold_s,
-              "argv": controls(options.model), "model": options.model,
+              "argv": argv, "model": options.model, "profiled_control": options.profiled_control,
               "source_commit": subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=ROOT, text=True).strip(),
               "profile_path": str(profile), "profile_sha256": hashlib.sha256(profile.read_bytes()).hexdigest(),
               "server_reused": True, "prefix_cache_reset_between_trials": True,
@@ -96,10 +99,11 @@ async def execute(options):
         async with httpx.AsyncClient(trust_env=False) as client:
             await ready(client, args.vllm_url + "/v1/models", args.startup_timeout, server)
             result["status"] = "running"
+            save(batch / "summary.json", result)
             for trial in range(1, options.trials + 1):
                 cache_reset = await reset_cache(client, args.vllm_url)
                 print(f"REPLICATION TRIAL {trial}/{options.trials} model={options.model}", flush=True)
-                output = await runner.run(runner.parse_args(controls(options.model)))
+                output = await runner.run(runner.parse_args(argv))
                 summary = json.loads((output / "summary.json").read_text())
                 comparison = compare_initial_requests(output, options.model)
                 row = {"trial": trial, "attempt_id": output.name, "cache_reset": cache_reset,
@@ -133,6 +137,7 @@ def main():
     parser.add_argument("--model", choices=["WeiboAI/VibeThinker-3B", "r0b0tlab/VibeThinker-3B-NVFP4"], default="WeiboAI/VibeThinker-3B")
     parser.add_argument("--trials", type=int, default=3)
     parser.add_argument("--threshold-s", type=float, default=75)
+    parser.add_argument("--profiled-control", action="store_true", help="Restore original profiling and immediate trace writes for the matched control")
     parser.add_argument("--batch", default="best-replication-" + datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ"))
     options = parser.parse_args()
     if options.trials < 1 or options.threshold_s <= 0 or Path(options.batch).name != options.batch:
