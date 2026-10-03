@@ -28,11 +28,11 @@ from src.attempt_runners._runtime_v1 import (
     GPUSampler,
     Services,
     attempt_lock,
-    ensure_free,
     load_questions,
     ready,
     warm_inference,
 )
+from src.attempt_runners._ports_v1 import ensure_free
 from src.attempt_runners._streaming_v1 import PROMPT, continuation_prefix, run_question
 
 RUNNER_ID = "speedrun_v1"

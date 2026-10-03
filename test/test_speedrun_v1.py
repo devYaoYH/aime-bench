@@ -7,6 +7,7 @@ import json
 from pathlib import Path
 import tempfile
 import time
+import socket
 import unittest
 from unittest.mock import patch
 
@@ -15,6 +16,7 @@ import httpx
 from src.attempt_runners.speedrun_v1 import assert_gpu_idle, parse_args, run_speedrun
 from src.attempt_runners import sweep_speedrun_v1 as sweep
 from src.common import ROOT
+from src.attempt_runners._ports_v1 import ensure_free
 from test.test_attempt import FakeGPU, Stream, chunk
 
 
@@ -438,3 +440,27 @@ class SweepExecutionTests(unittest.IsolatedAsyncioTestCase):
             self.assertEqual(len(result["cells"]), 1)
             self.assertEqual(result["cells"][0]["attempt_id"], "partial-cell")
             self.assertIsNone(result["cells"][0]["time_to_target_s"])
+
+
+class PortProbeTests(unittest.TestCase):
+    def test_active_listener_is_rejected(self):
+        with socket.socket() as server:
+            server.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+            server.bind(("127.0.0.1", 0))
+            server.listen()
+            with self.assertRaises(OSError):
+                ensure_free(server.getsockname()[1])
+
+    def test_recently_closed_server_connection_allows_next_cell(self):
+        with socket.socket() as server, socket.socket() as client:
+            server.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+            server.bind(("127.0.0.1", 0))
+            port = server.getsockname()[1]
+            server.listen()
+            client.connect(("127.0.0.1", port))
+            connection, _ = server.accept()
+            with connection:
+                connection.shutdown(socket.SHUT_WR)
+                self.assertEqual(client.recv(1), b"")
+                client.close()
+        ensure_free(port)

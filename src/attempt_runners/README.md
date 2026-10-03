@@ -51,7 +51,10 @@ rerun or relabel that experiment.
 | [Sweep v1](sweep_speedrun_v1.py) | `python -m src.attempt_runners.sweep_speedrun_v1` | Plan by default; explicitly execute sequential, isolated cells |
 
 The speedrun uses its own frozen [_streaming_v1.py](_streaming_v1.py) policy and
-v1 service runtime. It does not import or modify canonical or naive runner behavior.
+v1 service runtime, with a [port probe](_ports_v1.py) that permits recently closed
+HTTP connections in TIME_WAIT while rejecting active listeners. This avoids false
+port conflicts between sequential cells. It does not modify the frozen naive
+baseline runtime or canonical/naive solving policies.
 Shared [instrumentation](../attempt_metrics.py) is observational. Each sample is
 seeded by question index and rollout number with a fixed four-request stride,
 so changing fan-out does not change the first sample's seed. This differs from
