@@ -1,0 +1,23 @@
+{
+  "model": "Qwen/Qwen3.5-35B-A3B-GPTQ-Int4",
+  "messages": [
+    {
+      "role": "system",
+      "content": "Solve the AIME problem. Whenever you have a prospective answer to the original problem, immediately emit it as \\boxed{N}, where N is an integer from 0 to 999. You may continue checking your work afterward. End with your final boxed answer."
+    },
+    {
+      "role": "user",
+      "content": "Let $ABCDE$ be a convex pentagon with $AB=14$, $BC=7$, $CD=24$, $DE=13$, $EA=26$, and $\\angle B=\\angle E=60^{\\circ}$. For each point $X$ in the plane, define $f(X)=AX+BX+CX+DX+EX$. The least possible value of $f(X)$ can be expressed as $m+n\\sqrt{p}$, where $m$ and $n$ are positive integers and $p$ is not divisible by the square of any prime. Find $m+n+p$."
+    }
+  ],
+  "temperature": 0.8,
+  "top_p": 0.95,
+  "max_tokens": 8192,
+  "seed": 20261018,
+  "stream": true,
+  "stream_options": {
+    "include_usage": true,
+    "continuous_usage_stats": true
+  },
+  "return_token_ids": true
+}

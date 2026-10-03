@@ -1,0 +1,23 @@
+{
+  "model": "WeiboAI/VibeThinker-3B",
+  "messages": [
+    {
+      "role": "system",
+      "content": "You are a helpful assistant. Solve the math problem carefully and put your final answer in \\boxed{} notation."
+    },
+    {
+      "role": "user",
+      "content": "Let $S$ be the set of vertices of a regular $24$-gon. Find the number of ways to draw $12$ segments of equal lengths so that each vertex in $S$ is an endpoint of exactly one of the $12$ segments."
+    }
+  ],
+  "temperature": 0.8,
+  "top_p": 0.95,
+  "max_tokens": 16293,
+  "seed": 20261111,
+  "stream": true,
+  "stream_options": {
+    "include_usage": true,
+    "continuous_usage_stats": true
+  },
+  "return_token_ids": false
+}

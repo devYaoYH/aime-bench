@@ -1,0 +1,21 @@
+{
+  "model": "Qwen/Qwen3.5-4B",
+  "messages": [
+    {
+      "role": "system",
+      "content": "Solve the AIME problem. Whenever you have a prospective answer to the original problem, immediately emit it as \\boxed{N}, where N is an integer from 0 to 999. You may continue checking your work afterward. End with your final boxed answer."
+    },
+    {
+      "role": "user",
+      "content": "Sixteen chairs are arranged in a row. Eight people each select a chair in which to sit so that no person sits next to two other people. Let $N$ be the number of subsets of the 16 chairs that could be selected. Find the remainder when $N$ is divided by $1000$."
+    }
+  ],
+  "temperature": 0.8,
+  "top_p": 0.95,
+  "max_tokens": 16384,
+  "seed": 20261104,
+  "stream": true,
+  "stream_options": {
+    "include_usage": true
+  }
+}

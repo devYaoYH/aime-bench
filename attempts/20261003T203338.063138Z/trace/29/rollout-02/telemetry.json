@@ -1,0 +1,44 @@
+{
+  "rollout": 2,
+  "round": 2,
+  "started_at_utc": "2026-10-03T20:40:05.677+00:00",
+  "start_monotonic_s": 264253.739710698,
+  "ttft_s": 18.969533233961556,
+  "last_token_s": 327.66651478095446,
+  "finish_reason": "length",
+  "status": "completed",
+  "done_received": true,
+  "usage": {
+    "prompt_tokens": 8355,
+    "total_tokens": 24739,
+    "completion_tokens": 16384,
+    "prompt_tokens_details": {
+      "cached_tokens": 0
+    }
+  },
+  "endpoint": "/v1/completions",
+  "continuation_of_rollout": 1,
+  "requested_max_tokens": 16384,
+  "grading_mode": "streaming_candidates",
+  "http_status": 200,
+  "headers_received_s": 0.08095263998256996,
+  "generation_finished_at_utc": "2026-10-03T20:45:33.344+00:00",
+  "generation_end_monotonic_s": 264581.406830092,
+  "generation_latency_s": 327.6671193939983,
+  "generation_censored": true,
+  "generated_token_ids_count": 16384,
+  "prompt_token_ids_count": 8355,
+  "cached_prompt_tokens": 0,
+  "prefix_cache_hit_fraction": 0.0,
+  "finished_at_utc": "2026-10-03T20:45:33.355+00:00",
+  "end_to_end_latency_s": 327.6786761189578,
+  "end_to_end_scope": "rollout start through question verification/cancellation settlement",
+  "gpu": {
+    "sample_count": 1636,
+    "start_vram_mib": 64852.1875,
+    "end_vram_mib": 64852.1875,
+    "observed_peak_vram_mib": 64852.1875,
+    "scope": "shared GPU device; sampled peak, not per-request allocation",
+    "error": null
+  }
+}

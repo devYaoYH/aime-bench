@@ -17,5 +17,5 @@ interval was `2026-10-03T20:37:42.003+00:00` through
 [config.json](config.json) preserves settings, prompt, launch profile, and Git
 provenance. [summary.json](summary.json) preserves outcomes and first-solved
 events. Trajectories, verification logs, exact token evidence, and GPU telemetry
-were copied locally for the canonical viewer and analysis; they remain ignored
-by Git. Full SSE dumps were not needed for this local copy.
+are versioned for the canonical viewer and analysis. Full SSE dumps and service
+logs remain excluded from Git and were not needed for this local copy.

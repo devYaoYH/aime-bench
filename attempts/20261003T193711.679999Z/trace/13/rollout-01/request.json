@@ -1,0 +1,21 @@
+{
+  "model": "Qwen/Qwen3.5-4B",
+  "messages": [
+    {
+      "role": "system",
+      "content": "Solve the AIME problem. Whenever you have a prospective answer to the original problem, immediately emit it as \\boxed{N}, where N is an integer from 0 to 999. You may continue checking your work afterward. End with your final boxed answer."
+    },
+    {
+      "role": "user",
+      "content": "Alex divides a disk into four quadrants with two perpendicular diameters intersecting at the center of the disk. He draws $25$ more lines segments through the disk, drawing each segment by selecting two points at random on the perimeter of the disk in different quadrants and connecting those two points. Find the expected number of regions into which these $27$ line segments divide the disk."
+    }
+  ],
+  "temperature": 0.8,
+  "top_p": 0.95,
+  "max_tokens": 16384,
+  "seed": 20261056,
+  "stream": true,
+  "stream_options": {
+    "include_usage": true
+  }
+}

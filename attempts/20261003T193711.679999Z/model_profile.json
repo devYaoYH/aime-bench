@@ -1,0 +1,5 @@
+{
+  "path": "/home/azureuser/models/Qwen/Qwen3.5-4B/vllm.yaml",
+  "yaml": "# Callosum A100 profile. Deploy to ~/models/Qwen/Qwen3.5-4B/vllm.yaml.\n# Weights: Hugging Face revision 851bf6e806efd8d0a36b00ddf55e13ccb7b8cd0a.\nmodel: /home/azureuser/models/Qwen/Qwen3.5-4B\nserved-model-name: Qwen/Qwen3.5-4B\nhost: \"127.0.0.1\"\nport: 8000\ndtype: bfloat16\ntensor-parallel-size: 1\nmax-model-len: 32768\ngpu-memory-utilization: 0.80\nreasoning-parser: qwen3\n# vLLM uses max_new_tokens here as a server-wide output-token ceiling.\n# The context window above includes both prompt and generation tokens.\noverride-generation-config: '{\"max_new_tokens\": 16384}'\n",
+  "sha256": "43dcf54b09edc7f569d4b77f000f1d1e77636f41f909b79edcafdff2a95541a8"
+}

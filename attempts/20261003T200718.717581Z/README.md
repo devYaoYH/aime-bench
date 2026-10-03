@@ -98,11 +98,12 @@ linked to the grader's answer timestamp and query ID. Full query IDs are in
 | 18 | 2 | 82 | 89.429 | 2026-10-03T20:10:00.391+00:00 | 2026-10-03T20:10:00.389891Z |
 | 5 | 2 | 279 | 92.428 | 2026-10-03T20:10:03.391+00:00 | 2026-10-03T20:10:03.390204Z |
 
-Raw evidence remains on the remote:
+The complete raw evidence remains on the remote:
 `/home/azureuser/aime-bench/attempts/20261003T200718.717581Z/`, including
 `trace/`, `solved.jsonl`, `grader_audit.jsonl`, `gpu.jsonl`, `vllm.log`,
-and the exact-token request/response records. Compact original config and summary
-are versioned beside this report. GPU process inspection after completion
+and the exact-token request/response records. Original config, summary, saved
+requests/responses, token records, verification events, and GPU samples are
+versioned beside this report for the canonical viewer and analysis. GPU process inspection after completion
 confirmed no remaining inference workload.
 
 The [initial Qwen 8 × 4 baseline](../20261003T193711.679999Z/README.md)

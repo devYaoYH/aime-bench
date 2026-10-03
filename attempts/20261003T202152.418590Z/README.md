@@ -146,7 +146,9 @@ in `summary.json` and remote `solved.jsonl`.
 Raw traces, continuous usage, sampler rows, first-solve records, and service logs
 remain at
 `/home/azureuser/aime-bench/attempts/20261003T202152.418590Z/`.
-Original compact `config.json` and `summary.json` are versioned beside this report.
+Original `config.json` and `summary.json`, saved requests/responses, token records,
+verification events, and GPU samples are versioned beside this report for the
+canonical viewer and analysis. Full SSE dumps and service logs remain ignored.
 Observed token totals include client-visible partial work and may omit generation
 already performed after the final received chunk. Cancelled stream durations
 are censored. Cache occupancy and VRAM peaks are sampled observations.

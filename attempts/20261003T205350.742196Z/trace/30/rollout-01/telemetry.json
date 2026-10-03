@@ -1,0 +1,44 @@
+{
+  "rollout": 1,
+  "round": 1,
+  "started_at_utc": "2026-10-03T20:55:07.492+00:00",
+  "start_monotonic_s": 265155.554984769,
+  "ttft_s": 3.5748130079591647,
+  "last_token_s": 66.33979117998388,
+  "finish_reason": "length",
+  "status": "completed",
+  "done_received": true,
+  "usage": {
+    "prompt_tokens": 149,
+    "total_tokens": 8341,
+    "completion_tokens": 8192,
+    "prompt_tokens_details": {
+      "cached_tokens": 64,
+      "created_cache_tokens": 80
+    }
+  },
+  "endpoint": "/v1/chat/completions",
+  "continuation_of_rollout": null,
+  "requested_max_tokens": 8192,
+  "http_status": 200,
+  "headers_received_s": 0.07045170798664913,
+  "generation_finished_at_utc": "2026-10-03T20:56:13.847+00:00",
+  "generation_end_monotonic_s": 265221.909822676,
+  "generation_latency_s": 66.35483790695434,
+  "generation_censored": true,
+  "generated_token_ids_count": 8192,
+  "prompt_token_ids_count": 149,
+  "cached_prompt_tokens": 64,
+  "prefix_cache_hit_fraction": 0.42953020134228187,
+  "finished_at_utc": "2026-10-03T20:56:13.856+00:00",
+  "end_to_end_latency_s": 66.36405993596418,
+  "end_to_end_scope": "rollout start through question verification/cancellation settlement",
+  "gpu": {
+    "sample_count": 332,
+    "start_vram_mib": 77878.1875,
+    "end_vram_mib": 78036.1875,
+    "observed_peak_vram_mib": 78036.1875,
+    "scope": "shared GPU device; sampled peak, not per-request allocation",
+    "error": null
+  }
+}

@@ -215,8 +215,9 @@ interval. These measurements include concurrent rollouts and vLLM's preallocated
 cache, so they cannot attribute VRAM to an individual request. The sampler is
 required for remote attempts; telemetry startup/runtime failures fail the attempt.
 The grader audit contains gold answers and remains an ignored raw artifact.
-Only attempt configs, summaries, and README reports are Git-allowlisted; raw
-traces stay on the remote unless explicitly copied for local analysis.
+Saved canonical viewer/analysis evidence is Git-allowlisted, including requests,
+responses, exact token records, verification events, question/round records, GPU
+samples, and launch/warmup metadata. Full SSE dumps and service logs remain remote.
 
 ## Viewer
 
@@ -228,13 +229,15 @@ cache/TTFT counters, and sampled device VRAM/utilization. The first solve chart
 uses saved oracle events; older attempts use their recorded winning-verdict
 timestamps when available. Missing usage and censored generations are labeled.
 
-Configs and summaries alone provide an overview. For detailed inspection, copy
-the selected attempt's `trace/` directory from callosum; `request.json`,
+Configs and summaries alone provide an overview. Committed canonical attempts
+include their detailed evidence, so a fresh clone can inspect them. For a new
+attempt, copy the selected attempt's `trace/` directory from callosum; `request.json`,
 `response.json`, `telemetry.json`, `question.json`, and `verification.jsonl` are
 enough for the main views. Copy `gpu.jsonl` and `solved.jsonl` for device plots and
 first-solve events. `tokens.json` is optional exact-continuation evidence;
-full `stream.jsonl` files are optional and much larger. These raw artifacts stay
-ignored by Git. The viewer never connects to the VM or launches services.
+full `stream.jsonl` files are optional and much larger, and remain ignored by Git.
+Review sizes and commit the allowlisted evidence after copying. The viewer never
+connects to the VM or launches services.
 "Refresh files" rereads the local copy, with optional five-second polling for
 an attempt being written locally. An unfinished JSONL tail is tolerated.
 

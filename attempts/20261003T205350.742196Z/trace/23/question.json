@@ -1,0 +1,189 @@
+{
+  "problem_idx": 23,
+  "started_at_utc": "2026-10-03T20:55:07.465+00:00",
+  "finished_at_utc": "2026-10-03T20:56:18.615+00:00",
+  "end_to_end_latency_s": 71.14968635397963,
+  "status": "solved",
+  "winner": {
+    "answer": 610,
+    "part": "content",
+    "kind": "literal_prose",
+    "end": 23801,
+    "line": "Thus answer might be 610. However, we must ensure there are no other failures beyond those identified. Our analysis suggests that the only way greedy fails is if the remainder after greedy (i.e., N mod 25) is >=5 mod10, i.e., r in the 10 values. Let's test some examples: N=42: 42 mod25 = 17, which is in {15-19}, so fails. Indeed greedy fails. N=42 has q=1, r=17. r mod10 =7≥5 => fails. Indeed fails.",
+    "candidate": "610",
+    "rollout": 2,
+    "observed_at_utc": "2026-10-03T20:56:15.605+00:00",
+    "question_elapsed_s": 1.7355751229915768,
+    "verification_started_at_utc": "2026-10-03T20:56:15.606+00:00",
+    "round": 2,
+    "result": {
+      "query_id": "20261003T205350.742196Z-q23-a610",
+      "seq": 16,
+      "agent_id": "20261003T205350.742196Z-q23-r2",
+      "index": 23,
+      "candidate": "610",
+      "verdict": true,
+      "queue_ahead_at_submit": 0,
+      "submitted_at": "2026-10-03T20:56:15.608895Z",
+      "picked_at": "2026-10-03T20:56:15.608997Z",
+      "answered_at": "2026-10-03T20:56:18.609113Z",
+      "queue_wait_s": 0.0,
+      "toll_s": 3.0,
+      "latency_s": 3.0
+    },
+    "verification_finished_at_utc": "2026-10-03T20:56:18.610+00:00",
+    "verification_latency_s": 3.003914712986443
+  },
+  "error": null,
+  "unique_candidates": 1,
+  "candidate_answers": [
+    "610"
+  ],
+  "rollouts": [
+    {
+      "rollout": 1,
+      "round": 1,
+      "started_at_utc": "2026-10-03T20:55:07.486+00:00",
+      "start_monotonic_s": 265155.548930917,
+      "ttft_s": 3.5487457580165938,
+      "last_token_s": 66.3233281269786,
+      "finish_reason": "length",
+      "status": "completed",
+      "done_received": true,
+      "usage": {
+        "prompt_tokens": 361,
+        "total_tokens": 8553,
+        "completion_tokens": 8192,
+        "prompt_tokens_details": {
+          "cached_tokens": 64,
+          "created_cache_tokens": 288
+        }
+      },
+      "endpoint": "/v1/chat/completions",
+      "continuation_of_rollout": null,
+      "requested_max_tokens": 8192,
+      "http_status": 200,
+      "headers_received_s": 0.05571518698707223,
+      "generation_finished_at_utc": "2026-10-03T20:56:13.816+00:00",
+      "generation_end_monotonic_s": 265221.878989668,
+      "generation_latency_s": 66.33005875098752,
+      "generation_censored": true,
+      "generated_token_ids_count": 8192,
+      "prompt_token_ids_count": 361,
+      "cached_prompt_tokens": 64,
+      "prefix_cache_hit_fraction": 0.1772853185595568,
+      "finished_at_utc": "2026-10-03T20:56:13.833+00:00",
+      "end_to_end_latency_s": 66.34720997803379,
+      "end_to_end_scope": "rollout start through question verification/cancellation settlement",
+      "gpu": {
+        "sample_count": 332,
+        "start_vram_mib": 77878.1875,
+        "end_vram_mib": 78036.1875,
+        "observed_peak_vram_mib": 78036.1875,
+        "scope": "shared GPU device; sampled peak, not per-request allocation",
+        "error": null
+      }
+    },
+    {
+      "rollout": 2,
+      "round": 2,
+      "started_at_utc": "2026-10-03T20:56:13.932+00:00",
+      "start_monotonic_s": 265221.994602656,
+      "ttft_s": 0.1915916180005297,
+      "last_token_s": 4.672688774007838,
+      "finish_reason": null,
+      "status": "cancelled",
+      "done_received": false,
+      "usage": {
+        "prompt_tokens": 8553,
+        "total_tokens": 9057,
+        "completion_tokens": 504
+      },
+      "endpoint": "/v1/completions",
+      "continuation_of_rollout": 1,
+      "requested_max_tokens": 16384,
+      "http_status": 200,
+      "headers_received_s": 0.06784953601891175,
+      "generation_finished_at_utc": "2026-10-03T20:56:18.611+00:00",
+      "generation_end_monotonic_s": 265226.673580387,
+      "generation_latency_s": 4.678977731033228,
+      "generation_censored": true,
+      "generated_token_ids_count": 504,
+      "prompt_token_ids_count": 8553,
+      "cached_prompt_tokens": null,
+      "prefix_cache_hit_fraction": null,
+      "finished_at_utc": "2026-10-03T20:56:18.615+00:00",
+      "end_to_end_latency_s": 4.683290646993555,
+      "end_to_end_scope": "rollout start through question verification/cancellation settlement",
+      "gpu": {
+        "sample_count": 24,
+        "start_vram_mib": 78036.1875,
+        "end_vram_mib": 78036.1875,
+        "observed_peak_vram_mib": 78036.1875,
+        "scope": "shared GPU device; sampled peak, not per-request allocation",
+        "error": null
+      }
+    }
+  ],
+  "round": 2,
+  "first_solved": {
+    "problem_idx": 23,
+    "round": 2,
+    "rollout": 2,
+    "candidate": "610",
+    "first_solved_at_utc": "2026-10-03T20:56:18.610+00:00",
+    "first_solved_elapsed_s": 71.16086351004196,
+    "grader_answered_at_utc": "2026-10-03T20:56:18.609113Z",
+    "grader_query_id": "20261003T205350.742196Z-q23-a610"
+  },
+  "rounds": [
+    {
+      "round": 1,
+      "status": "unsolved",
+      "started_at_utc": "2026-10-03T20:55:07.465+00:00",
+      "finished_at_utc": "2026-10-03T20:56:13.833+00:00",
+      "end_to_end_latency_s": 66.36793394602137,
+      "winner": null,
+      "error": null
+    },
+    {
+      "round": 2,
+      "status": "solved",
+      "started_at_utc": "2026-10-03T20:56:13.870+00:00",
+      "finished_at_utc": "2026-10-03T20:56:18.615+00:00",
+      "end_to_end_latency_s": 4.745073772966862,
+      "winner": {
+        "answer": 610,
+        "part": "content",
+        "kind": "literal_prose",
+        "end": 23801,
+        "line": "Thus answer might be 610. However, we must ensure there are no other failures beyond those identified. Our analysis suggests that the only way greedy fails is if the remainder after greedy (i.e., N mod 25) is >=5 mod10, i.e., r in the 10 values. Let's test some examples: N=42: 42 mod25 = 17, which is in {15-19}, so fails. Indeed greedy fails. N=42 has q=1, r=17. r mod10 =7≥5 => fails. Indeed fails.",
+        "candidate": "610",
+        "rollout": 2,
+        "observed_at_utc": "2026-10-03T20:56:15.605+00:00",
+        "question_elapsed_s": 1.7355751229915768,
+        "verification_started_at_utc": "2026-10-03T20:56:15.606+00:00",
+        "round": 2,
+        "result": {
+          "query_id": "20261003T205350.742196Z-q23-a610",
+          "seq": 16,
+          "agent_id": "20261003T205350.742196Z-q23-r2",
+          "index": 23,
+          "candidate": "610",
+          "verdict": true,
+          "queue_ahead_at_submit": 0,
+          "submitted_at": "2026-10-03T20:56:15.608895Z",
+          "picked_at": "2026-10-03T20:56:15.608997Z",
+          "answered_at": "2026-10-03T20:56:18.609113Z",
+          "queue_wait_s": 0.0,
+          "toll_s": 3.0,
+          "latency_s": 3.0
+        },
+        "verification_finished_at_utc": "2026-10-03T20:56:18.610+00:00",
+        "verification_latency_s": 3.003914712986443
+      },
+      "error": null
+    }
+  ],
+  "question_start_monotonic_s": 265155.528206949
+}

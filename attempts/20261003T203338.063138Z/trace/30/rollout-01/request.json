@@ -1,0 +1,23 @@
+{
+  "model": "Qwen/Qwen3.5-35B-A3B-GPTQ-Int4",
+  "messages": [
+    {
+      "role": "system",
+      "content": "Solve the AIME problem. Whenever you have a prospective answer to the original problem, immediately emit it as \\boxed{N}, where N is an integer from 0 to 999. You may continue checking your work afterward. End with your final boxed answer."
+    },
+    {
+      "role": "user",
+      "content": "There are exactly three positive real numbers $k$ such that the function\n$$f(x) = \\frac{(x - 18)(x - 72)(x - 98)(x - k)}{x}$$\ndefined over the positive real numbers achieves its minimum value at exactly two positive real numbers $x$. Find the sum of these three values of $k$."
+    }
+  ],
+  "temperature": 0.8,
+  "top_p": 0.95,
+  "max_tokens": 8192,
+  "seed": 20261034,
+  "stream": true,
+  "stream_options": {
+    "include_usage": true,
+    "continuous_usage_stats": true
+  },
+  "return_token_ids": true
+}

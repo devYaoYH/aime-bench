@@ -48,10 +48,23 @@ htmlcov/
 *.log
 *.tmp
 
-# Canonical attempts: publish only compact provenance/results, retain traces remotely.
+# Canonical attempts: publish saved viewer/analysis evidence; exclude full streams,
+# grader audits, service logs, locks, and unrecognized artifacts by default.
 /attempts/**
 !/attempts/**/
 !/attempts/*/config.json
 !/attempts/*/summary.json
 !/attempts/*/README.md
+!/attempts/*/solved.jsonl
+!/attempts/*/gpu.jsonl
+!/attempts/*/model_profile.json
+!/attempts/*/server_models.json
+!/attempts/*/inference_warmup.json
+!/attempts/*/trace/*/question.json
+!/attempts/*/trace/*/verification.jsonl
+!/attempts/*/trace/*/round-*.json
+!/attempts/*/trace/*/rollout-*/request.json
+!/attempts/*/trace/*/rollout-*/response.json
+!/attempts/*/trace/*/rollout-*/telemetry.json
+!/attempts/*/trace/*/rollout-*/tokens.json
 .attempt.lock

@@ -3,7 +3,7 @@
 Open / for canonical src.attempt outputs under attempts/, or /exploratory for
 original Qwen trajectories, self-consistency, and Jev records from the fixed run.
 It serves src/viewer assets and selected artifact APIs on 127.0.0.1:8765 by default.
-Detailed views require ignored raw run files, which are absent from a fresh clone.
+Canonical evidence is versioned; the exploratory viewer needs local raw run files.
 The server does not make inference calls or expose .env. Start it with:
     python -m src.viewer_server
 """

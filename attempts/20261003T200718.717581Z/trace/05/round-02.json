@@ -1,0 +1,95 @@
+{
+  "problem_idx": 5,
+  "started_at_utc": "2026-10-03T20:09:49.162+00:00",
+  "finished_at_utc": "2026-10-03T20:10:03.396+00:00",
+  "end_to_end_latency_s": 14.233783394971397,
+  "status": "solved",
+  "winner": {
+    "answer": 279,
+    "part": "content",
+    "kind": "literal_prose",
+    "end": 26244,
+    "line": "Thus the difference between N and 2025: N - 2025 = 2304 - 2025 = 279. Or absolute difference = |2304 - 2025| = 279. Since both N and 2025 are positive, difference is 279. Since answer must be integer between 0 and 999, both N - 2025 (which is 279) and absolute difference produce same positive result because N > 2025. Actually earlier we thought N is less than 2025, but we miscalculated. N=2304 > 2025. So difference N - 2025 = 279 > 0. So answer is 279.",
+    "candidate": "279",
+    "rollout": 2,
+    "observed_at_utc": "2026-10-03T20:09:57.852+00:00",
+    "question_elapsed_s": 8.690236434980761,
+    "verification_started_at_utc": "2026-10-03T20:09:57.852+00:00",
+    "round": 2,
+    "result": {
+      "query_id": "20261003T200718.717581Z-q5-a279",
+      "seq": 18,
+      "agent_id": "20261003T200718.717581Z-q5-r2",
+      "index": 5,
+      "candidate": "279",
+      "verdict": true,
+      "queue_ahead_at_submit": 0,
+      "submitted_at": "2026-10-03T20:09:57.856232Z",
+      "picked_at": "2026-10-03T20:10:00.390087Z",
+      "answered_at": "2026-10-03T20:10:03.390204Z",
+      "queue_wait_s": 2.534,
+      "toll_s": 3.0,
+      "latency_s": 5.534
+    },
+    "verification_finished_at_utc": "2026-10-03T20:10:03.391+00:00",
+    "verification_latency_s": 5.538352067989763
+  },
+  "error": null,
+  "unique_candidates": 1,
+  "candidate_answers": [
+    "279"
+  ],
+  "rollouts": [
+    {
+      "rollout": 2,
+      "round": 2,
+      "started_at_utc": "2026-10-03T20:09:49.193+00:00",
+      "start_monotonic_s": 262437.255998201,
+      "ttft_s": 0.16821135400095955,
+      "last_token_s": 14.188978240999859,
+      "finish_reason": null,
+      "status": "cancelled",
+      "done_received": false,
+      "usage": {
+        "prompt_tokens": 8339,
+        "total_tokens": 9779,
+        "completion_tokens": 1440
+      },
+      "endpoint": "/v1/completions",
+      "continuation_of_rollout": 1,
+      "requested_max_tokens": 16384,
+      "http_status": 200,
+      "headers_received_s": 0.09956447599688545,
+      "generation_finished_at_utc": "2026-10-03T20:10:03.391+00:00",
+      "generation_end_monotonic_s": 262451.454294177,
+      "generation_latency_s": 14.19829597597709,
+      "generation_censored": true,
+      "generated_token_ids_count": 1440,
+      "prompt_token_ids_count": 8339,
+      "cached_prompt_tokens": null,
+      "prefix_cache_hit_fraction": null,
+      "finished_at_utc": "2026-10-03T20:10:03.396+00:00",
+      "end_to_end_latency_s": 14.20288035395788,
+      "end_to_end_scope": "rollout start through question verification/cancellation settlement",
+      "gpu": {
+        "sample_count": 72,
+        "start_vram_mib": 65806.1875,
+        "end_vram_mib": 65806.1875,
+        "observed_peak_vram_mib": 65806.1875,
+        "scope": "shared GPU device; sampled peak, not per-request allocation",
+        "error": null
+      }
+    }
+  ],
+  "round": 2,
+  "first_solved": {
+    "problem_idx": 5,
+    "round": 2,
+    "rollout": 2,
+    "candidate": "279",
+    "first_solved_at_utc": "2026-10-03T20:10:03.391+00:00",
+    "first_solved_elapsed_s": 92.42830877000233,
+    "grader_answered_at_utc": "2026-10-03T20:10:03.390204Z",
+    "grader_query_id": "20261003T200718.717581Z-q5-a279"
+  }
+}

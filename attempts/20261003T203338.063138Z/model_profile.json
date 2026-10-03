@@ -1,0 +1,5 @@
+{
+  "path": "/home/azureuser/models/Qwen/Qwen3.5-35B-A3B-GPTQ-Int4/vllm.yaml",
+  "yaml": "# Callosum A100 80GB profile. Deployed by scripts/prepare_qwen35_gptq.py.\n# Hugging Face revision: 3af5ca2972faf6de1fd6f4efc4d8d319ca751e8b.\nmodel: /home/azureuser/models/Qwen/Qwen3.5-35B-A3B-GPTQ-Int4\nserved-model-name: Qwen/Qwen3.5-35B-A3B-GPTQ-Int4\nhost: \"127.0.0.1\"\nport: 8000\ndtype: bfloat16\ntensor-parallel-size: 1\nmax-model-len: 32768\ngpu-memory-utilization: 0.80\n# Bound scheduler/CUDA-graph capacity for the 30-question coverage workload.\nmax-num-seqs: 32\nreasoning-parser: qwen3\n# Infer the quantization backend from the downloaded GPTQ configuration.\n# This caps each generation request, including continuation segments.\noverride-generation-config: '{\"max_new_tokens\": 16384}'\nenable-prefix-caching: true\nenable-prompt-tokens-details: true\n",
+  "sha256": "486238d363762b409ecadea432bfdb2cbeb7908c6c3570b850a0be92b2c187b0"
+}

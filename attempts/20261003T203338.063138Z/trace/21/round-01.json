@@ -1,0 +1,63 @@
+{
+  "problem_idx": 21,
+  "started_at_utc": "2026-10-03T20:37:42.007+00:00",
+  "finished_at_utc": "2026-10-03T20:40:05.516+00:00",
+  "end_to_end_latency_s": 143.50880142697133,
+  "status": "unsolved",
+  "winner": null,
+  "error": null,
+  "unique_candidates": 0,
+  "candidate_answers": [],
+  "rollouts": [
+    {
+      "rollout": 1,
+      "round": 1,
+      "started_at_utc": "2026-10-03T20:37:42.027+00:00",
+      "start_monotonic_s": 264110.090222361,
+      "ttft_s": 4.226435668009799,
+      "last_token_s": 143.44371740100905,
+      "finish_reason": "length",
+      "status": "completed",
+      "done_received": true,
+      "usage": {
+        "prompt_tokens": 867,
+        "total_tokens": 9059,
+        "completion_tokens": 8192,
+        "prompt_tokens_details": {
+          "cached_tokens": 0,
+          "created_cache_tokens": 0
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 8192
+        }
+      },
+      "endpoint": "/v1/chat/completions",
+      "continuation_of_rollout": null,
+      "requested_max_tokens": 8192,
+      "grading_mode": "streaming_candidates",
+      "http_status": 200,
+      "headers_received_s": 0.0881599280401133,
+      "generation_finished_at_utc": "2026-10-03T20:40:05.475+00:00",
+      "generation_end_monotonic_s": 264253.53761589,
+      "generation_latency_s": 143.4473935290007,
+      "generation_censored": true,
+      "generated_token_ids_count": 8192,
+      "prompt_token_ids_count": 867,
+      "cached_prompt_tokens": 0,
+      "prefix_cache_hit_fraction": 0.0,
+      "finished_at_utc": "2026-10-03T20:40:05.516+00:00",
+      "end_to_end_latency_s": 143.48905645799823,
+      "end_to_end_scope": "rollout start through question verification/cancellation settlement",
+      "gpu": {
+        "sample_count": 717,
+        "start_vram_mib": 64640.1875,
+        "end_vram_mib": 64852.1875,
+        "observed_peak_vram_mib": 64852.1875,
+        "scope": "shared GPU device; sampled peak, not per-request allocation",
+        "error": null
+      }
+    }
+  ],
+  "round": 1,
+  "first_solved": null
+}

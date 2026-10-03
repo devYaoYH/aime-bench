@@ -24,9 +24,11 @@
 - Use `tmux` or another durable job session for long remote runs. Save command,
   Git commit, model config, timestamps, and results. Inspect progress and errors;
   a launched process alone does not establish success.
-- Attempt traces and GPU samples remain on the remote under `attempts/` and are
-  ignored by Git. Version small configs, summaries, and reports when useful.
-  Never commit credentials, weights, virtual environments, or raw traces.
+- Version canonical attempt evidence needed for the viewer and analysis under
+  `attempts/`: configs, summaries, reports, saved requests/responses, exact token
+  records, question/round records, verification events, and GPU samples. Review
+  artifact sizes before adding new attempts. Keep full SSE streams, grader audits,
+  service logs, credentials, weights, and virtual environments out of Git.
 - To bring back results, copy only experiment artifacts (for example with `scp`),
   review them locally, and commit/push reports from the local checkout. Do not
   commit or push code from the remote machine.

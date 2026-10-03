@@ -65,6 +65,8 @@ first-solved events directly to `solved.jsonl`, question records, and summaries.
 | 16 | 468 | 459.491 | 2026-10-03T19:48:03.655Z |
 | 17 | 49 | 526.392 | 2026-10-03T19:49:10.556Z |
 
-Raw SSE, responses, telemetry, and grader audits remain on callosum at
+Saved requests/responses, tokens, verification records, and GPU telemetry are
+versioned beside this report for the canonical viewer and analysis. Full SSE,
+service logs, and grader audits remain on callosum at
 `/home/azureuser/aime-bench/attempts/20261003T193711.679999Z/` and are ignored by Git.
 The managed services stopped successfully and released the GPU after completion.

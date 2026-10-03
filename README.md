@@ -55,8 +55,9 @@ Browse saved responses locally:
 
 Open [canonical attempts](http://127.0.0.1:8765) to select locally available
 `attempts/` artifacts and inspect oracle outcomes, trajectories, continuations,
-timing, and GPU telemetry. Compact summaries work without raw traces; detailed
-views need a local copy of the attempt's `trace/` directory. Refresh rereads files.
+timing, and GPU telemetry. Saved canonical evidence is versioned, so detailed
+views work from a fresh clone. New attempts need their artifacts copied from the
+VM and committed after review. Refresh rereads files.
 
 The [exploratory viewer](http://127.0.0.1:8765/exploratory) remains fixed to the
 original Qwen run `20260930-155212`, including sample votes and Jev reviews.
@@ -91,10 +92,12 @@ Tests use local fixtures and mocked requests; they do not make inference calls.
 The salvage tests require locally saved raw run traces. The Python worker tests
 require macOS and `/usr/bin/sandbox-exec`.
 
-Datasets, run summaries, analysis data, reports, and plots are versioned. Raw
-request/response traces, SSE streams, manifests containing trace excerpts, and
-progress records stay local and are ignored by Git. Reports may link to these
-local files; replaying the analyses requires the original traces. Credentials,
-virtual environments, downloaded models, caches, and logs are also ignored.
+Datasets, run summaries, analysis data, reports, and plots are versioned. Canonical
+`attempts/` also includes saved requests/responses, exact token records, question
+and round records, verification events, GPU samples, and launch/warmup metadata.
+Full SSE streams, grader audits, and legacy exploratory `runs/` raw traces remain
+ignored; detailed exploratory views and their analyses need the original local
+traces. Credentials, virtual environments, downloaded models, caches, and logs
+are also ignored.
 Offline token-based analyses need the cached tokenizers described in the
 experiment guide under `.local/tokenizers/`.

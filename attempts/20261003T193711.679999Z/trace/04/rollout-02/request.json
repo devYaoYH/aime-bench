@@ -1,0 +1,21 @@
+{
+  "model": "Qwen/Qwen3.5-4B",
+  "messages": [
+    {
+      "role": "system",
+      "content": "Solve the AIME problem. Whenever you have a prospective answer to the original problem, immediately emit it as \\boxed{N}, where N is an integer from 0 to 999. You may continue checking your work afterward. End with your final boxed answer."
+    },
+    {
+      "role": "user",
+      "content": "Find the number of ordered pairs $(x,y)$, where both $x$ and $y$ are integers between $-100$ and $100$, inclusive, such that $12x^2-xy-6y^2=0$."
+    }
+  ],
+  "temperature": 0.8,
+  "top_p": 0.95,
+  "max_tokens": 16384,
+  "seed": 20261021,
+  "stream": true,
+  "stream_options": {
+    "include_usage": true
+  }
+}

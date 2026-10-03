@@ -66,7 +66,9 @@ and continuation budgets. Quantization and the VRAM budget changed together
 or establish a repeatable speedup. The remaining twelve questions were stopped
 at the target; this is not a full final-accuracy evaluation.
 
-Compact original configuration and summary are versioned beside this report.
+Original configuration, summary, saved requests/responses, token records,
+verification events, and GPU samples are versioned beside this report for the
+canonical viewer and analysis. Full SSE dumps, grader audits, and logs remain ignored.
 Raw traces, token records, GPU samples, grader audit, and service logs remain at
 `/home/azureuser/aime-bench/attempts/20261003T205350.742196Z/` on Callosum.
 The durable launcher log and zero exit code are recorded at
