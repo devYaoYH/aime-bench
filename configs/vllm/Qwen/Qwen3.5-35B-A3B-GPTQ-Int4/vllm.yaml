@@ -1,0 +1,18 @@
+# Callosum A100 80GB profile. Deployed by scripts/prepare_qwen35_gptq.py.
+# Hugging Face revision: 3af5ca2972faf6de1fd6f4efc4d8d319ca751e8b.
+model: /home/azureuser/models/Qwen/Qwen3.5-35B-A3B-GPTQ-Int4
+served-model-name: Qwen/Qwen3.5-35B-A3B-GPTQ-Int4
+host: "127.0.0.1"
+port: 8000
+dtype: bfloat16
+tensor-parallel-size: 1
+max-model-len: 32768
+gpu-memory-utilization: 0.80
+# Bound scheduler/CUDA-graph capacity for the 30-question coverage workload.
+max-num-seqs: 32
+reasoning-parser: qwen3
+# Infer the quantization backend from the downloaded GPTQ configuration.
+# This caps each generation request, including continuation segments.
+override-generation-config: '{"max_new_tokens": 16384}'
+enable-prefix-caching: true
+enable-prompt-tokens-details: true
