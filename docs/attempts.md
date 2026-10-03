@@ -146,6 +146,36 @@ summary. Per-round snapshots preserve outcomes and all generation records; retry
 rounds never overwrite earlier rollout directories. Previously checked candidate
 integers are deduplicated across rounds for that question.
 
+## Naive final-answer baseline
+
+Deploy the separate `configs/vllm/WeiboAI/VibeThinker-3B/vllm-baseline-16k.yaml`
+profile beside `~/models/WeiboAI/VibeThinker-3B/vllm.yaml`, then run:
+
+```sh
+~/.venvs/vllm/bin/python -m src.attempt --model WeiboAI/VibeThinker-3B \
+  --model-profile vllm-baseline-16k.yaml --strategy baseline \
+  --parallelism 30 --rollouts 4 --max-tokens 16384 --target-correct 18
+```
+
+This submits all 120 streaming requests in one pass. It uses the system prompt
+"You are a helpful assistant. Solve the math problem carefully and put your final
+answer in \\boxed{} notation." It extracts no prospective answers. After a
+response naturally finishes, only the last integer box in its final content is
+eligible for grading; an explicit `</think>` boundary excludes earlier reasoning.
+Token-capped responses are ungraded, even if earlier text contains a box.
+No retries or continuations occur. A correct final response cancels its question's
+siblings; the 18th solved question cancels all remaining work. If the target is
+unmet after all four samples end, the summary records that outcome.
+
+The baseline profile sets a **16,384-token total context**, including the prompt,
+and retains the 80% GPU-memory budget. Before the official timer, `/tokenize`
+counts each served chat prompt. Each output budget is the smaller of `--max-tokens`
+and the remaining context; these prompt counts and request limits are saved.
+The configured sampling path warms at the full 120-request batch before solving.
+Use timestamped NVML samples together with vLLM's KV-occupancy, waiting-request,
+and preemption logs. Preallocated VRAM can stay steady while the token cache fills
+and vLLM preempts/recomputes requests, so VRAM alone cannot detect capacity pressure.
+
 ## Artifacts and timing
 
 ```text

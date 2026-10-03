@@ -33,6 +33,28 @@ PROMPT = (
     "problem, immediately emit it as \\boxed{N}, where N is an integer from 0 to 999. "
     "You may continue checking your work afterward. End with your final boxed answer."
 )
+BASELINE_PROMPT = (
+    "You are a helpful assistant. Solve the math problem carefully and put your "
+    "final answer in \\boxed{} notation."
+)
+
+
+def system_prompt(args):
+    return BASELINE_PROMPT if args.strategy == 'baseline' else PROMPT
+
+
+def final_answer(text):
+    """Read only the last box in the final content of a naturally ended response."""
+    if '</think>' in text:
+        text = text.rsplit('</think>', 1)[1]
+    elif '<think>' in text:
+        return None
+    boxes = list(re.finditer(r'\\boxed\s*\{', text))
+    match = re.match(r'\\boxed\s*\{\s*(\d{1,3})\s*\}', text[boxes[-1].start():]) if boxes else None
+    if match is None:
+        return None
+    return {'answer': int(match[1]), 'part': 'content', 'kind': 'final_box',
+            'extraction_stage': 'completed_final_response'}
 
 
 class CandidateDetector:
@@ -214,11 +236,15 @@ async def run_question(problem, args, client, output, sampler, *, round_no=1,
         path = folder / f'rollout-{rollout:02d}'
         path.mkdir()
         request = {'model': args.model, 'messages': [
-            {'role': 'system', 'content': PROMPT}, {'role': 'user', 'content': problem['problem']}],
+            {'role': 'system', 'content': system_prompt(args)}, {'role': 'user', 'content': problem['problem']}],
             'temperature': args.temperature, 'top_p': args.top_p,
             'max_tokens': args.max_tokens, 'seed': args.seed + index * args.rollouts + rollout,
             'stream': True, 'stream_options': {'include_usage': True, 'continuous_usage_stats': True},
             'return_token_ids': args.strategy == 'coverage'}
+        if args.strategy == 'baseline':
+            request['max_tokens'] = min(args.max_tokens, args.max_context_tokens - problem['prompt_tokens'])
+            if request['max_tokens'] <= 0:
+                raise ValueError('Baseline prompt fills the model context')
         if args.disable_thinking:
             request['chat_template_kwargs'] = {'enable_thinking': False}
         continuation = next_continuation
@@ -235,11 +261,13 @@ async def run_question(problem, args, client, output, sampler, *, round_no=1,
                   'ttft_s': None, 'last_token_s': None, 'finish_reason': None,
                   'status': 'streaming', 'done_received': False, 'usage': None,
                   'endpoint': endpoint, 'continuation_of_rollout': continuation['parent_rollout'] if continuation else None,
-                  'requested_max_tokens': request['max_tokens']}
+                  'requested_max_tokens': request['max_tokens'],
+                  'grading_mode': 'completed_final_only' if args.strategy == 'baseline' else 'streaming_candidates'}
         detector = CandidateDetector()
         parts = {'reasoning': [], 'content': []}
         prompt_token_ids = list(continuation['prompt']) if continuation else None
         output_token_ids = []
+        final_event = None
         if continuation:
             detector.feed('content', continuation['visible_text'])
         records.append((path, record, parts))
@@ -280,8 +308,9 @@ async def run_question(problem, args, client, output, sampler, *, round_no=1,
                                         record['ttft_s'] = elapsed
                                     record['last_token_s'] = elapsed
                                     parts[part].append(value)
-                                    for event in detector.feed(part, value):
-                                        propose(event, rollout)
+                                    if args.strategy != 'baseline':
+                                        for event in detector.feed(part, value):
+                                            propose(event, rollout)
                             if choice.get('finish_reason'):
                                 record['finish_reason'] = choice['finish_reason']
                     if record['finish_reason'] in ('error', 'abort'):
@@ -289,13 +318,19 @@ async def run_question(problem, args, client, output, sampler, *, round_no=1,
                     if record['done_received'] or record['finish_reason'] in ('stop', 'length'):
                         # A token cap may cut Answer: 070 after the first digit.
                         # Only a natural stream end can complete an unfinished line.
-                        if record['finish_reason'] != 'length':
+                        if args.strategy != 'baseline' and record['finish_reason'] != 'length':
                             for part in parts:
                                 for event in detector.feed(part, '', eof=True):
                                     propose(event, rollout)
                         record['status'] = 'completed'
+                        if args.strategy == 'baseline':
+                            # Capped reasoning never counts as a final answer.
+                            final_event = final_answer(''.join(parts['content'])) if record['finish_reason'] == 'stop' else None
+                            record['final_answer_extracted'] = final_event is not None
                     else:
                         raise RuntimeError('Stream ended without DONE or a terminal finish reason')
+            if final_event:
+                propose(final_event, rollout)
         except asyncio.CancelledError:
             record['status'] = 'cancelled'
             raise
@@ -472,6 +507,50 @@ async def run_coverage(problems, args, client, output, sampler, attempt_start):
     return [json.loads(p.read_text()) for p in sorted(output.glob('trace/*/question.json'))]
 
 
+async def prepare_baseline_prompts(problems, args, client):
+    """Count the actual served chat template before the official solving timer."""
+    async def one(problem):
+        request = {'model': args.model, 'messages': [
+            {'role': 'system', 'content': system_prompt(args)},
+            {'role': 'user', 'content': problem['problem']}], 'add_generation_prompt': True}
+        if args.disable_thinking:
+            request['chat_template_kwargs'] = {'enable_thinking': False}
+        response = await client.post(args.vllm_url + '/tokenize', json=request)
+        response.raise_for_status()
+        count = response.json()['count']
+        if type(count) is not int or not 0 < count < args.max_context_tokens:
+            raise ValueError('Invalid baseline prompt token count')
+        return {**problem, 'prompt_tokens': count}
+    return await asyncio.gather(*(one(p) for p in problems))
+
+
+async def run_baseline(problems, args, client, output, sampler, attempt_start):
+    """One pass@4 batch, final responses only, with the same solve-target stop."""
+    solved = set()
+    target_event = asyncio.Event()
+    def on_solved(event):
+        solved.add(event['problem_idx'])
+        print(f'Solved baseline: {len(solved)}/{args.target_correct}', flush=True)
+        if len(solved) >= args.target_correct:
+            target_event.set()
+    batch = asyncio.create_task(run_questions(problems, args, client, output, sampler,
+        attempt_start=attempt_start, on_solved=on_solved, target_event=target_event))
+    target_wait = asyncio.create_task(target_event.wait())
+    try:
+        await asyncio.wait([batch, target_wait], return_when=asyncio.FIRST_COMPLETED)
+        if target_event.is_set():
+            batch.cancel()
+            await asyncio.gather(batch, return_exceptions=True)
+        else:
+            await batch
+    finally:
+        target_wait.cancel()
+        if not batch.done() and not batch.cancelling():
+            batch.cancel()
+        await asyncio.gather(batch, target_wait, return_exceptions=True)
+    return [json.loads(p.read_text()) for p in sorted(output.glob('trace/*/question.json'))]
+
+
 def ensure_free(port):
     with socket.socket() as sock:
         sock.bind(('127.0.0.1', port))
@@ -593,15 +672,16 @@ async def run(args):
     config = {**vars(args), 'attempt_id': output.name, 'initialization_started_at_utc': utc_now(),
               'git_commit': subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=ROOT, text=True).strip(),
               'git_dirty': bool(subprocess.check_output(['git', 'status', '--porcelain', '--untracked-files=no'], cwd=ROOT, text=True)),
-              'system_prompt': PROMPT, 'grading': 'single vendored grader; no local answer-key comparisons',
+              'system_prompt': system_prompt(args), 'grading': 'single vendored grader; no local answer-key comparisons',
+              'answer_extraction': 'completed final box only; capped outputs ungraded' if args.strategy == 'baseline' else 'streaming prospective candidates',
               'gpu_scope': 'device-level NVML; vLLM preallocates VRAM', 'python': sys.version}
     atomic_json(output / 'config.json', config)
     try:
         problems = load_questions(args.questions)
         config['question_indices'] = [p['problem_idx'] for p in problems]
-        if args.strategy == 'coverage' and args.target_correct > len(problems):
+        if args.strategy in ('coverage', 'baseline') and args.target_correct > len(problems):
             raise ValueError('Target correct exceeds the number of selected questions')
-        profile_path = Path(args.models_dir).expanduser() / args.model / 'vllm.yaml'
+        profile_path = Path(args.models_dir).expanduser() / args.model / args.model_profile
         profile_text = profile_path.read_text()
         profile = yaml.safe_load(profile_text)
         overrides = profile.get('override-generation-config', {})
@@ -655,6 +735,9 @@ async def run(args):
             if health.get('queries_so_far') != 0 or health.get('cost_c') != args.grader_cost:
                 raise RuntimeError('Grader did not start with a fresh queue and requested toll')
             config['grader_health'] = health
+            if args.strategy == 'baseline':
+                problems = await prepare_baseline_prompts(problems, args, client)
+                config['prompt_tokens_by_question'] = {str(p['problem_idx']): p['prompt_tokens'] for p in problems}
             warmup = await warm_inference(args, client, len(problems))
             atomic_json(output / 'inference_warmup.json', warmup)
             config['inference_warmup'] = {k: warmup[k] for k in ('latency_s', 'batch_size', 'tokens_per_request')}
@@ -666,6 +749,8 @@ async def run(args):
             print('Official solving phase started', flush=True)
             if args.strategy == 'coverage':
                 results = await run_coverage(problems, args, client, output, sampler, official_start)
+            elif args.strategy == 'baseline':
+                results = await run_baseline(problems, args, client, output, sampler, official_start)
             else:
                 results = await run_questions(problems, args, client, output, sampler, attempt_start=official_start)
             status = 'completed' if all(r['status'] != 'error' for r in results) else 'failed'
@@ -690,8 +775,8 @@ async def run(args):
                    'initialization_and_attempt_latency_s': official_end - began,
                    'strategy': args.strategy, 'solved': sum(r['status'] == 'solved' for r in results),
                    'questions_completed': sum(r['status'] != 'stopped' for r in results), 'questions_attempted': len(results),
-                   'target_correct': args.target_correct if args.strategy == 'coverage' else None,
-                   'target_reached': sum(r['status'] == 'solved' for r in results) >= args.target_correct if args.strategy == 'coverage' else None,
+                   'target_correct': args.target_correct if args.strategy in ('coverage', 'baseline') else None,
+                   'target_reached': sum(r['status'] == 'solved' for r in results) >= args.target_correct if args.strategy in ('coverage', 'baseline') else None,
                    'rounds_executed': max((r['round'] for r in results), default=0),
                    'questions': [{**{k: r[k] for k in ('problem_idx', 'status', 'end_to_end_latency_s', 'unique_candidates')},
                                   'verified_answer': r['winner']['candidate'] if r['winner'] else None,
@@ -710,6 +795,7 @@ def parse_args(argv=None):
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--model', required=True, help='Model ID with ~/models/<ID>/vllm.yaml')
     parser.add_argument('--models-dir', default='~/models')
+    parser.add_argument('--model-profile', default='vllm.yaml', help='YAML filename within the model directory')
     parser.add_argument('--vllm-python', default=str(Path('~/.venvs/vllm/bin/python').expanduser()))
     parser.add_argument('--vllm-binary', default=str(Path('~/.venvs/vllm/bin/vllm').expanduser()))
     parser.add_argument('--grader-python', default=str(ROOT / 'grader/.venv/bin/python'))
@@ -717,9 +803,9 @@ def parse_args(argv=None):
     parser.add_argument('--vllm-port', type=int, default=8000)
     parser.add_argument('--grader-port', type=int, default=8077)
     parser.add_argument('--grader-cost', type=float, default=3.0)
-    parser.add_argument('--strategy', choices=('fanout', 'coverage'), default='fanout')
-    parser.add_argument('--parallelism', type=int, help='Concurrent questions: fanout default 8, coverage default 30')
-    parser.add_argument('--rollouts', type=int, help='Streams per question: fanout default 4, coverage requires 1')
+    parser.add_argument('--strategy', choices=('fanout', 'coverage', 'baseline'), default='fanout')
+    parser.add_argument('--parallelism', type=int, help='Concurrent questions: fanout default 8; coverage/baseline default 30')
+    parser.add_argument('--rollouts', type=int, help='Streams per question: fanout/baseline default 4; coverage requires 1')
     parser.add_argument('--first-pass-max-tokens', type=int, default=8192)
     parser.add_argument('--no-continuation', action='store_true', help='Coverage: use fresh samples even after capped outputs')
     parser.add_argument('--target-correct', type=int, default=18)
@@ -737,7 +823,7 @@ def parse_args(argv=None):
     parser.add_argument('--gpu-device', type=int, default=0)
     args = parser.parse_args(argv)
     if args.parallelism is None:
-        args.parallelism = 30 if args.strategy == 'coverage' else 8
+        args.parallelism = 30 if args.strategy in ('coverage', 'baseline') else 8
     if args.rollouts is None:
         args.rollouts = 1 if args.strategy == 'coverage' else 4
     if args.rollouts > args.max_attempts_per_question:
@@ -750,6 +836,8 @@ def parse_args(argv=None):
         parser.error('Invalid grader cost, GPU device, or sampling settings')
     if '/' not in args.model or any(part in ('', '.', '..') for part in args.model.split('/')) or args.model.startswith('/'):
         parser.error('Use a relative organization/model ID')
+    if Path(args.model_profile).name != args.model_profile or not args.model_profile.endswith('.yaml'):
+        parser.error('Model profile must be a YAML filename within the model directory')
     if not all(1 <= port <= 65535 for port in (args.vllm_port, args.grader_port)) or args.vllm_port == args.grader_port:
         parser.error('Service ports must be valid and distinct')
     args.max_context_tokens = 32768  # replaced by actual /v1/models metadata during initialization

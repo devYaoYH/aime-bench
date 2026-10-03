@@ -57,6 +57,15 @@ the target, so final per-request usage details were unavailable; their
 aggregate cache metric support cache reuse, without proving its isolated
 speedup against a fresh-retry control.
 
+All 18 submitted answers were extracted while their streams were still running,
+before natural EOS: six closed boxes and twelve integer prose clauses. Every
+winning stream was cancelled after verification with no terminal finish reason.
+These are nonterminal prospective answers, even when the text called one a
+"final answer" and then continued checking. None was extracted from a completed
+final response. First-pass TTFT measures fresh prompts on an already warmed
+server; its batch of 30 differs from the continuation batch of 15, so the TTFT
+comparison also includes batch-size and prefill differences.
+
 Thirty simultaneous questions fit without inference waiting in this run.
 vLLM preallocated most device VRAM; the 15.74 GiB of physical headroom does
 not directly indicate additional stream capacity. Its token cache and the

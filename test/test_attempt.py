@@ -14,7 +14,7 @@ import unittest
 import httpx
 import yaml
 
-from src.attempt import CandidateDetector, ROOT, parse_args, ready, run_question, run_questions, sse_payloads, warm_inference, run_coverage, continuation_prefix
+from src.attempt import CandidateDetector, ROOT, parse_args, ready, run_question, run_questions, sse_payloads, warm_inference, run_coverage, continuation_prefix, final_answer, run_baseline, prepare_baseline_prompts, BASELINE_PROMPT
 
 
 class FakeGPU:
@@ -43,6 +43,13 @@ class Stream(httpx.AsyncByteStream):
 
 
 class DetectorTests(unittest.TestCase):
+    def test_final_answer_uses_last_final_content_box(self):
+        self.assertEqual(final_answer('<think>\\boxed{69}</think>Final: \\boxed{070}')['answer'], 70)
+        self.assertEqual(final_answer('\\boxed{69}, correction: \\boxed{70}')['answer'], 70)
+        for text in ['<think>\\boxed{70}', '\\boxed{70} then \\boxed{4/17}',
+                     'Answer is 70.', '\\boxed{1000}', 'reasoning without an answer']:
+            self.assertIsNone(final_answer(text), text)
+
     def test_split_box_and_digits_do_not_submit_prefix(self):
         d = CandidateDetector()
         for value in ['candidate \\bo', 'xed{0', '7', '0']:
@@ -77,6 +84,10 @@ class DetectorTests(unittest.TestCase):
         self.assertEqual((args.parallelism, args.rollouts, args.max_tokens), (8, 4, 16384))
         coverage = parse_args(['--model', 'Qwen/Qwen3.5-4B', '--strategy', 'coverage'])
         self.assertEqual((coverage.parallelism, coverage.rollouts, coverage.first_pass_max_tokens, coverage.max_attempts_per_question), (30, 1, 8192, 4))
+        baseline = parse_args(['--model', 'WeiboAI/VibeThinker-3B', '--strategy', 'baseline'])
+        self.assertEqual((baseline.parallelism, baseline.rollouts, baseline.max_tokens), (30, 4, 16384))
+        with redirect_stderr(io.StringIO()), self.assertRaises(SystemExit):
+            parse_args(['--model', 'WeiboAI/VibeThinker-3B', '--model-profile', '../vllm.yaml'])
 
 
 class RunnerTests(unittest.IsolatedAsyncioTestCase):
@@ -85,6 +96,99 @@ class RunnerTests(unittest.IsolatedAsyncioTestCase):
         for key, value in changes.items():
             setattr(args, key, value)
         return args
+
+    async def test_baseline_waits_for_natural_end_and_ignores_intermediate_box(self):
+        emitted, finish = asyncio.Event(), asyncio.Event()
+        submitted, requests = [], []
+        class FinalStream(Stream):
+            async def __aiter__(self):
+                yield chunk('<think>First guess \\boxed{69}. Still checking.')
+                emitted.set()
+                await finish.wait()
+                yield chunk('</think>Final answer: \\boxed{70}', finish='stop')
+                yield b'data: [DONE]\n\n'
+        async def handler(request):
+            if request.url.path == '/verify':
+                self.assertTrue(finish.is_set())
+                submitted.append(json.loads(request.content)['candidate'])
+                return httpx.Response(200, json={'verdict': True})
+            requests.append(json.loads(request.content))
+            return httpx.Response(200, stream=FinalStream([]))
+        args = self.args(strategy='baseline', rollouts=1, max_context_tokens=100, max_tokens=100)
+        with tempfile.TemporaryDirectory() as tmp:
+            async with httpx.AsyncClient(transport=httpx.MockTransport(handler)) as client:
+                task = asyncio.create_task(run_question({'problem_idx': 1, 'problem': 'test', 'prompt_tokens': 10}, args, client, Path(tmp), FakeGPU()))
+                await emitted.wait()
+                await asyncio.sleep(.01)
+                self.assertEqual(submitted, [])
+                finish.set()
+                result = await task
+            self.assertEqual(submitted, ['70'])
+            self.assertEqual(result['winner']['kind'], 'final_box')
+            self.assertEqual(result['rollouts'][0]['status'], 'completed')
+            self.assertEqual(requests[0]['max_tokens'], 90)
+            self.assertEqual(requests[0]['messages'][0]['content'], BASELINE_PROMPT)
+
+    async def test_baseline_does_not_grade_capped_output_even_with_box(self):
+        async def handler(request):
+            self.assertNotEqual(request.url.path, '/verify')
+            return httpx.Response(200, stream=Stream([chunk('\\boxed{70}', finish='length'), b'data: [DONE]\n\n']))
+        with tempfile.TemporaryDirectory() as tmp:
+            async with httpx.AsyncClient(transport=httpx.MockTransport(handler)) as client:
+                result = await run_question({'problem_idx': 1, 'problem': 'test', 'prompt_tokens': 20}, self.args(strategy='baseline'), client, Path(tmp), FakeGPU())
+            self.assertEqual(result['status'], 'unsolved')
+            self.assertEqual(result['unique_candidates'], 0)
+            self.assertTrue(all(r['final_answer_extracted'] is False for r in result['rollouts']))
+
+    async def test_baseline_launches_120_streams_and_stops_at_18_final_verdicts(self):
+        active = peak = 0
+        streams, requests = [], []
+        class Tracked(Stream):
+            async def aclose(self):
+                nonlocal active
+                if not self.closed:
+                    active -= 1
+                await super().aclose()
+        async def handler(request):
+            nonlocal active, peak
+            if request.url.path == '/verify':
+                await asyncio.sleep(.002)
+                return httpx.Response(200, json={'verdict': True})
+            body = json.loads(request.content)
+            requests.append(body)
+            q = int(body['messages'][1]['content'])
+            active += 1
+            peak = max(peak, active)
+            stream = Tracked([chunk('\\boxed{70}', finish='stop'), b'data: [DONE]\n\n'] if q <= 18 else [chunk('intermediate \\boxed{69}')], delay=.01, hang=q>18)
+            streams.append(stream)
+            return httpx.Response(200, stream=stream)
+        args = self.args(strategy='baseline', parallelism=30, target_correct=18)
+        with tempfile.TemporaryDirectory() as tmp:
+            async with httpx.AsyncClient(transport=httpx.MockTransport(handler)) as client:
+                result = await run_baseline([{'problem_idx': i, 'problem': str(i), 'prompt_tokens': 20} for i in range(1,31)], args, client, Path(tmp), FakeGPU(), time.perf_counter())
+            self.assertEqual((len(requests), peak), (120, 120))
+            self.assertEqual(sum(q['status']=='solved' for q in result), 18)
+            self.assertEqual(sum(q['status']=='stopped' for q in result), 12)
+            self.assertTrue(all(len(q['rollouts'])==4 for q in result))
+            self.assertTrue(all(s.closed for s in streams))
+            self.assertTrue(all(q['error'] is None for q in result))
+            self.assertTrue(all(q['winner']['kind']=='final_box' for q in result if q['winner']))
+
+    async def test_baseline_tokenization_matches_prompt_and_checks_context(self):
+        args = self.args(strategy='baseline', disable_thinking=True, max_context_tokens=100)
+        async def handler(request):
+            self.assertEqual(request.url.path, '/tokenize')
+            body = json.loads(request.content)
+            self.assertEqual(body['messages'][0]['content'], BASELINE_PROMPT)
+            self.assertTrue(body['add_generation_prompt'])
+            self.assertEqual(body['chat_template_kwargs'], {'enable_thinking': False})
+            return httpx.Response(200, json={'count': 20})
+        async with httpx.AsyncClient(transport=httpx.MockTransport(handler)) as client:
+            result = await prepare_baseline_prompts([{'problem_idx':1,'problem':'test'}], args, client)
+            self.assertEqual(result[0]['prompt_tokens'],20)
+            args.max_context_tokens=20
+            with self.assertRaises(ValueError):
+                await prepare_baseline_prompts([{'problem_idx':1,'problem':'test'}], args, client)
 
     async def test_warmup_matches_sampling_batch_and_excludes_grader(self):
         requests, active, peak = [], 0, 0
