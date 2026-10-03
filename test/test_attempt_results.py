@@ -58,6 +58,21 @@ class AttemptResultsTests(unittest.TestCase):
         self.assertIsNone(row['time_to_18_s'])
         self.assertEqual(row['status'], 'timing unavailable')
 
+    def test_attempt_timestamp_is_separate_from_official_latency_clock(self):
+        folder, _ = self.make()
+        path = folder / 'config.json'
+        config = json.loads(path.read_text())
+        config['initialization_started_at_utc'] = '2026-10-03T19:58:00+00:00'
+        path.write_text(json.dumps(config))
+        row = build_results(self.store)['attempts'][0]
+        self.assertEqual(row['attempt_started_at_utc'], '2026-10-03T19:58:00+00:00')
+        self.assertEqual(row['started_at_utc'], '2026-10-03T20:00:00+00:00')
+        self.assertEqual(row['time_to_18_s'], 54)
+        config.pop('initialization_started_at_utc')
+        path.write_text(json.dumps(config))
+        row = build_results(self.store)['attempts'][0]
+        self.assertEqual(row['attempt_started_at_utc'], row['started_at_utc'])
+
     def test_unmet_and_interrupted_runs_are_not_ranked(self):
         self.make('unmet', times=[5, 10])
         self.make('interrupted', times=[], status='interrupted')

@@ -1,7 +1,8 @@
 /**
  * Compare recorded time to 18 correct across canonical attempts. Use /results
  * through src.viewer_server after syncing evidence and annotating metadata.json.
- * Plot observed verdict times, show the serial grader floor, and expose changed
+ * Plot attempts by start timestamp with a dotted best-so-far frontier, show the
+ * serial grader floor, and expose changed
  * controls without treating single-run differences as isolated causal effects.
  */
 const $ = selector => document.querySelector(selector);
@@ -10,19 +11,46 @@ const sec = v => v == null ? '—' : `${v.toFixed(2)}s`;
 const colors = ['#147d65','#54729b','#b37b30','#865b89','#b65e46','#67804b'];
 const attemptLink = row => `/?attempt=${encodeURIComponent(row.id)}`;
 let results;
-function comparisonPlot(rows) {
-  if (!rows.length) return '<div class="chart-empty">No saved attempt has a measured time to 18 yet.</div>';
-  const width=1080, left=305, right=85, top=65, rowHeight=78, height=top+rows.length*rowHeight+40;
-  const max=Math.ceil(Math.max(60,...rows.map(r=>r.time_to_18_s))/60)*60;
-  const x=t=>left+t/max*(width-left-right);
-  let svg=`<svg class="comparison-chart" viewBox="0 0 ${width} ${height}" role="img" aria-label="Measured time to eighteen correct answers with a 54 second grader floor">`;
-  for(let i=0;i<=6;i++){const t=max*i/6;svg+=`<line class="grid" x1="${x(t)}" x2="${x(t)}" y1="${top-8}" y2="${height-35}"/><text text-anchor="middle" x="${x(t)}" y="${height-10}">${Math.round(t)}s</text>`;}
+function attemptHistory(rows) {
+  const points=rows.filter(r=>r.time_to_18_s!=null && Number.isFinite(r.time_to_18_s) && r.time_to_18_s>=0)
+    .map(r=>({...r,start_ms:Date.parse(r.attempt_started_at_utc??r.started_at_utc)}))
+    .filter(r=>Number.isFinite(r.start_ms)).sort((a,b)=>a.start_ms-b.start_ms || a.id.localeCompare(b.id));
+  let best=Infinity;
+  const frontier=points.filter(r=>{if(r.time_to_18_s<best){best=r.time_to_18_s;return true;}return false;});
+  return {points,frontier};
+}
+const historyDate=new Intl.DateTimeFormat('en-US',{timeZone:'America/Los_Angeles',month:'short',day:'numeric',hour:'numeric',minute:'2-digit',second:'2-digit',timeZoneName:'short'});
+const historyTick=new Intl.DateTimeFormat('en-US',{timeZone:'America/Los_Angeles',hour:'numeric',minute:'2-digit'});
+function comparisonPlot(history) {
+  const {points,frontier}=history;
+  if (!points.length) return '<div class="chart-empty">No attempt has both a measured time to 18 and a recorded start timestamp.</div>';
+  const width=1080,height=410,left=86,right=30,top=40,bottom=80;
+  const span=Math.max(points.at(-1).start_ms-points[0].start_ms,60000),padding=span*.035;
+  const xmin=points[0].start_ms-padding,xmax=points.at(-1).start_ms+padding;
+  const max=Math.ceil(Math.max(60,...points.map(r=>r.time_to_18_s))/60)*60;
+  const x=t=>left+(t-xmin)/(xmax-xmin)*(width-left-right);
+  const y=t=>height-bottom-t/max*(height-top-bottom);
+  let svg=`<svg class="comparison-chart" viewBox="0 0 ${width} ${height}" role="img" aria-label="Attempt start timestamp versus end-to-end time to 18 verified correct answers, with a dotted best-so-far Pareto step and a horizontal 54 second grader floor"><text x="${left}" y="18">Time to 18 verified correct answers (seconds)</text>`;
+  for(let i=0;i<=6;i++){
+    const t=max*i/6,stamp=xmin+(xmax-xmin)*i/6;
+    svg+=`<line class="grid" x1="${left}" x2="${width-right}" y1="${y(t)}" y2="${y(t)}"/><text text-anchor="end" x="${left-12}" y="${y(t)+4}">${Math.round(t)}s</text><line class="grid" x1="${x(stamp)}" x2="${x(stamp)}" y1="${top}" y2="${height-bottom}"/><text text-anchor="middle" x="${x(stamp)}" y="${height-bottom+26}">${esc(historyTick.format(stamp))}</text>`;
+  }
+  svg+=`<text text-anchor="middle" x="${left+(width-left-right)/2}" y="${height-12}">Attempt started · America/Los_Angeles · ${esc(new Intl.DateTimeFormat('en-US',{timeZone:'America/Los_Angeles',month:'short',day:'numeric',year:'numeric'}).format(points[0].start_ms))}</text>`;
   const floor=results.reference_floor_s;
-  svg+=`<line class="floor-line" x1="${x(floor)}" x2="${x(floor)}" y1="${top-20}" y2="${height-35}"/><text class="floor-label" x="${x(floor)+8}" y="25">54s grader floor · 18 × 3s</text>`;
-  rows.forEach((r,i)=>{const y=top+i*rowHeight;const m=r.metadata;
-    svg+=`<a href="${attemptLink(r)}"><text class="bar-label" x="0" y="${y+19}">${esc(m.label)}</text><text class="bar-note" x="0" y="${y+39}">${esc(m.intervention.label)}</text><rect x="${left}" y="${y+3}" width="${x(r.time_to_18_s)-left}" height="29" rx="4" fill="${colors[i%colors.length]}" opacity=".85"><title>${esc(m.label)}: ${sec(r.time_to_18_s)}</title></rect><text class="bar-value" x="${x(r.time_to_18_s)+10}" y="${y+24}">${sec(r.time_to_18_s)}</text></a>`;
+  svg+=`<line class="floor-line" x1="${left}" x2="${width-right}" y1="${y(floor)}" y2="${y(floor)}"/><text class="floor-label" x="${left+8}" y="${y(floor)+17}">54s grader floor · 18 × 3s</text>`;
+  let d=`M ${x(frontier[0].start_ms)} ${y(frontier[0].time_to_18_s)}`;
+  frontier.slice(1).forEach(r=>{d+=` H ${x(r.start_ms)} V ${y(r.time_to_18_s)}`;});
+  d+=` H ${x(xmax)}`;
+  svg+=`<path class="pareto-frontier" d="${d}"/>`;
+  points.forEach((r,i)=>{
+    const description=`${r.metadata.label} · ${sec(r.time_to_18_s)} · started ${historyDate.format(r.start_ms)} · ${r.metadata.intervention.label}`;
+    svg+=`<a class="attempt-dot-link" href="${attemptLink(r)}" aria-label="${esc(description)}"><title>${esc(description)}</title><circle class="attempt-dot" data-attempt="${esc(r.id)}" cx="${x(r.start_ms)}" cy="${y(r.time_to_18_s)}" r="11" fill="${colors[i%colors.length]}"/><text class="dot-number" text-anchor="middle" x="${x(r.start_ms)}" y="${y(r.time_to_18_s)+4}">${i+1}</text></a>`;
   });
   return svg+'</svg>';
+}
+function historyLegend(history) {
+  const bestIds=new Set(history.frontier.map(r=>r.id));
+  return history.points.map((r,i)=>`<a class="history-item" href="${attemptLink(r)}"><span class="history-number" style="background:${colors[i%colors.length]}">${i+1}</span><span><strong>${esc(r.metadata.label)}</strong><small>${sec(r.time_to_18_s)} · ${esc(historyDate.format(r.start_ms))}${bestIds.has(r.id)?' · new best':''}</small><small>${esc(r.metadata.intervention.label)}</small></span></a>`).join('');
 }
 function interventionCards(rows) {
   const comparisons=rows.filter(r=>r.metadata && r.comparison?.saved_s!=null);
@@ -59,8 +87,9 @@ async function refresh(){
     $('#notice').textContent=results.warnings.join(' · ');$('#notice').hidden=!results.warnings.length;
     const metrics=[['Fastest observed',best?sec(best.time_to_18_s):'—',best?.metadata.label??'No measured target'],['Grader floor','54.00s','3s × 18 correct questions'],['Above the floor',best?sec(best.time_to_18_s-results.reference_floor_s):'—','Fastest run, after warmup']];
     $('#headline-metrics').innerHTML=metrics.map(([title,value,note],i)=>`<article class="metric-card ${i===0?'score-card':''}"><div class="metric-label">${title}</div><div class="metric-value">${value}</div><div class="metric-sub">${esc(note)}</div></article>`).join('');
-    $('#comparison-plot').innerHTML=comparisonPlot(ranked);$('#floor-note').textContent=results.floor_note;
-    $('#excluded-note').textContent=rows.filter(r=>r.time_to_18_s==null).map(r=>`${r.metadata?.label??r.id}: ${r.status}${r.solved!=null?` (${r.solved} correct)`:''}`).join(' · ');
+    const history=attemptHistory(rows);
+    $('#comparison-plot').innerHTML=comparisonPlot(history);$('#history-legend').innerHTML=historyLegend(history);$('#floor-note').textContent=results.floor_note;
+    $('#excluded-note').textContent=rows.filter(r=>r.time_to_18_s==null || !Number.isFinite(Date.parse(r.attempt_started_at_utc??r.started_at_utc))).map(r=>`${r.metadata?.label??r.id}: ${r.time_to_18_s==null?r.status:'start timestamp unavailable'}${r.solved!=null?` (${r.solved} correct)`:''}`).join(' · ');
     $('#interventions').innerHTML=interventionCards(rows);$('#attempt-rows').innerHTML=controlsTable(rows);renderProgress();$('#content').hidden=false;
   }catch(e){$('#error').textContent=e.message;$('#error').hidden=false;}finally{$('#refresh').disabled=false;}
 }

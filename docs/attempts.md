@@ -259,8 +259,12 @@ runner modules and commits are preserved even when the policy later moves.
 
 Open [Overall results](http://127.0.0.1:8765/results) to compare all local attempts.
 Times come from the eighteenth distinct first-solved event, including historical
-winner-verdict timestamp fallback. Official settlement time is shown separately;
-it is never used to fill missing target timing. Failed/interrupted/unmet attempts
+winner-verdict timestamp fallback. Official settlement time is shown separately
+and is never used to fill missing target timing. The history plot places each dot
+at its initialization start timestamp and traces
+the chronological running minimum with a dotted Pareto step. Older records use
+their official start timestamp when initialization was not recorded.
+Failed/interrupted/unmet attempts
 remain visible. The 54-second reference floor assumes a serial 3-second grader,
 18 correct queries, zero wrong/duplicate queries, and no initial generation delay.
 Generation can overlap grading. Individual run comparisons show observed deltas

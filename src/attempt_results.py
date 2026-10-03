@@ -81,6 +81,7 @@ def build_results(store):
                          'status': status, 'attempt_status': attempt['status'], 'solved': solved,
                          'error': summary.get('error'),
                          'started_at_utc': attempt['started_at_utc'],
+                         'attempt_started_at_utc': overview['config'].get('initialization_started_at_utc') or attempt['started_at_utc'],
                          'time_to_18_s': time, 'time_source': events[TARGET - 1]['source'] if time is not None else None,
                          'settlement_s': attempt['official_latency_s'], 'events': events,
                          'grader_floor_s': floor, 'above_floor_s': time - floor if time is not None and floor is not None else None,
