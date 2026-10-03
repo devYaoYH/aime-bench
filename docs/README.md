@@ -9,6 +9,11 @@ entry points use `python -m src.experiments.<family>.<module>`. See the
 See [canonical remote attempts](attempts.md) for the managed vLLM/grader runner
 and the local-development-to-remote-experiment workflow.
 
+| Canonical attempt | Result |
+| --- | --- |
+| [Initial Qwen 8 × 4](../attempts/20261003T193711.679999Z/README.md) | 5/30 correct in 999.5 seconds |
+| [VibeThinker-3B coverage and continuation](../attempts/20261003T200718.717581Z/README.md) | Target 18 correct in 92.5 seconds |
+
 ## Baseline and sampling
 
 | Report | Purpose |
