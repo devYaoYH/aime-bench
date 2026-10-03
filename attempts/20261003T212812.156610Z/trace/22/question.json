@@ -1,0 +1,278 @@
+{
+  "problem_idx": 22,
+  "started_at_utc": "2026-10-03T21:28:59.374+00:00",
+  "finished_at_utc": "2026-10-03T21:29:48.329+00:00",
+  "end_to_end_latency_s": 48.954872809001245,
+  "status": "solved",
+  "winner": {
+    "answer": 237,
+    "part": "content",
+    "kind": "literal_prose",
+    "end": 13597,
+    "line": "Thus answer would be 237. Wait earlier we got 97/128 and sum 225. But after correction, it's 109/128 and sum 237. Let's double-check the counting.",
+    "candidate": "237",
+    "rollout": 1,
+    "observed_at_utc": "2026-10-03T21:29:34.232+00:00",
+    "question_elapsed_s": 34.857335289008915,
+    "verification_started_at_utc": "2026-10-03T21:29:34.232+00:00",
+    "round": 1,
+    "candidate_queue_wait_s": 0.00033841398544609547,
+    "result": {
+      "query_id": "20261003T212812.156610Z-q22-a237",
+      "seq": 14,
+      "agent_id": "20261003T212812.156610Z-q22-r1",
+      "index": 22,
+      "candidate": "237",
+      "verdict": true,
+      "queue_ahead_at_submit": 3,
+      "submitted_at": "2026-10-03T21:29:34.235178Z",
+      "picked_at": "2026-10-03T21:29:45.319991Z",
+      "answered_at": "2026-10-03T21:29:48.320123Z",
+      "queue_wait_s": 11.085,
+      "toll_s": 3.0,
+      "latency_s": 14.085
+    },
+    "verification_finished_at_utc": "2026-10-03T21:29:48.322+00:00",
+    "verification_latency_s": 14.089880252955481
+  },
+  "error": null,
+  "unique_candidates": 2,
+  "candidate_answers": [
+    "225",
+    "237"
+  ],
+  "rollouts": [
+    {
+      "rollout": 1,
+      "round": 1,
+      "started_at_utc": "2026-10-03T21:28:59.395+00:00",
+      "start_monotonic_s": 267187.458114142,
+      "ttft_s": 0.24704819201724604,
+      "last_token_s": 48.91943392797839,
+      "finish_reason": null,
+      "status": "cancelled",
+      "done_received": false,
+      "usage": {
+        "prompt_tokens": 159,
+        "total_tokens": 6911,
+        "completion_tokens": 6752,
+        "completion_tokens_details": null
+      },
+      "endpoint": "/v1/chat/completions",
+      "continuation_of_rollout": null,
+      "requested_max_tokens": 16384,
+      "http_status": 200,
+      "headers_received_s": 0.062180274981074035,
+      "generation_finished_at_utc": "2026-10-03T21:29:48.325+00:00",
+      "generation_end_monotonic_s": 267236.387968532,
+      "generation_latency_s": 48.92985438997857,
+      "generation_censored": true,
+      "generated_token_ids_count": 6752,
+      "prompt_token_ids_count": 159,
+      "cached_prompt_tokens": null,
+      "prefix_cache_hit_fraction": null,
+      "overhead": {
+        "enabled": true,
+        "timings": {
+          "artifact_json_write": {
+            "count": 4,
+            "wall_total_s": 0.0038468680577352643,
+            "wall_max_s": 0.003089588019065559,
+            "thread_cpu_total_s": 0.0038472170000010686,
+            "cpu_samples": 4
+          },
+          "stream_trace_write_flush": {
+            "count": 6753,
+            "wall_total_s": 0.19546562008326873,
+            "wall_max_s": 0.00026431604055687785,
+            "thread_cpu_total_s": 0.1944139139999458,
+            "cpu_samples": 6753
+          },
+          "sse_json_decode": {
+            "count": 6753,
+            "wall_total_s": 0.07115394156426191,
+            "wall_max_s": 6.324803689494729e-05,
+            "thread_cpu_total_s": 0.07137483399995304,
+            "cpu_samples": 6753
+          },
+          "candidate_parse_enqueue": {
+            "count": 6739,
+            "wall_total_s": 0.049344063038006425,
+            "wall_max_s": 6.228702841326594e-05,
+            "thread_cpu_total_s": 0.0495176869998914,
+            "cpu_samples": 6739
+          }
+        },
+        "counters": {
+          "generation_requests": 1,
+          "sse_chunks": 6753,
+          "sse_payload_bytes": 2394689,
+          "generation_cancelled": 1
+        },
+        "maxima": {}
+      },
+      "finished_at_utc": "2026-10-03T21:29:48.329+00:00",
+      "end_to_end_latency_s": 48.934165056969505,
+      "end_to_end_scope": "rollout start through question verification/cancellation settlement",
+      "gpu": {
+        "sample_count": 245,
+        "start_vram_mib": 78336.1875,
+        "end_vram_mib": 78502.1875,
+        "observed_peak_vram_mib": 78502.1875,
+        "scope": "shared GPU device; sampled peak, not per-request allocation",
+        "error": null
+      }
+    }
+  ],
+  "round": 1,
+  "first_solved": {
+    "problem_idx": 22,
+    "round": 1,
+    "rollout": 1,
+    "candidate": "237",
+    "first_solved_at_utc": "2026-10-03T21:29:48.322+00:00",
+    "first_solved_elapsed_s": 48.96299702394754,
+    "grader_answered_at_utc": "2026-10-03T21:29:48.320123Z",
+    "grader_query_id": "20261003T212812.156610Z-q22-a237"
+  },
+  "overhead": {
+    "enabled": true,
+    "timings": {
+      "artifact_json_write": {
+        "count": 6,
+        "wall_total_s": 0.004561658017337322,
+        "wall_max_s": 0.003089588019065559,
+        "thread_cpu_total_s": 0.004562940000000071,
+        "cpu_samples": 6
+      },
+      "stream_trace_write_flush": {
+        "count": 6753,
+        "wall_total_s": 0.19546562008326873,
+        "wall_max_s": 0.00026431604055687785,
+        "thread_cpu_total_s": 0.1944139139999458,
+        "cpu_samples": 6753
+      },
+      "sse_json_decode": {
+        "count": 6753,
+        "wall_total_s": 0.07115394156426191,
+        "wall_max_s": 6.324803689494729e-05,
+        "thread_cpu_total_s": 0.07137483399995304,
+        "cpu_samples": 6753
+      },
+      "candidate_parse_enqueue": {
+        "count": 6739,
+        "wall_total_s": 0.049344063038006425,
+        "wall_max_s": 6.228702841326594e-05,
+        "thread_cpu_total_s": 0.0495176869998914,
+        "cpu_samples": 6739
+      },
+      "candidate_local_queue_wait": {
+        "count": 2,
+        "wall_total_s": 0.0005558709963224828,
+        "wall_max_s": 0.00033841398544609547,
+        "thread_cpu_total_s": 0.0,
+        "cpu_samples": 0
+      },
+      "grader_queue_wait": {
+        "count": 2,
+        "wall_total_s": 23.576,
+        "wall_max_s": 12.491,
+        "thread_cpu_total_s": 0.0,
+        "cpu_samples": 0
+      },
+      "grader_service": {
+        "count": 2,
+        "wall_total_s": 6.0,
+        "wall_max_s": 3.0,
+        "thread_cpu_total_s": 0.0,
+        "cpu_samples": 0
+      },
+      "verification_http_wait": {
+        "count": 2,
+        "wall_total_s": 29.58818793593673,
+        "wall_max_s": 15.498307682981249,
+        "thread_cpu_total_s": 0.0,
+        "cpu_samples": 0
+      },
+      "verification_trace_write_flush": {
+        "count": 2,
+        "wall_total_s": 0.0001227700267918408,
+        "wall_max_s": 7.472001016139984e-05,
+        "thread_cpu_total_s": 0.00012241800000012404,
+        "cpu_samples": 2
+      },
+      "generation_cancellation_settlement": {
+        "count": 1,
+        "wall_total_s": 0.007064484991133213,
+        "wall_max_s": 0.007064484991133213,
+        "thread_cpu_total_s": 0.0,
+        "cpu_samples": 0
+      },
+      "gpu_sample_window": {
+        "count": 1,
+        "wall_total_s": 0.00018122995970770717,
+        "wall_max_s": 0.00018122995970770717,
+        "thread_cpu_total_s": 0.0001812179999944874,
+        "cpu_samples": 1
+      }
+    },
+    "counters": {
+      "generation_requests": 1,
+      "sse_chunks": 6753,
+      "sse_payload_bytes": 2394689,
+      "candidate_proposals": 8,
+      "candidate_unique_enqueued": 2,
+      "verification_submitted": 2,
+      "candidate_duplicates_suppressed": 6,
+      "verification_completed": 2,
+      "verification_wrong": 1,
+      "verification_correct": 1,
+      "generation_cancelled": 1
+    },
+    "maxima": {
+      "candidate_queue_depth": 1
+    }
+  },
+  "rounds": [
+    {
+      "round": 1,
+      "status": "solved",
+      "started_at_utc": "2026-10-03T21:28:59.374+00:00",
+      "finished_at_utc": "2026-10-03T21:29:48.329+00:00",
+      "end_to_end_latency_s": 48.954872809001245,
+      "winner": {
+        "answer": 237,
+        "part": "content",
+        "kind": "literal_prose",
+        "end": 13597,
+        "line": "Thus answer would be 237. Wait earlier we got 97/128 and sum 225. But after correction, it's 109/128 and sum 237. Let's double-check the counting.",
+        "candidate": "237",
+        "rollout": 1,
+        "observed_at_utc": "2026-10-03T21:29:34.232+00:00",
+        "question_elapsed_s": 34.857335289008915,
+        "verification_started_at_utc": "2026-10-03T21:29:34.232+00:00",
+        "round": 1,
+        "candidate_queue_wait_s": 0.00033841398544609547,
+        "result": {
+          "query_id": "20261003T212812.156610Z-q22-a237",
+          "seq": 14,
+          "agent_id": "20261003T212812.156610Z-q22-r1",
+          "index": 22,
+          "candidate": "237",
+          "verdict": true,
+          "queue_ahead_at_submit": 3,
+          "submitted_at": "2026-10-03T21:29:34.235178Z",
+          "picked_at": "2026-10-03T21:29:45.319991Z",
+          "answered_at": "2026-10-03T21:29:48.320123Z",
+          "queue_wait_s": 11.085,
+          "toll_s": 3.0,
+          "latency_s": 14.085
+        },
+        "verification_finished_at_utc": "2026-10-03T21:29:48.322+00:00",
+        "verification_latency_s": 14.089880252955481
+      },
+      "error": null
+    }
+  ],
+  "question_start_monotonic_s": 267187.43740639
+}

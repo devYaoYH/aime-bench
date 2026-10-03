@@ -1,0 +1,164 @@
+{
+  "scope": "Local macOS offline replay, one saved 30x4 Q09 rollout; no network, vLLM or asynchronous concurrency; not predicted remote wall-time savings. Leaf-meter variant retains per-rollout timing but omits parent propagation in this benchmark; production would aggregate after stream completion.",
+  "payloads": 5987,
+  "output_token_ids": 5987,
+  "extracted_events": 0,
+  "results": [
+    {
+      "variant": "current",
+      "flush_every_chunks": 1,
+      "meter": "nested",
+      "median_cpu_s": 0.09373799999999999,
+      "cpu_s_samples": [
+        0.09655799999999998,
+        0.09419699999999998,
+        0.09369099999999997,
+        0.09373799999999999,
+        0.09692999999999996,
+        0.09347799999999995,
+        0.09351699999999996
+      ]
+    },
+    {
+      "variant": "flush_every_128",
+      "flush_every_chunks": 128,
+      "meter": "nested",
+      "median_cpu_s": 0.0798080000000001,
+      "cpu_s_samples": [
+        0.07975600000000005,
+        0.08046599999999993,
+        0.0801400000000001,
+        0.0798080000000001,
+        0.07936799999999988,
+        0.07949099999999998,
+        0.0803649999999998
+      ]
+    },
+    {
+      "variant": "defer_meter_aggregation",
+      "flush_every_chunks": 1,
+      "meter": "leaf",
+      "median_cpu_s": 0.081615,
+      "cpu_s_samples": [
+        0.08139600000000002,
+        0.08139600000000002,
+        0.081615,
+        0.08137100000000008,
+        0.08982400000000013,
+        0.08386700000000014,
+        0.08203500000000008
+      ]
+    },
+    {
+      "variant": "flush128_and_leaf_meter",
+      "flush_every_chunks": 128,
+      "meter": "leaf",
+      "median_cpu_s": 0.06777699999999998,
+      "cpu_s_samples": [
+        0.06833499999999981,
+        0.06777699999999998,
+        0.06684100000000015,
+        0.06733299999999964,
+        0.06697399999999964,
+        0.06810899999999975,
+        0.06953999999999994
+      ]
+    },
+    {
+      "variant": "disabled_meter",
+      "flush_every_chunks": 128,
+      "meter": "disabled",
+      "median_cpu_s": 0.05557800000000013,
+      "cpu_s_samples": [
+        0.056311,
+        0.0558740000000002,
+        0.05557800000000013,
+        0.055223000000000244,
+        0.05600700000000014,
+        0.053313000000000166,
+        0.05443200000000026
+      ]
+    }
+  ],
+  "cprofile_current": "         706096 function calls (646316 primitive calls) in 0.208 seconds\n\n   Ordered by: internal time\n   List reduced from 79 to 18 due to restriction <18>\n\n   ncalls  tottime  percall  cumtime  percall filename:lineno(function)\n53748/17916    0.034    0.000    0.040    0.000 /Users/yaoyiheng/Documents/Stanford Academia/2026/_Interview/Callosum/aime-bench/src/attempt_metrics.py:23(observe)\n        1    0.029    0.029    0.208    0.208 /tmp/aime_cpu_bench.py:9(replay)\n     5988    0.015    0.000    0.015    0.000 {method 'flush' of '_io.TextIOWrapper' objects}\n     5987    0.013    0.000    0.013    0.000 /Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/json/encoder.py:205(iterencode)\n    35832    0.012    0.000    0.059    0.000 /Users/yaoyiheng/Documents/Stanford Academia/2026/_Interview/Callosum/aime-bench/src/attempt_metrics.py:45(measure)\n35922/11974    0.010    0.000    0.012    0.000 /Users/yaoyiheng/Documents/Stanford Academia/2026/_Interview/Callosum/aime-bench/src/attempt_metrics.py:61(inc)\n     5942    0.008    0.000    0.011    0.000 /Users/yaoyiheng/Documents/Stanford Academia/2026/_Interview/Callosum/aime-bench/src/attempt_runners/_streaming_v1.py:45(feed)\n     5987    0.008    0.000    0.008    0.000 /Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/json/decoder.py:343(raw_decode)\n    17916    0.006    0.000    0.007    0.000 /Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/contextlib.py:104(__init__)\n    35832    0.005    0.000    0.005    0.000 {built-in method time.thread_time}\n     5987    0.005    0.000    0.005    0.000 {method 'isoformat' of 'datetime.datetime' objects}\n    59690    0.005    0.000    0.005    0.000 {built-in method builtins.max}\n     5987    0.005    0.000    0.016    0.000 /Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/json/decoder.py:332(decode)\n    17916    0.004    0.000    0.057    0.000 /Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/contextlib.py:141(__exit__)\n    35833    0.004    0.000    0.063    0.000 {built-in method builtins.next}\n     5987    0.004    0.000    0.017    0.000 /Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/json/encoder.py:183(encode)\n     5987    0.004    0.000    0.022    0.000 /Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/json/__init__.py:183(dumps)\n    17916    0.004    0.000    0.010    0.000 /Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/contextlib.py:284(helper)\n\n\n",
+  "source_attempt": "20261003T211054.387701Z",
+  "source_question": 9,
+  "source_rollout": 1,
+  "response_gaps": [
+    {
+      "attempt_id": "20261003T210230.379752Z",
+      "client_start_to_grader_submit_s": {
+        "count": 18,
+        "median": 0.003690481185913086,
+        "max": 0.00739598274230957
+      },
+      "grader_answer_to_client_finish_s": {
+        "count": 18,
+        "median": 0.0012669563293457031,
+        "max": 0.004976034164428711
+      },
+      "candidate_local_queue_s": {
+        "count": 18,
+        "median": 0.00048244904610328376,
+        "max": 0.0014605559990741313
+      }
+    },
+    {
+      "attempt_id": "20261003T211054.387701Z",
+      "client_start_to_grader_submit_s": {
+        "count": 19,
+        "median": 0.15171289443969727,
+        "max": 1.1270990371704102
+      },
+      "grader_answer_to_client_finish_s": {
+        "count": 19,
+        "median": 0.02915191650390625,
+        "max": 0.11767411231994629
+      },
+      "candidate_local_queue_s": {
+        "count": 19,
+        "median": 0.013083174009807408,
+        "max": 0.08853457198711112
+      }
+    },
+    {
+      "attempt_id": "20261003T211346.861294Z",
+      "client_start_to_grader_submit_s": {
+        "count": 19,
+        "median": 0.00598597526550293,
+        "max": 0.06766605377197266
+      },
+      "grader_answer_to_client_finish_s": {
+        "count": 19,
+        "median": 0.00500798225402832,
+        "max": 0.02069401741027832
+      },
+      "candidate_local_queue_s": {
+        "count": 19,
+        "median": 0.0013319359859451652,
+        "max": 0.004069498041644692
+      }
+    },
+    {
+      "attempt_id": "20261003T211557.382358Z",
+      "client_start_to_grader_submit_s": {
+        "count": 18,
+        "median": 0.00377047061920166,
+        "max": 0.00727391242980957
+      },
+      "grader_answer_to_client_finish_s": {
+        "count": 18,
+        "median": 0.0014919042587280273,
+        "max": 0.0045430660247802734
+      },
+      "candidate_local_queue_s": {
+        "count": 18,
+        "median": 0.00048167750355787575,
+        "max": 0.0017212660168297589
+      }
+    }
+  ],
+  "benchmark_source": "import json,time,tempfile,statistics,sys,cProfile,pstats,io\nfrom pathlib import Path\nsys.path.insert(0,str(Path.cwd()))\nfrom src.attempt_metrics import Meter\nfrom src.attempt_runners._streaming_v1 import CandidateDetector\nfrom src.common import utc_now\nrecords=[json.loads(s) for s in Path('/tmp/aime-cpu-replay-stream.jsonl').read_text().splitlines()]\npayloads=[r['data'] for r in records]\ndef replay(flush_every,hierarchy):\n root=Meter();parent=Meter(parent=root) if hierarchy=='nested' else None\n leaf=Meter(enabled=hierarchy!='disabled',parent=parent)\n detector=CandidateDetector();events=[];tokens=[];chunkcount=0\n with tempfile.TemporaryFile(mode='w+',encoding='utf-8') as f:\n  start=time.process_time()\n  for i,payload in enumerate(payloads):\n   leaf.inc('sse_chunks');leaf.inc('sse_payload_bytes',len(payload.encode()))\n   with leaf.measure('stream_trace_write_flush'):\n    f.write(json.dumps({'elapsed_s':records[i]['elapsed_s'],'timestamp_utc':utc_now(),'data':payload},ensure_ascii=False)+'\\n')\n    if (i+1)%flush_every==0:f.flush()\n   if payload=='[DONE]':break\n   with leaf.measure('sse_json_decode'):body=json.loads(payload)\n   for choice in body.get('choices',[]):\n    tokens.extend(choice.get('token_ids') or [])\n    delta=choice.get('delta') or {}\n    for part,key in [('reasoning','reasoning_content'),('content','content')]:\n     value=delta.get(key)\n     if isinstance(value,str) and value:\n      with leaf.measure('candidate_parse_enqueue'):events.extend(detector.feed(part,value))\n  f.flush();elapsed=time.process_time()-start\n return elapsed,events,tokens\nbaseline=replay(1,'nested');results=[]\nfor name,flush,hierarchy in [('current',1,'nested'),('flush_every_128',128,'nested'),('defer_meter_aggregation',1,'leaf'),('flush128_and_leaf_meter',128,'leaf'),('disabled_meter',128,'disabled')]:\n times=[]\n for repeat in range(7):\n  elapsed,events,tokens=replay(flush,hierarchy)\n  assert events==baseline[1] and tokens==baseline[2]\n  times.append(elapsed)\n results.append({'variant':name,'flush_every_chunks':flush,'meter':hierarchy,'median_cpu_s':statistics.median(times),'cpu_s_samples':times})\nresult={'scope':'Local macOS offline replay, one saved 30x4 Q09 rollout; no network, vLLM or asynchronous concurrency; not predicted remote wall-time savings. Leaf-meter variant retains per-rollout timing but omits parent propagation in this benchmark; production would aggregate after stream completion.','payloads':len(payloads),'output_token_ids':len(baseline[2]),'extracted_events':len(baseline[1]),'results':results}\npr=cProfile.Profile();pr.enable();replay(1,'nested');pr.disable()\ns=io.StringIO();pstats.Stats(pr,stream=s).sort_stats('tottime').print_stats(18)\nresult['cprofile_current']=s.getvalue()\nprint(json.dumps(result,indent=2))\n",
+  "source_stream_sha256": "3e58c3395020bfcedc59363e1b309505bd01517b2acee846b4e57fc5e12797de",
+  "source_stream_remote_path": "/home/azureuser/aime-bench/attempts/20261003T211054.387701Z/trace/09/rollout-01/stream.jsonl"
+}
