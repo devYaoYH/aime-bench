@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "description": "Separate repeat validation of warmed NVFP4 FlashInfer time to 18, declared before validation launch. All outcomes including settling trial retained.",
+  "declared_at_utc": "2026-10-03T23:35:47.111504+00:00",
+  "reference_attempt": "20261003T211557.382358Z",
+  "reference_time_to_target_s": 71.134766841,
+  "driver": "src.experiments.replicate_best_v1",
+  "argv": [
+    "--model",
+    "r0b0tlab/VibeThinker-3B-NVFP4",
+    "--model-profile",
+    "vllm-flashinfer.yaml",
+    "--trials",
+    "4",
+    "--threshold-s",
+    "71.134766841"
+  ],
+  "trial_roles": {
+    "1": "full unscored settling attempt on newly launched server",
+    "2": "scored validation",
+    "3": "scored validation",
+    "4": "scored validation"
+  },
+  "success_criterion": "All three predeclared scored trials reach 18 distinct verified correct questions within the reference time. Every generation request, including continuations, counts toward cap four per question. Prefix cache reset before every attempt.",
+  "scope": "Fixed reference seed 20261003, warmed inference server, short normal warmup plus declared settling run. This changes model quantization and attention backend; it is not an exact BF16-source replication or a guarantee across seeds. Startup and settling cost must be reported separately.",
+  "profile_sha256": "aa2f451c99233d1e3ba15f9931f550cf5c46273f1ddb837a5802d521cdcf9753"
+}
