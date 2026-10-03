@@ -23,17 +23,18 @@ MANIFEST = ROOT / "configs/experiments/vibe-bf16-best-30x1-benchmark-v2.json"
 REFERENCE = "20261003T211557.382358Z"
 
 
-def controls(model, benchmark=True, policy="reference"):
+def controls(model, benchmark=True, policy="reference", seed=20261003):
     manifest = (MANIFEST if policy == "reference" else
                 ROOT / "configs/experiments/vibe-bf16-dynamic30-8k-v4.json")
     argv = json.loads(manifest.read_text())["argv"]
     argv[argv.index("--model") + 1] = model
+    argv[argv.index("--seed") + 1] = str(seed)
     if not benchmark:
         argv.remove("--benchmark")
     return argv + ["--reuse-server"]
 
 
-def compare_initial_requests(output, model):
+def compare_initial_requests(output, model, seed=20261003):
     differences = []
     ttft = []
     for index in range(1, 31):
@@ -41,6 +42,7 @@ def compare_initial_requests(output, model):
         expected = json.loads((ROOT / "attempts" / REFERENCE / relative / "request.json").read_text())
         actual = json.loads((output / relative / "request.json").read_text())
         expected["model"] = model
+        expected["seed"] += seed - 20261003
         if expected != actual:
             differences.append(index)
         question = json.loads((output / "trace" / f"{index:02d}" / "question.json").read_text())
@@ -50,7 +52,8 @@ def compare_initial_requests(output, model):
     return {"initial_request_count": 30, "different_questions": differences,
             "initial_ttft_median_s": statistics.median(ttft) if ttft else None,
             "initial_ttft_count": len(ttft),
-            "model_override": model != "WeiboAI/VibeThinker-3B"}
+            "model_override": model != "WeiboAI/VibeThinker-3B",
+            "sampling_seed": seed, "seed_override": seed != 20261003}
 
 
 async def reset_cache(client, url, attempts=75):
@@ -72,7 +75,8 @@ def save(path, data):
 
 async def execute(options):
     module = runner if options.policy == "reference" else dynamic_runner
-    argv = controls(options.model, benchmark=not options.profiled_control, policy=options.policy)
+    seeds = options.seeds or [20261003] * options.trials
+    argv = controls(options.model, benchmark=not options.profiled_control, policy=options.policy, seed=seeds[0])
     args = module.parse_args(argv)
     batch = ROOT / "runs/experiments" / options.batch
     batch.mkdir(parents=True, exist_ok=False)
@@ -82,11 +86,12 @@ async def execute(options):
               "near_reference_threshold_s": options.threshold_s,
               "argv": argv, "model": options.model, "profiled_control": options.profiled_control,
               "policy": options.policy, "runner_module": module.__name__,
+              "seed_sequence": seeds,
               "source_commit": subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=ROOT, text=True).strip(),
               "profile_path": str(profile), "profile_sha256": hashlib.sha256(profile.read_bytes()).hexdigest(),
               "server_reused": True, "prefix_cache_reset_between_trials": True,
               "server_env_override": {"VLLM_SERVER_DEV_MODE": "1"},
-              "sampling": "Original fixed seeds in every trial; no successful trials selected or discarded"}
+              "sampling": "All declared seed trials retained, including failures; non-reference seeds are sampling interventions"}
     save(batch / "config.json", config)
     services = Services()
     result = {"status": "initializing", "trials": [], "reference_attempt": REFERENCE}
@@ -106,12 +111,14 @@ async def execute(options):
             result["status"] = "running"
             save(batch / "summary.json", result)
             for trial in range(1, options.trials + 1):
+                seed = seeds[trial - 1]
+                trial_argv = controls(options.model, benchmark=not options.profiled_control, policy=options.policy, seed=seed)
                 cache_reset = await reset_cache(client, args.vllm_url)
-                print(f"REPLICATION TRIAL {trial}/{options.trials} model={options.model}", flush=True)
-                output = await module.run(module.parse_args(argv))
+                print(f"REPLICATION TRIAL {trial}/{options.trials} model={options.model} seed={seed}", flush=True)
+                output = await module.run(module.parse_args(trial_argv))
                 summary = json.loads((output / "summary.json").read_text())
-                comparison = compare_initial_requests(output, options.model)
-                row = {"trial": trial, "attempt_id": output.name, "cache_reset": cache_reset,
+                comparison = compare_initial_requests(output, options.model, seed=seed)
+                row = {"trial": trial, "sampling_seed": seed, "attempt_id": output.name, "cache_reset": cache_reset,
                        "target_reached": summary["target_reached"], "time_to_target_s": summary["time_to_target_s"],
                        "performance": summary["performance"], "grader_timeline": summary["grader_timeline"],
                        "matched_requests": comparison}
@@ -141,6 +148,7 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--model", choices=["WeiboAI/VibeThinker-3B", "r0b0tlab/VibeThinker-3B-NVFP4"], default="WeiboAI/VibeThinker-3B")
     parser.add_argument("--trials", type=int, default=3)
+    parser.add_argument("--seeds", type=int, nargs='+', help="One declared seed per trial; default repeats the reference seed")
     parser.add_argument("--threshold-s", type=float, default=75)
     parser.add_argument("--profiled-control", action="store_true", help="Restore original profiling and immediate trace writes for the matched control")
     parser.add_argument("--policy", choices=["reference", "dynamic30"], default="reference",
@@ -149,6 +157,8 @@ def main():
     options = parser.parse_args()
     if options.trials < 1 or options.threshold_s <= 0 or Path(options.batch).name != options.batch:
         parser.error("Positive trials/threshold and a plain batch directory name required")
+    if options.seeds is not None and (len(options.seeds) != options.trials or any(s < 0 for s in options.seeds)):
+        parser.error("Provide one nonnegative seed per trial")
     with attempt_lock():
         async def entry():
             task = asyncio.current_task()

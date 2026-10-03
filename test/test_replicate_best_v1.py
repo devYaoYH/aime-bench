@@ -42,6 +42,12 @@ class BestReplicationTests(unittest.TestCase):
         self.assertEqual((args.parallelism, args.rollouts), (30, 1))
         self.assertTrue(args.benchmark)
 
+    def test_sampling_intervention_changes_only_declared_seed(self):
+        original = controls("WeiboAI/VibeThinker-3B")
+        changed = controls("WeiboAI/VibeThinker-3B", seed=20261004)
+        self.assertEqual([i for i, (a, b) in enumerate(zip(original, changed)) if a != b], [original.index('--seed') + 1])
+        self.assertEqual(parse_args(changed).seed, 20261004)
+
 
 class CacheResetTests(unittest.IsolatedAsyncioTestCase):
     async def test_retries_held_blocks_without_forcing_running_reset(self):

@@ -154,6 +154,12 @@ checkout is retained with raw experiment evidence; it contains no edited source.
 Grader Python is reused from the primary checkout's environment, while grader
 source/data come from the historical checkout. Each initial request and recorded
 source commit is checked against the reference after the run.
+The warmed driver also accepts `--seeds` with one explicitly declared seed per
+trial. Non-reference seeds are separate sampling interventions: the source
+records the full sequence and checks that initial payloads differ only by the
+declared model/seed substitutions. All outcomes are retained. A selected fast
+seed must be repeated separately before claiming repeatability, and successful
+fixed-seed validation does not establish performance across arbitrary seeds.
 
 `python -m src.attempt_runners.speedrun_v3 --model WeiboAI/VibeThinker-3B --benchmark`
 starts one 8K request for every selected question. The first client grader
