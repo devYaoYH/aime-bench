@@ -23,7 +23,7 @@ import httpx
 import yaml
 
 from src.common import ROOT, atomic_json, utc_now
-from src.benchmarks import add_dataset_args, benchmark_paths, dataset_provenance
+from src.benchmarks import add_dataset_args, benchmark_paths, dataset_provenance, default_benchmark_role
 from src.attempt_metadata import build_metadata
 from src.attempt_storage import (AttemptArtifacts, DisabledGPUSampler,
                                  add_benchmark_args, apply_benchmark_args)
@@ -587,7 +587,7 @@ def parse_args(argv=None):
     )
     add_benchmark_args(parser)
     args = apply_benchmark_args(parser.parse_args(argv))
-    args.benchmark_role = args.benchmark_role or ("development" if args.benchmark_year == 2025 else "generalization")
+    args.benchmark_role = args.benchmark_role or default_benchmark_role(args.benchmark_year)
     args.strategy = "speedrun_v2"
     if args.rollouts > args.max_attempts_per_question:
         parser.error("Rollouts exceed the per-question attempt limit")

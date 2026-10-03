@@ -389,3 +389,39 @@ and generates prompt/key files together. Source manifests are `data/source.json`
 split. The 2026 transcription retains MathArena's contest variants, including
 AIME II #1 = 178 and #10 = 850; do not mix it with another version's answer key.
 See [dataset provenance](../data/README.md).
+
+## AIME 2024 prewarming workload
+
+All 30 AIME 2024 questions are available as a separate workload:
+
+```sh
+python -m src.attempt --model <organization>/<model> --benchmark-year 2024
+python -m src.attempt_runners.speedrun_v4 --model <organization>/<model> --benchmark-year 2024
+```
+
+These runs default to `--benchmark-role prewarming`. The role is recorded in
+config and `metadata.json`, alongside the year, prompt/key hashes, and both
+upstream revisions. The results viewer offers a separate AIME 2024 prewarming
+selection, leaving AIME 2025 development and AIME 2026 generalization separate.
+The default benchmark is still 2025. Year selection is supported by canonical,
+naive pass4, and speedrun v1–v4 entry points.
+
+This prepares 2024 for a standalone prewarming run; it does not automatically run
+2024 before a 2025/2026 attempt or change the existing short inference warmup.
+Use your intended runner/model/budgets for the warmup workload, then select 2025
+or 2026 for the subsequent evaluation. No workload is launched by downloading.
+
+MathArena publishes 2024 as two 15-question datasets. Their local IDs 1–15 map
+to combined IDs 1–15 (I) and 16–30 (II). `data/source_2024.json` records both
+pinned commits and offsets; its composite revision hashes the ordered source
+records. Refresh the exact workload with:
+
+```sh
+python -m src.fetch_dataset --year 2024 \
+  --revision-i ea5b061c3e8039dc9858defaafc407d04b995e9f \
+  --revision-ii 29d5d31e9b46e215fc24d9b2a3047506823dd101
+```
+
+For the standalone grader, use `GRADER_CONFIG=config_2024.yaml python server.py`
+from `grader/`. The launcher script also accepts `--benchmark-year 2024` and
+`--benchmark-role prewarming`.

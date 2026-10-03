@@ -22,7 +22,7 @@ from src.attempt_results import build_results
 from src.attempt_viewer import AttemptStore
 from src.attempt_runners import naive_pass4_v1, speedrun_v1, sweep_speedrun_v1
 from src.common import ROOT, load_problems
-from src.fetch_dataset import normalize_rows
+from src.fetch_dataset import normalize_rows, combine_2024_parts
 from test import test_attempt_results
 
 
@@ -34,7 +34,7 @@ class BenchmarkTests(unittest.TestCase):
             self.assertEqual(args.benchmark_year, 2026)
             self.assertEqual(args.benchmark_role, 'generalization')
         self.assertNotEqual(benchmarks.load_questions([1]), benchmarks.load_questions([1], 2026))
-        for year in (2025, 2026):
+        for year in (2024, 2025, 2026):
             questions = benchmarks.load_questions(year=year)
             self.assertEqual(len(questions), 30)
             self.assertTrue(all(set(q) == {'problem_idx', 'problem'} for q in questions))
@@ -42,10 +42,10 @@ class BenchmarkTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             benchmarks.load_questions([31], 2026)
         with self.assertRaises(ValueError):
-            benchmarks.benchmark_paths(2024)
+            benchmarks.benchmark_paths(2023)
 
     def test_provenance_and_variant_answers_match_bundled_key(self):
-        for year, role in ((2025, 'development'), (2026, 'generalization')):
+        for year, role in ((2024, 'prewarming'), (2025, 'development'), (2026, 'generalization')):
             evidence = benchmarks.dataset_provenance(year)
             self.assertEqual(evidence['role'], role)
             prompts, grader, _ = benchmarks.benchmark_paths(year)
@@ -54,6 +54,40 @@ class BenchmarkTests(unittest.TestCase):
         self.assertEqual(load_problems(2026)[15]['answer'], 178)
         self.assertEqual(load_problems(2026)[24]['answer'], 850)
         self.assertEqual(benchmarks.dataset_provenance(2026, 'development')['role'], 'development')
+
+    def test_prewarming_selection_metadata_and_two_source_mapping(self):
+        from src.attempt_runners import speedrun_v2, speedrun_v3, speedrun_v4
+        for parser in (parse_args, naive_pass4_v1.parse_args, speedrun_v2.parse_args,
+                       speedrun_v3.parse_args, speedrun_v4.parse_args):
+            args = parser(['--model', 'test/model', '--benchmark-year', '2024'])
+            self.assertEqual(args.benchmark_role, 'prewarming')
+        rows = load_problems(2024)
+        self.assertEqual(rows[0]['answer'], 204)
+        self.assertEqual(rows[15]['answer'], 73)
+        self.assertEqual(rows[-1]['answer'], 315)
+        provenance = benchmarks.dataset_provenance(2024)
+        self.assertEqual([s['rows'] for s in provenance['sources']], [15, 15])
+        self.assertEqual([s['index_offset'] for s in provenance['sources']], [0, 15])
+        self.assertEqual([s['revision'] for s in provenance['sources']],
+                         ['ea5b061c3e8039dc9858defaafc407d04b995e9f',
+                          '29d5d31e9b46e215fc24d9b2a3047506823dd101'])
+        with tempfile.TemporaryDirectory() as tmp:
+            folder = Path(tmp) / 'warmup'; folder.mkdir()
+            metadata = build_metadata(folder, {'benchmark_year': 2024, 'dataset_provenance': provenance})
+            validate_metadata(metadata, 'warmup')
+            self.assertEqual(metadata['controls']['dataset'], 'AIME 2024')
+            self.assertEqual(metadata['provenance']['dataset']['role'], 'prewarming')
+            self.assertEqual(metadata['provenance']['dataset']['sources'], provenance['sources'])
+
+    def test_combining_2024_papers_preserves_all_indices_and_rejects_missing_paper(self):
+        rows = load_problems(2024)
+        first = rows[:15]
+        second = [{**r, 'problem_idx': r['problem_idx'] - 15} for r in rows[15:]]
+        self.assertEqual(combine_2024_parts([list(reversed(first)), second]), rows)
+        for parts in ([first], [first[:-1], second], [first, second + [second[0]]],
+                      [[{**first[0], 'problem_idx': True}] + first[1:], second]):
+            with self.assertRaises(ValueError):
+                combine_2024_parts(parts)
 
     def test_mixed_key_and_modified_prompt_are_rejected(self):
         with tempfile.TemporaryDirectory() as tmp:
@@ -133,15 +167,18 @@ class BenchmarkTests(unittest.TestCase):
 
 
 class Grader2026Tests(unittest.IsolatedAsyncioTestCase):
-    async def test_http_health_verdict_and_audit_provenance(self):
+    async def test_2024_http_grading(self):
+        await self.test_http_health_verdict_and_audit_provenance(2024, ((1, '204', '70'), (16, '73', '178'), (30, '315', '314')))
+
+    async def test_http_health_verdict_and_audit_provenance(self, year=2026, cases=None):
         if not all(importlib.util.find_spec(n) for n in ('sympy', 'loguru', 'regex', 'antlr4')):
             self.skipTest('Install grader/requirements-local.txt for HTTP integration')
         with socket.socket() as sock:
             sock.bind(('127.0.0.1', 0)); port = sock.getsockname()[1]
         with tempfile.TemporaryDirectory() as tmp:
             path = Path(tmp)
-            cfg = {'dataset': {'id': 'aime_2026', 'year': 2026,
-                              'source': str(ROOT/'grader/data/aime_2026.jsonl'), 'format': 'jsonl'},
+            cfg = {'dataset': {'id': f'aime_{year}', 'year': year,
+                              'source': str(ROOT/f'grader/data/aime_{year}.jsonl'), 'format': 'jsonl'},
                    'cost_c': 0, 'host': '127.0.0.1', 'port': port, 'audit_log': str(path/'audit.jsonl')}
             (path/'config.yaml').write_text(yaml.safe_dump(cfg))
             with (path/'server.log').open('w') as log:
@@ -150,18 +187,18 @@ class Grader2026Tests(unittest.IsolatedAsyncioTestCase):
                 try:
                     async with httpx.AsyncClient(trust_env=False) as client:
                         health = await ready(client, f'http://127.0.0.1:{port}/health', 10, process)
-                        self.assertEqual(health['dataset']['year'], 2026)
-                        self.assertEqual(health['dataset']['sha256'], benchmarks.dataset_provenance(2026)['grader_sha256'])
-                        for index, correct, wrong in ((1, '277', '70'), (16, '178', '196'), (25, '850', '340')):
+                        self.assertEqual(health['dataset']['year'], year)
+                        self.assertEqual(health['dataset']['sha256'], benchmarks.dataset_provenance(year)['grader_sha256'])
+                        for index, correct, wrong in cases or ((1, '277', '70'), (16, '178', '196'), (25, '850', '340')):
                             for candidate, verdict in ((correct, True), (wrong, False)):
                                 response = await client.post(f'http://127.0.0.1:{port}/verify', json={'index': index, 'candidate': candidate})
                                 record = response.raise_for_status().json()
                                 self.assertEqual(record['verdict'], verdict)
-                                self.assertEqual(record['dataset']['year'], 2026)
+                                self.assertEqual(record['dataset']['year'], year)
                                 self.assertNotIn('gold', record)
                         audit = [json.loads(line) for line in (path/'audit.jsonl').read_text().splitlines()]
                         self.assertEqual(len(audit), 6)
-                        self.assertTrue(all(r['dataset']['id'] == 'aime_2026' for r in audit))
+                        self.assertTrue(all(r['dataset']['id'] == f'aime_{year}' for r in audit))
                 finally:
                     process.terminate(); process.wait(timeout=5)
 

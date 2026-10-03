@@ -124,3 +124,7 @@ set. New attempt configs/metadata record year, development/generalization role,
 source revision, and prompt/grader hashes. The results viewer has a benchmark-year
 selector. See [benchmark instructions](docs/attempts.md#benchmark-year-and-generalization-testing)
 and [data provenance](data/README.md).
+
+AIME 2024 is bundled as a separate 30-question prewarming workload. Select it
+with `--benchmark-year 2024`; its default role is `prewarming`. See
+[prewarming instructions](docs/attempts.md#aime-2024-prewarming-workload).

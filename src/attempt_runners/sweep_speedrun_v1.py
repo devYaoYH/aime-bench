@@ -16,6 +16,7 @@ import signal
 import subprocess
 
 from src.common import ROOT, atomic_json, utc_now
+from src.benchmarks import default_benchmark_role
 from src.attempt_runners import speedrun_v1 as runner
 from src.attempt_runners._runtime_v1 import attempt_lock
 
@@ -82,7 +83,7 @@ def build_plan(config):
                 "cell_id": f"cell-{index:02d}",
                 "parameters": values,
                 "benchmark_year": args.benchmark_year,
-                "benchmark_role": args.benchmark_role or ("development" if args.benchmark_year == 2025 else "generalization"),
+                "benchmark_role": args.benchmark_role or default_benchmark_role(args.benchmark_year),
                 "initial_concurrent_requests": min(args.parallelism, question_count)
                 * args.rollouts,
                 "argv": argv,

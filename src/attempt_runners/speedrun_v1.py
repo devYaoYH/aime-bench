@@ -23,7 +23,7 @@ import httpx
 import yaml
 
 from src.common import ROOT, atomic_json, utc_now
-from src.benchmarks import add_dataset_args, benchmark_paths, dataset_provenance
+from src.benchmarks import add_dataset_args, benchmark_paths, dataset_provenance, default_benchmark_role
 from src.attempt_metadata import build_metadata
 from src.attempt_metrics import AttemptProfiler, grader_timeline
 from src.attempt_runners._runtime_v1 import (
@@ -573,7 +573,7 @@ def parse_args(argv=None):
         help="vLLM metrics polling seconds",
     )
     args = parser.parse_args(argv)
-    args.benchmark_role = args.benchmark_role or ("development" if args.benchmark_year == 2025 else "generalization")
+    args.benchmark_role = args.benchmark_role or default_benchmark_role(args.benchmark_year)
     args.strategy = "speedrun_v1"
     if args.rollouts > args.max_attempts_per_question:
         parser.error("Rollouts exceed the per-question attempt limit")

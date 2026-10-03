@@ -1,5 +1,6 @@
 # AIME benchmark data
 
+- AIME 2024: [MathArena AIME I](https://huggingface.co/datasets/MathArena/aime_2024_I) + [AIME II](https://huggingface.co/datasets/MathArena/aime_2024_II), 30-question prewarming workload; provenance in `source_2024.json`.
 - AIME 2025: [MathArena/aime_2025](https://huggingface.co/datasets/MathArena/aime_2025), existing development benchmark; provenance in `source.json`.
 - AIME 2026: [MathArena/aime_2026](https://huggingface.co/datasets/MathArena/aime_2026), held-out generalization benchmark; provenance in `source_2026.json`.
 
@@ -24,6 +25,14 @@ role to distinguish development runs from generalization tests. Downloading this
 year establishes a separate local test set; it does not establish that a model
 has never seen the problems during pretraining.
 
-Refresh with `python -m src.fetch_dataset --year <2025|2026> --revision <commit>`.
+Refresh with `python -m src.fetch_dataset --year <2024|2025|2026> --revision <commit>`.
 This replaces that year's prompt/key files and manifest. It leaves the other year
 untouched. `pyarrow` is needed only for the downloader.
+
+The 2024 workload combines two independently pinned datasets. Its source manifest
+stores both upstream commit IDs, download hashes, and local index offsets (0 for
+I, 15 for II). The top-level revision is a SHA256 of those ordered source records,
+rather than an upstream Git revision. No problem statements or answers are changed.
+For reproducible refreshes use `--revision-i` and `--revision-ii`; `--revision`
+continues to select the single upstream revision for 2025/2026. Both 2024 source
+records are also carried into new attempt metadata under `provenance.dataset.sources`.

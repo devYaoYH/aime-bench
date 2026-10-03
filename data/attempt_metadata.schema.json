@@ -410,18 +410,21 @@
           "properties": {
             "id": {
               "enum": [
+                "aime_2024",
                 "aime_2025",
                 "aime_2026"
               ]
             },
             "year": {
               "enum": [
+                2024,
                 2025,
                 2026
               ]
             },
             "role": {
               "enum": [
+                "prewarming",
                 "development",
                 "generalization",
                 null
@@ -464,6 +467,40 @@
             },
             "inferred_from_legacy_runner": {
               "type": "boolean"
+            },
+            "sources": {
+              "type": "array",
+              "minItems": 1,
+              "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "source",
+                  "revision",
+                  "split",
+                  "rows",
+                  "index_offset"
+                ],
+                "properties": {
+                  "source": {
+                    "type": "string"
+                  },
+                  "revision": {
+                    "type": "string"
+                  },
+                  "split": {
+                    "type": "string"
+                  },
+                  "rows": {
+                    "type": "integer",
+                    "minimum": 1
+                  },
+                  "index_offset": {
+                    "type": "integer",
+                    "minimum": 0
+                  }
+                }
+              }
             }
           }
         }

@@ -24,7 +24,7 @@ import httpx
 import yaml
 
 from src.common import ROOT, atomic_json, utc_now
-from src.benchmarks import add_dataset_args, benchmark_paths, dataset_provenance
+from src.benchmarks import add_dataset_args, benchmark_paths, dataset_provenance, default_benchmark_role
 from src.attempt_metadata import build_metadata
 from src.attempt_runners._runtime_v1 import (
     GPUSampler,
@@ -829,7 +829,7 @@ def parse_args(argv=None):
     parser.add_argument("--gpu-interval", type=float, default=0.2)
     parser.add_argument("--gpu-device", type=int, default=0)
     args = parser.parse_args(argv)
-    args.benchmark_role = args.benchmark_role or ("development" if args.benchmark_year == 2025 else "generalization")
+    args.benchmark_role = args.benchmark_role or default_benchmark_role(args.benchmark_year)
     if args.parallelism is None:
         args.parallelism = 30
     if args.rollouts is None:

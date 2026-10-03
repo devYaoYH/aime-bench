@@ -109,3 +109,6 @@ console.log('Results history checks passed: chronological points, strict running
 context.mixedYears=[{id:'dev',benchmark_year:2025},{id:'test',benchmark_year:2026},{id:'legacy'}];
 assert.deepEqual(JSON.parse(JSON.stringify(vm.runInContext('benchmarkRows(mixedYears, 2026)',context))).map(r=>r.id),['test']);
 assert.deepEqual(JSON.parse(JSON.stringify(vm.runInContext('benchmarkRows(mixedYears, 2025)',context))).map(r=>r.id),['dev','legacy']);
+
+context.warmupYears=[{id:'warmup',benchmark_year:2024},{id:'dev',benchmark_year:2025},{id:'test',benchmark_year:2026}];
+assert.deepEqual(JSON.parse(JSON.stringify(vm.runInContext('benchmarkRows(warmupYears, 2024)',context))).map(r=>r.id),['warmup']);

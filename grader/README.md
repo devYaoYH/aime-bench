@@ -150,3 +150,8 @@ from this directory. Managed runners select it with `--benchmark-year 2026`.
 `/health`, verification responses, and audit records expose dataset configuration
 and the actual key-file SHA256; gold answers remain absent from HTTP responses.
 The default `config.yaml` still selects 2025. See [source provenance](../data/README.md).
+
+AIME 2024's 30-question prewarming key is in `data/aime_2024.jsonl`. Use
+`GRADER_CONFIG=config_2024.yaml python server.py` from this directory for the
+standalone oracle, or select `--benchmark-year 2024` in a managed runner. Its
+pinned AIME I/II sources are documented in `../data/source_2024.json`.

@@ -29,7 +29,7 @@ import yaml
 from src.attempt_storage import (AttemptArtifacts, DisabledGPUSampler,
                                  add_benchmark_args, apply_benchmark_args)
 from src.common import ROOT, atomic_json, utc_now
-from src.benchmarks import add_dataset_args, benchmark_paths, dataset_provenance
+from src.benchmarks import add_dataset_args, benchmark_paths, dataset_provenance, default_benchmark_role
 from src.attempt_metadata import build_metadata
 from src.attempt_metrics import AttemptProfiler, Meter, merge_meters, grader_timeline
 
@@ -831,7 +831,7 @@ def parse_args(argv=None):
     parser.add_argument('--engine-metrics-interval', type=float, default=1.0, help='vLLM metrics polling seconds')
     add_benchmark_args(parser)
     args = apply_benchmark_args(parser.parse_args(argv))
-    args.benchmark_role = args.benchmark_role or ("development" if args.benchmark_year == 2025 else "generalization")
+    args.benchmark_role = args.benchmark_role or default_benchmark_role(args.benchmark_year)
     if args.parallelism is None:
         args.parallelism = 30 if args.strategy == 'coverage' else 8
     if args.rollouts is None:

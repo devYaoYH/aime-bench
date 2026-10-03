@@ -6,14 +6,19 @@ import json
 
 from src.common import ROOT
 
-YEARS = (2025, 2026)
+YEARS = (2024, 2025, 2026)
+ROLES = ("prewarming", "development", "generalization")
+
+
+def default_benchmark_role(year):
+    return {2024: "prewarming", 2025: "development", 2026: "generalization"}[year]
 
 
 def add_dataset_args(parser):
     parser.add_argument('--benchmark-year', type=int, choices=YEARS, default=2025,
                         help='AIME year; default 2025 keeps existing development runs unchanged')
-    parser.add_argument('--benchmark-role', choices=('development', 'generalization'),
-                        help='Defaults to development for 2025, generalization for 2026')
+    parser.add_argument('--benchmark-role', choices=ROLES,
+                        help='Defaults to prewarming for 2024, development for 2025, generalization for 2026')
 
 
 def benchmark_paths(year=2025):
@@ -66,13 +71,16 @@ def dataset_provenance(year=2025, role=None):
         raise ValueError('Benchmark prompt hash does not match its source manifest')
     if manifest.get('grader_sha256', grader_hash) != grader_hash:
         raise ValueError('Benchmark grader hash does not match its source manifest')
-    return {'id': f'aime_{year}', 'year': year,
-            'role': role or ('development' if year == 2025 else 'generalization'),
+    evidence = {'id': f'aime_{year}', 'year': year,
+            'role': role or default_benchmark_role(year),
             'source': manifest['source'], 'revision': manifest['revision'],
             'split': manifest['split'], 'rows': len(rows),
             'prompt_path': str(prompts.relative_to(ROOT)), 'prompt_sha256': prompt_hash,
             'grader_path': str(grader.relative_to(ROOT)), 'grader_sha256': grader_hash,
             'inferred_from_legacy_runner': False}
+    if manifest.get('sources'):
+        evidence['sources'] = manifest['sources']
+    return evidence
 
 
 def recorded_dataset(config):
