@@ -60,10 +60,11 @@ def build_metadata(folder, config=None):
         quant, quant_source = 'none', 'recorded unquantized model and launch dtype'
     revision = re.search(r'(?i)(?:revision[: ]+)\s*([0-9a-f]{40})', profile.get('yaml', ''))
     strategy = config.get('strategy', 'parallel_streaming')
-    coverage = strategy == 'coverage' or config.get('runner_id') == 'speedrun_v1'
+    coverage = strategy == 'coverage' or str(config.get('runner_id', '')).startswith('speedrun_v')
     sampling_keys = ('parallelism', 'rollouts', 'temperature', 'top_p', 'seed',
                      'disable_thinking', 'question_timeout', 'schedule', 'warmup_batch_size',
-                     'no_overhead_profile', 'overhead_interval', 'engine_metrics_interval')
+                     'no_overhead_profile', 'overhead_interval', 'engine_metrics_interval',
+                     'benchmark', 'buffer_traces', 'no_gpu_telemetry')
     hp = {key: config[key] for key in sampling_keys if key in config}
     hp.update(strategy=strategy, max_tokens=config.get('max_tokens'),
               first_pass_max_tokens=config.get('first_pass_max_tokens', 8192) if coverage else config.get('max_tokens'),

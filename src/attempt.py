@@ -26,6 +26,8 @@ import time
 import httpx
 import yaml
 
+from src.attempt_storage import (AttemptArtifacts, DisabledGPUSampler,
+                                 add_benchmark_args, apply_benchmark_args)
 from src.common import ROOT, atomic_json, utc_now
 from src.benchmarks import add_dataset_args, benchmark_paths, dataset_provenance
 from src.attempt_metadata import build_metadata
@@ -162,17 +164,18 @@ class GPUSampler:
                 'error': self.error}
 
 
-def continuation_prefix(previous, folder, context_limit):
+def continuation_prefix(previous, folder, context_limit, artifacts=None):
     """Only continue a capped trajectory with complete, exact token-ID evidence."""
+    artifacts = artifacts or AttemptArtifacts(folder.parent.parent)
     if not previous or not previous['rollouts']:
         return None
     last = previous['rollouts'][-1]
     if last['status'] != 'completed' or last['finish_reason'] != 'length':
         return None
     token_file = folder / f'rollout-{last["rollout"]:02d}' / 'tokens.json'
-    if not token_file.exists():
+    if not artifacts.has_json(token_file):
         raise RuntimeError('Cannot continue capped output without saved exact token IDs')
-    tokens = json.loads(token_file.read_text())
+    tokens = artifacts.read_json(token_file)
     prompt, output = tokens['prompt_token_ids'], tokens['output_token_ids']
     if not prompt or not output or not tokens['complete']:
         raise RuntimeError('Incomplete token-ID evidence for continuation')
@@ -188,22 +191,24 @@ async def run_question(problem, args, client, output, sampler, *, round_no=1,
     meter = Meter(not getattr(args, 'no_overhead_profile', False),
                   parent=profiler.meter if profiler else None)
     rollout_meters = {}
+    artifacts = profiler.artifacts if profiler else AttemptArtifacts(output)
 
     def write_json(path, value, scope=meter):
         with scope.measure('artifact_json_write'):
-            atomic_json(path, value)
+            artifacts.write_json(path, value)
 
     index = problem['problem_idx']
     folder = output / 'trace' / f'{index:02d}'
-    folder.mkdir(parents=True, exist_ok=True)
-    previous = json.loads((folder / 'question.json').read_text()) if (folder / 'question.json').exists() else None
+    if not artifacts.buffered:
+        folder.mkdir(parents=True, exist_ok=True)
+    previous = artifacts.read_json(folder / 'question.json') if artifacts.has_json(folder / 'question.json') else None
     if previous and previous['status'] == 'solved':
         raise ValueError('Solved questions must not be retried')
     if previous and len(previous['rollouts']) + args.rollouts > args.max_attempts_per_question:
         raise ValueError('Per-question generation attempt limit exceeded')
     next_continuation = None
     if args.strategy == 'coverage' and not args.no_continuation:
-        next_continuation = continuation_prefix(previous, folder, args.max_context_tokens)
+        next_continuation = continuation_prefix(previous, folder, args.max_context_tokens, artifacts)
     start, started = time.perf_counter(), utc_now()
     candidates = asyncio.Queue()
     seen = set(previous.get('candidate_answers', [])) if previous else set()
@@ -237,7 +242,8 @@ async def run_question(problem, args, client, output, sampler, *, round_no=1,
                     propose(event, rollout)
 
         path = folder / f'rollout-{rollout:02d}'
-        path.mkdir()
+        if not artifacts.buffered:
+            path.mkdir()
         request = {'model': args.model, 'messages': [
             {'role': 'system', 'content': PROMPT}, {'role': 'user', 'content': problem['problem']}],
             'temperature': args.temperature, 'top_p': args.top_p,
@@ -269,7 +275,7 @@ async def run_question(problem, args, client, output, sampler, *, round_no=1,
             detector.feed('content', continuation['visible_text'])
         records.append((path, record, parts))
         try:
-            with (path / 'stream.jsonl').open('w') as stream_file:
+            with artifacts.open_jsonl(path / 'stream.jsonl', 'w') as stream_file:
                 async with client.stream('POST', args.vllm_url + endpoint,
                                          json=request, headers={'X-Request-Id': f'{output.name}-q{index}-r{rollout}'}) as response:
                     record['http_status'] = response.status_code
@@ -277,10 +283,11 @@ async def run_question(problem, args, client, output, sampler, *, round_no=1,
                     response.raise_for_status()
                     async for payload in sse_payloads(response.aiter_lines()):
                         elapsed = time.perf_counter() - began
-                        scope.inc('sse_chunks')
-                        scope.inc('sse_payload_bytes', len(payload.encode()))
+                        if scope.enabled:
+                            scope.inc('sse_chunks')
+                            scope.inc('sse_payload_bytes', len(payload.encode()))
                         with scope.measure('stream_trace_write_flush'):
-                            append_json(stream_file, {'elapsed_s': elapsed, 'timestamp_utc': utc_now(), 'data': payload})
+                            stream_file.append({'elapsed_s': elapsed, 'timestamp_utc': utc_now(), 'data': payload})
                         if payload == '[DONE]':
                             record['done_received'] = True
                             break
@@ -362,7 +369,7 @@ async def run_question(problem, args, client, output, sampler, *, round_no=1,
     producer = asyncio.create_task(drained())
     try:
         async with asyncio.timeout(args.question_timeout):
-            with (folder / 'verification.jsonl').open('a') as file:
+            with artifacts.open_jsonl(folder / 'verification.jsonl') as file:
                 while True:
                     event = await candidates.get()
                     if event is None:
@@ -404,7 +411,7 @@ async def run_question(problem, args, client, output, sampler, *, round_no=1,
                                      verification_latency_s=time.perf_counter() - verify_start)
                         meter.observe('verification_http_wait', event['verification_latency_s'])
                         with meter.measure('verification_trace_write_flush'):
-                            append_json(file, event)
+                            file.append(event)
                     if verdict['verdict']:
                         winner = event
                         solved_event = {'problem_idx': index, 'round': round_no, 'rollout': event['rollout'],
@@ -412,8 +419,8 @@ async def run_question(problem, args, client, output, sampler, *, round_no=1,
                                         'first_solved_elapsed_s': time.perf_counter() - (attempt_start if attempt_start is not None else start),
                                         'grader_answered_at_utc': verdict.get('answered_at'),
                                         'grader_query_id': verdict.get('query_id')}
-                        with (output / 'solved.jsonl').open('a') as solved_file:
-                            append_json(solved_file, solved_event)
+                        with artifacts.open_jsonl(output / 'solved.jsonl') as solved_file:
+                            solved_file.append(solved_event)
                         break
     except asyncio.CancelledError:
         stopped_for_target = target_event is not None and target_event.is_set()
@@ -523,7 +530,8 @@ async def run_coverage(problems, args, client, output, sampler, attempt_start, p
             if not batch.done() and not batch.cancelling():
                 batch.cancel()
             await asyncio.gather(batch, target_wait, return_exceptions=True)
-    return [json.loads(p.read_text()) for p in sorted(output.glob('trace/*/question.json'))]
+    artifacts = profiler.artifacts if profiler else AttemptArtifacts(output)
+    return artifacts.questions()
 
 
 def ensure_free(port):
@@ -636,7 +644,8 @@ async def run(args):
     output = ROOT / 'attempts' / datetime.now(timezone.utc).strftime('%Y%m%dT%H%M%S.%fZ')
     output.mkdir(parents=True)
     print(f'Attempt artifacts: {output}', flush=True)
-    profiler = AttemptProfiler(output, enabled=not args.no_overhead_profile,
+    artifacts = AttemptArtifacts(output, buffered=args.buffer_traces)
+    profiler = AttemptProfiler(output, artifacts=artifacts, enabled=not args.no_overhead_profile,
                                interval=args.overhead_interval, engine_interval=args.engine_metrics_interval)
     status, results, error = 'initializing', [], None
     official_start = None
@@ -644,7 +653,7 @@ async def run(args):
               'git_commit': subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=ROOT, text=True).strip(),
               'git_dirty': bool(subprocess.check_output(['git', 'status', '--porcelain', '--untracked-files=no'], cwd=ROOT, text=True)),
               'system_prompt': PROMPT, 'grading': 'single vendored grader; no local answer-key comparisons',
-              'gpu_scope': 'device-level NVML; vLLM preallocates VRAM', 'python': sys.version}
+              'gpu_scope': 'disabled for benchmark' if args.no_gpu_telemetry else 'device-level NVML; vLLM preallocates VRAM', 'python': sys.version}
     atomic_json(output / 'config.json', config)
     try:
         config['dataset_provenance'] = dataset_provenance(args.benchmark_year, args.benchmark_role)
@@ -666,7 +675,8 @@ async def run(args):
         ensure_free(args.grader_port)
         if not args.reuse_server:
             ensure_free(args.vllm_port)
-        sampler = GPUSampler(output / 'gpu.jsonl', args.gpu_interval, args.gpu_device)
+        sampler = (DisabledGPUSampler() if args.no_gpu_telemetry else
+                   GPUSampler(artifacts.gpu_path(output / 'gpu.jsonl'), args.gpu_interval, args.gpu_device))
         await sampler.start()
         limits = httpx.Limits(max_connections=args.parallelism * (args.rollouts + 1) + 8,
                               max_keepalive_connections=args.parallelism * (args.rollouts + 1) + 8)
@@ -743,7 +753,7 @@ async def run(args):
             sampler.stop()
         official_end = time.perf_counter()
         # Include partially completed questions after interruption/failure.
-        results = [json.loads(p.read_text()) for p in sorted(output.glob('trace/*/question.json'))]
+        results = artifacts.questions()
         summary = {'attempt_id': output.name, 'status': status, 'error': error,
                    'official_started_at_utc': config.get('official_started_at_utc'),
                    'official_finished_at_utc': utc_now(),
@@ -761,10 +771,21 @@ async def run(args):
         summary['overhead'] = profiler.snapshot()
         atomic_json(output / 'summary.json', summary)  # Durable even if service cleanup fails.
         atomic_json(output / 'config.json', config)
-        atomic_json(output / 'metadata.json', build_metadata(output, config))
         cleanup_start = time.perf_counter()
-        await services.close()
-        summary['service_cleanup_latency_s'] = time.perf_counter() - cleanup_start
+        try:
+            await services.close()
+        finally:
+            summary['service_cleanup_latency_s'] = time.perf_counter() - cleanup_start
+            try:
+                summary['trace_storage'] = artifacts.flush()
+            except Exception as exc:
+                summary.update(status="failed", error=f"Trace flush failed: {type(exc).__name__}: {exc}")
+                atomic_json(output / 'summary.json', summary)
+                raise
+            summary['trace_storage']['scope'] = 'Client trace flush after official timing; excluded from official latency'
+            atomic_json(output / 'summary.json', summary)
+            atomic_json(output / 'metadata.json', build_metadata(output, config))
+
         summary['grader_timeline'] = grader_timeline(output / 'grader_audit.jsonl',
             config.get('official_started_at_utc'), args.target_correct, args.grader_cost)
         atomic_json(output / 'overhead.json', summary['overhead'])
@@ -808,7 +829,8 @@ def parse_args(argv=None):
     parser.add_argument('--no-overhead-profile', action='store_true')
     parser.add_argument('--overhead-interval', type=float, default=0.05, help='Event-loop lag sampling seconds')
     parser.add_argument('--engine-metrics-interval', type=float, default=1.0, help='vLLM metrics polling seconds')
-    args = parser.parse_args(argv)
+    add_benchmark_args(parser)
+    args = apply_benchmark_args(parser.parse_args(argv))
     args.benchmark_role = args.benchmark_role or ("development" if args.benchmark_year == 2025 else "generalization")
     if args.parallelism is None:
         args.parallelism = 30 if args.strategy == 'coverage' else 8

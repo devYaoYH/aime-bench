@@ -325,6 +325,23 @@ The deferred [speedrun v1 sweep](../src/attempt_runners/README.md) compares wide
 first passes and eager continuations without adding an experimental policy to the
 canonical runner.
 
+## Benchmark mode and buffered telemetry
+
+Canonical `src.attempt` and the independent `src.attempt_runners.speedrun_v2`
+accept `--benchmark` to disable detailed CPU/engine/GPU profiling and retain client
+traces in system RAM until the attempt ends. It implies `--no-overhead-profile
+--no-gpu-telemetry --buffer-traces`. Required TTFT, generation and first-solved
+timestamps, oracle verdicts and exact continuation token IDs are retained. GPU
+observations are null. Startup config and service logs/audits remain on disk.
+
+Use `--buffer-traces` alone to retain profiling with deferred writes, including
+GPU/engine samples. Flush follows official timing and service cleanup, and is
+reported separately as `summary.trace_storage.latency_s`. Graceful cancellation
+flushes partial evidence; a hard process termination can lose the in-memory
+buffer. The solving policy and four-request cap are unchanged. See the
+[visual CPU report](../runs/profiling/20261003-cpu-review/README.md) and the
+[prepared NVFP4 benchmark configuration](../configs/experiments/vibe-nvfp4-30x1-16k-benchmark-v2.json).
+
 ## Benchmark year and generalization testing
 
 Existing commands continue to use AIME 2025. Select the held-out 2026 benchmark

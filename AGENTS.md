@@ -81,3 +81,11 @@ support; report those limitations rather than modifying fixtures to hide them.
   event-loop delay, and inference metrics; record missing metric observations.
 - Compare against the matched barrier control with paired seeds. Report target
   unmet/failure honestly; do not rank an attempt that did not reach 18 correct.
+
+- For benchmarking without optional instrumentation, use canonical `--benchmark`
+  or `src.attempt_runners.speedrun_v2 --benchmark`. Record this as a distinct
+  telemetry/storage configuration: GPU/engine samples are unavailable, required
+  timing/verdict/token evidence stays in RAM, and final trace flush time is outside
+  official solving time. Preserve v1 comparison records. `--buffer-traces` alone
+  retains profiling while deferring writes; graceful interruption flushes partial
+  records, but a hard crash can lose the client buffer.

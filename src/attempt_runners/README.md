@@ -49,6 +49,15 @@ rerun or relabel that experiment.
 | --- | --- | --- |
 | [Speedrun v1](speedrun_v1.py) | `python -m src.attempt_runners.speedrun_v1` | Prospective candidates; default 30 questions × four 8K samples; question-wide deduplication; one pending grader request per question; stop at 18 correct |
 | [Sweep v1](sweep_speedrun_v1.py) | `python -m src.attempt_runners.sweep_speedrun_v1` | Plan by default; explicitly execute sequential, isolated cells |
+| [Speedrun v2](speedrun_v2.py) | `python -m src.attempt_runners.speedrun_v2` | Same v1 solving policy; optional in-memory traces and benchmark mode without detailed profiling or GPU sampling |
+
+`speedrun_v2 --benchmark` disables optional instrumentation and keeps client
+traces in RAM until the attempt ends. It retains exact token IDs and latency /
+verification evidence. Use `--buffer-traces` alone to keep profiling while deferring
+writes, or `--no-overhead-profile` to retain GPU sampling without detailed timers.
+Flush latency is recorded outside official timing. Graceful interruption flushes
+partial results; a process crash can lose its in-memory trace. See the
+[visual profiling report](../../runs/profiling/20261003-cpu-review/README.md).
 
 The speedrun uses its own frozen [_streaming_v1.py](_streaming_v1.py) policy and
 v1 service runtime, with a [port probe](_ports_v1.py) that permits recently closed

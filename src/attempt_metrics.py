@@ -4,13 +4,14 @@ from __future__ import annotations
 
 import asyncio
 from collections import defaultdict, deque
-from contextlib import contextmanager
+from contextlib import contextmanager, nullcontext
 import json
 import resource
 import sys
 import time
 
 from src.common import utc_now
+from src.attempt_storage import AttemptArtifacts
 
 
 class Meter:
@@ -42,11 +43,13 @@ class Meter:
         if self.parent:
             self.parent.observe(name, wall_s, cpu_s)
 
-    @contextmanager
     def measure(self, name, *, cpu=True):
         if not self.enabled:
-            yield
-            return
+            return nullcontext()
+        return self._measure(name, cpu=cpu)
+
+    @contextmanager
+    def _measure(self, name, *, cpu=True):
         start = time.perf_counter()
         cpu_start = time.thread_time() if cpu else None
         try:
@@ -134,8 +137,9 @@ def parse_engine_metrics(text):
 
 
 class AttemptProfiler:
-    def __init__(self, output, *, enabled=True, interval=0.05, engine_interval=1.0):
+    def __init__(self, output, *, enabled=True, interval=0.05, engine_interval=1.0, artifacts=None):
         self.output, self.enabled = output, enabled
+        self.artifacts = artifacts or AttemptArtifacts(output)
         self.interval, self.engine_interval = interval, engine_interval
         self.meter = Meter(enabled)
         self.phase = "initializing"
@@ -169,7 +173,7 @@ class AttemptProfiler:
             ]
 
     def submitted(self, elapsed):
-        if self.first_submit_s is None or elapsed < self.first_submit_s:
+        if self.enabled and (self.first_submit_s is None or elapsed < self.first_submit_s):
             self.first_submit_s = elapsed
 
     async def _lag_loop(self):
@@ -184,7 +188,7 @@ class AttemptProfiler:
             row["recent"].append(lag)
 
     async def _engine_loop(self, client, base_url):
-        with (self.output / "inference_metrics.jsonl").open("w") as file:
+        with self.artifacts.open_jsonl(self.output / "inference_metrics.jsonl", "w") as file:
             while True:
                 try:
                     start = time.perf_counter()
@@ -201,8 +205,7 @@ class AttemptProfiler:
                             "phase": self.phase,
                             "metrics": rows,
                         }
-                        file.write(json.dumps(event) + "\n")
-                        file.flush()
+                        file.append(event)
                     self.engine_samples += 1
                     for row in rows:
                         key, value = row["metric"], row["value"]
