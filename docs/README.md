@@ -13,6 +13,7 @@ and the local-development-to-remote-experiment workflow.
 | --- | --- |
 | [Initial Qwen 8 × 4](../attempts/20261003T193711.679999Z/README.md) | 5/30 correct in 999.5 seconds |
 | [VibeThinker-3B coverage and continuation](../attempts/20261003T200718.717581Z/README.md) | Target 18 correct in 92.5 seconds |
+| [VibeThinker-3B NVFP4 coverage, 95% VRAM](../attempts/20261003T205350.742196Z/README.md) | Target 18 correct in 85.6 seconds |
 | [VibeThinker-3B naive pass@4, 16K context](../attempts/20261003T202152.418590Z/README.md) | Target 18 correct in 336.5 seconds; final responses only |
 
 ## Baseline and sampling
