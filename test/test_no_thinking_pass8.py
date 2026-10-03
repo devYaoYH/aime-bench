@@ -24,6 +24,7 @@ class NoThinkingPass8Tests(unittest.TestCase):
         self.assertEqual(parse_candidate(" 007 ", "stop"), (7, "bare_integer"))
         self.assertEqual(parse_candidate("Answer: 113", "stop"), (113, "answer_marker"))
         self.assertEqual(parse_candidate("113", "length"), (None, "incomplete"))
+        self.assertEqual(parse_candidate("1075", "stop"), (None, "unparseable"))
         self.assertEqual(parse_candidate("I think 113", "stop"), (None, "unparseable"))
 
     def test_four_four_tie_is_agreement_without_unique_answer(self):
