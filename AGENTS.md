@@ -89,3 +89,11 @@ support; report those limitations rather than modifying fixtures to hide them.
   official solving time. Preserve v1 comparison records. `--buffer-traces` alone
   retains profiling while deferring writes; graceful interruption flushes partial
   records, but a hard crash can lose the client buffer.
+
+- The explicitly requested dynamic-budget experiment uses versioned
+  `speedrun_v4` and may use eight requests per question, including continuations.
+  This exception applies to that experiment; earlier policies retain their four
+  request cap. Start each trajectory at 8K and grow cumulative generated output
+  to 16K/32K/64K via exact-ID continuations, clipping to total model context.
+  Reallocate freed request slots to unsolved questions up to 60 active streams.
+  Save admissions, expansion trigger, budgets and actual request counts.

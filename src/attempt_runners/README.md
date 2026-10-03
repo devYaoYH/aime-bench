@@ -141,3 +141,38 @@ in `--parallelism`; smoke subsets are supported. `fanout.json` records the trigg
 and each question's expansion time, even in RAM-buffered benchmark mode.
 Warmup covers the initial 30 streams, matching the best 30×1 control. The v1/v2
 and canonical policies stay unchanged.
+
+## Dynamic fan-out and budget expansion v4
+
+`python -m src.attempt_runners.speedrun_v4 --model r0b0tlab/VibeThinker-3B-NVFP4
+--model-profile vllm-expanding-64k.yaml --benchmark` starts one 8K trajectory per
+question. At the first client grader submission it fills up to 60 active request
+slots. Freed slots prefer pending exact-token continuations, then fresh 8K samples
+for unsolved questions. Admissions choose the least-active question, with rotated
+ties, so remaining questions can gain more concurrent samples as others solve.
+
+A capped trajectory grows its **cumulative generated-token** budget from 8192 to
+16384, 32768, then 65536. It requests only the additional tokens at each stage,
+and clips to remaining total context, which includes the original prompt.
+Continuations use a new `/v1/completions` request and prefix caching; retained active
+KV is not guaranteed. Fresh samples always start at 8K. Every request, including a
+continuation, consumes one of the **eight requests per question explicitly allowed
+for this experiment**. Request caps or context limits can prevent further budget
+expansion; 60 is a ceiling, not a promise to keep every slot occupied.
+
+The dedicated NVFP4 profile raises its generation ceiling to 64K while preserving
+64K total context, 95% utilization, BF16 activation/KV and Marlin FP4 weights. The
+standard 16K-generation profile and all earlier runners remain unchanged.
+The [manifest](../../configs/experiments/vibe-nvfp4-dynamic60-budget-v4.json) records
+all controls. Request seeds retain the historical four-request stride even with
+an eight-request cap, preserving initial seeds (seeds can overlap across questions;
+within each question each request gets a distinct seed).
+
+Question-wide deduplication and one verifier per question persist across fresh
+samples and continuation segments. The target is registered at the first solved
+verdict, before cancellation settlement; no new admissions occur after reaching
+18. Winning questions finish writing their traces without a second cancellation.
+`allocation.json` records the trigger, every admission/budget/parent, peak active
+requests and per-question usage. Required latency/verdict/token evidence remains
+RAM-buffered in benchmark mode. Optional engine/GPU polling is absent; service
+logs remain available to inspect KV pressure and OOM messages.

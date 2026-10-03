@@ -64,7 +64,10 @@ def build_metadata(folder, config=None):
     sampling_keys = ('parallelism', 'rollouts', 'temperature', 'top_p', 'seed',
                      'disable_thinking', 'question_timeout', 'schedule', 'warmup_batch_size',
                      'no_overhead_profile', 'overhead_interval', 'engine_metrics_interval',
-                     'benchmark', 'buffer_traces', 'no_gpu_telemetry')
+                     'benchmark', 'buffer_traces', 'no_gpu_telemetry',
+                     'token_budgets', 'max_concurrent_requests', 'seed_stride',
+                     'budget_mode', 'initial_rollouts', 'expansion_trigger',
+                     'token_budget_scope')
     hp = {key: config[key] for key in sampling_keys if key in config}
     hp.update(strategy=strategy, max_tokens=config.get('max_tokens'),
               first_pass_max_tokens=config.get('first_pass_max_tokens', 8192) if coverage else config.get('max_tokens'),
