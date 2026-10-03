@@ -15,7 +15,7 @@ Run from the repository root on callosum, after launching the Qwen vLLM config:
 
 ## Results
 
-All 30 questions have eight parseable candidate integers (240 total). The initial concurrent collection took 22.8 seconds. It required 260 generation attempts to fill 239 slots; Q22 sample 3 first hit the output cap twice and then returned `1075`, outside the AIME range. One separately recorded no-thinking repair attempt supplied `154`, bringing the total to 261 attempts and 240 parseable slots. No saved response had reasoning content.
+All 30 questions have eight parseable candidate integers (240 total). The initial concurrent collection took 22.8 seconds. It required 260 generation attempts to fill 239 slots; Q22 sample 3 first hit the output cap twice and then returned `1075`, outside the AIME range. One separately recorded no-thinking repair attempt supplied `154`, bringing the total to 261 attempts and 240 parseable slots. No response populated the separate reasoning field, although some invalid attempts included explanatory text in their ordinary content field.
 
 | Measure | Result |
 | --- | ---: |
