@@ -8,7 +8,26 @@
 const $ = selector => document.querySelector(selector);
 const esc = v => String(v ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const sec = v => v == null ? '—' : `${v.toFixed(2)}s`;
-const colors = ['#147d65','#54729b','#b37b30','#865b89','#b65e46','#67804b'];
+// Model identity includes weight quantization and activation dtype, not run order.
+const modelStyles = new Map([
+  ['WeiboAI/VibeThinker-3B|none|bfloat16',{label:'VibeThinker 3B · BF16',color:'#147d65'}],
+  ['r0b0tlab/VibeThinker-3B-NVFP4|modelopt_fp4|bfloat16',{label:'VibeThinker 3B · NVFP4',color:'#b37b30'}],
+  ['Qwen/Qwen3.5-4B|none|bfloat16',{label:'Qwen 3.5 4B · BF16',color:'#54729b'}],
+  ['Qwen/Qwen3.5-35B-A3B-GPTQ-Int4|gptq int4|bfloat16',{label:'Qwen 3.5 35B-A3B · GPTQ Int4',color:'#865b89'}]
+]);
+function modelStyle(row) {
+  const model=row.metadata?.model??{},id=model.id??'Unknown model';
+  const quant=(model.quantization??'unknown').toLowerCase(),dtype=(model.activation_dtype??'unknown').toLowerCase();
+  const key=`${id}|${quant}|${dtype}`,known=modelStyles.get(key);
+  if(known)return {key,...known};
+  let hash=0;for(const char of key)hash=(Math.imul(hash,31)+char.charCodeAt(0))>>>0;
+  return {key,label:`${id.split('/').at(-1)} · ${quant==='none'?dtype:quant}`,color:`hsl(${hash%360} 45% 38%)`};
+}
+function modelLegend(rows) {
+  const variants=new Map(rows.map(r=>{const style=modelStyle(r);return [style.key,style];}));
+  return [...variants.values()].sort((a,b)=>a.label.localeCompare(b.label))
+    .map(s=>`<span class="model-key"><i style="background:${s.color}"></i>${esc(s.label)}</span>`).join('');
+}
 const attemptLink = row => `/?attempt=${encodeURIComponent(row.id)}`;
 // Historical points 2 and 3 are separate baselines; identify them by stable IDs.
 const separateBaselines = new Set(['20261003T202152.418590Z','20261003T203338.063138Z']);
@@ -56,13 +75,13 @@ function comparisonPlot(history) {
   svg+=`<path class="pareto-frontier" d="${d}"/>`;
   points.forEach(r=>{
     const description=`${r.metadata.label} · ${sec(r.time_to_18_s)} · started ${historyDate.format(r.start_ms)} · ${r.metadata.intervention.label}`;
-    svg+=`<a class="attempt-dot-link" href="${attemptLink(r)}" aria-label="${esc(description)}"><title>${esc(description)}</title><circle class="attempt-dot" data-attempt="${esc(r.id)}" cx="${x(r.start_ms)}" cy="${y(r.time_to_18_s)}" r="11" fill="${colors[(r.plot_number-1)%colors.length]}"/><text class="dot-number" text-anchor="middle" x="${x(r.start_ms)}" y="${y(r.time_to_18_s)+4}">${r.plot_number}</text></a>`;
+    svg+=`<a class="attempt-dot-link" href="${attemptLink(r)}" aria-label="${esc(description)}"><title>${esc(description)}</title><circle class="attempt-dot" data-attempt="${esc(r.id)}" cx="${x(r.start_ms)}" cy="${y(r.time_to_18_s)}" r="11" fill="${modelStyle(r).color}"/><text class="dot-number" text-anchor="middle" x="${x(r.start_ms)}" y="${y(r.time_to_18_s)+4}">${r.plot_number}</text></a>`;
   });
   return svg+'</svg>';
 }
 function historyLegend(history) {
   const bestIds=new Set(history.frontier.map(r=>r.id));
-  return history.points.map(r=>`<a class="history-item" href="${attemptLink(r)}"><span class="history-number" style="background:${colors[(r.plot_number-1)%colors.length]}">${r.plot_number}</span><span><strong>${esc(r.metadata.label)}</strong><small>${sec(r.time_to_18_s)} · ${esc(historyDate.format(r.start_ms))}${bestIds.has(r.id)?' · new best':''}</small><small>${esc(r.metadata.intervention.label)}</small></span></a>`).join('');
+  return history.points.map(r=>`<a class="history-item" href="${attemptLink(r)}"><span class="history-number" style="background:${modelStyle(r).color}">${r.plot_number}</span><span><strong>${esc(r.metadata.label)}</strong><small>${sec(r.time_to_18_s)} · ${esc(historyDate.format(r.start_ms))}${bestIds.has(r.id)?' · new best':''}</small><small>${esc(r.metadata.intervention.label)}</small></span></a>`).join('');
 }
 function initialLatencyHistory(rows) {
   const inventory=rows.map(r=>({...r,start_ms:Date.parse(r.attempt_started_at_utc??r.started_at_utc)}))
@@ -93,12 +112,12 @@ function initialLatencyPlot(history) {
   svg+=`<text text-anchor="middle" x="${left+(width-left-right)/2}" y="${height-12}">Attempt started · America/Los_Angeles · ${esc(new Intl.DateTimeFormat('en-US',{timeZone:'America/Los_Angeles',month:'short',day:'numeric',year:'numeric'}).format(points[0].start_ms))}</text>`;
   points.forEach(r=>{
     const description=`${r.metadata.label} · first grader request ${sec(r.first_grader_request_s)} · started ${historyDate.format(r.start_ms)} · ${r.first_grader_request?.source??'recorded request timestamp'}`;
-    svg+=`<a class="attempt-dot-link" href="${attemptLink(r)}" aria-label="${esc(description)}"><title>${esc(description)}</title><circle class="attempt-dot initial-dot" data-attempt="${esc(r.id)}" cx="${x(r.start_ms)}" cy="${y(r.first_grader_request_s)}" r="10" fill="${colors[(r.initial_number-1)%colors.length]}"/><text class="dot-number initial-number" text-anchor="middle" x="${x(r.start_ms)}" y="${y(r.first_grader_request_s)+3}">A${r.initial_number}</text></a>`;
+    svg+=`<a class="attempt-dot-link" href="${attemptLink(r)}" aria-label="${esc(description)}"><title>${esc(description)}</title><circle class="attempt-dot initial-dot" data-attempt="${esc(r.id)}" cx="${x(r.start_ms)}" cy="${y(r.first_grader_request_s)}" r="10" fill="${modelStyle(r).color}"/><text class="dot-number initial-number" text-anchor="middle" x="${x(r.start_ms)}" y="${y(r.first_grader_request_s)+3}">A${r.initial_number}</text></a>`;
   });
   return svg+'</svg>';
 }
 function initialLatencyLegend(history) {
-  return history.points.map(r=>`<a class="history-item" href="${attemptLink(r)}"><span class="history-number initial-number" style="background:${colors[(r.initial_number-1)%colors.length]}">A${r.initial_number}</span><span><strong>${esc(r.metadata.label)}</strong><small>${sec(r.first_grader_request_s)} · ${esc(historyDate.format(r.start_ms))}</small><small>${esc(r.metadata.intervention.label)} · ${esc(r.status)}</small></span></a>`).join('');
+  return history.points.map(r=>`<a class="history-item" href="${attemptLink(r)}"><span class="history-number initial-number" style="background:${modelStyle(r).color}">A${r.initial_number}</span><span><strong>${esc(r.metadata.label)}</strong><small>${sec(r.first_grader_request_s)} · ${esc(historyDate.format(r.start_ms))}</small><small>${esc(r.metadata.intervention.label)} · ${esc(r.status)}</small></span></a>`).join('');
 }
 function interventionCards(rows) {
   const comparisons=rows.filter(r=>r.metadata && r.comparison?.saved_s!=null);
@@ -107,16 +126,16 @@ function interventionCards(rows) {
 }
 function renderProgress(){
   const rows=selectedRows().filter(r=>r.events.length && r.metadata);
-  if(!rows.length){$('#curve-legend').innerHTML='';$('#progress-plot').innerHTML='<div class="chart-empty">No timestamped positive verdicts available.</div>';return;}
+  if(!rows.length){$('#progress-model-legend').innerHTML='';$('#curve-legend').innerHTML='';$('#progress-plot').innerHTML='<div class="chart-empty">No timestamped positive verdicts available.</div>';return;}
   const window=$('#curve-window').value, max=window==='all'?Math.max(54,...rows.flatMap(r=>r.events.map(e=>e.elapsed_s))):Number(window);
   const w=1080,h=315,left=55,right=25,top=35,bottom=40;
   const x=t=>left+t/max*(w-left-right),y=n=>h-bottom-n/18*(h-top-bottom);
   let svg=`<svg class="progress-chart" viewBox="0 0 ${w} ${h}" role="img" aria-label="Distinct correct questions over official elapsed seconds"><text x="${left}" y="18">Verified correct questions</text>`;
   for(let i=0;i<=6;i++){svg+=`<line class="grid" x1="${left}" x2="${w-right}" y1="${y(i*3)}" y2="${y(i*3)}"/><text x="${left-12}" y="${y(i*3)+4}" text-anchor="end">${i*3}</text><text text-anchor="middle" x="${x(max*i/6)}" y="${h-10}">${Math.round(max*i/6)}s</text>`;}
   svg+=`<line class="floor-line" x1="${x(54)}" x2="${x(54)}" y1="${top}" y2="${h-bottom}"/><text class="floor-label" x="${x(54)+7}" y="${top+16}">54s floor</text>`;
-  rows.forEach((r,i)=>{let d=`M ${x(0)} ${y(0)}`;r.events.slice(0,18).forEach((e,n)=>{if(e.elapsed_s<=max)d+=` H ${x(e.elapsed_s)} V ${y(n+1)}`;});d+=` H ${x(Math.min(max,r.settlement_s??r.events.at(-1).elapsed_s))}`;svg+=`<path d="${d}" fill="none" stroke="${colors[i%colors.length]}" stroke-width="2.5"><title>${esc(r.metadata.label)}</title></path>`;});
-  $('#progress-plot').innerHTML=svg+'</svg>';
-  $('#curve-legend').innerHTML=rows.map((r,i)=>`<span><i style="background:${colors[i%colors.length]}"></i>${esc(r.metadata.label)}${r.time_to_18_s==null?' · target unmet':''}</span>`).join('');
+  rows.forEach(r=>{let d=`M ${x(0)} ${y(0)}`;r.events.slice(0,18).forEach((e,n)=>{if(e.elapsed_s<=max)d+=` H ${x(e.elapsed_s)} V ${y(n+1)}`;});d+=` H ${x(Math.min(max,r.settlement_s??r.events.at(-1).elapsed_s))}`;svg+=`<path d="${d}" fill="none" stroke="${modelStyle(r).color}" stroke-width="2.5"><title>${esc(r.metadata.label)}</title></path>`;});
+  $('#progress-plot').innerHTML=svg+'</svg>';$('#progress-model-legend').innerHTML=modelLegend(rows);
+  $('#curve-legend').innerHTML=rows.map(r=>`<span><i style="background:${modelStyle(r).color}"></i>${esc(r.metadata.label)}${r.time_to_18_s==null?' · target unmet':''}</span>`).join('');
 }
 function controlsTable(rows){
   return rows.map(r=>{const m=r.metadata;if(!m)return `<tr><td><a href="${attemptLink(r)}">${esc(r.id)}</a></td><td colspan="6">Invalid evidence; see warning above.</td></tr>`;
@@ -133,9 +152,11 @@ function renderResults(){
     const metrics=[['Fastest observed',best?sec(best.time_to_18_s):'—',best?.metadata.label??'No measured target'],['Grader floor','54.00s','3s × 18 correct questions'],['Above the floor',best?sec(best.time_to_18_s-results.reference_floor_s):'—','Fastest run, after warmup']];
     $('#headline-metrics').innerHTML=metrics.map(([title,value,note],i)=>`<article class="metric-card ${i===0?'score-card':''}"><div class="metric-label">${title}</div><div class="metric-value">${value}</div><div class="metric-sub">${esc(note)}</div></article>`).join('');
     const history=attemptHistory(rows);
+    $('#history-model-legend').innerHTML=modelLegend(history.points);
     $('#comparison-plot').innerHTML=comparisonPlot(history);$('#history-legend').innerHTML=historyLegend(history);$('#floor-note').textContent=results.floor_note;
     $('#baseline-note').innerHTML=history.baselines.length?`Separate baselines excluded from this plot: ${history.baselines.map(r=>`<a href="${attemptLink(r)}">${r.plot_number}. ${esc(r.metadata.label)}</a> (${sec(r.time_to_18_s)})`).join(' · ')}. Their records remain in the full attempt table below.`:'';
     const initial=initialLatencyHistory(rows);
+    $('#initial-model-legend').innerHTML=modelLegend(initial.points);
     $('#initial-plot').innerHTML=initialLatencyPlot(initial);$('#initial-legend').innerHTML=initialLatencyLegend(initial);
     $('#initial-unavailable').innerHTML=initial.unavailable.length?`Request timing unavailable: ${initial.unavailable.map(r=>`<a href="${attemptLink(r)}">${esc(r.metadata?.label??r.id)}</a> (${esc(r.status)})`).join(' · ')}.`:'';
     $('#excluded-note').textContent=rows.filter(r=>r.time_to_18_s==null || !Number.isFinite(Date.parse(r.attempt_started_at_utc??r.started_at_utc))).map(r=>`${r.metadata?.label??r.id}: ${r.time_to_18_s==null?r.status:'start timestamp unavailable'}${r.solved!=null?` (${r.solved} correct)`:''}`).join(' · ');

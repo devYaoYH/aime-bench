@@ -75,7 +75,37 @@ assert.match(initialSvg,/Time to first grader request \(seconds\)/);
 assert.doesNotMatch(initialSvg,/floor-line|pareto-frontier|NaN|Infinity/);
 context.rows=[];
 assert.match(vm.runInContext('initialLatencyPlot(initialLatencyHistory(rows))',context),/No recorded first grader request/);
-console.log('Results history checks passed: chronological points, strict running minimum, timestamps, floor, and SVG.');
+const variants=[
+  {id:'WeiboAI/VibeThinker-3B',quantization:'none',activation_dtype:'bfloat16'},
+  {id:'r0b0tlab/VibeThinker-3B-NVFP4',quantization:'modelopt_fp4',activation_dtype:'bfloat16'},
+  {id:'Qwen/Qwen3.5-4B',quantization:'none',activation_dtype:'bfloat16'},
+  {id:'Qwen/Qwen3.5-35B-A3B-GPTQ-Int4',quantization:'GPTQ Int4',activation_dtype:'bfloat16'}];
+context.colorRows=[variants[0],variants[1],variants[0],variants[2],variants[3]].map((model,i)=>{
+  const r=row(`color-${i}`,`2026-10-03T20:0${i}:00Z`,90-i*5);
+  return {...r,metadata:{...r.metadata,model},first_grader_request_s:10-i,
+    events:[{elapsed_s:20}],settlement_s:100};
+});
+const styles=JSON.parse(JSON.stringify(vm.runInContext('colorRows.map(modelStyle)',context)));
+assert.equal(styles[0].color,styles[2].color,'Repeated BF16 runs must share a model color');
+assert.equal(new Set(styles.map(s=>s.color)).size,4,'All four model variants must have distinct colors');
+context.changedQuant={metadata:{model:{...variants[0],quantization:'modelopt_fp4'}}};
+assert.notEqual(vm.runInContext('modelStyle(changedQuant).color',context),styles[0].color,
+  'Quantization must remain part of model identity even under the same model ID');
+const colorMap=svg=>Object.fromEntries([...svg.matchAll(/<circle[^>]*data-attempt="([^"]+)"[^>]*fill="([^"]+)"/g)].map(m=>[m[1],m[2]]));
+const targetColors=colorMap(vm.runInContext('comparisonPlot(attemptHistory(colorRows))',context));
+const initialColors=colorMap(vm.runInContext('initialLatencyPlot(initialLatencyHistory([...colorRows].reverse()))',context));
+assert.deepEqual(initialColors,targetColors,'Colors must match across plots and inventory order');
+const key=vm.runInContext('modelLegend(colorRows)',context);
+assert.equal((key.match(/class="model-key"/g)||[]).length,4);
+assert.match(key,/VibeThinker 3B · BF16/);assert.match(key,/VibeThinker 3B · NVFP4/);
+const elements={'#benchmark-year':{value:'2025'},'#curve-window':{value:'all'},
+  '#progress-plot':{},'#progress-model-legend':{},'#curve-legend':{}};
+context.document.querySelector=selector=>elements[selector];
+vm.runInContext('results={attempts:colorRows};renderProgress()',context);
+const progressColors=Object.fromEntries([...elements['#progress-plot'].innerHTML.matchAll(/<path[^>]*stroke="([^"]+)"[^>]*><title>([^<]+)<\/title>/g)].map(m=>[m[2],m[1]]));
+assert.deepEqual(progressColors,targetColors,'Progress curves must use the same model colors');
+assert.equal(elements['#progress-model-legend'].innerHTML,key);
+console.log('Results history checks passed: chronological points, strict running minimum, timestamps, floor, initial latency, model colors, and SVG.');
 context.mixedYears=[{id:'dev',benchmark_year:2025},{id:'test',benchmark_year:2026},{id:'legacy'}];
 assert.deepEqual(JSON.parse(JSON.stringify(vm.runInContext('benchmarkRows(mixedYears, 2026)',context))).map(r=>r.id),['test']);
 assert.deepEqual(JSON.parse(JSON.stringify(vm.runInContext('benchmarkRows(mixedYears, 2025)',context))).map(r=>r.id),['dev','legacy']);
