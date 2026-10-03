@@ -76,3 +76,6 @@ assert.doesNotMatch(initialSvg,/floor-line|pareto-frontier|NaN|Infinity/);
 context.rows=[];
 assert.match(vm.runInContext('initialLatencyPlot(initialLatencyHistory(rows))',context),/No recorded first grader request/);
 console.log('Results history checks passed: chronological points, strict running minimum, timestamps, floor, and SVG.');
+context.mixedYears=[{id:'dev',benchmark_year:2025},{id:'test',benchmark_year:2026},{id:'legacy'}];
+assert.deepEqual(JSON.parse(JSON.stringify(vm.runInContext('benchmarkRows(mixedYears, 2026)',context))).map(r=>r.id),['test']);
+assert.deepEqual(JSON.parse(JSON.stringify(vm.runInContext('benchmarkRows(mixedYears, 2025)',context))).map(r=>r.id),['dev','legacy']);

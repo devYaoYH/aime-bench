@@ -374,6 +374,83 @@
           "items": {
             "type": "string"
           }
+        },
+        "dataset": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "id",
+            "year",
+            "role",
+            "source",
+            "revision",
+            "split",
+            "rows",
+            "prompt_path",
+            "grader_path",
+            "prompt_sha256",
+            "grader_sha256",
+            "inferred_from_legacy_runner"
+          ],
+          "properties": {
+            "id": {
+              "enum": [
+                "aime_2025",
+                "aime_2026"
+              ]
+            },
+            "year": {
+              "enum": [
+                2025,
+                2026
+              ]
+            },
+            "role": {
+              "enum": [
+                "development",
+                "generalization",
+                null
+              ]
+            },
+            "source": {
+              "type": "string"
+            },
+            "revision": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "split": {
+              "type": "string"
+            },
+            "rows": {
+              "const": 30
+            },
+            "prompt_path": {
+              "type": "string"
+            },
+            "grader_path": {
+              "type": "string"
+            },
+            "prompt_sha256": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "pattern": "^[0-9a-f]{64}$"
+            },
+            "grader_sha256": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "pattern": "^[0-9a-f]{64}$"
+            },
+            "inferred_from_legacy_runner": {
+              "type": "boolean"
+            }
+          }
         }
       }
     }

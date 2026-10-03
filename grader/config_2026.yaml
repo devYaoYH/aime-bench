@@ -1,0 +1,12 @@
+# Standalone AIME 2026 oracle. Managed runners generate their own configuration.
+dataset:
+  id: aime_2026
+  year: 2026
+  source: data/aime_2026.jsonl
+  format: jsonl
+  idx_field: problem_idx
+  gold_field: answer
+cost_c: 3.0
+host: 127.0.0.1
+port: 8077
+audit_log: logs/queries_2026.jsonl

@@ -2,12 +2,12 @@
   "$schema": "../../data/attempt_metadata.schema.json",
   "schema_version": 1,
   "attempt_id": "20261003T210230.379752Z",
-  "label": "VibeThinker BF16 \u00b7 95% VRAM",
+  "label": "VibeThinker BF16 · 95% VRAM",
   "intervention": {
     "label": "95% VRAM + overhead profiling",
     "reference_attempt_id": "20261003T200718.717581Z",
     "changed_variables": [
-      "VRAM envelope: 80% \u2192 95%",
+      "VRAM envelope: 80% → 95%",
       "overhead/inference instrumentation"
     ],
     "comparison_note": "Coverage policy, model, seed, and sampling match the earlier BF16 run. The VRAM budget and instrumentation changed together; this measured repeat was slower."
@@ -103,6 +103,20 @@
     "notes": [
       "Normalized from saved config/profile and GPU samples. Null means unrecorded.",
       "Intervention reviewed against saved config, runner version, summary, and the matching reference config."
-    ]
+    ],
+    "dataset": {
+      "id": "aime_2025",
+      "year": 2025,
+      "role": null,
+      "source": "https://huggingface.co/datasets/MathArena/aime_2025",
+      "revision": null,
+      "split": "train",
+      "rows": 30,
+      "prompt_path": "data/aime_2025_problems.jsonl",
+      "prompt_sha256": null,
+      "grader_path": "grader/data/aime_2025.jsonl",
+      "grader_sha256": null,
+      "inferred_from_legacy_runner": true
+    }
   }
 }

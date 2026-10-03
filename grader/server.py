@@ -21,6 +21,7 @@ Endpoints:
 Audit log (one JSON line per answered query) = the /verify response PLUS "gold".
 """
 import os
+import hashlib
 import sys
 import json
 import time
@@ -97,7 +98,8 @@ class Oracle:
     apart and the FIRST query is charged just like the rest.
     """
 
-    def __init__(self, gold, cost_c, audit_path):
+    def __init__(self, gold, cost_c, audit_path, dataset=None):
+        self.dataset = dataset or {}
         self.gold = gold
         self.cost_c = float(cost_c)
         self.audit_path = audit_path
@@ -119,6 +121,7 @@ class Oracle:
             self.seq += 1
             # Full audit record — everything needed to read the log standalone.
             record = {
+                "dataset": self.dataset,
                 "query_id": job["query_id"],
                 "seq": self.seq,
                 "agent_id": job.get("agent_id"),
@@ -176,7 +179,7 @@ class Handler(BaseHTTPRequestHandler):
             o = self.oracle
             self._send(200, {"ok": True, "n_problems": len(o.gold),
                              "index_min": min(o.gold), "index_max": max(o.gold),
-                             "cost_c": o.cost_c, "queries_so_far": o.seq})
+                             "cost_c": o.cost_c, "queries_so_far": o.seq, "dataset": o.dataset})
         else:
             self._send(404, {"error": "not found"})
 
@@ -225,7 +228,14 @@ def main():
     print(f"loaded {len(gold)} problems "
           f"(index {min(gold)}..{max(gold)}); cost_c={cfg['cost_c']}s", flush=True)
 
-    Handler.oracle = Oracle(gold, cfg["cost_c"], audit)
+    dataset = dict(cfg['dataset'])
+    if dataset['format'] == 'jsonl':
+        source = dataset['source']
+        if not os.path.isabs(source):
+            source = os.path.join(HERE, source)
+        with open(source, 'rb') as f:
+            dataset['sha256'] = hashlib.sha256(f.read()).hexdigest()
+    Handler.oracle = Oracle(gold, cfg["cost_c"], audit, dataset)
     host, port = cfg.get("host", "127.0.0.1"), int(cfg.get("port", 8077))
     srv = ThreadingHTTPServer((host, port), Handler)
     print(f"grader listening on http://{host}:{port}  "

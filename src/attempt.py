@@ -27,6 +27,8 @@ import httpx
 import yaml
 
 from src.common import ROOT, atomic_json, utc_now
+from src.benchmarks import add_dataset_args, benchmark_paths, dataset_provenance
+from src.attempt_metadata import build_metadata
 from src.attempt_metrics import AttemptProfiler, Meter, merge_meters, grader_timeline
 
 PROMPT = (
@@ -589,16 +591,10 @@ def attempt_lock():
             fcntl.flock(file, fcntl.LOCK_UN)
 
 
-def load_questions(indices):
-    # Deliberately strip answers; only the grader reads the key during execution.
-    rows = [json.loads(line) for line in (ROOT / 'data/aime_2025_problems.jsonl').read_text().splitlines() if line.strip()]
-    problems = [{'problem_idx': row['problem_idx'], 'problem': row['problem']} for row in rows]
-    if indices:
-        requested = set(indices)
-        if not requested <= {p['problem_idx'] for p in problems}:
-            raise ValueError('Unknown question index')
-        problems = [p for p in problems if p['problem_idx'] in requested]
-    return problems
+def load_questions(indices, year=2025):
+    from src.benchmarks import load_questions as load_benchmark_questions
+    return load_benchmark_questions(indices, year)
+
 
 
 async def warm_inference(args, client, question_count):
@@ -651,7 +647,8 @@ async def run(args):
               'gpu_scope': 'device-level NVML; vLLM preallocates VRAM', 'python': sys.version}
     atomic_json(output / 'config.json', config)
     try:
-        problems = load_questions(args.questions)
+        config['dataset_provenance'] = dataset_provenance(args.benchmark_year, args.benchmark_role)
+        problems = load_questions(args.questions, args.benchmark_year)
         config['question_indices'] = [p['problem_idx'] for p in problems]
         if args.strategy == 'coverage' and args.target_correct > len(problems):
             raise ValueError('Target correct exceeds the number of selected questions')
@@ -700,10 +697,11 @@ async def run(args):
             served = next(m for m in models['data'] if m['id'] == args.model)
             args.max_context_tokens = int(served.get('max_model_len') or profile['max-model-len'])
             config['max_context_tokens'] = args.max_context_tokens
-            grader_config = {'dataset': {'source': str(ROOT / 'grader/data/aime_2025.jsonl'),
+            grader_config = {'dataset': {'source': str(benchmark_paths(args.benchmark_year)[1]),
                              'format': 'jsonl', 'idx_field': 'problem_idx', 'gold_field': 'answer'},
                              'cost_c': args.grader_cost, 'host': '127.0.0.1', 'port': args.grader_port,
                              'audit_log': str(output / 'grader_audit.jsonl')}
+            grader_config['dataset'].update(id=config['dataset_provenance']['id'], year=args.benchmark_year, revision=config['dataset_provenance']['revision'])
             (output / 'grader_config.yaml').write_text(yaml.safe_dump(grader_config))
             grader = services.launch([args.grader_python, str(ROOT / 'grader/server.py')], output / 'grader.log',
                                      {**os.environ, 'GRADER_CONFIG': str(output / 'grader_config.yaml')})
@@ -711,6 +709,8 @@ async def run(args):
                 health = await ready(client, args.grader_url + '/health', 60, grader)
             if health.get('queries_so_far') != 0 or health.get('cost_c') != args.grader_cost:
                 raise RuntimeError('Grader did not start with a fresh queue and requested toll')
+            if health.get('dataset', {}).get('sha256') != config['dataset_provenance']['grader_sha256']:
+                raise RuntimeError('Grader loaded a different benchmark answer key')
             config['grader_health'] = health
             with profiler.meter.measure('initialization_inference_warmup_wait', cpu=False):
                 warmup = await warm_inference(args, client, len(problems))
@@ -761,6 +761,7 @@ async def run(args):
         summary['overhead'] = profiler.snapshot()
         atomic_json(output / 'summary.json', summary)  # Durable even if service cleanup fails.
         atomic_json(output / 'config.json', config)
+        atomic_json(output / 'metadata.json', build_metadata(output, config))
         cleanup_start = time.perf_counter()
         await services.close()
         summary['service_cleanup_latency_s'] = time.perf_counter() - cleanup_start
@@ -776,6 +777,7 @@ async def run(args):
 
 def parse_args(argv=None):
     parser = argparse.ArgumentParser(description=__doc__)
+    add_dataset_args(parser)
     parser.add_argument('--model', required=True, help='Model ID with ~/models/<ID>/vllm.yaml')
     parser.add_argument('--models-dir', default='~/models')
     parser.add_argument('--vllm-python', default=str(Path('~/.venvs/vllm/bin/python').expanduser()))
@@ -807,6 +809,7 @@ def parse_args(argv=None):
     parser.add_argument('--overhead-interval', type=float, default=0.05, help='Event-loop lag sampling seconds')
     parser.add_argument('--engine-metrics-interval', type=float, default=1.0, help='vLLM metrics polling seconds')
     args = parser.parse_args(argv)
+    args.benchmark_role = args.benchmark_role or ("development" if args.benchmark_year == 2025 else "generalization")
     if args.parallelism is None:
         args.parallelism = 30 if args.strategy == 'coverage' else 8
     if args.rollouts is None:

@@ -2,15 +2,15 @@
   "$schema": "../../data/attempt_metadata.schema.json",
   "schema_version": 1,
   "attempt_id": "20261003T212812.156610Z",
-  "label": "VibeThinker NVFP4 \u00b7 30\u00d71 \u00b7 16K first pass",
+  "label": "VibeThinker NVFP4 · 30×1 · 16K first pass",
   "intervention": {
     "label": "NVFP4 and 16K first pass",
     "reference_attempt_id": "20261003T211557.382358Z",
     "changed_variables": [
-      "Model: WeiboAI/VibeThinker-3B BF16 \u2192 r0b0tlab/VibeThinker-3B-NVFP4 with Marlin",
-      "First-pass generation budget: 8192 \u2192 16384"
+      "Model: WeiboAI/VibeThinker-3B BF16 → r0b0tlab/VibeThinker-3B-NVFP4 with Marlin",
+      "First-pass generation budget: 8192 → 16384"
     ],
-    "comparison_note": "Same speedrun_v1 solving code, barrier schedule, 30\u00d71 concurrency, seed, sampling, prompt, 65536-token context, 95% VRAM envelope and four-request cap. Model quantization and first-pass budget changed together; one trial cannot isolate either effect or stochastic/runtime variation."
+    "comparison_note": "Same speedrun_v1 solving code, barrier schedule, 30×1 concurrency, seed, sampling, prompt, 65536-token context, 95% VRAM envelope and four-request cap. Model quantization and first-pass budget changed together; one trial cannot isolate either effect or stochastic/runtime variation."
   },
   "runner": {
     "module": "src.attempt_runners.speedrun_v1",
@@ -104,6 +104,20 @@
     "notes": [
       "Normalized from saved config/profile and GPU samples. Null means unrecorded.",
       "Intervention reviewed against configs/experiments/vibe-nvfp4-30x1-16k-v1.json, saved launch profile, reference config and remote nvidia-smi."
-    ]
+    ],
+    "dataset": {
+      "id": "aime_2025",
+      "year": 2025,
+      "role": null,
+      "source": "https://huggingface.co/datasets/MathArena/aime_2025",
+      "revision": null,
+      "split": "train",
+      "rows": 30,
+      "prompt_path": "data/aime_2025_problems.jsonl",
+      "prompt_sha256": null,
+      "grader_path": "grader/data/aime_2025.jsonl",
+      "grader_sha256": null,
+      "inferred_from_legacy_runner": true
+    }
   }
 }

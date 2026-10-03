@@ -2,13 +2,13 @@
   "$schema": "../../data/attempt_metadata.schema.json",
   "schema_version": 1,
   "attempt_id": "20261003T211557.382358Z",
-  "label": "VibeThinker \u00b7 barrier pass@1",
+  "label": "VibeThinker · barrier pass@1",
   "intervention": {
     "label": "Barrier pass@1 control",
     "reference_attempt_id": "20261003T211346.861294Z",
     "changed_variables": [
-      "initial rollout fan-out: 2 \u2192 1",
-      "scheduling: eager \u2192 barrier"
+      "initial rollout fan-out: 2 → 1",
+      "scheduling: eager → barrier"
     ],
     "comparison_note": "Model, runner version, seed, sampling, prompt, context, and 95% VRAM envelope match eager pass@2. Fan-out and scheduling changed together. This is also the matched schedule control for the later eager pass@1 run."
   },
@@ -104,6 +104,20 @@
     "notes": [
       "Normalized from saved config/profile and GPU samples. Null means unrecorded.",
       "Intervention reviewed against saved config, runner version, summary, and the matching reference config."
-    ]
+    ],
+    "dataset": {
+      "id": "aime_2025",
+      "year": 2025,
+      "role": null,
+      "source": "https://huggingface.co/datasets/MathArena/aime_2025",
+      "revision": null,
+      "split": "train",
+      "rows": 30,
+      "prompt_path": "data/aime_2025_problems.jsonl",
+      "prompt_sha256": null,
+      "grader_path": "grader/data/aime_2025.jsonl",
+      "grader_sha256": null,
+      "inferred_from_legacy_runner": true
+    }
   }
 }

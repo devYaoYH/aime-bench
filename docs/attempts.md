@@ -324,3 +324,51 @@ oracle service; completed audit jobs are the evidence for charged completed work
 The deferred [speedrun v1 sweep](../src/attempt_runners/README.md) compares wider
 first passes and eager continuations without adding an experimental policy to the
 canonical runner.
+
+## Benchmark year and generalization testing
+
+Existing commands continue to use AIME 2025. Select the held-out 2026 benchmark
+explicitly, using the same runner/model/sampling settings as the validated approach:
+
+```sh
+python -m src.attempt --model <organization>/<model> --benchmark-year 2026
+python -m src.attempt_runners.speedrun_v1 --model <organization>/<model> --benchmark-year 2026
+python -m src.attempt_runners.naive_pass4_v1 --model <organization>/<model> --benchmark-year 2026
+```
+
+`--benchmark-role` accepts `development` or `generalization`; when omitted it is
+recorded as development for 2025 and generalization for 2026. This is independent
+of the performance-instrumentation `--benchmark` flag. Year selection also applies
+to the local speedrun v2 runner. For sweeps, put `--benchmark-year 2026` in the
+manifest's `base_args`; each cell and score records its year and role.
+
+The runner selects both prompts and grader key, validates that they agree, and
+checks the grader's actual file hash before solving. Config and automatically
+written metadata record `dataset_provenance`: year, role, source URL/revision,
+split, prompt/key paths, and SHA256 hashes. Metadata stores this under
+`provenance.dataset` with a readable `controls.dataset`. Gold answers are stripped
+from the solver's problem records. The serial grader toll and solving policies
+remain the same for both years.
+
+The canonical viewer selects question text by the attempt's saved year and checks
+its recorded prompt hash. The overall-results viewer filters plots and rankings by
+year; cross-year annotated references do not produce a speed-improvement delta.
+
+`python -m src.attempt_metadata --all` enriches old metadata while preserving
+annotations. Old fixed-dataset runners are marked AIME 2025 with
+`inferred_from_legacy_runner: true`; unrecorded historical role, revision and
+hashes remain null. Existing configs and source commits are preserved.
+
+Both datasets are versioned locally and usable offline. Refresh only deliberately:
+
+```sh
+python -m src.fetch_dataset --year 2026 --revision d2de22f3c656b4f56cf8981212186377d1e23bc3
+```
+
+The downloader requires `pyarrow`, pins the upstream Parquet download to a commit,
+and generates prompt/key files together. Source manifests are `data/source.json`
+(2025) and `data/source_2026.json` (2026). MathArena's upstream split is named
+`train`; our experiment role is generalization and does not change that source
+split. The 2026 transcription retains MathArena's contest variants, including
+AIME II #1 = 178 and #10 = 850; do not mix it with another version's answer key.
+See [dataset provenance](../data/README.md).

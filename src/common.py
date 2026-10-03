@@ -32,8 +32,9 @@ def load_key() -> str:
     raise RuntimeError("OPENROUTER_API_KEY is missing from the environment and .env")
 
 
-def load_problems() -> list[dict]:
-    path = ROOT / "data" / "aime_2025_problems.jsonl"
+def load_problems(year=2025) -> list[dict]:
+    from src.benchmarks import benchmark_paths
+    path = benchmark_paths(year)[0]
     rows = [json.loads(line) for line in path.read_text().splitlines() if line.strip()]
     if len(rows) != 30 or [row["problem_idx"] for row in rows] != list(range(1, 31)):
         raise ValueError("Expected the 30 ordered MathArena prompts; run python -m src.fetch_dataset")

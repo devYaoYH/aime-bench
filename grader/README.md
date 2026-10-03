@@ -141,3 +141,12 @@ The HTTP `/verify` response is this same record **minus `gold`**.
   `config.yaml` and the bundled `data/aime_2025.jsonl` are static — nothing to reset
   there.
 
+
+## AIME 2026
+
+The pinned 30-problem MathArena 2026 key is bundled in `data/aime_2026.jsonl`.
+For a standalone oracle, use `GRADER_CONFIG=config_2026.yaml python server.py`
+from this directory. Managed runners select it with `--benchmark-year 2026`.
+`/health`, verification responses, and audit records expose dataset configuration
+and the actual key-file SHA256; gold answers remain absent from HTTP responses.
+The default `config.yaml` still selects 2025. See [source provenance](../data/README.md).

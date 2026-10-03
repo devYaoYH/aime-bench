@@ -18,6 +18,7 @@ from jsonschema import Draft202012Validator
 import yaml
 
 from src.common import ROOT, atomic_json
+from src.benchmarks import recorded_dataset
 
 SCHEMA = ROOT / 'data' / 'attempt_metadata.schema.json'
 
@@ -37,6 +38,9 @@ def validate_metadata(value, attempt_id):
         raise ValueError('Metadata attempt_id does not match directory')
     if value['intervention']['reference_attempt_id'] == attempt_id:
         raise ValueError('An attempt cannot be its own comparison reference')
+    dataset = value['provenance'].get('dataset')
+    if dataset and (dataset['id'] != f"aime_{dataset['year']}" or value['controls']['dataset'] != f"AIME {dataset['year']}"):
+        raise ValueError('Metadata dataset identity/year disagree')
     return value
 
 
@@ -46,6 +50,7 @@ def build_metadata(folder, config=None):
     profile_file = folder / 'model_profile.json'
     profile = json.loads(profile_file.read_text()) if profile_file.exists() else {}
     launch = config.get('launch_profile') or yaml.safe_load(profile.get('yaml', '')) or {}
+    dataset = recorded_dataset(config)
     model = config.get('model')
     quant = launch.get('quantization')
     quant_source = 'launch_profile' if quant else 'unrecorded'
@@ -91,13 +96,13 @@ def build_metadata(folder, config=None):
         'gpu': {'device': None, 'device_count': launch.get('tensor-parallel-size'),
                 'total_vram_mib': total, 'memory_utilization': launch.get('gpu-memory-utilization'),
                 'configured_envelope_mib': total * launch['gpu-memory-utilization'] if total is not None and launch.get('gpu-memory-utilization') is not None else None},
-        'controls': {'dataset': 'AIME 2025', 'question_indices': config.get('question_indices') or config.get('questions') or [],
+        'controls': {'dataset': f"AIME {dataset['year']}", 'question_indices': config.get('question_indices') or config.get('questions') or [],
                      'target_correct': config.get('target_correct', 18), 'grader_cost_s': config.get('grader_cost'),
                      'grader_serial': True,
                      'max_context_tokens': launch.get('max-model-len', config.get('max_context_tokens')),
                      'max_num_seqs': launch.get('max-num-seqs'), 'prefix_caching': launch.get('enable-prefix-caching'),
                      'reasoning_parser': launch.get('reasoning-parser'), 'hyperparameters': hp},
-        'provenance': {'config': 'config.json', 'profile': 'model_profile.json' if profile else None,
+        'provenance': {'dataset': dataset, 'config': 'config.json', 'profile': 'model_profile.json' if profile else None,
                        'profile_sha256': config.get('model_profile_sha256') or profile.get('sha256'),
                        'notes': ['Normalized from saved config/profile and GPU samples. Null means unrecorded.']},
     }
@@ -115,8 +120,19 @@ def main():
         folder = config_path.parent
         path = folder / 'metadata.json'
         value = json.loads(path.read_text()) if path.exists() else build_metadata(folder)
+        changed = False
+        if path.exists() and 'dataset' not in value.get('provenance', {}):
+            validate_metadata(value, folder.name)
+            derived = build_metadata(folder)
+            if value['controls']['dataset'] != derived['controls']['dataset']:
+                raise ValueError('Saved metadata dataset disagrees with recorded configuration')
+            value['provenance']['dataset'] = derived['provenance']['dataset']
+            changed = True
         validate_metadata(value, folder.name)
-        if not path.exists():
+        if changed:
+            atomic_json(path, value)
+            print(f'Added dataset provenance to {path}; annotations preserved.')
+        elif not path.exists():
             atomic_json(path, value)
             print(f'Created {path}; annotate intervention and reference before comparing.')
         else:

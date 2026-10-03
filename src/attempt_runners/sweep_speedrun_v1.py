@@ -74,13 +74,15 @@ def build_plan(config):
             raise ValueError("Sweep v1 requires fresh managed servers per cell")
         if args.strategy != runner.RUNNER_ID:
             raise ValueError("Unexpected runner strategy")
-        question_count = len(runner.load_questions(args.questions))
+        question_count = len(runner.load_questions(args.questions, args.benchmark_year))
         if args.target_correct > question_count:
             raise ValueError("Target exceeds selected question count")
         cells.append(
             {
                 "cell_id": f"cell-{index:02d}",
                 "parameters": values,
+                "benchmark_year": args.benchmark_year,
+                "benchmark_role": args.benchmark_role or ("development" if args.benchmark_year == 2025 else "generalization"),
                 "initial_concurrent_requests": min(args.parallelism, question_count)
                 * args.rollouts,
                 "argv": argv,
@@ -114,6 +116,8 @@ def score(cell, output, error=None):
     return {
         "cell_id": cell["cell_id"],
         "parameters": cell["parameters"],
+        "benchmark_year": cell.get("benchmark_year", 2025),
+        "benchmark_role": cell.get("benchmark_role"),
         "attempt_id": output.name if output else None,
         "status": summary.get("status", "failed"),
         "error": error or summary.get("error"),
@@ -132,7 +136,11 @@ def ranked(rows):
         (r for r in rows if r["time_to_target_s"] is not None),
         key=lambda r: r["time_to_target_s"],
     )
-    order = {r["cell_id"]: i for i, r in enumerate(valid, 1)}
+    order, counts = {}, {}
+    for row in valid:
+        year = row.get("benchmark_year", 2025)
+        counts[year] = counts.get(year, 0) + 1
+        order[row["cell_id"]] = counts[year]
     return [{**row, "rank": order.get(row["cell_id"])} for row in rows]
 
 

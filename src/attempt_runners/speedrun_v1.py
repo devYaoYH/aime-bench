@@ -23,6 +23,8 @@ import httpx
 import yaml
 
 from src.common import ROOT, atomic_json, utc_now
+from src.benchmarks import add_dataset_args, benchmark_paths, dataset_provenance
+from src.attempt_metadata import build_metadata
 from src.attempt_metrics import AttemptProfiler, grader_timeline
 from src.attempt_runners._runtime_v1 import (
     GPUSampler,
@@ -223,7 +225,8 @@ async def run(args):
     }
     atomic_json(output / "config.json", config)
     try:
-        problems = load_questions(args.questions)
+        config['dataset_provenance'] = dataset_provenance(args.benchmark_year, args.benchmark_role)
+        problems = load_questions(args.questions, args.benchmark_year)
         config["question_indices"] = [p["problem_idx"] for p in problems]
         if args.target_correct > len(problems):
             raise ValueError("Target correct exceeds the number of selected questions")
@@ -318,7 +321,7 @@ async def run(args):
             config["max_context_tokens"] = args.max_context_tokens
             grader_config = {
                 "dataset": {
-                    "source": str(ROOT / "grader/data/aime_2025.jsonl"),
+                    "source": str(benchmark_paths(args.benchmark_year)[1]),
                     "format": "jsonl",
                     "idx_field": "problem_idx",
                     "gold_field": "answer",
@@ -328,6 +331,7 @@ async def run(args):
                 "port": args.grader_port,
                 "audit_log": str(output / "grader_audit.jsonl"),
             }
+            grader_config['dataset'].update(id=config['dataset_provenance']['id'], year=args.benchmark_year, revision=config['dataset_provenance']['revision'])
             (output / "grader_config.yaml").write_text(yaml.safe_dump(grader_config))
             grader = services.launch(
                 [args.grader_python, str(ROOT / "grader/server.py")],
@@ -343,6 +347,8 @@ async def run(args):
                 raise RuntimeError(
                     "Grader did not start with a fresh queue and requested toll"
                 )
+            if health.get('dataset', {}).get('sha256') != config['dataset_provenance']['grader_sha256']:
+                raise RuntimeError('Grader loaded a different benchmark answer key')
             config["grader_health"] = health
             with profiler.meter.measure(
                 "initialization_inference_warmup_wait", cpu=False
@@ -473,6 +479,7 @@ async def run(args):
             output / "summary.json", summary
         )  # Durable even if service cleanup fails.
         atomic_json(output / "config.json", config)
+        atomic_json(output / 'metadata.json', build_metadata(output, config))
         cleanup_start = time.perf_counter()
         await services.close()
         summary["service_cleanup_latency_s"] = time.perf_counter() - cleanup_start
@@ -492,6 +499,7 @@ async def run(args):
 
 def parse_args(argv=None):
     parser = argparse.ArgumentParser(description=__doc__)
+    add_dataset_args(parser)
     parser.add_argument(
         "--model", required=True, help="Model ID with a launch profile under ~/models"
     )
@@ -565,6 +573,7 @@ def parse_args(argv=None):
         help="vLLM metrics polling seconds",
     )
     args = parser.parse_args(argv)
+    args.benchmark_role = args.benchmark_role or ("development" if args.benchmark_year == 2025 else "generalization")
     args.strategy = "speedrun_v1"
     if args.rollouts > args.max_attempts_per_question:
         parser.error("Rollouts exceed the per-question attempt limit")

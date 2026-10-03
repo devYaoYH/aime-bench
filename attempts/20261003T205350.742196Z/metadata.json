@@ -2,13 +2,13 @@
   "$schema": "../../data/attempt_metadata.schema.json",
   "schema_version": 1,
   "attempt_id": "20261003T205350.742196Z",
-  "label": "VibeThinker NVFP4 \u00b7 coverage",
+  "label": "VibeThinker NVFP4 · coverage",
   "intervention": {
     "label": "NVFP4 + 95% VRAM envelope",
     "reference_attempt_id": "20261003T200718.717581Z",
     "changed_variables": [
-      "quantization: BF16 \u2192 NVFP4",
-      "VRAM envelope: 80% \u2192 95%",
+      "quantization: BF16 → NVFP4",
+      "VRAM envelope: 80% → 95%",
       "Marlin linear backend",
       "model checkpoint"
     ],
@@ -102,6 +102,20 @@
     "notes": [
       "Normalized from saved config/profile and GPU samples. Null means unrecorded.",
       "Device identity and intervention annotations reviewed against the saved attempt reports."
-    ]
+    ],
+    "dataset": {
+      "id": "aime_2025",
+      "year": 2025,
+      "role": null,
+      "source": "https://huggingface.co/datasets/MathArena/aime_2025",
+      "revision": null,
+      "split": "train",
+      "rows": 30,
+      "prompt_path": "data/aime_2025_problems.jsonl",
+      "prompt_sha256": null,
+      "grader_path": "grader/data/aime_2025.jsonl",
+      "grader_sha256": null,
+      "inferred_from_legacy_runner": true
+    }
   }
 }

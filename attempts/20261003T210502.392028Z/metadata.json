@@ -2,13 +2,13 @@
   "$schema": "../../data/attempt_metadata.schema.json",
   "schema_version": 1,
   "attempt_id": "20261003T210502.392028Z",
-  "label": "VibeThinker \u00b7 final-only startup failure",
+  "label": "VibeThinker · final-only startup failure",
   "intervention": {
     "label": "Final-only v1 startup attempt",
     "reference_attempt_id": "20261003T202152.418590Z",
     "changed_variables": [
       "isolated naive_pass4_v1 runner",
-      "VRAM envelope: 80% \u2192 95%"
+      "VRAM envelope: 80% → 95%"
     ],
     "comparison_note": "Failed before the official solving phase because a port was occupied. No time-to-18 or accuracy comparison is available."
   },
@@ -100,6 +100,20 @@
     "notes": [
       "Normalized from saved config/profile and GPU samples. Null means unrecorded.",
       "Intervention reviewed against saved config, runner version, summary, and the matching reference config."
-    ]
+    ],
+    "dataset": {
+      "id": "aime_2025",
+      "year": 2025,
+      "role": null,
+      "source": "https://huggingface.co/datasets/MathArena/aime_2025",
+      "revision": null,
+      "split": "train",
+      "rows": 30,
+      "prompt_path": "data/aime_2025_problems.jsonl",
+      "prompt_sha256": null,
+      "grader_path": "grader/data/aime_2025.jsonl",
+      "grader_sha256": null,
+      "inferred_from_legacy_runner": true
+    }
   }
 }

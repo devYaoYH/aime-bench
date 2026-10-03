@@ -115,3 +115,12 @@ traces. Credentials, virtual environments, downloaded models, caches, and logs
 are also ignored.
 Offline token-based analyses need the cached tokenizers described in the
 experiment guide under `.local/tokenizers/`.
+
+### AIME 2026 generalization benchmark
+
+AIME 2025 remains the default development set. Add `--benchmark-year 2026` to
+canonical, naive pass4, or speedrun commands to use the separate 30-problem test
+set. New attempt configs/metadata record year, development/generalization role,
+source revision, and prompt/grader hashes. The results viewer has a benchmark-year
+selector. See [benchmark instructions](docs/attempts.md#benchmark-year-and-generalization-testing)
+and [data provenance](data/README.md).

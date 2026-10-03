@@ -11,6 +11,8 @@ import json
 from pathlib import Path
 import re
 
+from src.benchmarks import recorded_dataset
+
 SAFE_ID = re.compile(r"^[A-Za-z0-9][A-Za-z0-9._-]*$")
 ROLLOUT_FILES = {"request.json", "response.json", "telemetry.json", "tokens.json", "stream.jsonl"}
 ATTEMPT_FILES = {"config.json", "summary.json", "metadata.json", "solved.jsonl", "gpu.jsonl"}
@@ -69,6 +71,8 @@ class AttemptStore:
         if config.get("attempt_id") != name and summary.get("attempt_id") != name:
             raise ValueError("Not a canonical attempt")
         return {"id": name, "model": config.get("model"),
+                "benchmark_year": recorded_dataset(config)["year"],
+                "benchmark_role": recorded_dataset(config)["role"],
                 "status": summary.get("status", "incomplete"),
                 "solved": summary.get("solved"),
                 "questions": len(config.get("question_indices") or config.get("questions") or []) or
@@ -114,7 +118,17 @@ class AttemptStore:
         metadata = self.metadata(name)
         config = self.read(folder, "config.json", {})
         summary = self.read(folder, "summary.json")
-        problems = {p["problem_idx"]: p["problem"] for p in json_lines(self.dataset)}
+        year = metadata['benchmark_year']
+        # The injected path remains the historical/default dataset for test fixtures.
+        dataset = self.dataset if year == 2025 else self.dataset.parent / f'aime_{year}_problems.jsonl'
+        if not dataset.is_file():
+            raise ValueError(f'AIME {year} prompt file unavailable: {dataset}')
+        provenance = recorded_dataset(config)
+        if provenance.get('prompt_sha256'):
+            from src.benchmarks import sha256
+            if sha256(dataset) != provenance['prompt_sha256']:
+                raise ValueError('Saved attempt prompt hash differs from the local dataset')
+        problems = {p["problem_idx"]: p["problem"] for p in json_lines(dataset)}
         saved = {q["problem_idx"]: q for q in (summary or {}).get("questions", [])}
         indices = set(config.get("question_indices") or config.get("questions") or problems)
         indices.update(saved)

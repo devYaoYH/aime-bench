@@ -2,12 +2,12 @@
   "$schema": "../../data/attempt_metadata.schema.json",
   "schema_version": 1,
   "attempt_id": "20261003T211346.861294Z",
-  "label": "VibeThinker \u00b7 eager pass@2",
+  "label": "VibeThinker · eager pass@2",
   "intervention": {
-    "label": "Reduce eager fan-out: 4 \u2192 2",
+    "label": "Reduce eager fan-out: 4 → 2",
     "reference_attempt_id": "20261003T211054.387701Z",
     "changed_variables": [
-      "initial rollout fan-out: 4 \u2192 2",
+      "initial rollout fan-out: 4 → 2",
       "two remaining requests for continuations"
     ],
     "comparison_note": "Same speedrun_v1 source commit, eager schedule, model, seed, sampling, context, prompt, and VRAM envelope. Fan-out changes both concurrent load and remaining continuation budget; this is a single-run observed difference."
@@ -104,6 +104,20 @@
     "notes": [
       "Normalized from saved config/profile and GPU samples. Null means unrecorded.",
       "Intervention reviewed against saved config, runner version, summary, and the matching reference config."
-    ]
+    ],
+    "dataset": {
+      "id": "aime_2025",
+      "year": 2025,
+      "role": null,
+      "source": "https://huggingface.co/datasets/MathArena/aime_2025",
+      "revision": null,
+      "split": "train",
+      "rows": 30,
+      "prompt_path": "data/aime_2025_problems.jsonl",
+      "prompt_sha256": null,
+      "grader_path": "grader/data/aime_2025.jsonl",
+      "grader_sha256": null,
+      "inferred_from_legacy_runner": true
+    }
   }
 }

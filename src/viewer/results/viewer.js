@@ -13,6 +13,10 @@ const attemptLink = row => `/?attempt=${encodeURIComponent(row.id)}`;
 // Historical points 2 and 3 are separate baselines; identify them by stable IDs.
 const separateBaselines = new Set(['20261003T202152.418590Z','20261003T203338.063138Z']);
 let results;
+function benchmarkRows(rows, year) {
+  return rows.filter(r => (r.benchmark_year ?? r.metadata?.provenance?.dataset?.year ?? 2025) === Number(year));
+}
+function selectedRows() { return benchmarkRows(results.attempts, $('#benchmark-year').value); }
 function attemptHistory(rows) {
   const measured=rows.filter(r=>r.time_to_18_s!=null && Number.isFinite(r.time_to_18_s) && r.time_to_18_s>=0)
     .map(r=>({...r,start_ms:Date.parse(r.attempt_started_at_utc??r.started_at_utc)}))
@@ -102,8 +106,8 @@ function interventionCards(rows) {
   return comparisons.map(r=>{const m=r.metadata,c=r.comparison,faster=c.saved_s>=0;return `<article class="intervention-card"><h3>${esc(m.intervention.label)}</h3><small>${esc(m.label)} vs ${esc(c.reference_label)}</small><div class="delta ${faster?'':'slower'}">${sec(Math.abs(c.saved_s))} ${faster?'faster':'slower'}</div><small>${Math.abs(c.reduction_pct).toFixed(1)}% ${faster?'reduction':'increase'} in observed time to 18</small><ul>${m.intervention.changed_variables.map(v=>`<li>${esc(v)}</li>`).join('')}</ul><p>${esc(m.intervention.comparison_note)}</p><a href="${attemptLink(r)}">Inspect attempt ↗</a></article>`;}).join('');
 }
 function renderProgress(){
-  const rows=results.attempts.filter(r=>r.events.length && r.metadata);
-  if(!rows.length){$('#progress-plot').innerHTML='<div class="chart-empty">No timestamped positive verdicts available.</div>';return;}
+  const rows=selectedRows().filter(r=>r.events.length && r.metadata);
+  if(!rows.length){$('#curve-legend').innerHTML='';$('#progress-plot').innerHTML='<div class="chart-empty">No timestamped positive verdicts available.</div>';return;}
   const window=$('#curve-window').value, max=window==='all'?Math.max(54,...rows.flatMap(r=>r.events.map(e=>e.elapsed_s))):Number(window);
   const w=1080,h=315,left=55,right=25,top=35,bottom=40;
   const x=t=>left+t/max*(w-left-right),y=n=>h-bottom-n/18*(h-top-bottom);
@@ -119,14 +123,11 @@ function controlsTable(rows){
     const hp=m.controls.hyperparameters,g=m.gpu,c=r.comparison;
     const envelope=g.memory_utilization==null?'Unrecorded':`${Math.round(g.memory_utilization*100)}%${g.configured_envelope_mib!=null?` · ${(g.configured_envelope_mib/1024).toFixed(0)} GiB`:''}`;
     const changed=c?.changed_controls.map(v=>`${v.variable}: ${JSON.stringify(v.before)} → ${JSON.stringify(v.after)}`).join('\n');
-    return `<tr><td><a href="${attemptLink(r)}">${esc(m.label)}</a><small>${esc(r.id)}<br>${esc(m.model.id)}<br>${esc(m.model.quantization??'Quantization unrecorded')} · ${esc(m.model.activation_dtype??'dtype unrecorded')}</small></td><td>${esc(m.intervention.label)}<small>${esc(r.attempt_status)}</small></td><td><span class="result-time">${sec(r.time_to_18_s)}</span><small class="${r.time_to_18_s==null?'unmet':''}">${esc(r.status)}</small><small>Settlement: ${sec(r.settlement_s)}</small></td><td>${r.solved??'—'} / ${m.controls.question_indices.length||'—'}</td><td>${hp.parallelism??'—'} × ${hp.rollouts??'—'}<small>${hp.first_pass_max_tokens??'—'} first-pass tokens<br>${hp.max_attempts_per_question??'—'} requests / question</small></td><td>${envelope}<small>${esc(g.device??'Device unrecorded')}</small></td><td><details><summary>Inspect controls</summary><p>${esc(m.intervention.comparison_note)}</p>${r.error?`<p class="unmet">${esc(r.error)}</p>`:''}<small>Runner: ${esc(m.runner.module)}<br>${esc(m.runner.version)}<br>Source: ${esc(m.runner.git_commit)}<br>Context: ${m.controls.max_context_tokens??'—'} tokens<br>Seed: ${hp.seed??'—'} · T ${hp.temperature??'—'} · top-p ${hp.top_p??'—'}</small>${changed?`<h4>Changed recorded controls</h4><pre>${esc(changed)}</pre><h4>Matched recorded controls</h4><pre>${esc(c.matched_controls.join('\n'))}</pre>`:''}<h4>Full metadata</h4><pre>${esc(JSON.stringify(m,null,2))}</pre>${r.metadata_missing?'':`<a href="/api/attempts/${encodeURIComponent(r.id)}/files/metadata.json" target="_blank" rel="noopener">metadata.json ↗</a>`}</details></td></tr>`;
+    return `<tr><td><a href="${attemptLink(r)}">${esc(m.label)}</a><small>${esc(r.id)}<br>${esc(m.controls.dataset)} · ${esc(r.benchmark_role??'role unrecorded')}<br>${esc(m.model.id)}<br>${esc(m.model.quantization??'Quantization unrecorded')} · ${esc(m.model.activation_dtype??'dtype unrecorded')}</small></td><td>${esc(m.intervention.label)}<small>${esc(r.attempt_status)}</small></td><td><span class="result-time">${sec(r.time_to_18_s)}</span><small class="${r.time_to_18_s==null?'unmet':''}">${esc(r.status)}</small><small>Settlement: ${sec(r.settlement_s)}</small></td><td>${r.solved??'—'} / ${m.controls.question_indices.length||'—'}</td><td>${hp.parallelism??'—'} × ${hp.rollouts??'—'}<small>${hp.first_pass_max_tokens??'—'} first-pass tokens<br>${hp.max_attempts_per_question??'—'} requests / question</small></td><td>${envelope}<small>${esc(g.device??'Device unrecorded')}</small></td><td><details><summary>Inspect controls</summary><p>${esc(m.intervention.comparison_note)}</p>${r.error?`<p class="unmet">${esc(r.error)}</p>`:''}<small>Runner: ${esc(m.runner.module)}<br>${esc(m.runner.version)}<br>Source: ${esc(m.runner.git_commit)}<br>Context: ${m.controls.max_context_tokens??'—'} tokens<br>Seed: ${hp.seed??'—'} · T ${hp.temperature??'—'} · top-p ${hp.top_p??'—'}</small>${changed?`<h4>Changed recorded controls</h4><pre>${esc(changed)}</pre><h4>Matched recorded controls</h4><pre>${esc(c.matched_controls.join('\n'))}</pre>`:''}<h4>Full metadata</h4><pre>${esc(JSON.stringify(m,null,2))}</pre>${r.metadata_missing?'':`<a href="/api/attempts/${encodeURIComponent(r.id)}/files/metadata.json" target="_blank" rel="noopener">metadata.json ↗</a>`}</details></td></tr>`;
   }).join('');
 }
-async function refresh(){
-  $('#refresh').disabled=true;$('#error').hidden=true;
-  try{
-    const response=await fetch('/api/results',{cache:'no-store'});if(!response.ok)throw new Error(`Unable to load results (${response.status})`);results=await response.json();
-    const rows=results.attempts,ranked=rows.filter(r=>r.time_to_18_s!=null).sort((a,b)=>a.time_to_18_s-b.time_to_18_s),best=ranked[0];
+function renderResults(){
+    const rows=selectedRows(),ranked=rows.filter(r=>r.time_to_18_s!=null).sort((a,b)=>a.time_to_18_s-b.time_to_18_s),best=ranked[0];
     $('#inventory').textContent=`${rows.length} saved attempts · ${ranked.length} measured targets reached`;
     $('#notice').textContent=results.warnings.join(' · ');$('#notice').hidden=!results.warnings.length;
     const metrics=[['Fastest observed',best?sec(best.time_to_18_s):'—',best?.metadata.label??'No measured target'],['Grader floor','54.00s','3s × 18 correct questions'],['Above the floor',best?sec(best.time_to_18_s-results.reference_floor_s):'—','Fastest run, after warmup']];
@@ -139,6 +140,12 @@ async function refresh(){
     $('#initial-unavailable').innerHTML=initial.unavailable.length?`Request timing unavailable: ${initial.unavailable.map(r=>`<a href="${attemptLink(r)}">${esc(r.metadata?.label??r.id)}</a> (${esc(r.status)})`).join(' · ')}.`:'';
     $('#excluded-note').textContent=rows.filter(r=>r.time_to_18_s==null || !Number.isFinite(Date.parse(r.attempt_started_at_utc??r.started_at_utc))).map(r=>`${r.metadata?.label??r.id}: ${r.time_to_18_s==null?r.status:'start timestamp unavailable'}${r.solved!=null?` (${r.solved} correct)`:''}`).join(' · ');
     $('#interventions').innerHTML=interventionCards(rows);$('#attempt-rows').innerHTML=controlsTable(rows);renderProgress();$('#content').hidden=false;
+}
+async function refresh(){
+  $('#refresh').disabled=true;$('#error').hidden=true;
+  try{
+    const response=await fetch('/api/results',{cache:'no-store'});if(!response.ok)throw new Error(`Unable to load results (${response.status})`);results=await response.json();
+    renderResults();
   }catch(e){$('#error').textContent=e.message;$('#error').hidden=false;}finally{$('#refresh').disabled=false;}
 }
-document.addEventListener('DOMContentLoaded',()=>{$('#refresh').addEventListener('click',refresh);$('#curve-window').addEventListener('change',renderProgress);refresh();});
+document.addEventListener('DOMContentLoaded',()=>{$('#refresh').addEventListener('click',refresh);$('#benchmark-year').addEventListener('change',()=>{if(results)renderResults();});$('#curve-window').addEventListener('change',renderProgress);refresh();});

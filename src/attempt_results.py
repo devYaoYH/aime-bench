@@ -12,6 +12,7 @@ from datetime import datetime
 import math
 
 from src.attempt_metadata import build_metadata, validate_metadata
+from src.benchmarks import recorded_dataset
 
 TARGET = 18
 FLOOR_S = 54.0
@@ -99,6 +100,9 @@ def build_results(store):
                 metadata = build_metadata(store.folder(attempt['id']), overview['config'])
                 warnings.append(f"{attempt['id']}: metadata.json missing; settings derived from config, intervention unannotated.")
             validate_metadata(metadata, attempt['id'])
+            dataset = metadata['provenance'].get('dataset') or recorded_dataset(overview['config'])
+            if metadata['controls']['dataset'] != f"AIME {dataset['year']}" or dataset['year'] != recorded_dataset(overview['config'])['year']:
+                raise ValueError('Saved metadata dataset disagrees with recorded configuration')
             events = solve_events(overview)
             first_request = first_grader_request(store, attempt['id'], overview)
             time = events[TARGET - 1]['elapsed_s'] if len(events) >= TARGET else None
@@ -113,7 +117,8 @@ def build_results(store):
             floor = TARGET * cost if cost is not None and metadata['controls']['grader_serial'] else None
             if time is not None and floor is not None and time < floor - 0.01:
                 warnings.append(f"{attempt['id']}: recorded time is below its configured serial-grader floor; check timing evidence.")
-            rows.append({'id': attempt['id'], 'metadata': metadata, 'metadata_missing': missing,
+            rows.append({'id': attempt['id'], 'benchmark_year': dataset['year'],
+                         'benchmark_role': dataset['role'], 'metadata': metadata, 'metadata_missing': missing,
                          'status': status, 'attempt_status': attempt['status'], 'solved': solved,
                          'error': summary.get('error'),
                          'started_at_utc': attempt['started_at_utc'],
@@ -126,7 +131,7 @@ def build_results(store):
                          'comparison': None})
         except (ValueError, OSError, TypeError, KeyError) as exc:
             warnings.append(f"{attempt['id']}: {exc}")
-            rows.append({'id': attempt['id'], 'metadata': None, 'status': 'invalid evidence',
+            rows.append({'id': attempt['id'], 'benchmark_year': attempt.get('benchmark_year', 2025), 'metadata': None, 'status': 'invalid evidence',
                          'attempt_status': attempt['status'], 'solved': attempt['solved'],
                          'time_to_18_s': None, 'first_grader_request_s': None,
                          'first_grader_request': None, 'events': [], 'comparison': None})
@@ -147,7 +152,10 @@ def build_results(store):
         matched = [key for key in sorted(current.keys() & control.keys())
                    if current[key] == control[key] and current[key] is not None]
         time, base = row['time_to_18_s'], ref['time_to_18_s']
-        measurable = time is not None and base is not None and base > 0
+        same_benchmark = row['benchmark_year'] == ref['benchmark_year']
+        if not same_benchmark:
+            warnings.append(f"{row['id']}: reference uses a different AIME year; timing improvement not compared.")
+        measurable = same_benchmark and time is not None and base is not None and base > 0
         row['comparison'] = {'reference_id': ref_id, 'reference_label': ref['metadata']['label'],
                              'changed_controls': changed, 'matched_controls': matched,
                              'saved_s': base - time if measurable else None,

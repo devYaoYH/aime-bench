@@ -2,16 +2,16 @@
   "$schema": "../../data/attempt_metadata.schema.json",
   "schema_version": 1,
   "attempt_id": "20261003T200718.717581Z",
-  "label": "VibeThinker BF16 \u00b7 coverage",
+  "label": "VibeThinker BF16 · coverage",
   "intervention": {
     "label": "Coverage + prospective verification",
     "reference_attempt_id": "20261003T202152.418590Z",
     "changed_variables": [
-      "rollout fan-out: 4 \u2192 1",
+      "rollout fan-out: 4 → 1",
       "streaming verification and prompt",
       "exact-token continuation",
-      "context: 16K \u2192 64K",
-      "first-pass budget: 16K \u2192 8K"
+      "context: 16K → 64K",
+      "first-pass budget: 16K → 8K"
     ],
     "comparison_note": "Same model weights, seed, sampling, question set, question parallelism, and 80% VRAM budget as final-only pass@4. Policy, prompt, context, and fan-out changed together. The baseline was collected later; this is a retrospective comparison, not a chronological step or isolated causal estimate."
   },
@@ -103,6 +103,20 @@
     "notes": [
       "Normalized from saved config/profile and GPU samples. Null means unrecorded.",
       "Device identity and intervention annotations reviewed against the saved attempt reports."
-    ]
+    ],
+    "dataset": {
+      "id": "aime_2025",
+      "year": 2025,
+      "role": null,
+      "source": "https://huggingface.co/datasets/MathArena/aime_2025",
+      "revision": null,
+      "split": "train",
+      "rows": 30,
+      "prompt_path": "data/aime_2025_problems.jsonl",
+      "prompt_sha256": null,
+      "grader_path": "grader/data/aime_2025.jsonl",
+      "grader_sha256": null,
+      "inferred_from_legacy_runner": true
+    }
   }
 }

@@ -2,14 +2,14 @@
   "$schema": "../../data/attempt_metadata.schema.json",
   "schema_version": 1,
   "attempt_id": "20261003T203338.063138Z",
-  "label": "Qwen 35B GPTQ \u00b7 coverage",
+  "label": "Qwen 35B GPTQ · coverage",
   "intervention": {
     "label": "Larger MoE model + GPTQ Int4",
     "reference_attempt_id": "20261003T200718.717581Z",
     "changed_variables": [
       "model family and capacity",
-      "quantization: BF16 \u2192 GPTQ Int4",
-      "context: 64K \u2192 32K",
+      "quantization: BF16 → GPTQ Int4",
+      "context: 64K → 32K",
       "scheduler cap: 32 sequences",
       "Qwen reasoning parser"
     ],
@@ -103,6 +103,20 @@
     "notes": [
       "Normalized from saved config/profile and GPU samples. Null means unrecorded.",
       "Device identity and intervention annotations reviewed against the saved attempt reports."
-    ]
+    ],
+    "dataset": {
+      "id": "aime_2025",
+      "year": 2025,
+      "role": null,
+      "source": "https://huggingface.co/datasets/MathArena/aime_2025",
+      "revision": null,
+      "split": "train",
+      "rows": 30,
+      "prompt_path": "data/aime_2025_problems.jsonl",
+      "prompt_sha256": null,
+      "grader_path": "grader/data/aime_2025.jsonl",
+      "grader_sha256": null,
+      "inferred_from_legacy_runner": true
+    }
   }
 }

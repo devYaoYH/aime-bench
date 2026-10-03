@@ -2,7 +2,7 @@
   "$schema": "../../data/attempt_metadata.schema.json",
   "schema_version": 1,
   "attempt_id": "20261003T200251.421790Z",
-  "label": "Qwen 4B \u00b7 coverage setup",
+  "label": "Qwen 4B · coverage setup",
   "intervention": {
     "label": "Coverage setup interrupted",
     "reference_attempt_id": "20261003T193711.679999Z",
@@ -101,6 +101,20 @@
     "notes": [
       "Normalized from saved config/profile and GPU samples. Null means unrecorded.",
       "Device identity and intervention annotations reviewed against the saved attempt reports."
-    ]
+    ],
+    "dataset": {
+      "id": "aime_2025",
+      "year": 2025,
+      "role": null,
+      "source": "https://huggingface.co/datasets/MathArena/aime_2025",
+      "revision": null,
+      "split": "train",
+      "rows": 30,
+      "prompt_path": "data/aime_2025_problems.jsonl",
+      "prompt_sha256": null,
+      "grader_path": "grader/data/aime_2025.jsonl",
+      "grader_sha256": null,
+      "inferred_from_legacy_runner": true
+    }
   }
 }

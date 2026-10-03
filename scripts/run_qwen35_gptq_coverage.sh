@@ -9,14 +9,29 @@ command=("$HOME/.venvs/vllm/bin/python" -m src.attempt
   --first-pass-max-tokens 8192 --max-tokens 16384
   --max-attempts-per-question 4 --max-rounds 4 --target-correct 18
   --temperature 0.8 --top-p 0.95 --seed 20261003)
-if [[ "${1:-}" == "--print-command" && $# == 1 ]]; then
+print_command=false
+while (( $# )); do
+  case "$1" in
+    --print-command) print_command=true; shift ;;
+    --benchmark-year)
+      if [[ "${2:-}" != 2025 && "${2:-}" != 2026 ]]; then
+        echo "--benchmark-year requires 2025 or 2026" >&2; exit 2
+      fi
+      command+=(--benchmark-year "$2"); shift 2 ;;
+    --benchmark-role)
+      if [[ "${2:-}" != development && "${2:-}" != generalization ]]; then
+        echo "--benchmark-role requires development or generalization" >&2; exit 2
+      fi
+      command+=(--benchmark-role "$2"); shift 2 ;;
+    *)
+      echo "Usage: bash scripts/run_qwen35_gptq_coverage.sh [--print-command] [--benchmark-year 2025|2026] [--benchmark-role development|generalization]" >&2
+      exit 2 ;;
+  esac
+done
+if "$print_command"; then
   printf '%q ' "${command[@]}"
   printf '\n'
   exit 0
-fi
-if (( $# )); then
-  echo "Usage: bash scripts/run_qwen35_gptq_coverage.sh [--print-command]" >&2
-  exit 2
 fi
 "$HOME/.venvs/vllm/bin/python" scripts/prepare_qwen35_gptq.py --verify-only
 exec "${command[@]}"

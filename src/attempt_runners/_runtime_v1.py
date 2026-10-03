@@ -184,22 +184,10 @@ def attempt_lock():
             fcntl.flock(file, fcntl.LOCK_UN)
 
 
-def load_questions(indices):
-    # Deliberately strip answers; only the grader reads the key during execution.
-    rows = [
-        json.loads(line)
-        for line in (ROOT / "data/aime_2025_problems.jsonl").read_text().splitlines()
-        if line.strip()
-    ]
-    problems = [
-        {"problem_idx": row["problem_idx"], "problem": row["problem"]} for row in rows
-    ]
-    if indices:
-        requested = set(indices)
-        if not requested <= {p["problem_idx"] for p in problems}:
-            raise ValueError("Unknown question index")
-        problems = [p for p in problems if p["problem_idx"] in requested]
-    return problems
+def load_questions(indices, year=2025):
+    from src.benchmarks import load_questions as load_benchmark_questions
+    return load_benchmark_questions(indices, year)
+
 
 
 async def warm_inference(args, client, question_count):
