@@ -1,0 +1,120 @@
+{
+  "source": "attempts/20261003T222009.163270Z/vllm.log",
+  "source_sha256": "9bd8dfdb03b64f97d02f162ebcb57b131ecd6a5fa236caab07f90af10b1913e9",
+  "official_started_at_utc": "2026-10-03T22:21:44.610+00:00",
+  "jit_warning_lines": [
+    "(EngineCore pid=109943) WARNING 10-03 22:21:40 [jit_monitor.py:140] Triton kernel JIT compilation during inference: _topp_sb_stats_kernel. This causes a latency spike; consider extending warmup to cover this shape/config.",
+    "(EngineCore pid=109943) WARNING 10-03 22:21:41 [jit_monitor.py:140] Triton kernel JIT compilation during inference: _topp_sb_step_kernel. This causes a latency spike; consider extending warmup to cover this shape/config.",
+    "(EngineCore pid=109943) WARNING 10-03 22:21:42 [jit_monitor.py:140] Triton kernel JIT compilation during inference: _topp_sb_mask_kernel. This causes a latency spike; consider extending warmup to cover this shape/config.",
+    "(EngineCore pid=109943) WARNING 10-03 22:21:42 [jit_monitor.py:140] Triton kernel JIT compilation during inference: _gumbel_sample_kernel. This causes a latency spike; consider extending warmup to cover this shape/config."
+  ],
+  "preemption_warning_lines": [],
+  "oom_lines": [],
+  "engine_log_observations": [
+    {
+      "line": "(APIServer pid=109730) INFO 10-03 22:21:50 [loggers.py:328] Engine 000: Avg prompt throughput: 572.4 tokens/s, Avg generation throughput: 1155.2 tokens/s, Running: 30 reqs, Waiting: 0 reqs, GPU KV cache usage: 0.8%, Prefix cache hit rate: 27.2%",
+      "generation_tokens_s": 1155.2,
+      "running": 30,
+      "waiting": 0,
+      "kv_usage_pct": 0.8,
+      "prefix_cache_hit_rate_pct": 27.2
+    },
+    {
+      "line": "(APIServer pid=109730) INFO 10-03 22:22:00 [loggers.py:328] Engine 000: Avg prompt throughput: 23.7 tokens/s, Avg generation throughput: 4916.6 tokens/s, Running: 60 reqs, Waiting: 0 reqs, GPU KV cache usage: 3.2%, Prefix cache hit rate: 62.5%",
+      "generation_tokens_s": 4916.6,
+      "running": 60,
+      "waiting": 0,
+      "kv_usage_pct": 3.2,
+      "prefix_cache_hit_rate_pct": 62.5
+    },
+    {
+      "line": "(APIServer pid=109730) INFO 10-03 22:22:10 [loggers.py:328] Engine 000: Avg prompt throughput: 6.2 tokens/s, Avg generation throughput: 5831.1 tokens/s, Running: 60 reqs, Waiting: 0 reqs, GPU KV cache usage: 5.5%, Prefix cache hit rate: 65.9%",
+      "generation_tokens_s": 5831.1,
+      "running": 60,
+      "waiting": 0,
+      "kv_usage_pct": 5.5,
+      "prefix_cache_hit_rate_pct": 65.9
+    },
+    {
+      "line": "(APIServer pid=109730) INFO 10-03 22:22:20 [loggers.py:328] Engine 000: Avg prompt throughput: 9.2 tokens/s, Avg generation throughput: 5302.5 tokens/s, Running: 60 reqs, Waiting: 0 reqs, GPU KV cache usage: 7.0%, Prefix cache hit rate: 70.6%",
+      "generation_tokens_s": 5302.5,
+      "running": 60,
+      "waiting": 0,
+      "kv_usage_pct": 7.0,
+      "prefix_cache_hit_rate_pct": 70.6
+    },
+    {
+      "line": "(APIServer pid=109730) INFO 10-03 22:22:30 [loggers.py:328] Engine 000: Avg prompt throughput: 2.8 tokens/s, Avg generation throughput: 4948.7 tokens/s, Running: 60 reqs, Waiting: 0 reqs, GPU KV cache usage: 9.0%, Prefix cache hit rate: 71.2%",
+      "generation_tokens_s": 4948.7,
+      "running": 60,
+      "waiting": 0,
+      "kv_usage_pct": 9.0,
+      "prefix_cache_hit_rate_pct": 71.2
+    },
+    {
+      "line": "(APIServer pid=109730) INFO 10-03 22:22:40 [loggers.py:328] Engine 000: Avg prompt throughput: 2.2 tokens/s, Avg generation throughput: 4580.8 tokens/s, Running: 60 reqs, Waiting: 0 reqs, GPU KV cache usage: 10.8%, Prefix cache hit rate: 71.8%",
+      "generation_tokens_s": 4580.8,
+      "running": 60,
+      "waiting": 0,
+      "kv_usage_pct": 10.8,
+      "prefix_cache_hit_rate_pct": 71.8
+    },
+    {
+      "line": "(APIServer pid=109730) INFO 10-03 22:22:50 [loggers.py:328] Engine 000: Avg prompt throughput: 0.9 tokens/s, Avg generation throughput: 4347.8 tokens/s, Running: 60 reqs, Waiting: 0 reqs, GPU KV cache usage: 12.3%, Prefix cache hit rate: 73.0%",
+      "generation_tokens_s": 4347.8,
+      "running": 60,
+      "waiting": 0,
+      "kv_usage_pct": 12.3,
+      "prefix_cache_hit_rate_pct": 73.0
+    },
+    {
+      "line": "(APIServer pid=109730) INFO 10-03 22:23:00 [loggers.py:328] Engine 000: Avg prompt throughput: 3.6 tokens/s, Avg generation throughput: 4101.7 tokens/s, Running: 60 reqs, Waiting: 0 reqs, GPU KV cache usage: 13.5%, Prefix cache hit rate: 74.2%",
+      "generation_tokens_s": 4101.7,
+      "running": 60,
+      "waiting": 0,
+      "kv_usage_pct": 13.5,
+      "prefix_cache_hit_rate_pct": 74.2
+    },
+    {
+      "line": "(APIServer pid=109730) INFO 10-03 22:23:10 [loggers.py:328] Engine 000: Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 3910.6 tokens/s, Running: 60 reqs, Waiting: 0 reqs, GPU KV cache usage: 15.3%, Prefix cache hit rate: 74.2%",
+      "generation_tokens_s": 3910.6,
+      "running": 60,
+      "waiting": 0,
+      "kv_usage_pct": 15.3,
+      "prefix_cache_hit_rate_pct": 74.2
+    },
+    {
+      "line": "(APIServer pid=109730) INFO 10-03 22:23:20 [loggers.py:328] Engine 000: Avg prompt throughput: 4.6 tokens/s, Avg generation throughput: 3721.8 tokens/s, Running: 60 reqs, Waiting: 0 reqs, GPU KV cache usage: 15.4%, Prefix cache hit rate: 75.7%",
+      "generation_tokens_s": 3721.8,
+      "running": 60,
+      "waiting": 0,
+      "kv_usage_pct": 15.4,
+      "prefix_cache_hit_rate_pct": 75.7
+    },
+    {
+      "line": "(APIServer pid=109730) INFO 10-03 22:23:30 [loggers.py:328] Engine 000: Avg prompt throughput: 15.3 tokens/s, Avg generation throughput: 3689.7 tokens/s, Running: 60 reqs, Waiting: 0 reqs, GPU KV cache usage: 15.2%, Prefix cache hit rate: 95.4%",
+      "generation_tokens_s": 3689.7,
+      "running": 60,
+      "waiting": 0,
+      "kv_usage_pct": 15.2,
+      "prefix_cache_hit_rate_pct": 95.4
+    },
+    {
+      "line": "(APIServer pid=109730) INFO 10-03 22:23:40 [loggers.py:328] Engine 000: Avg prompt throughput: 3.1 tokens/s, Avg generation throughput: 3568.2 tokens/s, Running: 60 reqs, Waiting: 0 reqs, GPU KV cache usage: 15.8%, Prefix cache hit rate: 95.4%",
+      "generation_tokens_s": 3568.2,
+      "running": 60,
+      "waiting": 0,
+      "kv_usage_pct": 15.8,
+      "prefix_cache_hit_rate_pct": 95.4
+    },
+    {
+      "line": "(APIServer pid=109730) INFO 10-03 22:23:50 [loggers.py:328] Engine 000: Avg prompt throughput: 9.9 tokens/s, Avg generation throughput: 3436.3 tokens/s, Running: 60 reqs, Waiting: 0 reqs, GPU KV cache usage: 17.4%, Prefix cache hit rate: 97.4%",
+      "generation_tokens_s": 3436.3,
+      "running": 60,
+      "waiting": 0,
+      "kv_usage_pct": 17.4,
+      "prefix_cache_hit_rate_pct": 97.4
+    }
+  ],
+  "scope": "Existing vLLM service log observations only; no optional client polls. No preemption counter or sampled VRAM peak available."
+}

@@ -1,0 +1,4 @@
+{
+  "reasoning": "",
+  "content": " B->C only at C (common endpoint). So it's okay.\n\n- E->M: from (20,0) to (19.07,12) goes up left a bit.\n- M->A: from (19.07,12) to (0,0) goes down left.\n\nThus polygon is likely simple (non-intersecting) if the edges don't cross except at vertices.\n\nBut we need to confirm that edge F->N does not intersect any other edges, e.g., does it intersect B->C? Probably not, because B->C is above AB and F->N is below AB after crossing at some point maybe near A? Let's compute intersection of F->N with AB: AB is the x-axis from 0 to 28. The line from F (11.53,6) to N (-17.66,-30) crosses y=0 at some x coordinate. Let's find that intersection: Parametric: point = F + t*(N - F), t in [0,1]. N-F = (-17.66 - 11.53, -30 - 6) = (-29.19, -36). So coordinates: x = 11.53 - 29.19 t, y = 6 - 36 t. Set y = 0 => 6 - 36t = 0 => t = 6/36 = 1/6 = 0.1666667. Then x = 11.53 - 29.19*(1/6) ≈ 11.53 - 4.865 = 6"
+}

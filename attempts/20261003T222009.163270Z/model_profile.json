@@ -1,0 +1,5 @@
+{
+  "path": "/home/azureuser/models/r0b0tlab/VibeThinker-3B-NVFP4/vllm-expanding-64k.yaml",
+  "yaml": "# Expanding-budget experiment; preserve the standard 16K profile.\n# Callosum A100: NVFP4 weights via Marlin W4A16, BF16 activations/KV.\n# HF revision: 2fc0013974d1a466e6a5a11839f029d5aff34dc9.\n# Requires the installed vLLM build's SM80 ModelOpt FP4/Marlin support.\nmodel: /home/azureuser/models/r0b0tlab/VibeThinker-3B-NVFP4\nserved-model-name: r0b0tlab/VibeThinker-3B-NVFP4\nhost: \"127.0.0.1\"\nport: 8000\ndtype: bfloat16\nquantization: modelopt_fp4\nlinear-backend: marlin\nkv-cache-dtype: auto\ntensor-parallel-size: 1\nmax-model-len: 65536\ngpu-memory-utilization: 0.95\noverride-generation-config: '{\"max_new_tokens\": 65536}'\nenable-prefix-caching: true\nenable-prompt-tokens-details: true\n",
+  "sha256": "429d131e24fdef5e73f61298032392b15a7646d187b2d59e3e3d802b5952a7b9"
+}
