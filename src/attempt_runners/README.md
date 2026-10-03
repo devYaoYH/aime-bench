@@ -125,6 +125,21 @@ for this new sweep until it is actually executed on the remote GPU.
 
 ## Grader-triggered staged fan-out v3
 
+For matched replication of the 71.135-second BF16 30×1 barrier result, use
+`python -m src.experiments.replicate_best_v1 --trials 3`. This experiment driver
+holds the checkout lock and owns one private inference server for the whole
+batch, calling the unchanged v2 benchmark runner sequentially. It resets the
+prefix cache before each trial, with no forced cancellation, to avoid reusing
+cached solution tokens. Every attempt still performs its normal 30-stream
+warmup and starts a fresh grader. The original fixed seeds and four-request cap
+are retained, and all 30 initial payloads are compared to the reference.
+`--model r0b0tlab/VibeThinker-3B-NVFP4` changes only the model for a paired
+comparison. Cache-reset development endpoints are enabled on the owned server,
+which binds only to loopback. Summaries retain every trial, including failures;
+the default 75-second comparison threshold is a reporting aid, not proof that
+the 71-second result has been reproduced reliably. No optional GPU/engine
+polling is added to the official solving window.
+
 `python -m src.attempt_runners.speedrun_v3 --model WeiboAI/VibeThinker-3B --benchmark`
 starts one 8K request for every selected question. The first client grader
 submission releases three fresh sibling requests per still-unsolved question,
