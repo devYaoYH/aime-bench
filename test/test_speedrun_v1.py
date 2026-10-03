@@ -261,11 +261,18 @@ class SpeedrunTests(unittest.IsolatedAsyncioTestCase):
 
 
 class SweepTests(unittest.TestCase):
-    def test_manifest_ten_cells_and_paired_seeds(self):
+    def test_manifest_eight_cells_and_paired_seeds(self):
         plan = sweep.build_plan(
             json.loads((ROOT / "configs/sweeps/vibe-speedrun-v1.json").read_text())
         )
-        self.assertEqual(len(plan["cells"]), 10)
+        self.assertEqual(len(plan["cells"]), 8)
+        combinations = {
+            (c["parameters"]["parallelism"], c["parameters"]["rollouts"])
+            for c in plan["cells"]
+        }
+        self.assertNotIn((8, 1), combinations)
+        self.assertNotIn((8, 2), combinations)
+        self.assertIn((8, 4), combinations)
         self.assertEqual(plan["cells"][0]["parameters"]["schedule"], "barrier")
         self.assertEqual(
             max(c["initial_concurrent_requests"] for c in plan["cells"]), 120
@@ -287,7 +294,20 @@ class SweepTests(unittest.TestCase):
             io.StringIO()
         ) as out:
             sweep.main([])
-        self.assertEqual(len(json.loads(out.getvalue())["cells"]), 10)
+        self.assertEqual(len(json.loads(out.getvalue())["cells"]), 8)
+
+    def test_exclusions_are_validated_and_can_be_disabled(self):
+        config = json.loads((ROOT / "configs/sweeps/vibe-speedrun-v1.json").read_text())
+        config["exclude"] = []
+        self.assertEqual(len(sweep.build_plan(config)["cells"]), 10)
+        for excluded in (
+            [{}],
+            [{"typo": 8}],
+            [{"schedule": "eager"}, {"schedule": "barrier"}],
+        ):
+            config["exclude"] = excluded
+            with self.assertRaises(ValueError):
+                sweep.build_plan(config)
 
     def test_invalid_budget_and_profile_escape(self):
         for argv in (

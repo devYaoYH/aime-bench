@@ -35,6 +35,26 @@ def build_plan(config):
         for values in itertools.product(*(grid[key] for key in KEYS))
     ]
     parameters = config.get("controls", []) + parameters
+    excluded = config.get("exclude", [])
+    if not isinstance(excluded, list) or any(
+        not isinstance(pattern, dict)
+        or not pattern
+        or not set(pattern) <= set(KEYS) | {"schedule"}
+        for pattern in excluded
+    ):
+        raise ValueError(
+            "Exclusions must be nonempty parameter mappings with known keys"
+        )
+    parameters = [
+        values
+        for values in parameters
+        if not any(
+            all(values.get(key) == value for key, value in pattern.items())
+            for pattern in excluded
+        )
+    ]
+    if not parameters:
+        raise ValueError("Sweep exclusions removed every cell")
     cells = []
     for index, values in enumerate(parameters, 1):
         if set(values) != set(KEYS) | {"schedule"}:
@@ -65,6 +85,7 @@ def build_plan(config):
         "schema_version": 1,
         "runner_id": runner.RUNNER_ID,
         "cells": cells,
+        "excluded_parameters": excluded,
         "execution": "sequential; fresh grader and inference server; full-batch warmup before official timer",
         "scope": "time to target excludes model startup and warmup; generation requests capped at four per question",
         "ranking": "Only completed cells reaching the target have a time_to_target_s and rank",

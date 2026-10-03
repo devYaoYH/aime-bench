@@ -74,10 +74,11 @@ unsolved retries as workers free up; it does not wait for the slowest first grou
 `--schedule barrier` waits for each full round as a comparison. Both preserve
 per-question deduplication across groups and a single verifier per question.
 
-The [manifest](../../configs/sweeps/vibe-speedrun-v1.json) has ten cells: question
-parallelism 8/16/30 × fan-out 1/2/4, plus a 30 × 1 barrier control, all using the
+The [manifest](../../configs/sweeps/vibe-speedrun-v1.json) has eight cells: question
+parallelism 8/16/30 × fan-out 1/2/4, excluding 8 × 1 and 8 × 2, plus a 30 × 1 barrier control, all using the
 same seed, temperature 0.8, top-p 0.95, and 8K first-pass budget. Edit the versioned
-manifest's temperature/top-p/seed dimensions for additional sweeps. Maximum initial
+manifest's temperature/top-p/seed dimensions for additional sweeps. Partial parameter
+mappings in `exclude` remove combinations before launch. Maximum initial
 concurrency is 120 requests. Generate a plan locally without CUDA or SSH:
 
 ```sh
