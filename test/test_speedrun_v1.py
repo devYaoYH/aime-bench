@@ -275,7 +275,23 @@ class SweepTests(unittest.TestCase):
         self.assertNotIn((8, 1), combinations)
         self.assertNotIn((8, 2), combinations)
         self.assertIn((8, 4), combinations)
-        self.assertEqual(plan["cells"][0]["parameters"]["schedule"], "barrier")
+        self.assertEqual(
+            (
+                plan["cells"][0]["parameters"]["parallelism"],
+                plan["cells"][0]["parameters"]["rollouts"],
+            ),
+            (30, 4),
+        )
+        self.assertEqual(
+            (
+                plan["cells"][1]["parameters"]["parallelism"],
+                plan["cells"][1]["parameters"]["rollouts"],
+            ),
+            (30, 2),
+        )
+        self.assertEqual(
+            sum(c["parameters"]["schedule"] == "barrier" for c in plan["cells"]), 1
+        )
         self.assertEqual(
             max(c["initial_concurrent_requests"] for c in plan["cells"]), 120
         )

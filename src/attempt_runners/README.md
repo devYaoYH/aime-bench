@@ -84,6 +84,9 @@ manifest's temperature/top-p/seed dimensions for additional sweeps. Partial para
 mappings in `exclude` remove combinations before launch. Maximum initial
 concurrency is 120 requests. Generate a plan locally without CUDA or SSH:
 
+The manifest orders question parallelism and fan-out descending, starting with
+30 × 4, then 30 × 2. The matched barrier control remains in the comparison.
+
 ```sh
 .venv/bin/python -m src.attempt_runners.sweep_speedrun_v1
 ```

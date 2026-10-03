@@ -55,6 +55,13 @@ def build_plan(config):
     ]
     if not parameters:
         raise ValueError("Sweep exclusions removed every cell")
+    order = config.get("order", "listed")
+    if order not in ("listed", "parallelism_desc"):
+        raise ValueError("Unknown sweep order")
+    if order == "parallelism_desc":
+        parameters.sort(
+            key=lambda values: (values["parallelism"], values["rollouts"]), reverse=True
+        )
     cells = []
     for index, values in enumerate(parameters, 1):
         if set(values) != set(KEYS) | {"schedule"}:
@@ -86,6 +93,7 @@ def build_plan(config):
         "runner_id": runner.RUNNER_ID,
         "cells": cells,
         "excluded_parameters": excluded,
+        "order": order,
         "execution": "sequential; fresh grader and inference server; full-batch warmup before official timer",
         "scope": "time to target excludes model startup and warmup; generation requests capped at four per question",
         "ranking": "Only completed cells reaching the target have a time_to_target_s and rank",
