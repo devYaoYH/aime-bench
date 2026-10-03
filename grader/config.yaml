@@ -1,0 +1,13 @@
+# Speedrun grader config. Swap `dataset` to change problem set (same schema).
+# Default = the AIME-2025 file bundled in this repo (data/aime_2025.jsonl), so the
+# tool is fully self-contained and needs no network.
+dataset:
+  source: data/aime_2025.jsonl  # local file (path relative to this dir) OR an HF name
+  format: jsonl                 # jsonl | csv | parquet | hf
+  idx_field: problem_idx        # column holding the question index
+  gold_field: answer            # column holding the gold answer
+
+cost_c: 3.0                     # seconds each verification costs (toll, from worker pickup)
+host: 127.0.0.1
+port: 8077
+audit_log: logs/queries.jsonl   # append-only, relative to this dir
