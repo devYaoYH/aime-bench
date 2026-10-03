@@ -98,13 +98,21 @@ assert.deepEqual(initialColors,targetColors,'Colors must match across plots and 
 const key=vm.runInContext('modelLegend(colorRows)',context);
 assert.equal((key.match(/class="model-key"/g)||[]).length,4);
 assert.match(key,/VibeThinker 3B · BF16/);assert.match(key,/VibeThinker 3B · NVFP4/);
-const elements={'#benchmark-year':{value:'2025'},'#curve-window':{value:'all'},
+const elements={'#benchmark-year':{value:'2025'},'#attempt-cluster':{value:'all'},'#curve-window':{value:'all'},
   '#progress-plot':{},'#progress-model-legend':{},'#curve-legend':{}};
 context.document.querySelector=selector=>elements[selector];
 vm.runInContext('results={attempts:colorRows};renderProgress()',context);
 const progressColors=Object.fromEntries([...elements['#progress-plot'].innerHTML.matchAll(/<path[^>]*stroke="([^"]+)"[^>]*><title>([^<]+)<\/title>/g)].map(m=>[m[2],m[1]]));
 assert.deepEqual(progressColors,targetColors,'Progress curves must use the same model colors');
 assert.equal(elements['#progress-model-legend'].innerHTML,key);
+context.subset=[context.colorRows[2],context.colorRows[4]];
+const numbered=JSON.parse(JSON.stringify(vm.runInContext('attemptHistory(subset,colorRows)',context)));
+assert.deepEqual(numbered.points.map(r=>r.plot_number),[3,5],'Cluster filters must preserve original point numbers');
+const initialNumbered=JSON.parse(JSON.stringify(vm.runInContext('initialLatencyHistory(subset,colorRows)',context)));
+assert.deepEqual(initialNumbered.points.map(r=>r.initial_number),[3,5]);
+context.familyRows=[{id:'a',cluster:{family_id:'one'}},{id:'b',cluster:{family_id:'two'}},{id:'invalid'}];
+assert.deepEqual(JSON.parse(JSON.stringify(vm.runInContext('clusterRows(familyRows,"one")',context))).map(r=>r.id),['a']);
+assert.equal(vm.runInContext('clusterRows(familyRows,"all").length',context),3);
 console.log('Results history checks passed: chronological points, strict running minimum, timestamps, floor, initial latency, model colors, and SVG.');
 context.mixedYears=[{id:'dev',benchmark_year:2025},{id:'test',benchmark_year:2026},{id:'legacy'}];
 assert.deepEqual(JSON.parse(JSON.stringify(vm.runInContext('benchmarkRows(mixedYears, 2026)',context))).map(r=>r.id),['test']);

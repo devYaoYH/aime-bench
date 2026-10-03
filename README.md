@@ -77,6 +77,16 @@ warmup. Plot logic can be checked with `node test/test_results_history.js`.
 The final-only pass@4 and Qwen35 GPTQ baseline points (2 and 3) are excluded from
 the overall history plot and its scale; they remain in the full attempt table.
 
+The overall viewer also groups attempts into configuration families and matched-setting
+repeat groups. Choose a **Cluster** to filter every plot and the controls table.
+Families match model/quantization, attention backend, AIME year/question set,
+solving policy, budgets, sampling and VRAM settings; seeds, source versions, dataset
+revisions, instrumentation and server reuse distinguish groups within a family.
+The cluster table keeps all outcomes, with reached/total counts and successful-run
+median/range. Expand a group to inspect its individual attempts and provenance.
+These are descriptive groups from recorded controls, not proof of independent
+replication. Canonical evidence stays at `attempts/<ID>/` so existing links work.
+
 ## Canonical remote attempts
 
 See [the attempt workflow](docs/attempts.md) and [repo agent instructions](AGENTS.md).

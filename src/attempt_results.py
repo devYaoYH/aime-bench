@@ -13,6 +13,7 @@ import math
 
 from src.attempt_metadata import build_metadata, validate_metadata
 from src.benchmarks import recorded_dataset
+from src.attempt_clusters import assignment, summarize_clusters
 
 TARGET = 18
 FLOOR_S = 54.0
@@ -126,6 +127,7 @@ def build_results(store):
                          'time_to_18_s': time, 'time_source': events[TARGET - 1]['source'] if time is not None else None,
                          'first_grader_request_s': first_request['elapsed_s'] if first_request else None,
                          'first_grader_request': first_request,
+                         'cluster': assignment(metadata, overview['config']),
                          'settlement_s': attempt['official_latency_s'], 'events': events,
                          'grader_floor_s': floor, 'above_floor_s': time - floor if time is not None and floor is not None else None,
                          'comparison': None})
@@ -161,5 +163,6 @@ def build_results(store):
                              'saved_s': base - time if measurable else None,
                              'reduction_pct': (base - time) / base * 100 if measurable else None}
     return {'target_correct': TARGET, 'reference_floor_s': FLOOR_S,
+            'clusters': summarize_clusters(rows),
             'floor_note': '54 seconds = 18 correct questions × 3 seconds per serial grader query. Assumes zero incorrect/duplicate queries and no startup delay. Generation can overlap grading; initialization and warmup are excluded.',
             'attempts': rows, 'warnings': warnings}

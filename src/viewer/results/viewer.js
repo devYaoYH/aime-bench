@@ -35,16 +35,18 @@ let results;
 function benchmarkRows(rows, year) {
   return rows.filter(r => (r.benchmark_year ?? r.metadata?.provenance?.dataset?.year ?? 2025) === Number(year));
 }
-function selectedRows() { return benchmarkRows(results.attempts, $('#benchmark-year').value); }
-function attemptHistory(rows) {
-  const measured=rows.filter(r=>r.time_to_18_s!=null && Number.isFinite(r.time_to_18_s) && r.time_to_18_s>=0)
+function clusterRows(rows, id) { return id==='all'?rows:rows.filter(r=>r.cluster?.family_id===id); }
+function selectedRows() { return clusterRows(benchmarkRows(results.attempts, $('#benchmark-year').value), $('#attempt-cluster').value); }
+function attemptHistory(rows, numberingRows=rows) {
+  const measured=numberingRows.filter(r=>r.time_to_18_s!=null && Number.isFinite(r.time_to_18_s) && r.time_to_18_s>=0)
     .map(r=>({...r,start_ms:Date.parse(r.attempt_started_at_utc??r.started_at_utc)}))
     .filter(r=>Number.isFinite(r.start_ms)).sort((a,b)=>a.start_ms-b.start_ms || a.id.localeCompare(b.id))
     .map((r,i)=>({...r,plot_number:i+1}));
-  const points=measured.filter(r=>!separateBaselines.has(r.id));
+  const visible=new Set(rows.map(r=>r.id));
+  const points=measured.filter(r=>visible.has(r.id) && !separateBaselines.has(r.id));
   let best=Infinity;
   const frontier=points.filter(r=>{if(r.time_to_18_s<best){best=r.time_to_18_s;return true;}return false;});
-  return {points,frontier,baselines:measured.filter(r=>separateBaselines.has(r.id))};
+  return {points,frontier,baselines:measured.filter(r=>visible.has(r.id) && separateBaselines.has(r.id))};
 }
 const historyDate=new Intl.DateTimeFormat('en-US',{timeZone:'America/Los_Angeles',month:'short',day:'numeric',hour:'numeric',minute:'2-digit',second:'2-digit',timeZoneName:'short'});
 const historyTick=new Intl.DateTimeFormat('en-US',{timeZone:'America/Los_Angeles',hour:'numeric',minute:'2-digit'});
@@ -83,12 +85,13 @@ function historyLegend(history) {
   const bestIds=new Set(history.frontier.map(r=>r.id));
   return history.points.map(r=>`<a class="history-item" href="${attemptLink(r)}"><span class="history-number" style="background:${modelStyle(r).color}">${r.plot_number}</span><span><strong>${esc(r.metadata.label)}</strong><small>${sec(r.time_to_18_s)} · ${esc(historyDate.format(r.start_ms))}${bestIds.has(r.id)?' · new best':''}</small><small>${esc(r.metadata.intervention.label)}</small></span></a>`).join('');
 }
-function initialLatencyHistory(rows) {
-  const inventory=rows.map(r=>({...r,start_ms:Date.parse(r.attempt_started_at_utc??r.started_at_utc)}))
+function initialLatencyHistory(rows, numberingRows=rows) {
+  const inventory=numberingRows.map(r=>({...r,start_ms:Date.parse(r.attempt_started_at_utc??r.started_at_utc)}))
     .filter(r=>r.metadata && Number.isFinite(r.start_ms))
     .sort((a,b)=>a.start_ms-b.start_ms || a.id.localeCompare(b.id))
     .map((r,i)=>({...r,initial_number:i+1}));
-  const points=inventory.filter(r=>Number.isFinite(r.first_grader_request_s) && r.first_grader_request_s>=0);
+  const visible=new Set(rows.map(r=>r.id));
+  const points=inventory.filter(r=>visible.has(r.id) && Number.isFinite(r.first_grader_request_s) && r.first_grader_request_s>=0);
   return {points,unavailable:rows.filter(r=>!points.some(p=>p.id===r.id))};
 }
 function initialLatencyPlot(history) {
@@ -145,21 +148,52 @@ function controlsTable(rows){
     return `<tr><td><a href="${attemptLink(r)}">${esc(m.label)}</a><small>${esc(r.id)}<br>${esc(m.controls.dataset)} · ${esc(r.benchmark_role??'role unrecorded')}<br>${esc(m.model.id)}<br>${esc(m.model.quantization??'Quantization unrecorded')} · ${esc(m.model.activation_dtype??'dtype unrecorded')}</small></td><td>${esc(m.intervention.label)}<small>${esc(r.attempt_status)}</small></td><td><span class="result-time">${sec(r.time_to_18_s)}</span><small class="${r.time_to_18_s==null?'unmet':''}">${esc(r.status)}</small><small>Settlement: ${sec(r.settlement_s)}</small></td><td>${r.solved??'—'} / ${m.controls.question_indices.length||'—'}</td><td>${hp.parallelism??'—'} × ${hp.rollouts??'—'}<small>${hp.first_pass_max_tokens??'—'} first-pass tokens<br>${hp.max_attempts_per_question??'—'} requests / question</small></td><td>${envelope}<small>${esc(g.device??'Device unrecorded')}</small></td><td><details><summary>Inspect controls</summary><p>${esc(m.intervention.comparison_note)}</p>${r.error?`<p class="unmet">${esc(r.error)}</p>`:''}<small>Runner: ${esc(m.runner.module)}<br>${esc(m.runner.version)}<br>Source: ${esc(m.runner.git_commit)}<br>Context: ${m.controls.max_context_tokens??'—'} tokens<br>Seed: ${hp.seed??'—'} · T ${hp.temperature??'—'} · top-p ${hp.top_p??'—'}</small>${changed?`<h4>Changed recorded controls</h4><pre>${esc(changed)}</pre><h4>Matched recorded controls</h4><pre>${esc(c.matched_controls.join('\n'))}</pre>`:''}<h4>Full metadata</h4><pre>${esc(JSON.stringify(m,null,2))}</pre>${r.metadata_missing?'':`<a href="/api/attempts/${encodeURIComponent(r.id)}/files/metadata.json" target="_blank" rel="noopener">metadata.json ↗</a>`}</details></td></tr>`;
   }).join('');
 }
+function populateClusterFilter() {
+  const select=$('#attempt-cluster'),current=select.value;
+  const clusters=(results.clusters??[]).filter(c=>c.benchmark_year===Number($('#benchmark-year').value));
+  select.innerHTML='<option value="all">All configuration families</option>'+clusters.map(c=>`<option value="${esc(c.id)}">${esc(c.label)} · ${c.count} attempt${c.count===1?'':'s'}</option>`).join('');
+  select.value=clusters.some(c=>c.id===current)?current:'all';
+  return clusters;
+}
+function clusterTable(clusters, rows) {
+  const byId=new Map(rows.map(r=>[r.id,r]));
+  const range=s=>s.n?`${sec(s.min_s)}–${sec(s.max_s)}`:'—';
+  return `<div class="table-scroll"><table class="results-table cluster-table"><thead><tr><th>Configuration family</th><th>Reached / attempts</th><th>Median time to 18</th><th>Range</th><th>Matched settings &amp; individual attempts</th></tr></thead><tbody>${clusters.map(c=>{
+    const first=byId.get(c.attempt_ids[0]),groups=c.replications.map(g=>{
+      const member=byId.get(g.attempt_ids[0]),controls=member?.cluster.recorded_controls??{};
+      const benchmark=controls['config.benchmark'],reuse=controls['config.reuse_server'];
+      const source=controls['runner.git_commit'];
+      return `<details><summary>${g.count} attempt${g.count===1?'':'s'} · ${esc(controls['runner.version']??'runner unavailable')} · seed ${esc(controls['config.seed']??'unrecorded')}</summary><small>${benchmark==null?'Benchmark flag unrecorded':benchmark?'Benchmark mode':'Profiling configuration'} · ${reuse==null?'Server reuse unrecorded':reuse?'Reused server':'Managed server'}<br>Source: ${esc(source??'unrecorded')}</small><ul>${g.attempt_ids.map(id=>{const r=byId.get(id);return `<li><a href="${attemptLink({id})}">${esc(r?.metadata.label??id)}</a><small>${esc(id)} · ${sec(r?.time_to_18_s)} · ${esc(r?.status??'unavailable')}<br>Initial latency: ${sec(r?.first_grader_request_s)}</small></li>`;}).join('')}</ul></details>`;
+    }).join('');
+    const variations=c.varying_controls.length?`<details><summary>Changed controls within this family (${c.varying_controls.length})</summary><pre>${esc(c.varying_controls.map(v=>`${v.variable}: ${v.values.map(x=>JSON.stringify(x)).join(' / ')}`).join('\n'))}</pre></details>`:'<small>Recorded settings match across this family.</small>';
+    return `<tr><td><span class="cluster-swatch" style="background:${modelStyle(first??{}).color}"></span><strong>${esc(c.label)}</strong><small>${c.replications.length} matched-setting group${c.replications.length===1?'':'s'}</small>${variations}</td><td data-label="Reached / attempts">${c.time_to_18.n} / ${c.count}<small>${esc(Object.entries(c.statuses).map(([status,n])=>`${n} ${status}`).join(' · '))}</small></td><td data-label="Median time to 18"><span class="result-time">${sec(c.time_to_18.median_s)}</span><small>Initial median: ${sec(c.initial_latency.median_s)} (${c.initial_latency.n} timed)</small></td><td data-label="Range">${range(c.time_to_18)}</td><td data-label="Matched settings &amp; individual attempts">${groups}</td></tr>`;
+  }).join('')}</tbody></table></div>`;
+}
+function renderClusters(clusters, rows) {
+  const selected=$('#attempt-cluster').value;
+  const visible=selected==='all'?clusters:clusters.filter(c=>c.id===selected);
+  $('#cluster-count').textContent=`${visible.length} configuration ${visible.length===1?'family':'families'} · ${visible.reduce((n,c)=>n+c.count,0)} attempts`;
+  const repeated=visible.filter(c=>c.count>1),single=visible.filter(c=>c.count===1);
+  $('#cluster-summary').innerHTML=(repeated.length?clusterTable(repeated,rows):'')+(single.length?(selected==='all'?`<details class="singleton-clusters"><summary>${single.length} single-attempt configurations</summary>${clusterTable(single,rows)}</details>`:clusterTable(single,rows)):'')||'<p class="detail-note">No valid configurations available for clustering.</p>';
+}
 function renderResults(){
+    const clusters=populateClusterFilter();
+    const numberingRows=benchmarkRows(results.attempts,$('#benchmark-year').value);
     const rows=selectedRows(),ranked=rows.filter(r=>r.time_to_18_s!=null).sort((a,b)=>a.time_to_18_s-b.time_to_18_s),best=ranked[0];
     $('#inventory').textContent=`${rows.length} saved attempts · ${ranked.length} measured targets reached`;
     $('#notice').textContent=results.warnings.join(' · ');$('#notice').hidden=!results.warnings.length;
     const metrics=[['Fastest observed',best?sec(best.time_to_18_s):'—',best?.metadata.label??'No measured target'],['Grader floor','54.00s','3s × 18 correct questions'],['Above the floor',best?sec(best.time_to_18_s-results.reference_floor_s):'—','Fastest run, after warmup']];
     $('#headline-metrics').innerHTML=metrics.map(([title,value,note],i)=>`<article class="metric-card ${i===0?'score-card':''}"><div class="metric-label">${title}</div><div class="metric-value">${value}</div><div class="metric-sub">${esc(note)}</div></article>`).join('');
-    const history=attemptHistory(rows);
+    const history=attemptHistory(rows,numberingRows);
     $('#history-model-legend').innerHTML=modelLegend(history.points);
     $('#comparison-plot').innerHTML=comparisonPlot(history);$('#history-legend').innerHTML=historyLegend(history);$('#floor-note').textContent=results.floor_note;
     $('#baseline-note').innerHTML=history.baselines.length?`Separate baselines excluded from this plot: ${history.baselines.map(r=>`<a href="${attemptLink(r)}">${r.plot_number}. ${esc(r.metadata.label)}</a> (${sec(r.time_to_18_s)})`).join(' · ')}. Their records remain in the full attempt table below.`:'';
-    const initial=initialLatencyHistory(rows);
+    const initial=initialLatencyHistory(rows,numberingRows);
     $('#initial-model-legend').innerHTML=modelLegend(initial.points);
     $('#initial-plot').innerHTML=initialLatencyPlot(initial);$('#initial-legend').innerHTML=initialLatencyLegend(initial);
     $('#initial-unavailable').innerHTML=initial.unavailable.length?`Request timing unavailable: ${initial.unavailable.map(r=>`<a href="${attemptLink(r)}">${esc(r.metadata?.label??r.id)}</a> (${esc(r.status)})`).join(' · ')}.`:'';
     $('#excluded-note').textContent=rows.filter(r=>r.time_to_18_s==null || !Number.isFinite(Date.parse(r.attempt_started_at_utc??r.started_at_utc))).map(r=>`${r.metadata?.label??r.id}: ${r.time_to_18_s==null?r.status:'start timestamp unavailable'}${r.solved!=null?` (${r.solved} correct)`:''}`).join(' · ');
+    renderClusters(clusters,numberingRows);
     $('#interventions').innerHTML=interventionCards(rows);$('#attempt-rows').innerHTML=controlsTable(rows);renderProgress();$('#content').hidden=false;
 }
 async function refresh(){
@@ -169,4 +203,4 @@ async function refresh(){
     renderResults();
   }catch(e){$('#error').textContent=e.message;$('#error').hidden=false;}finally{$('#refresh').disabled=false;}
 }
-document.addEventListener('DOMContentLoaded',()=>{$('#refresh').addEventListener('click',refresh);$('#benchmark-year').addEventListener('change',()=>{if(results)renderResults();});$('#curve-window').addEventListener('change',renderProgress);refresh();});
+document.addEventListener('DOMContentLoaded',()=>{$('#refresh').addEventListener('click',refresh);$('#benchmark-year').addEventListener('change',()=>{if(results)renderResults();});$('#attempt-cluster').addEventListener('change',()=>{if(results)renderResults();});$('#curve-window').addEventListener('change',renderProgress);refresh();});
