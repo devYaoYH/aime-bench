@@ -148,12 +148,14 @@ integers are deduplicated across rounds for that question.
 
 ## Naive final-answer baseline
 
+The baseline is an independent versioned runner, separate from `src.attempt`.
+See the [runner catalogue](../src/attempt_runners/README.md) for version policies.
 Deploy the separate `configs/vllm/WeiboAI/VibeThinker-3B/vllm-baseline-16k.yaml`
 profile beside `~/models/WeiboAI/VibeThinker-3B/vllm.yaml`, then run:
 
 ```sh
-~/.venvs/vllm/bin/python -m src.attempt --model WeiboAI/VibeThinker-3B \
-  --model-profile vllm-baseline-16k.yaml --strategy baseline \
+~/.venvs/vllm/bin/python -m src.attempt_runners.naive_pass4_v1 \
+  --model WeiboAI/VibeThinker-3B \
   --parallelism 30 --rollouts 4 --max-tokens 16384 --target-correct 18
 ```
 

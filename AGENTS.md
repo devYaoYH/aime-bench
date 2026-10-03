@@ -44,6 +44,13 @@ support; report those limitations rather than modifying fixtures to hide them.
 
 ## Coverage experiments
 
+- Keep the canonical `src/attempt.py` policy unchanged when adding experimental
+  baselines. Put independently runnable, versioned policies and their tests in
+  `src/attempt_runners/` and update its README catalogue. Use the isolated
+  `src.attempt_runners.naive_pass4_v1` entry point for the naive final-only baseline.
+- Record the runner version in new experimental artifacts. Preserve the original
+  source commit and command in historical attempt records after reorganizing code.
+
 - Keep the per-question generation request cap at four initially. Continuation
   segments count toward the cap. Stop at the configured solve target (initially
   18), or report that the target was unmet after exhausting the budget.

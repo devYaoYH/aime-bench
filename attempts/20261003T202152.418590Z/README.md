@@ -23,11 +23,25 @@ ungraded. A correct final verdict cancelled that question's siblings; the
 18th solved question cancelled all remaining work. All 18 checked candidates
 were from naturally completed final responses and were correct.
 
+The historical command at source commit `0834cfe` was:
+
 ```sh
 ~/.venvs/vllm/bin/python -m src.attempt --model WeiboAI/VibeThinker-3B \
   --model-profile vllm-baseline-16k.yaml --strategy baseline \
   --parallelism 30 --rollouts 4 --max-tokens 16384 --target-correct 18
 ```
+
+The baseline policy is now isolated in
+[naive_pass4_v1](../../src/attempt_runners/naive_pass4_v1.py); the canonical runner
+has been restored to its pre-baseline implementation. Future equivalent runs use:
+
+```sh
+~/.venvs/vllm/bin/python -m src.attempt_runners.naive_pass4_v1 \
+  --model WeiboAI/VibeThinker-3B
+```
+
+The original config, summary, source commit, and recorded results above are
+unchanged historical evidence; this reorganization did not rerun the experiment.
 
 | Measurement | Result |
 | --- | ---: |
