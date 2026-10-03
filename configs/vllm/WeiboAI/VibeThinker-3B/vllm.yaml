@@ -1,0 +1,13 @@
+# Callosum A100 profile. Deploy to ~/models/WeiboAI/VibeThinker-3B/vllm.yaml.
+# Weights: Hugging Face revision 77bd2cced09193c8b9a59a32bd8577bbd1f3e01c.
+model: /home/azureuser/models/WeiboAI/VibeThinker-3B
+served-model-name: WeiboAI/VibeThinker-3B
+host: "127.0.0.1"
+port: 8000
+dtype: bfloat16
+tensor-parallel-size: 1
+max-model-len: 65536
+gpu-memory-utilization: 0.80
+override-generation-config: '{"max_new_tokens": 16384}'
+enable-prefix-caching: true
+enable-prompt-tokens-details: true

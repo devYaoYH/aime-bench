@@ -15,8 +15,8 @@ python3 -m venv grader/.venv
 grader/.venv/bin/pip install -r grader/requirements-local.txt
 ```
 
-Model weights and profiles live in `~/models/<model ID>/vllm.yaml`. The Qwen
-profile is also tracked in this repo so its changes can follow the same local
+Model weights and profiles live in `~/models/<model ID>/vllm.yaml`. The Qwen and VibeThinker
+profiles are also tracked in this repo so its changes can follow the same local
 review/test/push/pull workflow. Deploy it after pulling:
 
 ```sh
@@ -106,6 +106,11 @@ unsolved question is a completed experiment, not an infrastructure error.
   --target-correct 18 --max-attempts-per-question 4
 ```
 
+Switch to `--model WeiboAI/VibeThinker-3B` to run the same strategy with the
+other available model. Deploy its tracked profile from
+`configs/vllm/WeiboAI/VibeThinker-3B/vllm.yaml` to the corresponding `~/models`
+path after pulling; its server also caps each request at 16,384 output tokens.
+
 Coverage mode defaults to 30 concurrent questions and one streaming generation
 per question. It tries all questions in the first round, then works only on
 unsolved questions. It stops remaining work as soon as 18 questions are verified
@@ -118,7 +123,7 @@ outcome, not an infrastructure error.
 A token-capped unsolved response is continued from the exact returned prompt and
 output token IDs via `/v1/completions`, with no chat retemplating. Each continuation
 is linked to its parent rollout and respects both the server's 16,384-token output
-ceiling and the model's remaining 32,768-token context. If the trajectory ends
+ceiling and the model's remaining context (32,768 for Qwen; 65,536 for VibeThinker). If the trajectory ends
 naturally with a wrong/no answer, or fills its context window, the next request
 starts a fresh sample. `--no-continuation` provides a fresh-retry control.
 Incomplete token-ID evidence fails the experiment rather than silently changing
@@ -127,7 +132,7 @@ recorded seed for the suffix rather than resuming an internal RNG state.
 
 vLLM's active request ends at the token cap. Reuse on a subsequent request depends
 on automatic prefix caching and cache retention/eviction; it is not a persistent
-GPU session. Qwen's profile explicitly enables prefix caching and prompt-token
+GPU session. Both tracked model profiles explicitly enable prefix caching and prompt-token
 usage details. Each segment saves token IDs, TTFT, cached prompt tokens, reported
 cache-hit fraction, and VRAM. The experiment measures cache reuse instead of
 assuming that saved text guarantees a cache hit. See the
