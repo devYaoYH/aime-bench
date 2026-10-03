@@ -1,0 +1,53 @@
+{
+  "settings": {
+    "model": "Qwen/Qwen3.5-4B",
+    "endpoint": "http://127.0.0.1:8000/v1/chat/completions",
+    "source_repo_commit": "1b63083fea6b707ae240e6025a627a0a30df59ef",
+    "model_repo_commit": "4183241a860a6de1d4764d8753923e2825e729bd",
+    "model_launch_config": "/home/azureuser/models/Qwen/Qwen3.5-4B/vllm.yaml",
+    "model_launch_config_sha256": "cb6658ee3bbb256050a812b31dbf76f60d7d34834ebcfe48435982baf85723ae",
+    "vllm_version": "0.30.1rc1.dev623+g4ac0d0eac",
+    "dataset": {
+      "source": "https://huggingface.co/datasets/MathArena/aime_2025",
+      "revision": "c94da77eb22bbd6439e62a323bec18493a421302",
+      "split": "train",
+      "rows": 30,
+      "dataset_sha256": "fe7b8a157da7c1389ab0ca9ffb1536973843b8244a796d5c1f5fbb0b62a1f221",
+      "note": "Official problem statements and answers; answers are used only for local grading."
+    },
+    "questions": 30,
+    "samples_per_question": 8,
+    "concurrency": 240,
+    "max_tokens": 64,
+    "max_generation_attempts_per_slot": 3,
+    "seed_base": 2026100300,
+    "seed_formula": "seed_base + (problem_idx - 1) * 8 + (sample_number - 1) + (generation_attempt - 1) * 1000",
+    "sampling": {
+      "temperature": 0.8,
+      "top_p": 0.9,
+      "top_k": 40
+    },
+    "chat_template_kwargs": {
+      "enable_thinking": false
+    },
+    "system_prompt": "Give your best answer to the AIME math problem. Respond with exactly one integer from 0 to 999. Do not include reasoning, words, or punctuation.",
+    "key_in_model_inputs": false,
+    "grading": "Local exact integer match; only complete parseable responses vote",
+    "voting": "At least 4 of 8 identical parseable answers. A 4-4 tie meets the agreement threshold but has no unique prediction; report gold-vote count separately."
+  },
+  "started_at_utc": "2026-10-03T19:24:10.444+00:00",
+  "repair_events": [
+    {
+      "producer": "src.experiments.local_qwen.repair_missing",
+      "producer_commit": "f124d477b612f35a82d2b0e297f178a4d97dba1b",
+      "started_at_utc": "2026-10-03T19:27:50.272+00:00",
+      "max_total_attempts_per_slot": 8,
+      "slots": [
+        "22/03"
+      ],
+      "extra_attempts": 1,
+      "finished_at_utc": "2026-10-03T19:27:50.382+00:00",
+      "resolved_slots": 1
+    }
+  ]
+}

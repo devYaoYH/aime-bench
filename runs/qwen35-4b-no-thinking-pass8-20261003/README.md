@@ -13,4 +13,19 @@ Run from the repository root on callosum, after launching the Qwen vLLM config:
 
     ~/.venvs/vllm/bin/python -m src.experiments.local_qwen.no_thinking_pass8
 
-Results will be added here after the run.
+## Results
+
+All 30 questions have eight parseable candidate integers (240 total). The initial concurrent collection took 22.8 seconds. It required 260 generation attempts to fill 239 slots; Q22 sample 3 first hit the output cap twice and then returned `1075`, outside the AIME range. One separately recorded no-thinking repair attempt supplied `154`, bringing the total to 261 attempts and 240 parseable slots. No saved response had reasoning content.
+
+| Measure | Result |
+| --- | ---: |
+| Questions with at least four votes for one answer | 2 / 30 |
+| Of those, questions with at least four votes for the gold answer | 0 / 2 |
+| Unique four-vote-or-higher leaders that were correct | 0 / 2 |
+| Four–four ties | 0 |
+| Questions with any correct sample | 2 / 30 |
+| Correct individual samples | 2 / 240 |
+
+The two agreement cases were Q20: `96` received 4 votes versus gold `336`; and Q26: `1` received 5 votes versus gold `113`. Thus the requested 4-of-8 agreement count is **2**, and **0** of those agreed answers are correct. The two isolated correct samples were on Q10 and Q29; neither question reached four votes for that answer.
+
+The `summary.json` wall-clock span includes the pause between initial collection and the targeted repair. It is not an inference-only latency measurement. `samples.csv` is the versioned per-sample candidate table; the ignored `questions/` records preserve each exact request, full response, and retry for audit.
