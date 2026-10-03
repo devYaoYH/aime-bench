@@ -28,7 +28,7 @@ const result=history(rows);
 assert.deepEqual(result.points.map(r=>r.id),['first','best','tie','slow']);
 assert.deepEqual(result.frontier.map(r=>r.id),['first','best']);
 assert.deepEqual(rows.map(r=>r.id),before,'Sorting must not mutate the inventory');
-assert.deepEqual(history([]),{points:[],frontier:[]});
+assert.deepEqual(history([]),{points:[],frontier:[],baselines:[]});
 assert.equal(history([row('legacy',null,54,'2026-10-03T20:00:00Z')]).points.length,1);
 context.rows=rows;
 vm.runInContext('results={reference_floor_s:54}',context);
@@ -41,4 +41,16 @@ assert.match(svg,/Attempt started · America\/Los_Angeles/);
 assert.match(svg,/Time to 18 verified correct answers \(seconds\)/);
 context.rows=[row('single','2026-10-03T20:00:00Z',54)];
 assert.doesNotMatch(vm.runInContext('comparisonPlot(attemptHistory(rows))',context),/NaN|Infinity/);
+context.rows=[row('first','2026-10-03T20:07:00Z',92),
+  row('20261003T202152.418590Z','2026-10-03T20:21:00Z',336),
+  row('20261003T203338.063138Z','2026-10-03T20:33:00Z',517),
+  row('improved','2026-10-03T20:53:00Z',85),row('retry','2026-10-03T21:02:00Z',97)];
+const filtered=history(context.rows);
+assert.deepEqual(filtered.points.map(r=>r.plot_number),[1,4,5]);
+assert.deepEqual(filtered.baselines.map(r=>r.plot_number),[2,3]);
+assert.deepEqual(filtered.frontier.map(r=>r.id),['first','improved']);
+const filteredSvg=vm.runInContext('comparisonPlot(attemptHistory(rows))',context);
+assert.equal((filteredSvg.match(/class="attempt-dot"/g)||[]).length,3);
+assert.doesNotMatch(filteredSvg,/20261003T202152|20261003T203338/);
+assert.match(filteredSvg,/>120s<\/text>/,'Y-axis must rescale around the remaining runs');
 console.log('Results history checks passed: chronological points, strict running minimum, timestamps, floor, and SVG.');

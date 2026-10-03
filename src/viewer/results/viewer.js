@@ -10,14 +10,18 @@ const esc = v => String(v ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt
 const sec = v => v == null ? '—' : `${v.toFixed(2)}s`;
 const colors = ['#147d65','#54729b','#b37b30','#865b89','#b65e46','#67804b'];
 const attemptLink = row => `/?attempt=${encodeURIComponent(row.id)}`;
+// Historical points 2 and 3 are separate baselines; identify them by stable IDs.
+const separateBaselines = new Set(['20261003T202152.418590Z','20261003T203338.063138Z']);
 let results;
 function attemptHistory(rows) {
-  const points=rows.filter(r=>r.time_to_18_s!=null && Number.isFinite(r.time_to_18_s) && r.time_to_18_s>=0)
+  const measured=rows.filter(r=>r.time_to_18_s!=null && Number.isFinite(r.time_to_18_s) && r.time_to_18_s>=0)
     .map(r=>({...r,start_ms:Date.parse(r.attempt_started_at_utc??r.started_at_utc)}))
-    .filter(r=>Number.isFinite(r.start_ms)).sort((a,b)=>a.start_ms-b.start_ms || a.id.localeCompare(b.id));
+    .filter(r=>Number.isFinite(r.start_ms)).sort((a,b)=>a.start_ms-b.start_ms || a.id.localeCompare(b.id))
+    .map((r,i)=>({...r,plot_number:i+1}));
+  const points=measured.filter(r=>!separateBaselines.has(r.id));
   let best=Infinity;
   const frontier=points.filter(r=>{if(r.time_to_18_s<best){best=r.time_to_18_s;return true;}return false;});
-  return {points,frontier};
+  return {points,frontier,baselines:measured.filter(r=>separateBaselines.has(r.id))};
 }
 const historyDate=new Intl.DateTimeFormat('en-US',{timeZone:'America/Los_Angeles',month:'short',day:'numeric',hour:'numeric',minute:'2-digit',second:'2-digit',timeZoneName:'short'});
 const historyTick=new Intl.DateTimeFormat('en-US',{timeZone:'America/Los_Angeles',hour:'numeric',minute:'2-digit'});
@@ -42,15 +46,15 @@ function comparisonPlot(history) {
   frontier.slice(1).forEach(r=>{d+=` H ${x(r.start_ms)} V ${y(r.time_to_18_s)}`;});
   d+=` H ${x(xmax)}`;
   svg+=`<path class="pareto-frontier" d="${d}"/>`;
-  points.forEach((r,i)=>{
+  points.forEach(r=>{
     const description=`${r.metadata.label} · ${sec(r.time_to_18_s)} · started ${historyDate.format(r.start_ms)} · ${r.metadata.intervention.label}`;
-    svg+=`<a class="attempt-dot-link" href="${attemptLink(r)}" aria-label="${esc(description)}"><title>${esc(description)}</title><circle class="attempt-dot" data-attempt="${esc(r.id)}" cx="${x(r.start_ms)}" cy="${y(r.time_to_18_s)}" r="11" fill="${colors[i%colors.length]}"/><text class="dot-number" text-anchor="middle" x="${x(r.start_ms)}" y="${y(r.time_to_18_s)+4}">${i+1}</text></a>`;
+    svg+=`<a class="attempt-dot-link" href="${attemptLink(r)}" aria-label="${esc(description)}"><title>${esc(description)}</title><circle class="attempt-dot" data-attempt="${esc(r.id)}" cx="${x(r.start_ms)}" cy="${y(r.time_to_18_s)}" r="11" fill="${colors[(r.plot_number-1)%colors.length]}"/><text class="dot-number" text-anchor="middle" x="${x(r.start_ms)}" y="${y(r.time_to_18_s)+4}">${r.plot_number}</text></a>`;
   });
   return svg+'</svg>';
 }
 function historyLegend(history) {
   const bestIds=new Set(history.frontier.map(r=>r.id));
-  return history.points.map((r,i)=>`<a class="history-item" href="${attemptLink(r)}"><span class="history-number" style="background:${colors[i%colors.length]}">${i+1}</span><span><strong>${esc(r.metadata.label)}</strong><small>${sec(r.time_to_18_s)} · ${esc(historyDate.format(r.start_ms))}${bestIds.has(r.id)?' · new best':''}</small><small>${esc(r.metadata.intervention.label)}</small></span></a>`).join('');
+  return history.points.map(r=>`<a class="history-item" href="${attemptLink(r)}"><span class="history-number" style="background:${colors[(r.plot_number-1)%colors.length]}">${r.plot_number}</span><span><strong>${esc(r.metadata.label)}</strong><small>${sec(r.time_to_18_s)} · ${esc(historyDate.format(r.start_ms))}${bestIds.has(r.id)?' · new best':''}</small><small>${esc(r.metadata.intervention.label)}</small></span></a>`).join('');
 }
 function interventionCards(rows) {
   const comparisons=rows.filter(r=>r.metadata && r.comparison?.saved_s!=null);
@@ -89,6 +93,7 @@ async function refresh(){
     $('#headline-metrics').innerHTML=metrics.map(([title,value,note],i)=>`<article class="metric-card ${i===0?'score-card':''}"><div class="metric-label">${title}</div><div class="metric-value">${value}</div><div class="metric-sub">${esc(note)}</div></article>`).join('');
     const history=attemptHistory(rows);
     $('#comparison-plot').innerHTML=comparisonPlot(history);$('#history-legend').innerHTML=historyLegend(history);$('#floor-note').textContent=results.floor_note;
+    $('#baseline-note').innerHTML=history.baselines.length?`Separate baselines excluded from this plot: ${history.baselines.map(r=>`<a href="${attemptLink(r)}">${r.plot_number}. ${esc(r.metadata.label)}</a> (${sec(r.time_to_18_s)})`).join(' · ')}. Their records remain in the full attempt table below.`:'';
     $('#excluded-note').textContent=rows.filter(r=>r.time_to_18_s==null || !Number.isFinite(Date.parse(r.attempt_started_at_utc??r.started_at_utc))).map(r=>`${r.metadata?.label??r.id}: ${r.time_to_18_s==null?r.status:'start timestamp unavailable'}${r.solved!=null?` (${r.solved} correct)`:''}`).join(' · ');
     $('#interventions').innerHTML=interventionCards(rows);$('#attempt-rows').innerHTML=controlsTable(rows);renderProgress();$('#content').hidden=false;
   }catch(e){$('#error').textContent=e.message;$('#error').hidden=false;}finally{$('#refresh').disabled=false;}

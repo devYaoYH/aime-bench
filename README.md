@@ -74,6 +74,8 @@ After importing new attempts, run `python -m src.attempt_metadata --all`, then
 annotate the intervention/reference fields; existing annotations are preserved.
 The x-axis uses initialization timestamps; latency uses the official clock after
 warmup. Plot logic can be checked with `node test/test_results_history.js`.
+The final-only pass@4 and Qwen35 GPTQ baseline points (2 and 3) are excluded from
+the overall history plot and its scale; they remain in the full attempt table.
 
 ## Canonical remote attempts
 
