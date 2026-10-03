@@ -1,0 +1,16 @@
+{
+  "host": "callosum",
+  "date_utc": "2026-10-03",
+  "python": "/home/azureuser/.venvs/vllm/bin/python",
+  "persistence_mode": 0,
+  "method": "Two sequential fresh Python processes per condition. Assert no GPU compute processes first. Import torch, initialize CUDA, allocate a 1024x1024 BF16 tensor and synchronize a matrix multiplication. Cold condition initializes then closes NVML before torch; held condition retains a parent NVML handle throughout child lifetime. No driver settings changed. All contexts released on exit.",
+  "cold": [
+    {"nvml_import_s": 0.018900543975178152, "nvml_init_s": 2.600915140006691, "nvml_shutdown_s": 1.2915652829688042, "torch_import_s": 1.2578356330050156, "cuda_init_s": 2.8353902170201764, "first_matmul_s": 0.12897836900083348, "100_matmuls_s": 0.0037410699878819287},
+    {"nvml_import_s": 0.01892106101149693, "nvml_init_s": 2.6511894409777597, "nvml_shutdown_s": 1.3009701460250653, "torch_import_s": 1.2585577480494976, "cuda_init_s": 2.806432662997395, "first_matmul_s": 0.128691051970236, "100_matmuls_s": 0.003885651007294655}
+  ],
+  "held_nvml_handle": [
+    {"torch_import_s": 1.2804668719763868, "cuda_init_s": 0.26413423800840974, "first_matmul_s": 0.12893515505129471},
+    {"torch_import_s": 1.276689981983509, "cuda_init_s": 0.2654296769760549, "first_matmul_s": 0.12839299096958712}
+  ],
+  "limits": "Not an inference throughput benchmark. Conditions were sequential rather than randomized. This measures a driver initialization effect, not the exact contribution to the historical 20-second startup difference. No inference server or AIME attempt was launched."
+}

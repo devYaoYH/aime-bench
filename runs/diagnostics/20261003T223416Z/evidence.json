@@ -1,0 +1,449 @@
+{
+  "observed_at_utc": "2026-10-03T22:34:31.779919+00:00",
+  "host": "callosum",
+  "zombies": [],
+  "python_processes": [
+    "    989       1 Ss   20832  271112 /usr/bin/python3 /usr/bin/networkd-dispatcher --run-startup-triggers",
+    "   1005       1 Ss   30880  271112 /usr/bin/python3 -u /usr/sbin/waagent -daemon",
+    "   1058       1 Ssl  23184  271112 /usr/bin/python3 /usr/share/unattended-upgrades/unattended-upgrade-shutdown --wait-for-signal",
+    "   1393    1005 Sl   38608  271111 /usr/bin/python3 -u bin/WALinuxAgent-2.16.0.2-py3.12.egg -run-exthandlers",
+    " 111606  111605 Ss   16736       0 python3 -"
+  ],
+  "system": [
+    {
+      "argv": [
+        "uptime"
+      ],
+      "exit_code": 0,
+      "stdout": " 22:34:31 up 3 days,  3:18,  3 users,  load average: 0.20, 0.17, 0.26\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "free",
+        "-h"
+      ],
+      "exit_code": 0,
+      "stdout": "               total        used        free      shared  buff/cache   available\nMem:           216Gi       4.3Gi       150Gi       4.1Mi        63Gi       211Gi\nSwap:             0B          0B          0B\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "ss",
+        "-ltnp"
+      ],
+      "exit_code": 0,
+      "stdout": "State  Recv-Q Send-Q Local Address:Port Peer Address:PortProcess\nLISTEN 0      4096         0.0.0.0:22        0.0.0.0:*          \nLISTEN 0      4096      127.0.0.54:53        0.0.0.0:*          \nLISTEN 0      4096   127.0.0.53%lo:53        0.0.0.0:*          \nLISTEN 0      4096            [::]:22           [::]:*          \n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "nvidia-smi",
+        "--query-gpu=memory.used,memory.total,utilization.gpu,temperature.gpu,clocks.sm,clocks.mem,power.limit,persistence_mode",
+        "--format=csv"
+      ],
+      "exit_code": 0,
+      "stdout": "memory.used [MiB], memory.total [MiB], utilization.gpu [%], temperature.gpu, clocks.current.sm [MHz], clocks.current.memory [MHz], power.limit [W], persistence_mode\n0 MiB, 81920 MiB, 18 %, 40, 1410 MHz, 1512 MHz, 300.00 W, Disabled\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "nvidia-smi",
+        "--query-compute-apps=pid,process_name,used_memory",
+        "--format=csv"
+      ],
+      "exit_code": 0,
+      "stdout": "pid, process_name, used_gpu_memory [MiB]\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "nvidia-smi",
+        "-q",
+        "-d",
+        "PERFORMANCE,ECC,ROW_REMAPPER"
+      ],
+      "exit_code": 0,
+      "stdout": "\n==============NVSMI LOG==============\n\nTimestamp                                              : Sat Oct  3 22:34:42 2026\nDriver Version                                         : 580.178.04\nCUDA Version                                           : 13.0\n\nAttached GPUs                                          : 1\nGPU 00000001:00:00.0\n    Performance State                                  : P0\n    Clocks Event Reasons\n        Idle                                           : Not Active\n        Applications Clocks Setting                    : Not Active\n        SW Power Cap                                   : Not Active\n        HW Slowdown                                    : Not Active\n            HW Thermal Slowdown                        : Not Active\n            HW Power Brake Slowdown                    : Not Active\n        Sync Boost                                     : Not Active\n        SW Thermal Slowdown                            : Not Active\n        Display Clock Setting                          : Not Active\n    Clocks Event Reasons Counters\n        SW Power Capping                               : 0 us\n        Sync Boost                                     : 0 us\n        SW Thermal Slowdown                            : 0 us\n        HW Thermal Slowdown                            : 0 us\n        HW Power Braking                               : 0 us\n    Sparse Operation Mode                              : N/A\n    ECC Mode\n        Current                                        : Enabled\n        Pending                                        : Enabled\n    ECC Errors\n        Volatile\n            SRAM Correctable                           : 0\n            SRAM Uncorrectable Parity                  : 0\n            SRAM Uncorrectable SEC-DED                 : 0\n            DRAM Correctable                           : 0\n            DRAM Uncorrectable                         : 0\n        Aggregate\n            SRAM Correctable                           : 0\n            SRAM Uncorrectable Parity                  : 0\n            SRAM Uncorrectable SEC-DED                 : 0\n            DRAM Correctable                           : 0\n            DRAM Uncorrectable                         : 0\n            SRAM Threshold Exceeded                    : No\n        Aggregate Uncorrectable SRAM Sources\n            SRAM L2                                    : 0\n            SRAM SM                                    : 0\n            SRAM Microcontroller                       : 0\n            SRAM PCIE                                  : 0\n            SRAM Other                                 : 0\n        Channel Repair Pending                         : No\n        TPC Repair Pending                             : No\n        Unrepairable Memory                            : N/A\n    Remapped Rows\n        Correctable Error                              : 0\n        Inactive Correctable Error                     : 0\n        Uncorrectable Error                            : 0\n        Inactive Uncorrectable Error                   : 0\n        Pending                                        : No\n        Remapping Failure Occurred                     : No\n        Bank Remap Availability Histogram\n            Max                                        : 640 bank(s)\n            High                                       : 0 bank(s)\n            Partial                                    : 0 bank(s)\n            Low                                        : 0 bank(s)\n            None                                       : 0 bank(s)\n\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "vmstat",
+        "1",
+        "3"
+      ],
+      "exit_code": 0,
+      "stdout": "procs -----------memory---------- ---swap-- -----io---- -system-- -------cpu-------\n r  b   swpd   free   buff  cache   si   so    bi    bo   in   cs us sy id wa st gu\n 0  0      0 157450956 291348 66420608    0    0     6   256  840    0  0  0 100  0  0  0\n 0  0      0 157451404 291348 66420608    0    0     0     0  618  511  0  0 100  0  0  0\n 0  0      0 157451404 291348 66420608    0    0     0     0  617  536  0  0 100  0  0  0\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "df",
+        "-h",
+        "/",
+        "/dev/shm"
+      ],
+      "exit_code": 0,
+      "stdout": "Filesystem      Size  Used Avail Use% Mounted on\n/dev/root       991G   66G  926G   7% /\ntmpfs           109G  4.0K  109G   1% /dev/shm\n",
+      "stderr": ""
+    }
+  ],
+  "pressure": {
+    "cpu": "some avg10=10.74 avg60=9.85 avg300=2.67 total=765918729\nfull avg10=0.00 avg60=0.00 avg300=0.00 total=0\n",
+    "memory": "some avg10=0.00 avg60=0.00 avg300=0.00 total=33\nfull avg10=0.00 avg60=0.00 avg300=0.00 total=27\n",
+    "io": "some avg10=0.00 avg60=0.00 avg300=0.00 total=121069059\nfull avg10=0.00 avg60=0.00 avg300=0.00 total=120329440\n"
+  },
+  "kernel_events": {
+    "exit_code": 0,
+    "stderr": "",
+    "matching_lines": [],
+    "scope": "Accessible kernel journal only"
+  },
+  "runs": [
+    {
+      "attempt_id": "20261003T211557.382358Z",
+      "model": "WeiboAI/VibeThinker-3B",
+      "runner": "speedrun_v1",
+      "source_commit": "bf5788f51b83db12b1607eaccb1434468822ce64",
+      "initialization_started_at_utc": "2026-10-03T21:15:57.382+00:00",
+      "official_started_at_utc": "2026-10-03T21:16:44.978+00:00",
+      "initialization_s": 47.596548946981784,
+      "time_to_target_s": 71.13476684101624,
+      "inference_warmup": {
+        "latency_s": 0.31587915297131985,
+        "batch_size": 30,
+        "tokens_per_request": 32
+      },
+      "model_profile": "vllm.yaml",
+      "model_profile_sha256": "0f08a0c04cdf53db83502b7e8086323cf7b9724c7bb7982fa2bc9f4b8308824a",
+      "vllm_log_sha256": "1374956d2e4c076cf1115a7c35c8d64c4cacb55f3b68e97b2e96d63648703843",
+      "startup_lines": [
+        "(EngineCore pid=101171) INFO 10-03 21:16:26 [default_loader.py:484] Loading weights took 0.42 seconds",
+        "(EngineCore pid=101171) INFO 10-03 21:16:27 [model_runner.py:407] Model loading took 5.81 GiB memory and 2.842810 seconds",
+        "(EngineCore pid=101171) INFO 10-03 21:16:28 [decorators.py:319] [backbone] Directly load AOT compilation from path /home/azureuser/.cache/vllm/torch_compile_cache/torch_aot_compile/421fd055cb3268067676738f5f5b5faf3595db1589f24db7f47ce99fe663867e/rank_0_0/model",
+        "(EngineCore pid=101171) INFO 10-03 21:16:28 [monitor.py:62] [backbone] torch.compile took 0.19 s in total",
+        "(EngineCore pid=101171) INFO 10-03 21:16:34 [model_runner.py:1103] Graph capturing finished in 5 secs, took 0.38 GiB",
+        "(EngineCore pid=101171) INFO 10-03 21:16:41 [model_runner.py:1103] Graph capturing finished in 6 secs, took 0.22 GiB",
+        "(EngineCore pid=101171) INFO 10-03 21:16:42 [core.py:373] init engine (profile, create kv cache, warmup model) took 15.36 s (compilation: 0.19 s)",
+        "(APIServer pid=101101) INFO 10-03 21:16:43 [entry.py:139] Starting vLLM server on http://127.0.0.1:8000",
+        "(EngineCore pid=101171) WARNING 10-03 21:16:44 [jit_monitor.py:140] Triton kernel JIT compilation during inference: _topp_sb_stats_kernel. This causes a latency spike; consider extending warmup to cover this shape/config.",
+        "(EngineCore pid=101171) WARNING 10-03 21:16:44 [jit_monitor.py:140] Triton kernel JIT compilation during inference: _topp_sb_step_kernel. This causes a latency spike; consider extending warmup to cover this shape/config.",
+        "(EngineCore pid=101171) WARNING 10-03 21:16:44 [jit_monitor.py:140] Triton kernel JIT compilation during inference: _topp_sb_mask_kernel. This causes a latency spike; consider extending warmup to cover this shape/config.",
+        "(EngineCore pid=101171) WARNING 10-03 21:16:44 [jit_monitor.py:140] Triton kernel JIT compilation during inference: _gumbel_sample_kernel. This causes a latency spike; consider extending warmup to cover this shape/config."
+      ],
+      "first_timestamped_line": "(APIServer pid=101101) INFO 10-03 21:16:13 [api_utils.py:347] ",
+      "generation_throughput_lines": [
+        "(APIServer pid=101101) INFO 10-03 21:16:54 [loggers.py:328] Engine 000: Avg prompt throughput: 559.3 tokens/s, Avg generation throughput: 3200.1 tokens/s, Running: 29 reqs, Waiting: 0 reqs, GPU KV cache usage: 2.0%, Prefix cache hit rate: 27.2%",
+        "(APIServer pid=101101) INFO 10-03 21:17:04 [loggers.py:328] Engine 000: Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 3328.3 tokens/s, Running: 26 reqs, Waiting: 0 reqs, GPU KV cache usage: 3.4%, Prefix cache hit rate: 27.2%",
+        "(APIServer pid=101101) INFO 10-03 21:17:14 [loggers.py:328] Engine 000: Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 2828.4 tokens/s, Running: 23 reqs, Waiting: 0 reqs, GPU KV cache usage: 4.3%, Prefix cache hit rate: 27.2%",
+        "(APIServer pid=101101) INFO 10-03 21:17:24 [loggers.py:328] Engine 000: Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 2369.5 tokens/s, Running: 19 reqs, Waiting: 0 reqs, GPU KV cache usage: 4.6%, Prefix cache hit rate: 27.2%",
+        "(APIServer pid=101101) INFO 10-03 21:17:34 [loggers.py:328] Engine 000: Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 1990.7 tokens/s, Running: 18 reqs, Waiting: 0 reqs, GPU KV cache usage: 5.4%, Prefix cache hit rate: 27.2%",
+        "(APIServer pid=101101) INFO 10-03 21:17:44 [loggers.py:328] Engine 000: Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 1810.0 tokens/s, Running: 17 reqs, Waiting: 0 reqs, GPU KV cache usage: 6.0%, Prefix cache hit rate: 27.2%",
+        "(APIServer pid=101101) INFO 10-03 21:17:54 [loggers.py:328] Engine 000: Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 1597.1 tokens/s, Running: 13 reqs, Waiting: 0 reqs, GPU KV cache usage: 5.3%, Prefix cache hit rate: 27.2%"
+      ],
+      "initialization_meter": {
+        "initialization_gpu_warmup_wait": {
+          "count": 1,
+          "wall_total_s": 4.004532676015515,
+          "wall_max_s": 4.004532676015515,
+          "thread_cpu_total_s": 0.0,
+          "cpu_samples": 0
+        },
+        "initialization_server_ready_wait": {
+          "count": 1,
+          "wall_total_s": 40.130465462978464,
+          "wall_max_s": 40.130465462978464,
+          "thread_cpu_total_s": 0.0,
+          "cpu_samples": 0
+        },
+        "initialization_grader_ready_wait": {
+          "count": 1,
+          "wall_total_s": 0.5042694080038927,
+          "wall_max_s": 0.5042694080038927,
+          "thread_cpu_total_s": 0.0,
+          "cpu_samples": 0
+        },
+        "initialization_inference_warmup_wait": {
+          "count": 1,
+          "wall_total_s": 0.31589138600975275,
+          "wall_max_s": 0.31589138600975275,
+          "thread_cpu_total_s": 0.0,
+          "cpu_samples": 0
+        }
+      },
+      "grader_timeline": {
+        "completed_queries": 18,
+        "audit_errors": [],
+        "correct": 18,
+        "wrong": 0,
+        "target_service_floor_s": 54.0,
+        "actual_service_s": 54.002068281173706,
+        "idle_between_queries_s": 12.076358556747437,
+        "first_pick_elapsed_s": 5.055338144302368,
+        "scope": "completed oracle jobs; queued/cancelled client jobs may still incur service"
+      }
+    },
+    {
+      "attempt_id": "20261003T212812.156610Z",
+      "model": "r0b0tlab/VibeThinker-3B-NVFP4",
+      "runner": "speedrun_v1",
+      "source_commit": "c469b02b7152ab1180b9508619b44ad44f1a145e",
+      "initialization_started_at_utc": "2026-10-03T21:28:12.156+00:00",
+      "official_started_at_utc": "2026-10-03T21:28:59.359+00:00",
+      "initialization_s": 47.202962928044144,
+      "time_to_target_s": 106.57033936999505,
+      "inference_warmup": {
+        "latency_s": 0.27436010795645416,
+        "batch_size": 30,
+        "tokens_per_request": 32
+      },
+      "model_profile": "vllm.yaml",
+      "model_profile_sha256": "5f6f43cc61143da84fcdd35f65c5ba31c814aaa314a4bc215426f03a0e451ebe",
+      "vllm_log_sha256": "98f9665cfa6089625c14268d99c5e00714e5abefbd77b62750465052cb766f49",
+      "startup_lines": [
+        "(EngineCore pid=103228) INFO 10-03 21:28:42 [default_loader.py:484] Loading weights took 0.29 seconds",
+        "(EngineCore pid=103228) INFO 10-03 21:28:43 [model_runner.py:407] Model loading took 2.13 GiB memory and 3.188475 seconds",
+        "(EngineCore pid=103228) INFO 10-03 21:28:44 [decorators.py:319] [backbone] Directly load AOT compilation from path /home/azureuser/.cache/vllm/torch_compile_cache/torch_aot_compile/beffe6795560dbe929b2af6ae4b6492d5c530d9a136d888be8dd06c3bf6d1e1a/rank_0_0/model",
+        "(EngineCore pid=103228) INFO 10-03 21:28:44 [monitor.py:62] [backbone] torch.compile took 0.20 s in total",
+        "(EngineCore pid=103228) INFO 10-03 21:28:49 [model_runner.py:1103] Graph capturing finished in 4 secs, took 0.40 GiB",
+        "(EngineCore pid=103228) INFO 10-03 21:28:56 [model_runner.py:1103] Graph capturing finished in 6 secs, took 0.26 GiB",
+        "(EngineCore pid=103228) INFO 10-03 21:28:57 [core.py:373] init engine (profile, create kv cache, warmup model) took 13.34 s (compilation: 0.20 s)",
+        "(APIServer pid=103116) INFO 10-03 21:28:58 [entry.py:139] Starting vLLM server on http://127.0.0.1:8000",
+        "(EngineCore pid=103228) WARNING 10-03 21:28:59 [jit_monitor.py:140] Triton kernel JIT compilation during inference: _topp_sb_stats_kernel. This causes a latency spike; consider extending warmup to cover this shape/config.",
+        "(EngineCore pid=103228) WARNING 10-03 21:28:59 [jit_monitor.py:140] Triton kernel JIT compilation during inference: _topp_sb_step_kernel. This causes a latency spike; consider extending warmup to cover this shape/config.",
+        "(EngineCore pid=103228) WARNING 10-03 21:28:59 [jit_monitor.py:140] Triton kernel JIT compilation during inference: _topp_sb_mask_kernel. This causes a latency spike; consider extending warmup to cover this shape/config.",
+        "(EngineCore pid=103228) WARNING 10-03 21:28:59 [jit_monitor.py:140] Triton kernel JIT compilation during inference: _gumbel_sample_kernel. This causes a latency spike; consider extending warmup to cover this shape/config."
+      ],
+      "first_timestamped_line": "(APIServer pid=103116) INFO 10-03 21:28:28 [api_utils.py:347] ",
+      "generation_throughput_lines": [
+        "(APIServer pid=103116) INFO 10-03 21:29:08 [loggers.py:328] Engine 000: Avg prompt throughput: 571.5 tokens/s, Avg generation throughput: 3986.0 tokens/s, Running: 29 reqs, Waiting: 0 reqs, GPU KV cache usage: 2.2%, Prefix cache hit rate: 27.2%",
+        "(APIServer pid=103116) INFO 10-03 21:29:18 [loggers.py:328] Engine 000: Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 3987.5 tokens/s, Running: 25 reqs, Waiting: 0 reqs, GPU KV cache usage: 3.6%, Prefix cache hit rate: 27.2%",
+        "(APIServer pid=103116) INFO 10-03 21:29:28 [loggers.py:328] Engine 000: Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 3204.3 tokens/s, Running: 22 reqs, Waiting: 0 reqs, GPU KV cache usage: 4.6%, Prefix cache hit rate: 27.2%",
+        "(APIServer pid=103116) INFO 10-03 21:29:38 [loggers.py:328] Engine 000: Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 2862.0 tokens/s, Running: 22 reqs, Waiting: 0 reqs, GPU KV cache usage: 6.0%, Prefix cache hit rate: 27.2%",
+        "(APIServer pid=103116) INFO 10-03 21:29:48 [loggers.py:328] Engine 000: Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 2481.9 tokens/s, Running: 18 reqs, Waiting: 0 reqs, GPU KV cache usage: 6.0%, Prefix cache hit rate: 27.2%",
+        "(APIServer pid=103116) INFO 10-03 21:29:58 [loggers.py:328] Engine 000: Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 2091.0 tokens/s, Running: 15 reqs, Waiting: 0 reqs, GPU KV cache usage: 5.9%, Prefix cache hit rate: 27.2%",
+        "(APIServer pid=103116) INFO 10-03 21:30:08 [loggers.py:328] Engine 000: Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 1895.5 tokens/s, Running: 14 reqs, Waiting: 0 reqs, GPU KV cache usage: 6.4%, Prefix cache hit rate: 27.2%",
+        "(APIServer pid=103116) INFO 10-03 21:30:18 [loggers.py:328] Engine 000: Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 1759.5 tokens/s, Running: 14 reqs, Waiting: 0 reqs, GPU KV cache usage: 7.2%, Prefix cache hit rate: 27.2%",
+        "(APIServer pid=103116) INFO 10-03 21:30:28 [loggers.py:328] Engine 000: Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 1674.2 tokens/s, Running: 14 reqs, Waiting: 0 reqs, GPU KV cache usage: 8.0%, Prefix cache hit rate: 27.2%",
+        "(APIServer pid=103116) INFO 10-03 21:30:38 [loggers.py:328] Engine 000: Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 1577.7 tokens/s, Running: 13 reqs, Waiting: 0 reqs, GPU KV cache usage: 8.1%, Prefix cache hit rate: 27.2%"
+      ],
+      "initialization_meter": {
+        "initialization_gpu_warmup_wait": {
+          "count": 1,
+          "wall_total_s": 3.9974496309878305,
+          "wall_max_s": 3.9974496309878305,
+          "thread_cpu_total_s": 0.0,
+          "cpu_samples": 0
+        },
+        "initialization_server_ready_wait": {
+          "count": 1,
+          "wall_total_s": 39.6368614549865,
+          "wall_max_s": 39.6368614549865,
+          "thread_cpu_total_s": 0.0,
+          "cpu_samples": 0
+        },
+        "initialization_grader_ready_wait": {
+          "count": 1,
+          "wall_total_s": 0.5035068150027655,
+          "wall_max_s": 0.5035068150027655,
+          "thread_cpu_total_s": 0.0,
+          "cpu_samples": 0
+        },
+        "initialization_inference_warmup_wait": {
+          "count": 1,
+          "wall_total_s": 0.27437406399985775,
+          "wall_max_s": 0.27437406399985775,
+          "thread_cpu_total_s": 0.0,
+          "cpu_samples": 0
+        }
+      },
+      "grader_timeline": {
+        "completed_queries": 20,
+        "audit_errors": [],
+        "correct": 18,
+        "wrong": 2,
+        "target_service_floor_s": 54.0,
+        "actual_service_s": 60.00249934196472,
+        "idle_between_queries_s": 41.79294562339783,
+        "first_pick_elapsed_s": 4.774438142776489,
+        "scope": "completed oracle jobs; queued/cancelled client jobs may still incur service"
+      }
+    },
+    {
+      "attempt_id": "20261003T215349.326138Z",
+      "model": "r0b0tlab/VibeThinker-3B-NVFP4",
+      "runner": "speedrun_v2",
+      "source_commit": "7f345a821faa46176c135e202b0ce612b9e65f34",
+      "initialization_started_at_utc": "2026-10-03T21:53:49.326+00:00",
+      "official_started_at_utc": "2026-10-03T21:54:56.179+00:00",
+      "initialization_s": 66.85376244201325,
+      "time_to_target_s": 106.93084363895468,
+      "inference_warmup": {
+        "latency_s": 0.2705827899626456,
+        "batch_size": 30,
+        "tokens_per_request": 32
+      },
+      "model_profile": "vllm.yaml",
+      "model_profile_sha256": "5f6f43cc61143da84fcdd35f65c5ba31c814aaa314a4bc215426f03a0e451ebe",
+      "vllm_log_sha256": "f7ba15786bbfafa5e82fa01dcba8316aaa18952e8a4b32914b523eb8b2d57598",
+      "startup_lines": [
+        "(EngineCore pid=105847) INFO 10-03 21:54:39 [default_loader.py:484] Loading weights took 0.29 seconds",
+        "(EngineCore pid=105847) INFO 10-03 21:54:40 [model_runner.py:407] Model loading took 2.13 GiB memory and 3.164430 seconds",
+        "(EngineCore pid=105847) INFO 10-03 21:54:41 [decorators.py:319] [backbone] Directly load AOT compilation from path /home/azureuser/.cache/vllm/torch_compile_cache/torch_aot_compile/beffe6795560dbe929b2af6ae4b6492d5c530d9a136d888be8dd06c3bf6d1e1a/rank_0_0/model",
+        "(EngineCore pid=105847) INFO 10-03 21:54:41 [monitor.py:62] [backbone] torch.compile took 0.20 s in total",
+        "(EngineCore pid=105847) INFO 10-03 21:54:46 [model_runner.py:1103] Graph capturing finished in 4 secs, took 0.40 GiB",
+        "(EngineCore pid=105847) INFO 10-03 21:54:52 [model_runner.py:1103] Graph capturing finished in 6 secs, took 0.26 GiB",
+        "(EngineCore pid=105847) INFO 10-03 21:54:53 [core.py:373] init engine (profile, create kv cache, warmup model) took 13.49 s (compilation: 0.20 s)",
+        "(APIServer pid=105644) INFO 10-03 21:54:54 [entry.py:139] Starting vLLM server on http://127.0.0.1:8000",
+        "(EngineCore pid=105847) WARNING 10-03 21:54:55 [jit_monitor.py:140] Triton kernel JIT compilation during inference: _topp_sb_stats_kernel. This causes a latency spike; consider extending warmup to cover this shape/config.",
+        "(EngineCore pid=105847) WARNING 10-03 21:54:55 [jit_monitor.py:140] Triton kernel JIT compilation during inference: _topp_sb_step_kernel. This causes a latency spike; consider extending warmup to cover this shape/config.",
+        "(EngineCore pid=105847) WARNING 10-03 21:54:55 [jit_monitor.py:140] Triton kernel JIT compilation during inference: _topp_sb_mask_kernel. This causes a latency spike; consider extending warmup to cover this shape/config.",
+        "(EngineCore pid=105847) WARNING 10-03 21:54:55 [jit_monitor.py:140] Triton kernel JIT compilation during inference: _gumbel_sample_kernel. This causes a latency spike; consider extending warmup to cover this shape/config."
+      ],
+      "first_timestamped_line": "(APIServer pid=105644) INFO 10-03 21:54:24 [api_utils.py:347] ",
+      "generation_throughput_lines": [
+        "(APIServer pid=105644) INFO 10-03 21:55:05 [loggers.py:328] Engine 000: Avg prompt throughput: 571.5 tokens/s, Avg generation throughput: 3905.4 tokens/s, Running: 29 reqs, Waiting: 0 reqs, GPU KV cache usage: 2.2%, Prefix cache hit rate: 27.2%",
+        "(APIServer pid=105644) INFO 10-03 21:55:15 [loggers.py:328] Engine 000: Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 3939.3 tokens/s, Running: 25 reqs, Waiting: 0 reqs, GPU KV cache usage: 3.6%, Prefix cache hit rate: 27.2%",
+        "(APIServer pid=105644) INFO 10-03 21:55:25 [loggers.py:328] Engine 000: Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 3270.0 tokens/s, Running: 22 reqs, Waiting: 0 reqs, GPU KV cache usage: 4.6%, Prefix cache hit rate: 27.2%",
+        "(APIServer pid=105644) INFO 10-03 21:55:35 [loggers.py:328] Engine 000: Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 2745.8 tokens/s, Running: 19 reqs, Waiting: 0 reqs, GPU KV cache usage: 5.2%, Prefix cache hit rate: 27.2%",
+        "(APIServer pid=105644) INFO 10-03 21:55:45 [loggers.py:328] Engine 000: Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 2239.2 tokens/s, Running: 16 reqs, Waiting: 0 reqs, GPU KV cache usage: 5.3%, Prefix cache hit rate: 27.2%",
+        "(APIServer pid=105644) INFO 10-03 21:55:55 [loggers.py:328] Engine 000: Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 2075.5 tokens/s, Running: 15 reqs, Waiting: 0 reqs, GPU KV cache usage: 6.0%, Prefix cache hit rate: 27.2%",
+        "(APIServer pid=105644) INFO 10-03 21:56:05 [loggers.py:328] Engine 000: Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 1824.9 tokens/s, Running: 13 reqs, Waiting: 0 reqs, GPU KV cache usage: 6.0%, Prefix cache hit rate: 27.2%",
+        "(APIServer pid=105644) INFO 10-03 21:56:15 [loggers.py:328] Engine 000: Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 1664.0 tokens/s, Running: 13 reqs, Waiting: 0 reqs, GPU KV cache usage: 6.8%, Prefix cache hit rate: 27.2%",
+        "(APIServer pid=105644) INFO 10-03 21:56:25 [loggers.py:328] Engine 000: Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 1588.6 tokens/s, Running: 13 reqs, Waiting: 0 reqs, GPU KV cache usage: 7.6%, Prefix cache hit rate: 27.2%",
+        "(APIServer pid=105644) INFO 10-03 21:56:35 [loggers.py:328] Engine 000: Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 1517.0 tokens/s, Running: 13 reqs, Waiting: 0 reqs, GPU KV cache usage: 8.3%, Prefix cache hit rate: 27.2%"
+      ],
+      "initialization_meter": {},
+      "grader_timeline": {
+        "completed_queries": 19,
+        "audit_errors": [],
+        "correct": 18,
+        "wrong": 1,
+        "target_service_floor_s": 54.0,
+        "actual_service_s": 57.00235867500305,
+        "idle_between_queries_s": 45.808154344558716,
+        "first_pick_elapsed_s": 4.1199421882629395,
+        "scope": "completed oracle jobs; queued/cancelled client jobs may still incur service"
+      }
+    },
+    {
+      "attempt_id": "20261003T220008.957658Z",
+      "model": "WeiboAI/VibeThinker-3B",
+      "runner": "speedrun_v2",
+      "source_commit": "e1f8e4847d5ec1eb0a798517abc2e87d617a3eaf",
+      "initialization_started_at_utc": "2026-10-03T22:00:08.957+00:00",
+      "official_started_at_utc": "2026-10-03T22:01:15.874+00:00",
+      "initialization_s": 66.91722500498872,
+      "time_to_target_s": 113.62524503498571,
+      "inference_warmup": {
+        "latency_s": 0.32108312303898856,
+        "batch_size": 30,
+        "tokens_per_request": 32
+      },
+      "model_profile": "vllm.yaml",
+      "model_profile_sha256": "0f08a0c04cdf53db83502b7e8086323cf7b9724c7bb7982fa2bc9f4b8308824a",
+      "vllm_log_sha256": "79b829a16afa9a64c37121de6a742afda8c0799418b67e6d8503296ffbab1347",
+      "startup_lines": [
+        "(EngineCore pid=107287) INFO 10-03 22:00:57 [default_loader.py:484] Loading weights took 0.42 seconds",
+        "(EngineCore pid=107287) INFO 10-03 22:00:58 [model_runner.py:407] Model loading took 5.81 GiB memory and 2.861284 seconds",
+        "(EngineCore pid=107287) INFO 10-03 22:00:59 [decorators.py:319] [backbone] Directly load AOT compilation from path /home/azureuser/.cache/vllm/torch_compile_cache/torch_aot_compile/421fd055cb3268067676738f5f5b5faf3595db1589f24db7f47ce99fe663867e/rank_0_0/model",
+        "(EngineCore pid=107287) INFO 10-03 22:00:59 [monitor.py:62] [backbone] torch.compile took 0.20 s in total",
+        "(EngineCore pid=107287) INFO 10-03 22:01:05 [model_runner.py:1103] Graph capturing finished in 5 secs, took 0.38 GiB",
+        "(EngineCore pid=107287) INFO 10-03 22:01:11 [model_runner.py:1103] Graph capturing finished in 6 secs, took 0.22 GiB",
+        "(EngineCore pid=107287) INFO 10-03 22:01:13 [core.py:373] init engine (profile, create kv cache, warmup model) took 15.03 s (compilation: 0.20 s)",
+        "(APIServer pid=107189) INFO 10-03 22:01:14 [entry.py:139] Starting vLLM server on http://127.0.0.1:8000",
+        "(EngineCore pid=107287) WARNING 10-03 22:01:15 [jit_monitor.py:140] Triton kernel JIT compilation during inference: _topp_sb_stats_kernel. This causes a latency spike; consider extending warmup to cover this shape/config.",
+        "(EngineCore pid=107287) WARNING 10-03 22:01:15 [jit_monitor.py:140] Triton kernel JIT compilation during inference: _topp_sb_step_kernel. This causes a latency spike; consider extending warmup to cover this shape/config.",
+        "(EngineCore pid=107287) WARNING 10-03 22:01:15 [jit_monitor.py:140] Triton kernel JIT compilation during inference: _topp_sb_mask_kernel. This causes a latency spike; consider extending warmup to cover this shape/config.",
+        "(EngineCore pid=107287) WARNING 10-03 22:01:15 [jit_monitor.py:140] Triton kernel JIT compilation during inference: _gumbel_sample_kernel. This causes a latency spike; consider extending warmup to cover this shape/config."
+      ],
+      "first_timestamped_line": "(APIServer pid=107189) INFO 10-03 22:00:44 [api_utils.py:347] ",
+      "generation_throughput_lines": [
+        "(APIServer pid=107189) INFO 10-03 22:01:24 [loggers.py:328] Engine 000: Avg prompt throughput: 559.6 tokens/s, Avg generation throughput: 3099.6 tokens/s, Running: 29 reqs, Waiting: 0 reqs, GPU KV cache usage: 1.9%, Prefix cache hit rate: 27.2%",
+        "(APIServer pid=107189) INFO 10-03 22:01:34 [loggers.py:328] Engine 000: Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 3344.4 tokens/s, Running: 26 reqs, Waiting: 0 reqs, GPU KV cache usage: 3.3%, Prefix cache hit rate: 27.2%",
+        "(APIServer pid=107189) INFO 10-03 22:01:44 [loggers.py:328] Engine 000: Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 2836.3 tokens/s, Running: 23 reqs, Waiting: 0 reqs, GPU KV cache usage: 4.3%, Prefix cache hit rate: 27.2%",
+        "(APIServer pid=107189) INFO 10-03 22:01:54 [loggers.py:328] Engine 000: Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 2391.1 tokens/s, Running: 19 reqs, Waiting: 0 reqs, GPU KV cache usage: 4.6%, Prefix cache hit rate: 27.2%",
+        "(APIServer pid=107189) INFO 10-03 22:02:04 [loggers.py:328] Engine 000: Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 2022.1 tokens/s, Running: 18 reqs, Waiting: 0 reqs, GPU KV cache usage: 5.4%, Prefix cache hit rate: 27.2%",
+        "(APIServer pid=107189) INFO 10-03 22:02:14 [loggers.py:328] Engine 000: Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 1854.4 tokens/s, Running: 17 reqs, Waiting: 0 reqs, GPU KV cache usage: 5.9%, Prefix cache hit rate: 27.2%",
+        "(APIServer pid=107189) INFO 10-03 22:02:24 [loggers.py:328] Engine 000: Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 1679.7 tokens/s, Running: 15 reqs, Waiting: 0 reqs, GPU KV cache usage: 6.0%, Prefix cache hit rate: 27.2%",
+        "(APIServer pid=107189) INFO 10-03 22:02:34 [loggers.py:328] Engine 000: Avg prompt throughput: 12.1 tokens/s, Avg generation throughput: 1442.4 tokens/s, Running: 14 reqs, Waiting: 0 reqs, GPU KV cache usage: 6.3%, Prefix cache hit rate: 95.0%",
+        "(APIServer pid=107189) INFO 10-03 22:02:44 [loggers.py:328] Engine 000: Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 1422.3 tokens/s, Running: 14 reqs, Waiting: 0 reqs, GPU KV cache usage: 7.1%, Prefix cache hit rate: 95.0%",
+        "(APIServer pid=107189) INFO 10-03 22:02:54 [loggers.py:328] Engine 000: Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 1316.3 tokens/s, Running: 13 reqs, Waiting: 0 reqs, GPU KV cache usage: 7.2%, Prefix cache hit rate: 95.0%",
+        "(APIServer pid=107189) INFO 10-03 22:03:04 [loggers.py:328] Engine 000: Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 1268.7 tokens/s, Running: 13 reqs, Waiting: 0 reqs, GPU KV cache usage: 7.8%, Prefix cache hit rate: 95.0%"
+      ],
+      "initialization_meter": {},
+      "grader_timeline": {
+        "completed_queries": 21,
+        "audit_errors": [],
+        "correct": 18,
+        "wrong": 3,
+        "target_service_floor_s": 54.0,
+        "actual_service_s": 63.00251293182373,
+        "idle_between_queries_s": 45.58216714859009,
+        "first_pick_elapsed_s": 5.039927959442139,
+        "scope": "completed oracle jobs; queued/cancelled client jobs may still incur service"
+      }
+    },
+    {
+      "attempt_id": "20261003T222009.163270Z",
+      "model": "r0b0tlab/VibeThinker-3B-NVFP4",
+      "runner": "speedrun_v4",
+      "source_commit": "9bbf5378cad2ede28324f1cfeed3c37ba09da034",
+      "initialization_started_at_utc": "2026-10-03T22:20:09.163+00:00",
+      "official_started_at_utc": "2026-10-03T22:21:44.610+00:00",
+      "initialization_s": 95.44789321598364,
+      "time_to_target_s": 127.56545108102728,
+      "inference_warmup": {
+        "latency_s": 3.779082549037412,
+        "batch_size": 30,
+        "tokens_per_request": 32
+      },
+      "model_profile": "vllm-expanding-64k.yaml",
+      "model_profile_sha256": "429d131e24fdef5e73f61298032392b15a7646d187b2d59e3e3d802b5952a7b9",
+      "vllm_log_sha256": "9bd8dfdb03b64f97d02f162ebcb57b131ecd6a5fa236caab07f90af10b1913e9",
+      "startup_lines": [
+        "(EngineCore pid=109943) INFO 10-03 22:20:58 [default_loader.py:484] Loading weights took 0.29 seconds",
+        "(EngineCore pid=109943) INFO 10-03 22:20:59 [model_runner.py:407] Model loading took 2.13 GiB memory and 3.105935 seconds",
+        "(EngineCore pid=109943) INFO 10-03 22:21:00 [monitor.py:40] [backbone] Starting torch.compile",
+        "(EngineCore pid=109943) INFO 10-03 22:21:23 [monitor.py:62] [backbone] torch.compile took 22.62 s in total",
+        "(EngineCore pid=109943) INFO 10-03 22:21:29 [model_runner.py:1103] Graph capturing finished in 4 secs, took 0.40 GiB",
+        "(EngineCore pid=109943) INFO 10-03 22:21:38 [model_runner.py:1103] Graph capturing finished in 6 secs, took 0.26 GiB",
+        "(EngineCore pid=109943) INFO 10-03 22:21:39 [core.py:373] init engine (profile, create kv cache, warmup model) took 39.18 s (compilation: 22.62 s)",
+        "(APIServer pid=109730) INFO 10-03 22:21:40 [entry.py:139] Starting vLLM server on http://127.0.0.1:8000",
+        "(EngineCore pid=109943) WARNING 10-03 22:21:40 [jit_monitor.py:140] Triton kernel JIT compilation during inference: _topp_sb_stats_kernel. This causes a latency spike; consider extending warmup to cover this shape/config.",
+        "(EngineCore pid=109943) WARNING 10-03 22:21:41 [jit_monitor.py:140] Triton kernel JIT compilation during inference: _topp_sb_step_kernel. This causes a latency spike; consider extending warmup to cover this shape/config.",
+        "(EngineCore pid=109943) WARNING 10-03 22:21:42 [jit_monitor.py:140] Triton kernel JIT compilation during inference: _topp_sb_mask_kernel. This causes a latency spike; consider extending warmup to cover this shape/config.",
+        "(EngineCore pid=109943) WARNING 10-03 22:21:42 [jit_monitor.py:140] Triton kernel JIT compilation during inference: _gumbel_sample_kernel. This causes a latency spike; consider extending warmup to cover this shape/config."
+      ],
+      "first_timestamped_line": "(APIServer pid=109730) INFO 10-03 22:20:44 [api_utils.py:347] ",
+      "generation_throughput_lines": [
+        "(APIServer pid=109730) INFO 10-03 22:21:50 [loggers.py:328] Engine 000: Avg prompt throughput: 572.4 tokens/s, Avg generation throughput: 1155.2 tokens/s, Running: 30 reqs, Waiting: 0 reqs, GPU KV cache usage: 0.8%, Prefix cache hit rate: 27.2%",
+        "(APIServer pid=109730) INFO 10-03 22:22:00 [loggers.py:328] Engine 000: Avg prompt throughput: 23.7 tokens/s, Avg generation throughput: 4916.6 tokens/s, Running: 60 reqs, Waiting: 0 reqs, GPU KV cache usage: 3.2%, Prefix cache hit rate: 62.5%",
+        "(APIServer pid=109730) INFO 10-03 22:22:10 [loggers.py:328] Engine 000: Avg prompt throughput: 6.2 tokens/s, Avg generation throughput: 5831.1 tokens/s, Running: 60 reqs, Waiting: 0 reqs, GPU KV cache usage: 5.5%, Prefix cache hit rate: 65.9%",
+        "(APIServer pid=109730) INFO 10-03 22:22:20 [loggers.py:328] Engine 000: Avg prompt throughput: 9.2 tokens/s, Avg generation throughput: 5302.5 tokens/s, Running: 60 reqs, Waiting: 0 reqs, GPU KV cache usage: 7.0%, Prefix cache hit rate: 70.6%",
+        "(APIServer pid=109730) INFO 10-03 22:22:30 [loggers.py:328] Engine 000: Avg prompt throughput: 2.8 tokens/s, Avg generation throughput: 4948.7 tokens/s, Running: 60 reqs, Waiting: 0 reqs, GPU KV cache usage: 9.0%, Prefix cache hit rate: 71.2%",
+        "(APIServer pid=109730) INFO 10-03 22:22:40 [loggers.py:328] Engine 000: Avg prompt throughput: 2.2 tokens/s, Avg generation throughput: 4580.8 tokens/s, Running: 60 reqs, Waiting: 0 reqs, GPU KV cache usage: 10.8%, Prefix cache hit rate: 71.8%",
+        "(APIServer pid=109730) INFO 10-03 22:22:50 [loggers.py:328] Engine 000: Avg prompt throughput: 0.9 tokens/s, Avg generation throughput: 4347.8 tokens/s, Running: 60 reqs, Waiting: 0 reqs, GPU KV cache usage: 12.3%, Prefix cache hit rate: 73.0%",
+        "(APIServer pid=109730) INFO 10-03 22:23:00 [loggers.py:328] Engine 000: Avg prompt throughput: 3.6 tokens/s, Avg generation throughput: 4101.7 tokens/s, Running: 60 reqs, Waiting: 0 reqs, GPU KV cache usage: 13.5%, Prefix cache hit rate: 74.2%",
+        "(APIServer pid=109730) INFO 10-03 22:23:10 [loggers.py:328] Engine 000: Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 3910.6 tokens/s, Running: 60 reqs, Waiting: 0 reqs, GPU KV cache usage: 15.3%, Prefix cache hit rate: 74.2%",
+        "(APIServer pid=109730) INFO 10-03 22:23:20 [loggers.py:328] Engine 000: Avg prompt throughput: 4.6 tokens/s, Avg generation throughput: 3721.8 tokens/s, Running: 60 reqs, Waiting: 0 reqs, GPU KV cache usage: 15.4%, Prefix cache hit rate: 75.7%",
+        "(APIServer pid=109730) INFO 10-03 22:23:30 [loggers.py:328] Engine 000: Avg prompt throughput: 15.3 tokens/s, Avg generation throughput: 3689.7 tokens/s, Running: 60 reqs, Waiting: 0 reqs, GPU KV cache usage: 15.2%, Prefix cache hit rate: 95.4%",
+        "(APIServer pid=109730) INFO 10-03 22:23:40 [loggers.py:328] Engine 000: Avg prompt throughput: 3.1 tokens/s, Avg generation throughput: 3568.2 tokens/s, Running: 60 reqs, Waiting: 0 reqs, GPU KV cache usage: 15.8%, Prefix cache hit rate: 95.4%",
+        "(APIServer pid=109730) INFO 10-03 22:23:50 [loggers.py:328] Engine 000: Avg prompt throughput: 9.9 tokens/s, Avg generation throughput: 3436.3 tokens/s, Running: 60 reqs, Waiting: 0 reqs, GPU KV cache usage: 17.4%, Prefix cache hit rate: 97.4%"
+      ],
+      "initialization_meter": {},
+      "grader_timeline": {
+        "completed_queries": 19,
+        "audit_errors": [],
+        "correct": 18,
+        "wrong": 1,
+        "target_service_floor_s": 54.0,
+        "actual_service_s": 57.00214171409607,
+        "idle_between_queries_s": 61.57264018058777,
+        "first_pick_elapsed_s": 8.985756158828735,
+        "scope": "completed oracle jobs; queued/cancelled client jobs may still incur service"
+      }
+    }
+  ]
+}
