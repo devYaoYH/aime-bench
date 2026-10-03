@@ -15,6 +15,7 @@ import httpx
 
 from src.common import ROOT, utc_now
 from src.attempt_runners import speedrun_v2 as runner
+from src.attempt_runners import speedrun_v4 as dynamic_runner
 from src.attempt_runners._ports_v1 import ensure_free
 from src.attempt_runners._runtime_v1 import Services, attempt_lock, ready
 
@@ -22,8 +23,10 @@ MANIFEST = ROOT / "configs/experiments/vibe-bf16-best-30x1-benchmark-v2.json"
 REFERENCE = "20261003T211557.382358Z"
 
 
-def controls(model, benchmark=True):
-    argv = json.loads(MANIFEST.read_text())["argv"]
+def controls(model, benchmark=True, policy="reference"):
+    manifest = (MANIFEST if policy == "reference" else
+                ROOT / "configs/experiments/vibe-bf16-dynamic30-8k-v4.json")
+    argv = json.loads(manifest.read_text())["argv"]
     argv[argv.index("--model") + 1] = model
     if not benchmark:
         argv.remove("--benchmark")
@@ -68,8 +71,9 @@ def save(path, data):
 
 
 async def execute(options):
-    argv = controls(options.model, benchmark=not options.profiled_control)
-    args = runner.parse_args(argv)
+    module = runner if options.policy == "reference" else dynamic_runner
+    argv = controls(options.model, benchmark=not options.profiled_control, policy=options.policy)
+    args = module.parse_args(argv)
     batch = ROOT / "runs/experiments" / options.batch
     batch.mkdir(parents=True, exist_ok=False)
     profile = Path(args.models_dir).expanduser() / args.model / args.model_profile
@@ -77,6 +81,7 @@ async def execute(options):
               "reference_attempt": REFERENCE, "trials_requested": options.trials,
               "near_reference_threshold_s": options.threshold_s,
               "argv": argv, "model": options.model, "profiled_control": options.profiled_control,
+              "policy": options.policy, "runner_module": module.__name__,
               "source_commit": subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=ROOT, text=True).strip(),
               "profile_path": str(profile), "profile_sha256": hashlib.sha256(profile.read_bytes()).hexdigest(),
               "server_reused": True, "prefix_cache_reset_between_trials": True,
@@ -103,7 +108,7 @@ async def execute(options):
             for trial in range(1, options.trials + 1):
                 cache_reset = await reset_cache(client, args.vllm_url)
                 print(f"REPLICATION TRIAL {trial}/{options.trials} model={options.model}", flush=True)
-                output = await runner.run(runner.parse_args(argv))
+                output = await module.run(module.parse_args(argv))
                 summary = json.loads((output / "summary.json").read_text())
                 comparison = compare_initial_requests(output, options.model)
                 row = {"trial": trial, "attempt_id": output.name, "cache_reset": cache_reset,
@@ -138,6 +143,8 @@ def main():
     parser.add_argument("--trials", type=int, default=3)
     parser.add_argument("--threshold-s", type=float, default=75)
     parser.add_argument("--profiled-control", action="store_true", help="Restore original profiling and immediate trace writes for the matched control")
+    parser.add_argument("--policy", choices=["reference", "dynamic30"], default="reference",
+                        help="Reference barrier control, or reallocate solved slots while retaining only 30 active requests")
     parser.add_argument("--batch", default="best-replication-" + datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ"))
     options = parser.parse_args()
     if options.trials < 1 or options.threshold_s <= 0 or Path(options.batch).name != options.batch:

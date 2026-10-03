@@ -5,6 +5,7 @@ import httpx
 
 from src.experiments.replicate_best_v1 import controls, reset_cache
 from src.attempt_runners.speedrun_v2 import parse_args
+from src.attempt_runners.speedrun_v4 import parse_args as parse_dynamic
 
 
 class BestReplicationTests(unittest.TestCase):
@@ -31,6 +32,15 @@ class BestReplicationTests(unittest.TestCase):
         self.assertFalse(args.no_overhead_profile)
         self.assertFalse(args.no_gpu_telemetry)
         self.assertEqual((args.parallelism, args.rollouts, args.schedule), (30, 1, "barrier"))
+
+    def test_dynamic_recycling_preserves_request_and_memory_caps(self):
+        args = parse_dynamic(controls("WeiboAI/VibeThinker-3B", policy="dynamic30"))
+        self.assertEqual(args.max_concurrent_requests, 30)
+        self.assertEqual(args.max_attempts_per_question, 4)
+        self.assertEqual(args.token_budgets, [8192, 16384])
+        self.assertEqual(args.seed_stride, 4)
+        self.assertEqual((args.parallelism, args.rollouts), (30, 1))
+        self.assertTrue(args.benchmark)
 
 
 class CacheResetTests(unittest.IsolatedAsyncioTestCase):

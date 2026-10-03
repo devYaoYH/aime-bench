@@ -98,6 +98,32 @@ class DynamicTests(unittest.IsolatedAsyncioTestCase):
         self.assertTrue(all(len(r['rollouts'])==8 and r['status']=='unsolved' for r in rows))
         self.assertEqual(sum('prompt' in r for r in requests),12)
 
+    async def test_cap30_recycles_solved_slots_with_original_four_request_cap(self):
+        requests, streams = [], []
+        oracle = asyncio.Lock()
+        async def handler(request):
+            body = json.loads(request.content)
+            if request.url.path == '/verify':
+                async with oracle:
+                    await asyncio.sleep(.002)
+                    return httpx.Response(200, json={'verdict': True})
+            q = int(body['messages'][1]['content'])
+            r = body['seed'] - 20261003 - q * 4
+            requests.append((q, r))
+            stream = Stream([chunk('\\boxed{070}' if q <= 6 or r >= 2 else 'thinking')], delay=.001, hang=True)
+            streams.append(stream)
+            return httpx.Response(200, stream=stream)
+        rows, allocation = await self.exercise(handler, changes={
+            'max_concurrent_requests': 30, 'max_attempts_per_question': 4,
+            'token_budgets': [8192, 16384], 'max_tokens': 16384})
+        self.assertEqual(allocation['peak_active_requests'], 30)
+        self.assertTrue(all(r == 1 for _, r in requests[:30]))
+        self.assertTrue(any(r > 1 for _, r in requests[30:]))
+        self.assertTrue(all(a['active_requests'] <= 30 for a in allocation['admissions']))
+        self.assertTrue(all(n <= 4 for n in Counter(q for q, _ in requests).values()))
+        self.assertEqual(sum(r['status'] == 'solved' for r in rows), 18)
+        self.assertTrue(all(s.closed for s in streams))
+
     async def test_stream_failure_aborts_fast_and_closes_other_streams(self):
         streams=[]
         async def handler(request):

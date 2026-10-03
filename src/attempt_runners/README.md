@@ -141,6 +141,11 @@ the 71-second result has been reproduced reliably. No optional GPU/engine
 polling is added to the official solving window.
 Use `--profiled-control` to restore the reference's profiling, GPU/engine samples
 and immediate trace writes while keeping identical sampling and solving controls.
+The separately recorded `--policy dynamic30` experiment starts the same 30×1
+requests, then reallocates solved slots using v4 while retaining only 30 active
+streams, an 8K/16K cumulative budget ladder, the standard server profile and the
+original four-request cap. This changes solving policy and is an optimization
+comparison, not a matched replication of the barrier control.
 
 `python -m src.attempt_runners.speedrun_v3 --model WeiboAI/VibeThinker-3B --benchmark`
 starts one 8K request for every selected question. The first client grader
