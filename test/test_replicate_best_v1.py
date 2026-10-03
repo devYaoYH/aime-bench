@@ -1,7 +1,9 @@
 import unittest
+from pathlib import Path
 from unittest.mock import AsyncMock
 
 import httpx
+import yaml
 
 from src.experiments.replicate_best_v1 import controls, reset_cache
 from src.attempt_runners.speedrun_v2 import parse_args
@@ -47,6 +49,18 @@ class BestReplicationTests(unittest.TestCase):
         changed = controls("WeiboAI/VibeThinker-3B", seed=20261004)
         self.assertEqual([i for i, (a, b) in enumerate(zip(original, changed)) if a != b], [original.index('--seed') + 1])
         self.assertEqual(parse_args(changed).seed, 20261004)
+
+    def test_attention_profile_retains_precision_budget_and_request_controls(self):
+        model = 'r0b0tlab/VibeThinker-3B-NVFP4'
+        original = controls(model)
+        changed = controls(model, model_profile='vllm-flashinfer.yaml')
+        self.assertEqual([i for i, (a, b) in enumerate(zip(original, changed)) if a != b], [original.index('--model-profile') + 1])
+        root = Path(__file__).resolve().parents[1]
+        profile = root / 'configs/vllm' / model
+        base = yaml.safe_load((profile / 'vllm.yaml').read_text())
+        trial = yaml.safe_load((profile / 'vllm-flashinfer.yaml').read_text())
+        self.assertEqual(trial.pop('attention-backend'), 'FLASHINFER')
+        self.assertEqual(trial, base)
 
 
 class CacheResetTests(unittest.IsolatedAsyncioTestCase):

@@ -160,6 +160,12 @@ records the full sequence and checks that initial payloads differ only by the
 declared model/seed substitutions. All outcomes are retained. A selected fast
 seed must be repeated separately before claiming repeatability, and successful
 fixed-seed validation does not establish performance across arbitrary seeds.
+`--model-profile` selects a separately versioned launch profile. The NVFP4
+`vllm-flashinfer.yaml` experiment changes only the attention backend, retaining
+Marlin weights, BF16 activation/KV precision, the 95% envelope and 16K generation
+ceiling. Deploy it to the model directory after pulling, and record the backend
+as a separate intervention; request payload equality alone does not make this
+an exact server-configuration replication.
 
 `python -m src.attempt_runners.speedrun_v3 --model WeiboAI/VibeThinker-3B --benchmark`
 starts one 8K request for every selected question. The first client grader

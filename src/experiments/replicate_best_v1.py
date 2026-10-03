@@ -23,12 +23,13 @@ MANIFEST = ROOT / "configs/experiments/vibe-bf16-best-30x1-benchmark-v2.json"
 REFERENCE = "20261003T211557.382358Z"
 
 
-def controls(model, benchmark=True, policy="reference", seed=20261003):
+def controls(model, benchmark=True, policy="reference", seed=20261003, model_profile="vllm.yaml"):
     manifest = (MANIFEST if policy == "reference" else
                 ROOT / "configs/experiments/vibe-bf16-dynamic30-8k-v4.json")
     argv = json.loads(manifest.read_text())["argv"]
     argv[argv.index("--model") + 1] = model
     argv[argv.index("--seed") + 1] = str(seed)
+    argv[argv.index("--model-profile") + 1] = model_profile
     if not benchmark:
         argv.remove("--benchmark")
     return argv + ["--reuse-server"]
@@ -76,7 +77,7 @@ def save(path, data):
 async def execute(options):
     module = runner if options.policy == "reference" else dynamic_runner
     seeds = options.seeds or [20261003] * options.trials
-    argv = controls(options.model, benchmark=not options.profiled_control, policy=options.policy, seed=seeds[0])
+    argv = controls(options.model, benchmark=not options.profiled_control, policy=options.policy, seed=seeds[0], model_profile=options.model_profile)
     args = module.parse_args(argv)
     batch = ROOT / "runs/experiments" / options.batch
     batch.mkdir(parents=True, exist_ok=False)
@@ -112,7 +113,7 @@ async def execute(options):
             save(batch / "summary.json", result)
             for trial in range(1, options.trials + 1):
                 seed = seeds[trial - 1]
-                trial_argv = controls(options.model, benchmark=not options.profiled_control, policy=options.policy, seed=seed)
+                trial_argv = controls(options.model, benchmark=not options.profiled_control, policy=options.policy, seed=seed, model_profile=options.model_profile)
                 cache_reset = await reset_cache(client, args.vllm_url)
                 print(f"REPLICATION TRIAL {trial}/{options.trials} model={options.model} seed={seed}", flush=True)
                 output = await module.run(module.parse_args(trial_argv))
@@ -147,6 +148,7 @@ async def execute(options):
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--model", choices=["WeiboAI/VibeThinker-3B", "r0b0tlab/VibeThinker-3B-NVFP4"], default="WeiboAI/VibeThinker-3B")
+    parser.add_argument("--model-profile", default="vllm.yaml", help="Versioned profile within the chosen model's directory")
     parser.add_argument("--trials", type=int, default=3)
     parser.add_argument("--seeds", type=int, nargs='+', help="One declared seed per trial; default repeats the reference seed")
     parser.add_argument("--threshold-s", type=float, default=75)
