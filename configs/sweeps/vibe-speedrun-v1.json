@@ -1,0 +1,12 @@
+{
+  "schema_version": 1,
+  "base_args": ["--model", "WeiboAI/VibeThinker-3B", "--model-profile", "vllm.yaml", "--first-pass-max-tokens", "8192", "--max-tokens", "16384", "--target-correct", "18", "--max-attempts-per-question", "4", "--max-rounds", "4"],
+  "grid": {
+    "parallelism": [8, 16, 30],
+    "rollouts": [1, 2, 4],
+    "temperature": [0.8],
+    "top_p": [0.95],
+    "seed": [20261003]
+  },
+  "controls": [{"parallelism": 30, "rollouts": 1, "schedule": "barrier", "temperature": 0.8, "top_p": 0.95, "seed": 20261003}]
+}

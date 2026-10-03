@@ -42,3 +42,67 @@ originally ran through `src.attempt --strategy baseline` at commit `0834cfe`.
 Its saved config, summary, source commit, and original command remain historical
 evidence. The policy is now separately runnable here; splitting the code did not
 rerun or relabel that experiment.
+
+## Prospective speedrun v1
+
+| Runner | Entry point | Behavior |
+| --- | --- | --- |
+| [Speedrun v1](speedrun_v1.py) | `python -m src.attempt_runners.speedrun_v1` | Prospective candidates; default 30 questions × four 8K samples; question-wide deduplication; one pending grader request per question; stop at 18 correct |
+| [Sweep v1](sweep_speedrun_v1.py) | `python -m src.attempt_runners.sweep_speedrun_v1` | Plan by default; explicitly execute sequential, isolated cells |
+
+The speedrun uses its own frozen [_streaming_v1.py](_streaming_v1.py) policy and
+v1 service runtime. It does not import or modify canonical or naive runner behavior.
+Shared [instrumentation](../attempt_metrics.py) is observational. Each sample is
+seeded by question index and rollout number with a fixed four-request stride,
+so changing fan-out does not change the first sample's seed. This differs from
+historical canonical seeding; use the matched control, not only the old 92.4-second
+coverage result, when attributing a speedup to concurrency.
+
+`--rollouts 4` uses all four allowed requests in the initial 8K batch; it never
+issues a fifth continuation or retry. With one or two samples per group, unsolved
+capped samples can continue their own exact prompt/output token prefixes using
+the remaining request budget. A continuation is a new request, relies on prefix
+caching, and is not guaranteed to retain active KV state. Missing/incomplete token
+IDs fail the cell; context exhaustion starts a new sample. Later requests allow
+up to 16K output, clipped to remaining context. The standard Vibe profile has 64K
+**total context** and a 16K **generation ceiling**, unlike the naive baseline's
+separate 16K total-context profile. The sweep uses the existing speedrun profile;
+no model profile is changed by planning or executing it.
+
+Default `--schedule eager` places all first groups in a FIFO queue, then appends
+unsolved retries as workers free up; it does not wait for the slowest first group.
+`--schedule barrier` waits for each full round as a comparison. Both preserve
+per-question deduplication across groups and a single verifier per question.
+
+The [manifest](../../configs/sweeps/vibe-speedrun-v1.json) has ten cells: question
+parallelism 8/16/30 × fan-out 1/2/4, plus a 30 × 1 barrier control, all using the
+same seed, temperature 0.8, top-p 0.95, and 8K first-pass budget. Edit the versioned
+manifest's temperature/top-p/seed dimensions for additional sweeps. Maximum initial
+concurrency is 120 requests. Generate a plan locally without CUDA or SSH:
+
+```sh
+.venv/bin/python -m src.attempt_runners.sweep_speedrun_v1
+```
+
+After testing, committing/pushing, pulling on callosum, and confirming the other
+experiment is finished, execute in a durable session:
+
+```sh
+~/.venvs/vllm/bin/python -m src.attempt_runners.sweep_speedrun_v1 --execute
+```
+
+Execution holds the checkout attempt lock and starts fresh managed inference and
+grader services for each cell, warms the full configured sampling batch, and
+refuses a busy GPU before CUDA warmup. It never stops unrelated GPU processes.
+Defaults stop the sweep on an error; `--continue-on-error` records failures and
+continues. Completed cells that exhaust the budget without 18 correct have no
+target time or rank. Interruption persists partial results and closes owned services.
+
+Each cell gets its own timestamped `attempts/` folder. Config/summary record
+`runner_id: speedrun_v1`, scheduling, sampling, budgets, and provenance. Summaries
+include first-18 elapsed time, fresh/continuation TTFT, observed VRAM, and the
+[canonical overhead measurements](../../docs/attempts.md#runner-overhead-instrumentation).
+Scores and the exact plan are saved in `runs/speedrun_sweeps/<timestamp>/`.
+Rankings use official solving time to 18 verified correct, excluding startup and
+warmup; initialization time is recorded separately. No speedup has been measured
+for this new sweep until it is actually executed on the remote GPU.

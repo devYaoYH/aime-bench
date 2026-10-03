@@ -27,6 +27,7 @@ import httpx
 import yaml
 
 from src.common import ROOT, atomic_json, utc_now
+from src.attempt_metrics import AttemptProfiler, Meter, merge_meters, grader_timeline
 
 PROMPT = (
     "Solve the AIME problem. Whenever you have a prospective answer to the original "
@@ -181,7 +182,15 @@ def continuation_prefix(previous, folder, context_limit):
 
 
 async def run_question(problem, args, client, output, sampler, *, round_no=1,
-                       rollout_offset=0, attempt_start=None, on_solved=None, target_event=None):
+                       rollout_offset=0, attempt_start=None, on_solved=None, target_event=None, profiler=None):
+    meter = Meter(not getattr(args, 'no_overhead_profile', False),
+                  parent=profiler.meter if profiler else None)
+    rollout_meters = {}
+
+    def write_json(path, value, scope=meter):
+        with scope.measure('artifact_json_write'):
+            atomic_json(path, value)
+
     index = problem['problem_idx']
     folder = output / 'trace' / f'{index:02d}'
     folder.mkdir(parents=True, exist_ok=True)
@@ -204,13 +213,27 @@ async def run_question(problem, args, client, output, sampler, *, round_no=1,
 
     def propose(event, rollout):
         candidate = str(event['answer'])
+        meter.inc('candidate_proposals')
         if candidate not in seen:
             seen.add(candidate)
             candidates.put_nowait({**event, 'candidate': candidate, 'rollout': rollout,
                                    'observed_at_utc': utc_now(),
-                                   'question_elapsed_s': time.perf_counter() - start})
+                                   'question_elapsed_s': time.perf_counter() - start,
+                                   '_enqueued_monotonic_s': time.perf_counter()})
+            meter.inc('candidate_unique_enqueued')
+            meter.high_water('candidate_queue_depth', candidates.qsize())
+        else:
+            meter.inc('candidate_duplicates_suppressed')
 
     async def generate(rollout):
+        scope = rollout_meters[rollout] = Meter(meter.enabled, parent=meter)
+        scope.inc('generation_requests')
+
+        def detect(part, value, eof=False):
+            with scope.measure('candidate_parse_enqueue'):
+                for event in detector.feed(part, value, eof=eof):
+                    propose(event, rollout)
+
         path = folder / f'rollout-{rollout:02d}'
         path.mkdir()
         request = {'model': args.model, 'messages': [
@@ -229,7 +252,7 @@ async def run_question(problem, args, client, output, sampler, *, round_no=1,
             request.pop('chat_template_kwargs', None)
             request.update(prompt=continuation['prompt'],
                            max_tokens=min(args.max_tokens, continuation['remaining_context']))
-        atomic_json(path / 'request.json', request)
+        write_json(path / 'request.json', request, scope)
         began = time.perf_counter()
         record = {'rollout': rollout, 'round': round_no, 'started_at_utc': utc_now(), 'start_monotonic_s': began,
                   'ttft_s': None, 'last_token_s': None, 'finish_reason': None,
@@ -252,11 +275,15 @@ async def run_question(problem, args, client, output, sampler, *, round_no=1,
                     response.raise_for_status()
                     async for payload in sse_payloads(response.aiter_lines()):
                         elapsed = time.perf_counter() - began
-                        append_json(stream_file, {'elapsed_s': elapsed, 'timestamp_utc': utc_now(), 'data': payload})
+                        scope.inc('sse_chunks')
+                        scope.inc('sse_payload_bytes', len(payload.encode()))
+                        with scope.measure('stream_trace_write_flush'):
+                            append_json(stream_file, {'elapsed_s': elapsed, 'timestamp_utc': utc_now(), 'data': payload})
                         if payload == '[DONE]':
                             record['done_received'] = True
                             break
-                        body = json.loads(payload)
+                        with scope.measure('sse_json_decode'):
+                            body = json.loads(payload)
                         if body.get('error'):
                             raise RuntimeError(f'vLLM stream error: {body["error"]}')
                         if body.get('prompt_token_ids') is not None:
@@ -280,8 +307,7 @@ async def run_question(problem, args, client, output, sampler, *, round_no=1,
                                         record['ttft_s'] = elapsed
                                     record['last_token_s'] = elapsed
                                     parts[part].append(value)
-                                    for event in detector.feed(part, value):
-                                        propose(event, rollout)
+                                    detect(part, value)
                             if choice.get('finish_reason'):
                                 record['finish_reason'] = choice['finish_reason']
                     if record['finish_reason'] in ('error', 'abort'):
@@ -291,8 +317,7 @@ async def run_question(problem, args, client, output, sampler, *, round_no=1,
                         # Only a natural stream end can complete an unfinished line.
                         if record['finish_reason'] != 'length':
                             for part in parts:
-                                for event in detector.feed(part, '', eof=True):
-                                    propose(event, rollout)
+                                detect(part, '', eof=True)
                         record['status'] = 'completed'
                     else:
                         raise RuntimeError('Stream ended without DONE or a terminal finish reason')
@@ -302,6 +327,7 @@ async def run_question(problem, args, client, output, sampler, *, round_no=1,
         except Exception as exc:
             record.update(status='error', error=f'{type(exc).__name__}: {exc}')
         finally:
+            scope.inc('generation_' + record['status'])
             ended = time.perf_counter()
             record.update(generation_finished_at_utc=utc_now(), generation_end_monotonic_s=ended,
                           generation_latency_s=ended - began,
@@ -316,11 +342,12 @@ async def run_question(problem, args, client, output, sampler, *, round_no=1,
             if args.strategy == 'coverage':
                 complete_ids = bool(prompt_token_ids and output_token_ids and
                                     usage.get('completion_tokens') == len(output_token_ids))
-                atomic_json(path / 'tokens.json', {'prompt_token_ids': prompt_token_ids,
+                write_json(path / 'tokens.json', {'prompt_token_ids': prompt_token_ids,
                     'output_token_ids': output_token_ids, 'complete': complete_ids,
-                    'visible_text': (continuation['visible_text'] if continuation else '') + visible_text})
-            atomic_json(path / 'response.json', {part: ''.join(text) for part, text in parts.items()})
-            atomic_json(path / 'telemetry.json', record)
+                    'visible_text': (continuation['visible_text'] if continuation else '') + visible_text}, scope)
+            write_json(path / 'response.json', {part: ''.join(text) for part, text in parts.items()}, scope)
+            record['overhead'] = scope.snapshot()
+            write_json(path / 'telemetry.json', record, scope)
 
     streams = [asyncio.create_task(generate(rollout_offset + r)) for r in range(1, args.rollouts + 1)]
 
@@ -338,8 +365,14 @@ async def run_question(problem, args, client, output, sampler, *, round_no=1,
                     event = await candidates.get()
                     if event is None:
                         break
-                    event.update(verification_started_at_utc=utc_now(), round=round_no)
+                    queue_wait = time.perf_counter() - event.pop('_enqueued_monotonic_s')
+                    meter.observe('candidate_local_queue_wait', queue_wait)
+                    event.update(verification_started_at_utc=utc_now(), round=round_no,
+                                 candidate_queue_wait_s=queue_wait)
                     verify_start = time.perf_counter()
+                    meter.inc('verification_submitted')
+                    if profiler:
+                        profiler.submitted(verify_start - (attempt_start if attempt_start is not None else start))
                     try:
                         response = await client.post(args.grader_url + '/verify', json={
                             'index': index, 'candidate': event['candidate'],
@@ -350,13 +383,26 @@ async def run_question(problem, args, client, output, sampler, *, round_no=1,
                         if type(verdict.get('verdict')) is not bool:
                             raise RuntimeError('Grader response lacks a boolean verdict')
                         event['result'] = verdict
+                        meter.inc('verification_completed')
+                        meter.inc('verification_correct' if verdict['verdict'] else 'verification_wrong')
+                        if verdict.get('queue_wait_s') is not None:
+                            meter.observe('grader_queue_wait', verdict['queue_wait_s'])
+                        if verdict.get('toll_s') is not None:
+                            meter.observe('grader_service', verdict['toll_s'])
+                    except asyncio.CancelledError:
+                        event['cancelled'] = True
+                        meter.inc('verification_cancelled')
+                        raise
                     except Exception as exc:
+                        meter.inc('verification_errors')
                         event['error'] = f'{type(exc).__name__}: {exc}'
                         raise
                     finally:
                         event.update(verification_finished_at_utc=utc_now(),
                                      verification_latency_s=time.perf_counter() - verify_start)
-                        append_json(file, event)
+                        meter.observe('verification_http_wait', event['verification_latency_s'])
+                        with meter.measure('verification_trace_write_flush'):
+                            append_json(file, event)
                     if verdict['verdict']:
                         winner = event
                         solved_event = {'problem_idx': index, 'round': round_no, 'rollout': event['rollout'],
@@ -374,17 +420,22 @@ async def run_question(problem, args, client, output, sampler, *, round_no=1,
     except Exception as exc:
         question_error = f'{type(exc).__name__}: {exc}'
     finally:
+        cancellation_start = time.perf_counter()
         for task in streams:
             if not task.done() and not task.cancelling():
                 task.cancel()
         await asyncio.gather(*streams, return_exceptions=True)
         await asyncio.gather(producer, return_exceptions=True)
+        meter.observe('generation_cancellation_settlement', time.perf_counter() - cancellation_start)
         ended, ended_at = time.perf_counter(), utc_now()
         for path, record, _ in records:
             record.update(finished_at_utc=ended_at, end_to_end_latency_s=ended - record['start_monotonic_s'],
                           end_to_end_scope='rollout start through question verification/cancellation settlement',
-                          gpu=sampler.window(record['start_monotonic_s'], record['generation_end_monotonic_s']))
-            atomic_json(path / 'telemetry.json', record)
+                          gpu=None)
+            with meter.measure('gpu_sample_window'):
+                record['gpu'] = sampler.window(record['start_monotonic_s'], record['generation_end_monotonic_s'])
+            record['overhead'] = rollout_meters[record['rollout']].snapshot()
+            write_json(path / 'telemetry.json', record)
         result = {'problem_idx': index, 'started_at_utc': started, 'finished_at_utc': ended_at,
                   'end_to_end_latency_s': ended - start,
                   'status': 'error' if question_error else ('solved' if winner else ('stopped' if stopped_for_target else 'unsolved')),
@@ -392,18 +443,19 @@ async def run_question(problem, args, client, output, sampler, *, round_no=1,
                   'rollouts': [record for _, record, _ in sorted(records, key=lambda r: r[1]['rollout'])]}
         if any(r['status'] == 'error' for r in result['rollouts']) and not winner:
             result['status'] = 'error'
-        result.update(round=round_no, first_solved=solved_event)
-        atomic_json(folder / f'round-{round_no:02d}.json', result)
+        result.update(round=round_no, first_solved=solved_event, overhead=meter.snapshot())
+        write_json(folder / f'round-{round_no:02d}.json', result)
         rounds = (previous.get('rounds', []) if previous else []) + [
             {k: result[k] for k in ('round', 'status', 'started_at_utc', 'finished_at_utc', 'end_to_end_latency_s', 'winner', 'error')}]
         if previous:
             result['rollouts'] = previous['rollouts'] + result['rollouts']
             result['started_at_utc'] = previous['started_at_utc']
             result['first_solved'] = previous.get('first_solved') or solved_event
+        result['overhead'] = merge_meters(previous.get('overhead') if previous else None, meter.snapshot())
         result['rounds'] = rounds
         result['question_start_monotonic_s'] = previous.get('question_start_monotonic_s', start) if previous else start
         result['end_to_end_latency_s'] = ended - result['question_start_monotonic_s']
-        atomic_json(folder / 'question.json', result)
+        write_json(folder / 'question.json', result)
         if solved_event and on_solved:
             on_solved(solved_event)
         print(f'Q{index:02d} round {round_no}: {result["status"]}, {ended - start:.2f}s', flush=True)
@@ -411,7 +463,7 @@ async def run_question(problem, args, client, output, sampler, *, round_no=1,
 
 
 async def run_questions(problems, args, client, output, sampler, *, round_no=1,
-                        rollout_offset=0, attempt_start=None, on_solved=None, target_event=None):
+                        rollout_offset=0, attempt_start=None, on_solved=None, target_event=None, profiler=None):
     queue = asyncio.Queue()
     for problem in problems:
         queue.put_nowait(problem)
@@ -422,7 +474,7 @@ async def run_questions(problems, args, client, output, sampler, *, round_no=1,
             problem = queue.get_nowait()
             results.append(await run_question(problem, args, client, output, sampler,
                 round_no=round_no, rollout_offset=rollout_offset, attempt_start=attempt_start,
-                on_solved=on_solved, target_event=target_event))
+                on_solved=on_solved, target_event=target_event, profiler=profiler))
 
     tasks = [asyncio.create_task(worker()) for _ in range(min(args.parallelism, len(problems)))]
     try:
@@ -435,7 +487,7 @@ async def run_questions(problems, args, client, output, sampler, *, round_no=1,
     return sorted(results, key=lambda row: row['problem_idx'])
 
 
-async def run_coverage(problems, args, client, output, sampler, attempt_start):
+async def run_coverage(problems, args, client, output, sampler, attempt_start, profiler=None):
     """Barriered single-rollout rounds; stop all remaining work at the solve target."""
     solved = set()
     target_event = asyncio.Event()
@@ -453,7 +505,7 @@ async def run_coverage(problems, args, client, output, sampler, attempt_start):
         print(f'Coverage round {round_no}: {len(pending)} questions, {round_args.max_tokens} tokens each', flush=True)
         batch = asyncio.create_task(run_questions(pending, round_args, client, output, sampler,
             round_no=round_no, rollout_offset=round_no - 1, attempt_start=attempt_start,
-            on_solved=on_solved, target_event=target_event))
+            on_solved=on_solved, target_event=target_event, profiler=profiler))
         target_wait = asyncio.create_task(target_event.wait())
         try:
             await asyncio.wait([batch, target_wait], return_when=asyncio.FIRST_COMPLETED)
@@ -588,6 +640,8 @@ async def run(args):
     output = ROOT / 'attempts' / datetime.now(timezone.utc).strftime('%Y%m%dT%H%M%S.%fZ')
     output.mkdir(parents=True)
     print(f'Attempt artifacts: {output}', flush=True)
+    profiler = AttemptProfiler(output, enabled=not args.no_overhead_profile,
+                               interval=args.overhead_interval, engine_interval=args.engine_metrics_interval)
     status, results, error = 'initializing', [], None
     official_start = None
     config = {**vars(args), 'attempt_id': output.name, 'initialization_started_at_utc': utc_now(),
@@ -628,7 +682,8 @@ async def run(args):
                     'x=torch.randn((1024,1024),device="cuda",dtype=torch.bfloat16); '
                     'end=time.monotonic()+2; '\
                     '\nwhile time.monotonic()<end: y=x@x; torch.cuda.synchronize()'], output / 'gpu_warmup.log')
-                await asyncio.wait_for(asyncio.to_thread(gpu_warmup.wait), timeout=120)
+                with profiler.meter.measure('initialization_gpu_warmup_wait', cpu=False):
+                    await asyncio.wait_for(asyncio.to_thread(gpu_warmup.wait), timeout=120)
                 if gpu_warmup.returncode:
                     raise RuntimeError('CUDA warmup failed; inspect gpu_warmup.log')
                 command = [args.vllm_binary, 'serve', '--config', str(profile_path),
@@ -637,7 +692,8 @@ async def run(args):
                 server = services.launch(command, output / 'vllm.log')
             else:
                 server = None
-            models = await ready(client, args.vllm_url + '/v1/models', args.startup_timeout, server)
+            with profiler.meter.measure('initialization_server_ready_wait', cpu=False):
+                models = await ready(client, args.vllm_url + '/v1/models', args.startup_timeout, server)
             if args.model not in [m['id'] for m in models.get('data', [])]:
                 raise RuntimeError('Inference server does not serve the requested model')
             atomic_json(output / 'server_models.json', models)
@@ -651,23 +707,27 @@ async def run(args):
             (output / 'grader_config.yaml').write_text(yaml.safe_dump(grader_config))
             grader = services.launch([args.grader_python, str(ROOT / 'grader/server.py')], output / 'grader.log',
                                      {**os.environ, 'GRADER_CONFIG': str(output / 'grader_config.yaml')})
-            health = await ready(client, args.grader_url + '/health', 60, grader)
+            with profiler.meter.measure('initialization_grader_ready_wait', cpu=False):
+                health = await ready(client, args.grader_url + '/health', 60, grader)
             if health.get('queries_so_far') != 0 or health.get('cost_c') != args.grader_cost:
                 raise RuntimeError('Grader did not start with a fresh queue and requested toll')
             config['grader_health'] = health
-            warmup = await warm_inference(args, client, len(problems))
+            with profiler.meter.measure('initialization_inference_warmup_wait', cpu=False):
+                warmup = await warm_inference(args, client, len(problems))
             atomic_json(output / 'inference_warmup.json', warmup)
             config['inference_warmup'] = {k: warmup[k] for k in ('latency_s', 'batch_size', 'tokens_per_request')}
             config.update(model_profile_sha256=hashlib.sha256(profile_text.encode()).hexdigest(),
                           launch_profile=profile, official_started_at_utc=utc_now())
             atomic_json(output / 'config.json', config)
             official_start = time.perf_counter()
+            profiler.official_start(client, args.vllm_url)
             status = 'running'
             print('Official solving phase started', flush=True)
             if args.strategy == 'coverage':
-                results = await run_coverage(problems, args, client, output, sampler, official_start)
+                results = await run_coverage(problems, args, client, output, sampler, official_start, profiler)
             else:
-                results = await run_questions(problems, args, client, output, sampler, attempt_start=official_start)
+                results = await run_questions(problems, args, client, output, sampler, attempt_start=official_start, profiler=profiler)
+            await profiler.stop()
             status = 'completed' if all(r['status'] != 'error' for r in results) else 'failed'
             if sampler.error:
                 raise RuntimeError(f'GPU telemetry failed: {sampler.error}')
@@ -678,6 +738,7 @@ async def run(args):
         status, error = 'failed', f'{type(exc).__name__}: {exc}'
         raise
     finally:
+        await profiler.stop()
         if sampler:
             sampler.stop()
         official_end = time.perf_counter()
@@ -697,9 +758,16 @@ async def run(args):
                                   'verified_answer': r['winner']['candidate'] if r['winner'] else None,
                                   'winning_rollout': r['winner']['rollout'] if r['winner'] else None,
                                   'first_solved': r.get('first_solved')} for r in results]}
-        atomic_json(output / 'summary.json', summary)
+        summary['overhead'] = profiler.snapshot()
+        atomic_json(output / 'summary.json', summary)  # Durable even if service cleanup fails.
         atomic_json(output / 'config.json', config)
+        cleanup_start = time.perf_counter()
         await services.close()
+        summary['service_cleanup_latency_s'] = time.perf_counter() - cleanup_start
+        summary['grader_timeline'] = grader_timeline(output / 'grader_audit.jsonl',
+            config.get('official_started_at_utc'), args.target_correct, args.grader_cost)
+        atomic_json(output / 'overhead.json', summary['overhead'])
+        atomic_json(output / 'summary.json', summary)
         print(json.dumps(summary, indent=2), flush=True)
     if status == 'failed':
         raise RuntimeError('One or more questions failed; inspect trace telemetry')
@@ -735,6 +803,9 @@ def parse_args(argv=None):
     parser.add_argument('--question-timeout', type=float, default=1800)
     parser.add_argument('--gpu-interval', type=float, default=0.2)
     parser.add_argument('--gpu-device', type=int, default=0)
+    parser.add_argument('--no-overhead-profile', action='store_true')
+    parser.add_argument('--overhead-interval', type=float, default=0.05, help='Event-loop lag sampling seconds')
+    parser.add_argument('--engine-metrics-interval', type=float, default=1.0, help='vLLM metrics polling seconds')
     args = parser.parse_args(argv)
     if args.parallelism is None:
         args.parallelism = 30 if args.strategy == 'coverage' else 8
@@ -744,7 +815,7 @@ def parse_args(argv=None):
         parser.error('Rollouts exceed the per-question attempt limit')
     if args.strategy == 'coverage' and args.rollouts != 1:
         parser.error('Coverage strategy requires one rollout per question per round')
-    if any(getattr(args, key) <= 0 for key in ('parallelism', 'rollouts', 'max_tokens', 'startup_timeout', 'question_timeout', 'gpu_interval', 'max_rounds', 'first_pass_max_tokens', 'target_correct', 'max_attempts_per_question')):
+    if any(getattr(args, key) <= 0 for key in ('parallelism', 'rollouts', 'max_tokens', 'startup_timeout', 'question_timeout', 'gpu_interval', 'max_rounds', 'first_pass_max_tokens', 'target_correct', 'max_attempts_per_question', 'overhead_interval', 'engine_metrics_interval')):
         parser.error('Concurrency, token budgets, timeouts, and sampling interval must be positive')
     if args.grader_cost < 0 or args.gpu_device < 0 or not 0 < args.top_p <= 1 or args.temperature < 0:
         parser.error('Invalid grader cost, GPU device, or sampling settings')

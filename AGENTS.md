@@ -59,3 +59,18 @@ support; report those limitations rather than modifying fixtures to hide them.
   hits and TTFT; do not assume that a completed request retains active KV state.
 - Preserve first-solved timestamps and elapsed times, linked to the grader query
   and answer timestamp, in attempt logs and summaries.
+
+## Speedrun sweeps and overhead
+
+- Use `src.attempt_runners.speedrun_v1` for prospective concurrency experiments;
+  use `src.attempt_runners.sweep_speedrun_v1` to plan the versioned manifest in
+  `configs/sweeps/vibe-speedrun-v1.json`. Planning is the default and does not
+  launch GPU work. Only use `--execute` after the GPU's current experiment ends.
+- Preserve the four-request cap even for pass@4: four first-pass samples leave
+  no continuation budget. Smaller fan-outs resume each distinct lane's exact IDs.
+- Canonical instrumentation is allowed without changing its solving policy.
+  Keep synchronous CPU/IO separate from overlapping async wall waits. Measure
+  duplicate suppression, local/grader queues, parsing, writes, cancellation,
+  event-loop delay, and inference metrics; record missing metric observations.
+- Compare against the matched barrier control with paired seeds. Report target
+  unmet/failure honestly; do not rank an attempt that did not reach 18 correct.

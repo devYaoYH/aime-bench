@@ -252,3 +252,46 @@ fixed dataset, pass@8 votes, and Jev analyses independently of canonical attempt
 The canonical tests use fake timed SSE streams and a real loopback grader;
 no GPU or inference requests are needed. Loopback binding requires execution
 outside a sandbox that blocks listening sockets.
+
+## Runner overhead instrumentation
+
+Canonical scheduling, candidate extraction, and request budgets are unchanged.
+The existing question-wide normalized answer set already suppresses duplicates
+across rollouts and continuation rounds; one consumer awaits each grader response
+before submitting the next candidate for that question. Other questions may queue
+one request each, and generation continues while verification is pending.
+
+New `overhead` fields in rollout/question telemetry and the attempt summary record
+synchronous thread CPU and wall time for SSE JSON decoding, candidate parsing and
+enqueueing, stream trace serialization/write/flush, JSON artifacts, and GPU sample
+window scans. Counters include parsed proposals, suppressed duplicates, unique
+candidates, generation outcomes, and verification outcomes. Local candidate queue
+waits, grader queue/service times, HTTP response waits, initialization readiness,
+and cancellation settlement record wall time only. Concurrent wall waits overlap:
+do not sum them into an attempt latency. Persisted snapshots precede their own
+final write; the attempt aggregate includes those writes.
+
+`overhead.json` also records runner process CPU/RSS, sampled event-loop delay, and
+vLLM `/metrics` observations (`inference_metrics.jsonl`). These include running and
+waiting requests, KV occupancy, preemptions, cache hits, and queue/prefill/decode
+counters when the server exposes them. Missing or failed metrics polling is logged
+without changing solving behavior. Engine counters include the warmup baseline;
+use first-to-last deltas. Sampled maxima can miss short spikes. NVML continues to
+record device VRAM in `gpu.jsonl` independently.
+
+Defaults sample event-loop lag every 50 ms and engine metrics every second.
+`--overhead-interval` and `--engine-metrics-interval` adjust those rates.
+`--no-overhead-profile` disables timers, counters, and background engine/lag
+sampling for an instrumentation control, while retaining normal traces and NVML.
+Profiling itself costs CPU; runner process CPU includes that cost.
+
+`grader_timeline` decomposes completed audit jobs into actual service, idle gaps
+between jobs, and the delay before the first pick. At a three-second toll, 18
+correct checks alone cost at least 54 seconds. First-candidate delay, wrong checks,
+and idle gaps add to that floor. Summed client waits include overlapping queue
+waits and are not elapsed grader service. Cancelled submissions can still consume
+oracle service; completed audit jobs are the evidence for charged completed work.
+
+The deferred [speedrun v1 sweep](../src/attempt_runners/README.md) compares wider
+first passes and eager continuations without adding an experimental policy to the
+canonical runner.
