@@ -47,3 +47,11 @@ htmlcov/
 .DS_Store
 *.log
 *.tmp
+
+# Canonical attempts: publish only compact provenance/results, retain traces remotely.
+/attempts/**
+!/attempts/**/
+!/attempts/*/config.json
+!/attempts/*/summary.json
+!/attempts/*/README.md
+.attempt.lock

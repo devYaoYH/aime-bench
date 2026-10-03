@@ -1,0 +1,570 @@
+"""Canonical AIME attempt: managed services, streaming fan-out, oracle, telemetry.
+
+Run on callosum: python -m src.attempt --model Qwen/Qwen3.5-4B
+See docs/attempts.md. No solver code compares candidates to the answer key.
+"""
+from __future__ import annotations
+
+import argparse
+import asyncio
+from contextlib import contextmanager
+from datetime import datetime, timezone
+import fcntl
+import hashlib
+import json
+import os
+from pathlib import Path
+import re
+import signal
+import socket
+import subprocess
+import sys
+import threading
+import time
+
+import httpx
+import yaml
+
+from src.common import ROOT, atomic_json, utc_now
+
+PROMPT = (
+    "Solve the AIME problem. Whenever you have a prospective answer to the original "
+    "problem, immediately emit it as \\boxed{N}, where N is an integer from 0 to 999. "
+    "You may continue checking your work afterward. End with your final boxed answer."
+)
+
+
+class CandidateDetector:
+    """Closed integer boxes and complete Answer: lines, independently per channel.
+
+    In particular, a network boundary after one digit never completes an answer.
+    Markers remain prospective; correctness comes exclusively from the oracle.
+    """
+    box = re.compile(r'\\boxed\s*\{\s*(\d{1,3})\s*\}')
+    line = re.compile(r'(?i)^\s*(?:\*\*)?Answer\s*:\s*\$?\s*(\d{1,3})\s*\$?\s*(?:\*\*)?\s*[.]?\s*$')
+
+    def __init__(self):
+        self.text = {'content': '', 'reasoning': ''}
+        self.scanned = {'content': 0, 'reasoning': 0}
+        self.line_start = {'content': 0, 'reasoning': 0}
+
+    def feed(self, part, delta, eof=False):
+        self.text[part] += delta
+        text = self.text[part]
+        found = []
+        # Revisit the incomplete tail of a box, rather than repeatedly scanning
+        # the full reasoning transcript on every token.
+        for match in self.box.finditer(text, self.scanned[part]):
+            found.append({'answer': int(match[1]), 'part': part,
+                          'kind': 'boxed', 'end': match.end()})
+            self.scanned[part] = match.end()
+        tail = text.rfind('\\boxed', self.scanned[part])
+        self.scanned[part] = tail if tail >= 0 else max(self.scanned[part], len(text) - 6)
+        start = self.line_start[part]
+        while '\n' in text[start:] or (eof and start < len(text)):
+            end = text.find('\n', start)
+            end = len(text) if end < 0 else end + 1
+            match = self.line.fullmatch(text[start:end])
+            if match:
+                found.append({'answer': int(match[1]), 'part': part,
+                              'kind': 'answer_line', 'end': end})
+            start = end
+        self.line_start[part] = start
+        return found
+
+
+async def sse_payloads(lines):
+    data = []
+    async for line in lines:
+        if not line:
+            if data:
+                yield '\n'.join(data)
+                data = []
+        elif line.startswith('data:'):
+            data.append(line[5:].lstrip())
+    if data:
+        yield '\n'.join(data)
+
+
+def append_json(file, row):
+    file.write(json.dumps(row, ensure_ascii=False) + '\n')
+    file.flush()
+
+
+class GPUSampler:
+    """Device-level NVML samples, shared by concurrent rollouts (not attribution)."""
+    def __init__(self, path, interval=0.2, device=0):
+        self.path, self.interval, self.device = path, interval, device
+        self.samples = []
+        self.stop_event = threading.Event()
+        self.error = None
+        self.thread = threading.Thread(target=self._run, daemon=True)
+
+    def _run(self):
+        try:
+            import pynvml
+            pynvml.nvmlInit()
+            handle = pynvml.nvmlDeviceGetHandleByIndex(self.device)
+            with self.path.open('w') as file:
+                while not self.stop_event.is_set():
+                    memory = pynvml.nvmlDeviceGetMemoryInfo(handle)
+                    util = pynvml.nvmlDeviceGetUtilizationRates(handle)
+                    row = {'monotonic_s': time.perf_counter(), 'timestamp_utc': utc_now(),
+                           'vram_used_mib': memory.used / 2**20,
+                           'vram_total_mib': memory.total / 2**20, 'gpu_util_pct': util.gpu}
+                    self.samples.append(row)
+                    append_json(file, row)
+                    self.stop_event.wait(self.interval)
+        except Exception as exc:
+            self.error = f'{type(exc).__name__}: {exc}'
+        finally:
+            try:
+                pynvml.nvmlShutdown()
+            except Exception:
+                pass
+
+    async def start(self):
+        self.thread.start()
+        for _ in range(100):
+            if self.error:
+                raise RuntimeError(f'GPU telemetry failed: {self.error}')
+            if self.samples:
+                return
+            await asyncio.sleep(0.05)
+        raise RuntimeError('GPU telemetry did not produce a sample')
+
+    def stop(self):
+        self.stop_event.set()
+        self.thread.join(timeout=5)
+
+    def window(self, start, end):
+        snapshot = list(self.samples)
+        before = [s for s in snapshot if s['monotonic_s'] <= start]
+        rows = ([before[-1]] if before else []) + [s for s in snapshot if start < s['monotonic_s'] <= end]
+        return {'sample_count': len(rows),
+                'start_vram_mib': rows[0]['vram_used_mib'] if rows else None,
+                'end_vram_mib': rows[-1]['vram_used_mib'] if rows else None,
+                'observed_peak_vram_mib': max((s['vram_used_mib'] for s in rows), default=None),
+                'scope': 'shared GPU device; sampled peak, not per-request allocation',
+                'error': self.error}
+
+
+async def run_question(problem, args, client, output, sampler):
+    index = problem['problem_idx']
+    folder = output / 'trace' / f'{index:02d}'
+    folder.mkdir(parents=True)
+    start, started = time.perf_counter(), utc_now()
+    candidates = asyncio.Queue()
+    seen = set()
+    records = []
+    winner = None
+    question_error = None
+
+    def propose(event, rollout):
+        candidate = str(event['answer'])
+        if candidate not in seen:
+            seen.add(candidate)
+            candidates.put_nowait({**event, 'candidate': candidate, 'rollout': rollout,
+                                   'observed_at_utc': utc_now(),
+                                   'question_elapsed_s': time.perf_counter() - start})
+
+    async def generate(rollout):
+        path = folder / f'rollout-{rollout:02d}'
+        path.mkdir()
+        request = {'model': args.model, 'messages': [
+            {'role': 'system', 'content': PROMPT}, {'role': 'user', 'content': problem['problem']}],
+            'temperature': args.temperature, 'top_p': args.top_p,
+            'max_tokens': args.max_tokens, 'seed': args.seed + index * args.rollouts + rollout,
+            'stream': True, 'stream_options': {'include_usage': True}}
+        if args.disable_thinking:
+            request['chat_template_kwargs'] = {'enable_thinking': False}
+        atomic_json(path / 'request.json', request)
+        began = time.perf_counter()
+        record = {'rollout': rollout, 'started_at_utc': utc_now(), 'start_monotonic_s': began,
+                  'ttft_s': None, 'last_token_s': None, 'finish_reason': None,
+                  'status': 'streaming', 'done_received': False, 'usage': None}
+        detector = CandidateDetector()
+        parts = {'reasoning': [], 'content': []}
+        records.append((path, record, parts))
+        try:
+            with (path / 'stream.jsonl').open('w') as stream_file:
+                async with client.stream('POST', args.vllm_url + '/v1/chat/completions',
+                                         json=request, headers={'X-Request-Id': f'{output.name}-q{index}-r{rollout}'}) as response:
+                    record['http_status'] = response.status_code
+                    record['headers_received_s'] = time.perf_counter() - began
+                    response.raise_for_status()
+                    async for payload in sse_payloads(response.aiter_lines()):
+                        elapsed = time.perf_counter() - began
+                        append_json(stream_file, {'elapsed_s': elapsed, 'timestamp_utc': utc_now(), 'data': payload})
+                        if payload == '[DONE]':
+                            record['done_received'] = True
+                            break
+                        body = json.loads(payload)
+                        if body.get('error'):
+                            raise RuntimeError(f'vLLM stream error: {body["error"]}')
+                        if body.get('usage'):
+                            record['usage'] = body['usage']
+                        for choice in body.get('choices', []):
+                            if choice.get('index', 0) != 0:
+                                continue
+                            delta = choice.get('delta') or {}
+                            for part, value in [('reasoning', delta.get('reasoning_content') or delta.get('reasoning')),
+                                                ('content', delta.get('content'))]:
+                                if isinstance(value, str) and value:
+                                    if record['ttft_s'] is None:
+                                        record['ttft_s'] = elapsed
+                                    record['last_token_s'] = elapsed
+                                    parts[part].append(value)
+                                    for event in detector.feed(part, value):
+                                        propose(event, rollout)
+                            if choice.get('finish_reason'):
+                                record['finish_reason'] = choice['finish_reason']
+                    if record['done_received'] or record['finish_reason'] in ('stop', 'length'):
+                        for part in parts:
+                            for event in detector.feed(part, '', eof=True):
+                                propose(event, rollout)
+                        record['status'] = 'completed'
+                    else:
+                        raise RuntimeError('Stream ended without DONE or a terminal finish reason')
+        except asyncio.CancelledError:
+            record['status'] = 'cancelled'
+            raise
+        except Exception as exc:
+            record.update(status='error', error=f'{type(exc).__name__}: {exc}')
+        finally:
+            ended = time.perf_counter()
+            record.update(generation_finished_at_utc=utc_now(), generation_end_monotonic_s=ended,
+                          generation_latency_s=ended - began,
+                          generation_censored=record['status'] != 'completed' or record['finish_reason'] == 'length')
+            atomic_json(path / 'response.json', {part: ''.join(text) for part, text in parts.items()})
+            atomic_json(path / 'telemetry.json', record)
+
+    streams = [asyncio.create_task(generate(r)) for r in range(1, args.rollouts + 1)]
+
+    async def drained():
+        try:
+            await asyncio.gather(*streams)
+        finally:
+            candidates.put_nowait(None)
+
+    producer = asyncio.create_task(drained())
+    try:
+        async with asyncio.timeout(args.question_timeout):
+            with (folder / 'verification.jsonl').open('w') as file:
+                while True:
+                    event = await candidates.get()
+                    if event is None:
+                        break
+                    event.update(verification_started_at_utc=utc_now())
+                    verify_start = time.perf_counter()
+                    try:
+                        response = await client.post(args.grader_url + '/verify', json={
+                            'index': index, 'candidate': event['candidate'],
+                            'agent_id': f'{output.name}-q{index}-r{event["rollout"]}',
+                            'query_id': f'{output.name}-q{index}-a{event["candidate"]}'})
+                        response.raise_for_status()
+                        verdict = response.json()
+                        if type(verdict.get('verdict')) is not bool:
+                            raise RuntimeError('Grader response lacks a boolean verdict')
+                        event['result'] = verdict
+                    except Exception as exc:
+                        event['error'] = f'{type(exc).__name__}: {exc}'
+                        raise
+                    finally:
+                        event.update(verification_finished_at_utc=utc_now(),
+                                     verification_latency_s=time.perf_counter() - verify_start)
+                        append_json(file, event)
+                    if verdict['verdict']:
+                        winner = event
+                        break
+    except asyncio.CancelledError:
+        question_error = 'attempt interrupted'
+        raise
+    except Exception as exc:
+        question_error = f'{type(exc).__name__}: {exc}'
+    finally:
+        for task in streams:
+            if not task.done():
+                task.cancel()
+        await asyncio.gather(*streams, return_exceptions=True)
+        await asyncio.gather(producer, return_exceptions=True)
+        ended, ended_at = time.perf_counter(), utc_now()
+        for path, record, _ in records:
+            record.update(finished_at_utc=ended_at, end_to_end_latency_s=ended - record['start_monotonic_s'],
+                          end_to_end_scope='rollout start through question verification/cancellation settlement',
+                          gpu=sampler.window(record['start_monotonic_s'], record['generation_end_monotonic_s']))
+            atomic_json(path / 'telemetry.json', record)
+        result = {'problem_idx': index, 'started_at_utc': started, 'finished_at_utc': ended_at,
+                  'end_to_end_latency_s': ended - start,
+                  'status': 'error' if question_error else ('solved' if winner else 'unsolved'),
+                  'winner': winner, 'error': question_error, 'unique_candidates': len(seen),
+                  'rollouts': [record for _, record, _ in sorted(records, key=lambda r: r[1]['rollout'])]}
+        if any(r['status'] == 'error' for r in result['rollouts']) and not winner:
+            result['status'] = 'error'
+        atomic_json(folder / 'question.json', result)
+        print(f'Q{index:02d}: {result["status"]}, {ended - start:.2f}s', flush=True)
+    return result
+
+
+async def run_questions(problems, args, client, output, sampler):
+    queue = asyncio.Queue()
+    for problem in problems:
+        queue.put_nowait(problem)
+    results = []
+
+    async def worker():
+        while not queue.empty():
+            problem = queue.get_nowait()
+            results.append(await run_question(problem, args, client, output, sampler))
+
+    tasks = [asyncio.create_task(worker()) for _ in range(min(args.parallelism, len(problems)))]
+    try:
+        await asyncio.gather(*tasks)
+    finally:
+        for task in tasks:
+            if not task.done():
+                task.cancel()
+        await asyncio.gather(*tasks, return_exceptions=True)
+    return sorted(results, key=lambda row: row['problem_idx'])
+
+
+def ensure_free(port):
+    with socket.socket() as sock:
+        sock.bind(('127.0.0.1', port))
+
+
+class Services:
+    def __init__(self):
+        self.processes = []
+        self.logs = []
+
+    def launch(self, command, logfile, env=None):
+        file = logfile.open('w')
+        self.logs.append(file)
+        process = subprocess.Popen(command, stdout=file, stderr=subprocess.STDOUT,
+                                   env=env, start_new_session=True, cwd=ROOT)
+        self.processes.append(process)
+        return process
+
+    async def close(self):
+        for process in reversed(self.processes):
+            # Own the entire process group, including vLLM EngineCore children.
+            try:
+                os.killpg(process.pid, signal.SIGTERM)
+            except ProcessLookupError:
+                pass
+        deadline = time.perf_counter() + 15
+        while any(p.poll() is None for p in self.processes) and time.perf_counter() < deadline:
+            await asyncio.sleep(0.1)
+        for process in self.processes:
+            try:
+                os.killpg(process.pid, signal.SIGKILL)
+            except ProcessLookupError:
+                pass
+            process.wait()
+        for file in self.logs:
+            file.close()
+
+
+async def ready(client, url, timeout, process=None):
+    deadline = time.perf_counter() + timeout
+    while time.perf_counter() < deadline:
+        if process is not None and process.poll() is not None:
+            raise RuntimeError(f'Service exited ({process.returncode}); inspect attempt service logs')
+        try:
+            response = await client.get(url, timeout=2)
+            response.raise_for_status()
+            return response.json()
+        except (httpx.HTTPError, ValueError):
+            await asyncio.sleep(0.5)
+    raise TimeoutError(f'Service not ready: {url}')
+
+
+@contextmanager
+def attempt_lock():
+    with (ROOT / '.attempt.lock').open('a') as file:
+        try:
+            fcntl.flock(file, fcntl.LOCK_EX | fcntl.LOCK_NB)
+        except BlockingIOError:
+            raise RuntimeError('Another canonical attempt owns this checkout') from None
+        try:
+            yield
+        finally:
+            fcntl.flock(file, fcntl.LOCK_UN)
+
+
+def load_questions(indices):
+    # Deliberately strip answers; only the grader reads the key during execution.
+    rows = [json.loads(line) for line in (ROOT / 'data/aime_2025_problems.jsonl').read_text().splitlines() if line.strip()]
+    problems = [{'problem_idx': row['problem_idx'], 'problem': row['problem']} for row in rows]
+    if indices:
+        requested = set(indices)
+        if not requested <= {p['problem_idx'] for p in problems}:
+            raise ValueError('Unknown question index')
+        problems = [p for p in problems if p['problem_idx'] in requested]
+    return problems
+
+
+async def run(args):
+    services = Services()
+    sampler = None
+    began = time.perf_counter()
+    output = ROOT / 'attempts' / datetime.now(timezone.utc).strftime('%Y%m%dT%H%M%S.%fZ')
+    output.mkdir(parents=True)
+    print(f'Attempt artifacts: {output}', flush=True)
+    status, results, error = 'initializing', [], None
+    official_start = None
+    config = {**vars(args), 'attempt_id': output.name, 'initialization_started_at_utc': utc_now(),
+              'git_commit': subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=ROOT, text=True).strip(),
+              'git_dirty': bool(subprocess.check_output(['git', 'status', '--porcelain', '--untracked-files=no'], cwd=ROOT, text=True)),
+              'system_prompt': PROMPT, 'grading': 'single vendored grader; no local answer-key comparisons',
+              'gpu_scope': 'device-level NVML; vLLM preallocates VRAM', 'python': sys.version}
+    atomic_json(output / 'config.json', config)
+    try:
+        profile_path = Path(args.models_dir).expanduser() / args.model / 'vllm.yaml'
+        profile_text = profile_path.read_text()
+        profile = yaml.safe_load(profile_text)
+        overrides = profile.get('override-generation-config', {})
+        if isinstance(overrides, str):
+            overrides = json.loads(overrides)
+        cap = overrides.get('max_new_tokens')
+        if cap is not None and args.max_tokens > cap:
+            raise ValueError(f'Requested max_tokens exceeds model profile ceiling ({cap})')
+        atomic_json(output / 'model_profile.json', {'path': str(profile_path), 'yaml': profile_text,
+                    'sha256': hashlib.sha256(profile_text.encode()).hexdigest()})
+        ensure_free(args.grader_port)
+        if not args.reuse_server:
+            ensure_free(args.vllm_port)
+        sampler = GPUSampler(output / 'gpu.jsonl', args.gpu_interval, args.gpu_device)
+        await sampler.start()
+        limits = httpx.Limits(max_connections=args.parallelism * (args.rollouts + 1) + 8,
+                              max_keepalive_connections=args.parallelism * (args.rollouts + 1) + 8)
+        timeout = httpx.Timeout(connect=10, read=args.question_timeout, write=30, pool=30)
+        async with httpx.AsyncClient(timeout=timeout, limits=limits, trust_env=False) as client:
+            if not args.reuse_server:
+                # Small CUDA matmul warmup before loading the model; cap allocation.
+                gpu_warmup = services.launch([args.vllm_python, '-c',
+                    'import torch,time; torch.cuda.set_device(' + str(args.gpu_device) + '); '
+                    'x=torch.randn((1024,1024),device="cuda",dtype=torch.bfloat16); '
+                    'end=time.monotonic()+2; '\
+                    '\nwhile time.monotonic()<end: y=x@x; torch.cuda.synchronize()'], output / 'gpu_warmup.log')
+                await asyncio.wait_for(asyncio.to_thread(gpu_warmup.wait), timeout=120)
+                if gpu_warmup.returncode:
+                    raise RuntimeError('CUDA warmup failed; inspect gpu_warmup.log')
+                command = [args.vllm_binary, 'serve', '--config', str(profile_path),
+                           '--host', '127.0.0.1', '--port', str(args.vllm_port)]
+                config['vllm_command'] = command
+                server = services.launch(command, output / 'vllm.log')
+            else:
+                server = None
+            models = await ready(client, args.vllm_url + '/v1/models', args.startup_timeout, server)
+            if args.model not in [m['id'] for m in models.get('data', [])]:
+                raise RuntimeError('Inference server does not serve the requested model')
+            atomic_json(output / 'server_models.json', models)
+            grader_config = {'dataset': {'source': str(ROOT / 'grader/data/aime_2025.jsonl'),
+                             'format': 'jsonl', 'idx_field': 'problem_idx', 'gold_field': 'answer'},
+                             'cost_c': args.grader_cost, 'host': '127.0.0.1', 'port': args.grader_port,
+                             'audit_log': str(output / 'grader_audit.jsonl')}
+            (output / 'grader_config.yaml').write_text(yaml.safe_dump(grader_config))
+            grader = services.launch([args.grader_python, str(ROOT / 'grader/server.py')], output / 'grader.log',
+                                     {**os.environ, 'GRADER_CONFIG': str(output / 'grader_config.yaml')})
+            health = await ready(client, args.grader_url + '/health', 60, grader)
+            if health.get('queries_so_far') != 0 or health.get('cost_c') != args.grader_cost:
+                raise RuntimeError('Grader did not start with a fresh queue and requested toll')
+            config['grader_health'] = health
+            warm_start = time.perf_counter()
+            response = await client.post(args.vllm_url + '/v1/chat/completions', json={
+                'model': args.model, 'messages': [{'role': 'user', 'content': 'Compute 1 + 1.'}],
+                'max_tokens': 32, 'temperature': 0, 'stream': False})
+            response.raise_for_status()
+            atomic_json(output / 'inference_warmup.json', {'response': response.json(),
+                        'latency_s': time.perf_counter() - warm_start})
+            config.update(model_profile_sha256=hashlib.sha256(profile_text.encode()).hexdigest(),
+                          launch_profile=profile, official_started_at_utc=utc_now())
+            atomic_json(output / 'config.json', config)
+            official_start = time.perf_counter()
+            status = 'running'
+            results = await run_questions(load_questions(args.questions), args, client, output, sampler)
+            status = 'completed' if all(r['status'] != 'error' for r in results) else 'failed'
+            if sampler.error:
+                raise RuntimeError(f'GPU telemetry failed: {sampler.error}')
+    except asyncio.CancelledError:
+        status, error = 'interrupted', 'Attempt interrupted by signal'
+        raise
+    except Exception as exc:
+        status, error = 'failed', f'{type(exc).__name__}: {exc}'
+        raise
+    finally:
+        if sampler:
+            sampler.stop()
+        official_end = time.perf_counter()
+        # Include partially completed questions after interruption/failure.
+        results = [json.loads(p.read_text()) for p in sorted(output.glob('trace/*/question.json'))]
+        summary = {'attempt_id': output.name, 'status': status, 'error': error,
+                   'official_started_at_utc': config.get('official_started_at_utc'),
+                   'official_finished_at_utc': utc_now(),
+                   'official_latency_s': official_end - official_start if official_start else None,
+                   'initialization_and_attempt_latency_s': official_end - began,
+                   'solved': sum(r['status'] == 'solved' for r in results), 'questions_completed': len(results),
+                   'questions': [{**{k: r[k] for k in ('problem_idx', 'status', 'end_to_end_latency_s', 'unique_candidates')},
+                                  'verified_answer': r['winner']['candidate'] if r['winner'] else None,
+                                  'winning_rollout': r['winner']['rollout'] if r['winner'] else None} for r in results]}
+        atomic_json(output / 'summary.json', summary)
+        atomic_json(output / 'config.json', config)
+        await services.close()
+        print(json.dumps(summary, indent=2), flush=True)
+    if status == 'failed':
+        raise RuntimeError('One or more questions failed; inspect trace telemetry')
+    return output
+
+
+def parse_args(argv=None):
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('--model', required=True, help='Model ID with ~/models/<ID>/vllm.yaml')
+    parser.add_argument('--models-dir', default='~/models')
+    parser.add_argument('--vllm-python', default=str(Path('~/.venvs/vllm/bin/python').expanduser()))
+    parser.add_argument('--vllm-binary', default=str(Path('~/.venvs/vllm/bin/vllm').expanduser()))
+    parser.add_argument('--grader-python', default=str(ROOT / 'grader/.venv/bin/python'))
+    parser.add_argument('--reuse-server', action='store_true')
+    parser.add_argument('--vllm-port', type=int, default=8000)
+    parser.add_argument('--grader-port', type=int, default=8077)
+    parser.add_argument('--grader-cost', type=float, default=3.0)
+    parser.add_argument('--parallelism', type=int, default=8, help='Concurrent questions')
+    parser.add_argument('--rollouts', type=int, default=4, help='Streams per question')
+    parser.add_argument('--questions', type=int, nargs='+', help='Smoke subset; default all 30')
+    parser.add_argument('--max-tokens', type=int, default=16384)
+    parser.add_argument('--temperature', type=float, default=0.8)
+    parser.add_argument('--top-p', type=float, default=0.95)
+    parser.add_argument('--seed', type=int, default=20261003)
+    parser.add_argument('--disable-thinking', action='store_true')
+    parser.add_argument('--startup-timeout', type=float, default=600)
+    parser.add_argument('--question-timeout', type=float, default=1800)
+    parser.add_argument('--gpu-interval', type=float, default=0.2)
+    parser.add_argument('--gpu-device', type=int, default=0)
+    args = parser.parse_args(argv)
+    if any(getattr(args, key) <= 0 for key in ('parallelism', 'rollouts', 'max_tokens', 'startup_timeout', 'question_timeout', 'gpu_interval')):
+        parser.error('Concurrency, token budgets, timeouts, and sampling interval must be positive')
+    if args.grader_cost < 0 or args.gpu_device < 0 or not 0 < args.top_p <= 1 or args.temperature < 0:
+        parser.error('Invalid grader cost, GPU device, or sampling settings')
+    if '/' not in args.model or any(part in ('', '.', '..') for part in args.model.split('/')) or args.model.startswith('/'):
+        parser.error('Use a relative organization/model ID')
+    if not all(1 <= port <= 65535 for port in (args.vllm_port, args.grader_port)) or args.vllm_port == args.grader_port:
+        parser.error('Service ports must be valid and distinct')
+    args.vllm_url = f'http://127.0.0.1:{args.vllm_port}'
+    args.grader_url = f'http://127.0.0.1:{args.grader_port}'
+    return args
+
+
+def main():
+    args = parse_args()
+    with attempt_lock():
+        async def entry():
+            loop = asyncio.get_running_loop()
+            task = asyncio.current_task()
+            loop.add_signal_handler(signal.SIGTERM, task.cancel)
+            await run(args)
+        asyncio.run(entry())
+
+
+if __name__ == '__main__':
+    main()

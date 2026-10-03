@@ -1,0 +1,14 @@
+# Callosum A100 profile. Deploy to ~/models/Qwen/Qwen3.5-4B/vllm.yaml.
+# Weights: Hugging Face revision 851bf6e806efd8d0a36b00ddf55e13ccb7b8cd0a.
+model: /home/azureuser/models/Qwen/Qwen3.5-4B
+served-model-name: Qwen/Qwen3.5-4B
+host: "127.0.0.1"
+port: 8000
+dtype: bfloat16
+tensor-parallel-size: 1
+max-model-len: 32768
+gpu-memory-utilization: 0.80
+reasoning-parser: qwen3
+# vLLM uses max_new_tokens here as a server-wide output-token ceiling.
+# The context window above includes both prompt and generation tokens.
+override-generation-config: '{"max_new_tokens": 16384}'

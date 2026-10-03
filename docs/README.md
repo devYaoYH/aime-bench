@@ -6,6 +6,9 @@ from the repository root. Utilities use `python -m src.<module>`; experiment
 entry points use `python -m src.experiments.<family>.<module>`. See the
 [script guide](scripts.md) and [saved-run provenance](../runs/README.md).
 
+See [canonical remote attempts](attempts.md) for the managed vLLM/grader runner
+and the local-development-to-remote-experiment workflow.
+
 ## Baseline and sampling
 
 | Report | Purpose |

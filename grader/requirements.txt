@@ -1,13 +1,3 @@
-# Speedrun grader — self-contained dependencies.
-# Pinned to the versions the vendored MathArena parser (grader_core/) was verified
-# against, so grading behaves identically to the calibration run.
-sympy==1.14.0
-antlr4-python3-runtime==4.11.0   # MUST match sympy's LaTeX parser version
-regex==2026.6.28
-loguru==0.7.3
-pyyaml==6.0.3
-
-# Only needed when dataset.format == hf (AIME / Apex live on the HF Hub).
-# Pulls numpy/pandas/pyarrow; pandas also covers dataset.format == parquet.
-# For purely local jsonl/csv datasets you can omit this line.
+# Full grader dependencies, including HF / parquet dataset support.
+-r requirements-local.txt
 datasets==5.0.0

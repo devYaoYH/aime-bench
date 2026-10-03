@@ -14,6 +14,8 @@ src/                 Common utilities and reusable libraries
   viewer/            Response viewer assets
 data/                Problem statements, answer key, provenance, scope annotations
 runs/                Saved experiment records, generated reports, and plots
+attempts/            Canonical remote attempts, traces, and telemetry
+configs/vllm/        Versioned remote model launch profiles
 test/                Unit tests and offline regression checks
 docs/                Experiment guide, report index, and research reports
 requirements.txt     Python dependencies
@@ -54,6 +56,19 @@ Browse saved responses locally:
 Open [the response viewer](http://127.0.0.1:8765). It shows the original Qwen run `20260930-155212`,
 sample votes, and Jev reviews. Other experiment families have reports and
 artifacts under `runs/`.
+
+## Canonical remote attempts
+
+See [the attempt workflow](docs/attempts.md) and [repo agent instructions](AGENTS.md).
+On `callosum`, with a free GPU and configured model under `~/models`:
+
+```bash
+~/.venvs/vllm/bin/python -m src.attempt --model Qwen/Qwen3.5-4B
+```
+
+This manages CUDA/inference warmup, vLLM, the grader, eight concurrent questions
+with four streaming rollouts each, early-verification cancellation, and telemetry.
+Qwen uses a 16,384-token generation cap.
 
 ## Documentation and checks
 
