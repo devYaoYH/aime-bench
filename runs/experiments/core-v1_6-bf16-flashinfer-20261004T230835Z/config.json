@@ -1,0 +1,141 @@
+{
+  "driver": "runner.extensions.validation.bf16_v1_6",
+  "model_provenance": {
+    "WeiboAI/VibeThinker-3B": {
+      "config_sha256": "753ce309c0be4df3f3786239f1f66d135a08e98236f0e2bfa744b65f3246900f",
+      "architecture": {
+        "architectures": [
+          "Qwen2ForCausalLM"
+        ],
+        "model_type": "qwen2",
+        "hidden_size": 2048,
+        "intermediate_size": 11008,
+        "num_hidden_layers": 36,
+        "num_attention_heads": 16,
+        "num_key_value_heads": 2,
+        "vocab_size": 151936,
+        "max_position_embeddings": 131072,
+        "bos_token_id": 151643,
+        "eos_token_id": 151643,
+        "tie_word_embeddings": true
+      },
+      "rope_parameters": {
+        "rope_theta": 1000000.0,
+        "rope_type": "default"
+      },
+      "tokenizer_sha256": {
+        "tokenizer.json": "296e081e2f5ecf9d87814aa9b0f4b12d670ed2b2e2be6c84e01a9466c953afb7",
+        "tokenizer_config.json": "806a1e91c2af569066ef8588cb7f9c8b5bd57318b90cb4db629d96c429ccb30d",
+        "special_tokens_map.json": "6676f091c8bc4d1b50146427cfde92073402866b87b6e39223227931b70083e9"
+      },
+      "weight_revisions": {
+        "model-00002-of-00002.safetensors.metadata": "77bd2cced09193c8b9a59a32bd8577bbd1f3e01c",
+        "model-00001-of-00002.safetensors.metadata": "77bd2cced09193c8b9a59a32bd8577bbd1f3e01c"
+      },
+      "generation_config": {
+        "bos_token_id": 151643,
+        "eos_token_id": 151643,
+        "max_new_tokens": 65536,
+        "transformers_version": "4.51.3"
+      },
+      "quantization_config": null
+    },
+    "r0b0tlab/VibeThinker-3B-NVFP4": {
+      "config_sha256": "cabd13e4861931e3cf75533f717812b273a933917a040dd11bb8168146bed55e",
+      "architecture": {
+        "architectures": [
+          "Qwen2ForCausalLM"
+        ],
+        "model_type": "qwen2",
+        "hidden_size": 2048,
+        "intermediate_size": 11008,
+        "num_hidden_layers": 36,
+        "num_attention_heads": 16,
+        "num_key_value_heads": 2,
+        "vocab_size": 151936,
+        "max_position_embeddings": 131072,
+        "bos_token_id": 151643,
+        "eos_token_id": 151643,
+        "tie_word_embeddings": true
+      },
+      "rope_parameters": {
+        "rope_theta": 1000000.0,
+        "rope_type": "default"
+      },
+      "tokenizer_sha256": {
+        "tokenizer.json": "296e081e2f5ecf9d87814aa9b0f4b12d670ed2b2e2be6c84e01a9466c953afb7",
+        "tokenizer_config.json": "806a1e91c2af569066ef8588cb7f9c8b5bd57318b90cb4db629d96c429ccb30d",
+        "special_tokens_map.json": "6676f091c8bc4d1b50146427cfde92073402866b87b6e39223227931b70083e9"
+      },
+      "weight_revisions": {
+        "model.safetensors.metadata": "2fc0013974d1a466e6a5a11839f029d5aff34dc9"
+      },
+      "generation_config": {
+        "bos_token_id": 151643,
+        "eos_token_id": 151643,
+        "max_new_tokens": 2048,
+        "transformers_version": "4.51.3"
+      },
+      "quantization_config": {
+        "config_groups": {
+          "group_0": {
+            "input_activations": {
+              "dynamic": false,
+              "num_bits": 4,
+              "type": "float",
+              "group_size": 16
+            },
+            "weights": {
+              "dynamic": false,
+              "num_bits": 4,
+              "type": "float",
+              "group_size": 16
+            },
+            "targets": [
+              "Linear"
+            ]
+          }
+        },
+        "ignore": [
+          "lm_head"
+        ],
+        "quant_algo": "NVFP4",
+        "producer": {
+          "name": "modelopt",
+          "version": "0.44.0"
+        },
+        "quant_method": "modelopt"
+      }
+    },
+    "comparison_note": "Quantized model card declares WeiboAI/VibeThinker-3B as base; it does not pin the original base revision. Architecture, RoPE and tokenizer assets match. Profile overrides both generation ceilings to64K; effective inference math/backend differs."
+  },
+  "source_commit": "2c1b9a0cbb54ab0385894511bac6be117e5a7f6d",
+  "core_manifest_sha256": "15e943454e6f4840325f560bbfd9d18daafab090d24561e2abd6e1018a435017",
+  "seed": 20261011,
+  "reference_batch": "core-v1_6-barrier-five-seeds-20261004T224850Z",
+  "reference_attempt_id": "20261004T224952.799732Z",
+  "started_at_utc": "2026-10-04T23:08:44.825+00:00",
+  "profile_path": "/home/azureuser/models/WeiboAI/VibeThinker-3B/vllm-v1_6-bf16-flashinfer.yaml",
+  "profile_sha256": "4e5c60625707298f8a4823efdcf15ee3b5b29b6055428c790df4b3efd89524b3",
+  "grader_semantic_hashes": {
+    "grade.py": "4c82d62f12fa415c7cc248e98ee2622d6c09a642540a25a3ee401ba588001d83",
+    "parser.py": "2ce450c7a6d6ef977eb428577cb14c41b2db634f885f913e0e5cf9eac974773d",
+    "parse_manual.py": "1b87d51c2b47ea806a21936ec4a1ce539bf32439a923be57c1694d4749a73260"
+  },
+  "trial_wall_timeout_s": 600,
+  "scope": "One matched-seed deployment comparison: BF16 automatic native linear kernels versus NVFP4 Marlin; FlashInfer attention, BF16 KV/activations and runner policy unchanged. Not a repeatability estimate.",
+  "server_command": [
+    "/home/azureuser/.venvs/vllm/bin/vllm",
+    "serve",
+    "--config",
+    "/home/azureuser/models/WeiboAI/VibeThinker-3B/vllm-v1_6-bf16-flashinfer.yaml",
+    "--host",
+    "127.0.0.1",
+    "--port",
+    "8000",
+    "--enable-prompt-tokens-details"
+  ],
+  "server_env_override": {
+    "VLLM_SERVER_DEV_MODE": "1"
+  }
+}

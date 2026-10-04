@@ -1,0 +1,80 @@
+{
+  "problem_idx": 10,
+  "started_at_utc": "2026-10-04T23:10:06.472+00:00",
+  "finished_at_utc": "2026-10-04T23:11:22.112+00:00",
+  "end_to_end_latency_s": 75.64056933601387,
+  "status": "stopped",
+  "winner": null,
+  "error": null,
+  "unique_candidates": 0,
+  "candidate_answers": [],
+  "rollouts": [
+    {
+      "rollout": 1,
+      "round": 1,
+      "started_at_utc": "2026-10-04T23:10:06.481+00:00",
+      "start_monotonic_s": 359654.543829445,
+      "ttft_s": 3.4456448549753986,
+      "last_token_s": 73.93050682696048,
+      "finish_reason": "length",
+      "status": "completed",
+      "done_received": true,
+      "usage": {
+        "prompt_tokens": 471,
+        "total_tokens": 8663,
+        "completion_tokens": 8192,
+        "prompt_tokens_details": {
+          "cached_tokens": 160,
+          "created_cache_tokens": 304
+        }
+      },
+      "endpoint": "/v1/chat/completions",
+      "continuation_of_rollout": null,
+      "requested_max_tokens": 8192,
+      "http_status": 200,
+      "headers_received_s": 0.06709393399069086,
+      "generation_finished_at_utc": "2026-10-04T23:11:20.424+00:00",
+      "generation_end_monotonic_s": 359728.487223858,
+      "generation_latency_s": 73.94339441298507,
+      "generation_censored": true,
+      "generated_token_ids_count": 8192,
+      "prompt_token_ids_count": 471,
+      "cached_prompt_tokens": 160,
+      "prefix_cache_hit_fraction": 0.33970276008492567,
+      "overhead": {
+        "enabled": false,
+        "timings": {},
+        "counters": {},
+        "maxima": {}
+      },
+      "fresh_sample": 1,
+      "segment": 1,
+      "trajectory_generated_before": 0,
+      "trajectory_generated_tokens": 8192,
+      "finished_at_utc": "2026-10-04T23:11:22.112+00:00",
+      "end_to_end_latency_s": 75.63131562096532,
+      "end_to_end_scope": "rollout start through question verification/cancellation settlement",
+      "gpu": null
+    }
+  ],
+  "round": 1,
+  "first_solved": null,
+  "overhead": {
+    "enabled": false,
+    "timings": {},
+    "counters": {},
+    "maxima": {}
+  },
+  "rounds": [
+    {
+      "round": 1,
+      "status": "stopped",
+      "started_at_utc": "2026-10-04T23:10:06.472+00:00",
+      "finished_at_utc": "2026-10-04T23:11:22.112+00:00",
+      "end_to_end_latency_s": 75.64056933601387,
+      "winner": null,
+      "error": null
+    }
+  ],
+  "question_start_monotonic_s": 359654.53457573
+}

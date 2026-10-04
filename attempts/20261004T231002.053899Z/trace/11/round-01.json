@@ -1,0 +1,68 @@
+{
+  "problem_idx": 11,
+  "started_at_utc": "2026-10-04T23:10:06.472+00:00",
+  "finished_at_utc": "2026-10-04T23:11:22.112+00:00",
+  "end_to_end_latency_s": 75.64072414702969,
+  "status": "stopped",
+  "winner": null,
+  "error": null,
+  "unique_candidates": 0,
+  "candidate_answers": [],
+  "rollouts": [
+    {
+      "rollout": 1,
+      "round": 1,
+      "started_at_utc": "2026-10-04T23:10:06.481+00:00",
+      "start_monotonic_s": 359654.544471377,
+      "ttft_s": 3.443354736024048,
+      "last_token_s": 73.91634066600818,
+      "finish_reason": "length",
+      "status": "completed",
+      "done_received": true,
+      "usage": {
+        "prompt_tokens": 659,
+        "total_tokens": 8851,
+        "completion_tokens": 8192,
+        "prompt_tokens_details": {
+          "cached_tokens": 160,
+          "created_cache_tokens": 496
+        }
+      },
+      "endpoint": "/v1/chat/completions",
+      "continuation_of_rollout": null,
+      "requested_max_tokens": 8192,
+      "http_status": 200,
+      "headers_received_s": 0.046364823007024825,
+      "generation_finished_at_utc": "2026-10-04T23:11:20.398+00:00",
+      "generation_end_monotonic_s": 359728.461339501,
+      "generation_latency_s": 73.91686812404078,
+      "generation_censored": true,
+      "generated_token_ids_count": 8192,
+      "prompt_token_ids_count": 659,
+      "cached_prompt_tokens": 160,
+      "prefix_cache_hit_fraction": 0.24279210925644917,
+      "overhead": {
+        "enabled": false,
+        "timings": {},
+        "counters": {},
+        "maxima": {}
+      },
+      "fresh_sample": 1,
+      "segment": 1,
+      "trajectory_generated_before": 0,
+      "trajectory_generated_tokens": 8192,
+      "finished_at_utc": "2026-10-04T23:11:22.112+00:00",
+      "end_to_end_latency_s": 75.63087764201919,
+      "end_to_end_scope": "rollout start through question verification/cancellation settlement",
+      "gpu": null
+    }
+  ],
+  "round": 1,
+  "first_solved": null,
+  "overhead": {
+    "enabled": false,
+    "timings": {},
+    "counters": {},
+    "maxima": {}
+  }
+}

@@ -152,3 +152,11 @@ unchanged v1.6 controls; inference math and native linear kernels differ. The
 quantization model card identifies the base model but does not pin its base
 revision, so this is a comparison of the downloaded deployments. One seed does
 not establish a repeatable quantization speedup.
+
+The [single scored BF16 attempt](../../../runs/experiments/core-v1_6-bf16-flashinfer-20261004T230835Z/README.md)
+reached 18 in **75.640s**, versus 77.498s for the matched NVFP4 seed. BF16 had
+zero wrong checks and used only the initial 30 requests, so this result did not
+exercise its pool. Initial-request median TTFT was 3.439s versus 0.222s; lower
+observed decode throughput and different correct-answer arrivals preclude
+interpreting the solve-time difference as a pure decoding speedup. All saved
+policy/control audits passed and both services shut down cleanly.
