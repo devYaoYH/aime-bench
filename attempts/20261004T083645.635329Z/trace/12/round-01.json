@@ -1,0 +1,112 @@
+{
+  "problem_idx": 12,
+  "started_at_utc": "2026-10-04T08:36:46.508+00:00",
+  "finished_at_utc": "2026-10-04T08:37:48.355+00:00",
+  "end_to_end_latency_s": 61.84750241599977,
+  "status": "solved",
+  "winner": {
+    "answer": 510,
+    "part": "content",
+    "kind": "literal_prose",
+    "end": 22928,
+    "line": "But we must check if there are any other constraints we might have missed: The region is defined by strict inequalities, but area of region is same for open or closed region. So the answer is 510.",
+    "candidate": "510",
+    "rollout": 1,
+    "observed_at_utc": "2026-10-04T08:37:45.348+00:00",
+    "question_elapsed_s": 58.83969903498655,
+    "verification_started_at_utc": "2026-10-04T08:37:45.348+00:00",
+    "round": 1,
+    "candidate_queue_wait_s": 0.00026701000751927495,
+    "result": {
+      "dataset": {
+        "format": "jsonl",
+        "gold_field": "answer",
+        "id": "aime_2025",
+        "idx_field": "problem_idx",
+        "revision": "c94da77eb22bbd6439e62a323bec18493a421302",
+        "source": "/home/azureuser/aime-bench-v1_1-bae54382/grader/data/aime_2025.jsonl",
+        "year": 2025,
+        "sha256": "d5bcac5904290630fe98e3c3d1c2773260ebf59b57955382735e9ce8c0142b41"
+      },
+      "query_id": "20261004T083645.635329Z-q12-a510",
+      "seq": 17,
+      "agent_id": "20261004T083645.635329Z-q12-r1",
+      "index": 12,
+      "candidate": "510",
+      "verdict": true,
+      "queue_ahead_at_submit": 0,
+      "submitted_at": "2026-10-04T08:37:45.349658Z",
+      "picked_at": "2026-10-04T08:37:45.349741Z",
+      "answered_at": "2026-10-04T08:37:48.349900Z",
+      "queue_wait_s": 0.0,
+      "toll_s": 3.0,
+      "latency_s": 3.0
+    },
+    "verification_finished_at_utc": "2026-10-04T08:37:48.351+00:00",
+    "verification_latency_s": 3.0030618559685536
+  },
+  "error": null,
+  "unique_candidates": 1,
+  "candidate_answers": [
+    "510"
+  ],
+  "rollouts": [
+    {
+      "rollout": 1,
+      "round": 1,
+      "started_at_utc": "2026-10-04T08:36:46.517+00:00",
+      "start_monotonic_s": 307254.580233192,
+      "ttft_s": 2.040472726977896,
+      "last_token_s": 61.82829967699945,
+      "finish_reason": null,
+      "status": "cancelled",
+      "done_received": false,
+      "usage": {
+        "prompt_tokens": 286,
+        "total_tokens": 8817,
+        "completion_tokens": 8531,
+        "completion_tokens_details": null
+      },
+      "endpoint": "/v1/chat/completions",
+      "continuation_of_rollout": null,
+      "requested_max_tokens": 65250,
+      "http_status": 200,
+      "headers_received_s": 0.1613311929977499,
+      "generation_finished_at_utc": "2026-10-04T08:37:48.351+00:00",
+      "generation_end_monotonic_s": 307316.414447161,
+      "generation_latency_s": 61.83421396900667,
+      "generation_censored": true,
+      "generated_token_ids_count": 8531,
+      "prompt_token_ids_count": 286,
+      "cached_prompt_tokens": null,
+      "prefix_cache_hit_fraction": null,
+      "overhead": {
+        "enabled": false,
+        "timings": {},
+        "counters": {},
+        "maxima": {}
+      },
+      "finished_at_utc": "2026-10-04T08:37:48.355+00:00",
+      "end_to_end_latency_s": 61.838204365980346,
+      "end_to_end_scope": "rollout start through question verification/cancellation settlement",
+      "gpu": null
+    }
+  ],
+  "round": 1,
+  "first_solved": {
+    "problem_idx": 12,
+    "round": 1,
+    "rollout": 1,
+    "candidate": "510",
+    "first_solved_at_utc": "2026-10-04T08:37:48.351+00:00",
+    "first_solved_elapsed_s": 61.84600512997713,
+    "grader_answered_at_utc": "2026-10-04T08:37:48.349900Z",
+    "grader_query_id": "20261004T083645.635329Z-q12-a510"
+  },
+  "overhead": {
+    "enabled": false,
+    "timings": {},
+    "counters": {},
+    "maxima": {}
+  }
+}

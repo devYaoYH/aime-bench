@@ -9,12 +9,14 @@ for its measured NVFP4 FlashInfer 30×1 settings and 30-stream, 32-token arithme
 warmup, or `python -m runner_final.validate_frozen` for the five predeclared seeds.
 Historical runners below remain available.
 
-[Core v1.1](../../runner_final/core_v1_1/README.md) is prepared but unrun:
+[Core v1.1](../../runner_final/core_v1_1/README.md) has a [five-seed benchmark](../../runs/experiments/core-v1_1-five-seeds-20261004T083800Z/README.md):
 `python -m src.attempt_runners.speedrun_v1_1` uses one fresh rollout per question,
 up to 64K total context including its prompt, eager retries after generation and
 candidate checks finish, and at most 30 concurrent requests. It retains four
 requests per question and introduces no sibling fan-out. Its separate launch
-profile has not been deployed; it has no performance evidence.
+profile was deployed for the five trials: all reached 18, median 77.652s. All
+trials used only their 30 initial requests, so fresh retries were not exercised.
+The selected submission remains core v1.
 
 | Runner | Entry point | Behavior |
 | --- | --- | --- |

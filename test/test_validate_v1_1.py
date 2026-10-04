@@ -6,6 +6,7 @@ import unittest
 
 from runner_final import validate_v1_1 as driver
 from src.common import ROOT
+from src.experiments.analyze_core_v1_1 import audit_attempt
 
 
 class AuditTests(unittest.TestCase):
@@ -23,6 +24,7 @@ class AuditTests(unittest.TestCase):
                       parallelism=30, schedule='eager', rollouts=1, no_continuation=True,
                       first_pass_max_tokens=65536, max_tokens=65536,
                       served_prompt_tokens={str(i): 204 for i in range(1,31)})
+        config['launch_profile']['override-generation-config'] = '{"max_new_tokens": 65536}'
         self.write(self.output/'config.json', config)
         for filename in ('summary.json','inference_warmup.json'):
             (self.output/filename).write_bytes((control/filename).read_bytes())
@@ -32,6 +34,8 @@ class AuditTests(unittest.TestCase):
             r = q['rollouts'][0]
             r.update(continuation_of_rollout=None, endpoint='/v1/chat/completions', requested_max_tokens=65536-204)
             self.write(self.output/path.relative_to(control), q)
+            verification = path.parent/'verification.jsonl'
+            (self.output/verification.relative_to(control)).write_bytes(verification.read_bytes())
             req_path = path.parent/'rollout-01/request.json'
             req = json.loads(req_path.read_text())
             req['max_tokens'] = 65536-204
@@ -62,6 +66,26 @@ class AuditTests(unittest.TestCase):
         self.write(path, req)
         self.assertEqual(self.audit()['different_requests_beyond_declared_output_cap'], [[1,1]])
         self.assertFalse(self.audit()['valid'])
+
+    def prepare_tokens(self):
+        for path in self.output.glob('trace/*/question.json'):
+            rollout = json.loads(path.read_text())['rollouts'][0]
+            self.write(path.parent/'rollout-01/tokens.json', {
+                'prompt_token_ids': [0]*204,
+                'output_token_ids': [0]*rollout['generated_token_ids_count']})
+
+    def test_token_artifact_audit(self):
+        self.prepare_tokens()
+        self.assertTrue(audit_attempt(self.output,self.seed,self.reference)['artifact_audit_passed'])
+
+    def test_rejects_prompt_reservation_drift(self):
+        self.prepare_tokens()
+        path = self.output/'trace/01/rollout-01/tokens.json'
+        tokens = json.loads(path.read_text())
+        tokens['prompt_token_ids'].append(0)
+        self.write(path,tokens)
+        with self.assertRaisesRegex(AssertionError,'prompt reservation drift'):
+            audit_attempt(self.output,self.seed,self.reference)
 
     def test_retains_failure_in_aggregate(self):
         protocol = json.loads(driver.PROTOCOL.read_text())

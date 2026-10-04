@@ -1,9 +1,11 @@
-# Core v1.1 — prepared, unrun
+# Core v1.1 — long fresh rollouts
 
 This experimental version starts one long fresh rollout per question, with eager
-retries and no round barrier. It has **no GPU results** and does not replace the
-measured core v1 submission policy. Preparing it does not change or deploy the
-core v1 runner, model profile, or profiling setup.
+retries and no round barrier. Its [five-seed benchmark](../../runs/experiments/core-v1_1-five-seeds-20261004T083800Z/README.md)
+reached 18 in all five trials: median **77.652s**, range **60.906–92.096s**. Two
+historical same-seed comparisons were faster, three slower; the measured core v1
+submission remains selected. All trials reached the target on 30 initial long
+requests, so fresh retries were not exercised in the GPU benchmark.
 
 - Initially run all 30 questions, one request each. At most 30 requests may run
   concurrently, with at most one generation per question. Solved slots do not
@@ -30,13 +32,13 @@ Entrypoint: `python -m runner_final.run_v1_1`. Its default preset is
 `runner_final/presets/prompt_adherence_v1_1.json`; the equivalent versioned entry
 point is `python -m src.attempt_runners.speedrun_v1_1`.
 
-The separate, undeployed model profile is
+The separate model profile is
 `configs/vllm/r0b0tlab/VibeThinker-3B-NVFP4/vllm-v1_1-long64k.yaml`. Its only launch
 setting difference from the v1 FlashInfer profile is raising the generation
-ceiling from 16K to 64K; total context stays 64K. Before a future authorized run,
-commit/push the tested version, pull remotely, and place this profile under the
-matching model directory. Do not change the standard profile or use an occupied
-profiling server. No deployment or scored run is part of this preparation.
+ceiling from 16K to 64K; total context stays 64K. The committed profile was placed
+under the matching model directory for the authorized benchmark. The standard profile was preserved
+and no profiling server was used. Future measurements should use tested committed
+source and an idle GPU.
 
 Run the policy checks offline with:
 
@@ -46,4 +48,5 @@ Run the policy checks offline with:
 
 The manifest pins the new policy and its unchanged frozen v1 runtime dependencies.
 Prompt, preset, model profile, served prompt lengths, and resolved launch controls
-are recorded in attempt artifacts when an execution is separately authorized.
+are recorded in all five attempt artifacts. The manifest and profile bytes retain
+the preparation-time annotation and were not refreshed after measurement.

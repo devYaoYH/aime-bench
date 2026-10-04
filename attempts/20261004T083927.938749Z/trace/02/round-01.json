@@ -1,0 +1,112 @@
+{
+  "problem_idx": 2,
+  "started_at_utc": "2026-10-04T08:39:28.801+00:00",
+  "finished_at_utc": "2026-10-04T08:40:47.089+00:00",
+  "end_to_end_latency_s": 78.28733371000271,
+  "status": "solved",
+  "winner": {
+    "answer": 588,
+    "part": "content",
+    "kind": "literal_prose",
+    "end": 34397,
+    "line": "Thus the answer might be 588, the same as the area of triangle ABC.",
+    "candidate": "588",
+    "rollout": 1,
+    "observed_at_utc": "2026-10-04T08:40:44.079+00:00",
+    "question_elapsed_s": 75.27740146004362,
+    "verification_started_at_utc": "2026-10-04T08:40:44.079+00:00",
+    "round": 1,
+    "candidate_queue_wait_s": 8.063099812716246e-05,
+    "result": {
+      "dataset": {
+        "format": "jsonl",
+        "gold_field": "answer",
+        "id": "aime_2025",
+        "idx_field": "problem_idx",
+        "revision": "c94da77eb22bbd6439e62a323bec18493a421302",
+        "source": "/home/azureuser/aime-bench-v1_1-bae54382/grader/data/aime_2025.jsonl",
+        "year": 2025,
+        "sha256": "d5bcac5904290630fe98e3c3d1c2773260ebf59b57955382735e9ce8c0142b41"
+      },
+      "query_id": "20261004T083927.938749Z-q2-a588",
+      "seq": 17,
+      "agent_id": "20261004T083927.938749Z-q2-r1",
+      "index": 2,
+      "candidate": "588",
+      "verdict": true,
+      "queue_ahead_at_submit": 0,
+      "submitted_at": "2026-10-04T08:40:44.082702Z",
+      "picked_at": "2026-10-04T08:40:44.082750Z",
+      "answered_at": "2026-10-04T08:40:47.082824Z",
+      "queue_wait_s": 0.0,
+      "toll_s": 3.0,
+      "latency_s": 3.0
+    },
+    "verification_finished_at_utc": "2026-10-04T08:40:47.083+00:00",
+    "verification_latency_s": 3.0045051599736325
+  },
+  "error": null,
+  "unique_candidates": 1,
+  "candidate_answers": [
+    "588"
+  ],
+  "rollouts": [
+    {
+      "rollout": 1,
+      "round": 1,
+      "started_at_utc": "2026-10-04T08:39:28.806+00:00",
+      "start_monotonic_s": 307416.868927661,
+      "ttft_s": 0.09662894404027611,
+      "last_token_s": 78.26977309503127,
+      "finish_reason": null,
+      "status": "cancelled",
+      "done_received": false,
+      "usage": {
+        "prompt_tokens": 814,
+        "total_tokens": 11895,
+        "completion_tokens": 11081,
+        "completion_tokens_details": null
+      },
+      "endpoint": "/v1/chat/completions",
+      "continuation_of_rollout": null,
+      "requested_max_tokens": 64722,
+      "http_status": 200,
+      "headers_received_s": 0.0251240250072442,
+      "generation_finished_at_utc": "2026-10-04T08:40:47.084+00:00",
+      "generation_end_monotonic_s": 307495.146656784,
+      "generation_latency_s": 78.27772912301589,
+      "generation_censored": true,
+      "generated_token_ids_count": 11081,
+      "prompt_token_ids_count": 814,
+      "cached_prompt_tokens": null,
+      "prefix_cache_hit_fraction": null,
+      "overhead": {
+        "enabled": false,
+        "timings": {},
+        "counters": {},
+        "maxima": {}
+      },
+      "finished_at_utc": "2026-10-04T08:40:47.089+00:00",
+      "end_to_end_latency_s": 78.28270728100324,
+      "end_to_end_scope": "rollout start through question verification/cancellation settlement",
+      "gpu": null
+    }
+  ],
+  "round": 1,
+  "first_solved": {
+    "problem_idx": 2,
+    "round": 1,
+    "rollout": 1,
+    "candidate": "588",
+    "first_solved_at_utc": "2026-10-04T08:40:47.083+00:00",
+    "first_solved_elapsed_s": 78.28342248004628,
+    "grader_answered_at_utc": "2026-10-04T08:40:47.082824Z",
+    "grader_query_id": "20261004T083927.938749Z-q2-a588"
+  },
+  "overhead": {
+    "enabled": false,
+    "timings": {},
+    "counters": {},
+    "maxima": {}
+  }
+}

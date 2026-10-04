@@ -8,6 +8,7 @@ uses **frozen core v1 with `prompt_adherence.json`**.
 | --- | --- | --- |
 | AIME 2025, five declared seeds | **5/5 reached 18; median 77.277s; range 62.783–82.492s** | [Validation and traces](runs/experiments/frozen-core-prompt-five-seeds-20261004T005416Z/README.md) |
 | AIME 2026, unchanged v1 policy | **88.669s**, one wrong check | [Single transfer run](runs/experiments/frozen-core-aime2026-lightweight-20261004T011005Z/README.md) |
+| Core v1.1 long rollouts, AIME 2025 | 5/5 reached 18; median 77.652s; range 60.906–92.096s | [Five-seed long-context experiment](runs/experiments/core-v1_1-five-seeds-20261004T083800Z/README.md) |
 | Core v1.5 eager30, AIME 2025 | 5/5 reached 18; median 77.352s; range 65.015–85.464s | [Five-seed scheduling experiment](runs/experiments/core-v1_5-five-seeds-20261004T074500Z/README.md) |
 | General-answer core v2, AIME 2025 | 5/5 reached 18; median 113.415s | [Extension back-test](runs/experiments/core-v2-aime2025-five-seeds-20261004T013100Z/README.md) |
 
@@ -142,6 +143,12 @@ same-seed comparison. Its broader parser admitted prompt placeholders, causing
 54 of 62 wrong checks. The [v2 contract and commands](runner_final/README.md#frozen-core-v2-general-mathematical-answers-and-grader-fed-questions)
 cover custom datasets and the Apex shortlist. Both frozen cores retain their
 recorded behavior; the extension is separate from the measured v1 submission.
+
+The [core v1.1 long-rollout experiment](runs/experiments/core-v1_1-five-seeds-20261004T083800Z/README.md)
+reached 18 in all five seeds, median **77.652s** versus v1's **77.277s**. All
+trials stopped on their 30 initial rollouts, so eager fresh retries were not
+exercised. It used fewer requests but 2.8% more observed output IDs, with two
+same-seed gains and three regressions. It does not establish a consistent speedup.
 
 The [core v1.5 scheduling experiment](runs/experiments/core-v1_5-five-seeds-20261004T074500Z/README.md)
 eagerly filled 30 request slots with continuations or fresh retries. It reached

@@ -100,6 +100,26 @@ It preserves the frozen core and final solving settings, but its timing is
 unranked because profiling perturbs execution. The report includes the measured
 roofline, context traffic, limitations and the retained failed initial capture.
 
+## Core v1.1: long fresh rollouts
+
+The separately frozen [v1.1 policy](core_v1_1/README.md) removes the round barrier
+and uses fresh-only requests with 64K total context minus the served prompt,
+one active generation per question and at most 30 overall. Its
+[five-seed benchmark](../runs/experiments/core-v1_1-five-seeds-20261004T083800Z/README.md)
+reached 18 in 5/5 trials, median **77.652s**, range **60.906–92.096s**. Two historical
+same-seed comparisons were faster, three slower. All reached the target on their
+30 initial long rollouts; fresh retries were not exercised. The measured
+submission remains v1 (median 77.277s).
+
+```bash
+~/.venvs/vllm/bin/python -m runner_final.validate_v1_1
+```
+
+This uses one owned server lifetime with prefix-cache reset, a fresh grader and
+arithmetic warmup per trial. Provision the separate
+`configs/vllm/r0b0tlab/VibeThinker-3B-NVFP4/vllm-v1_1-long64k.yaml` beside the model
+weights first. Length and retry/scheduling changes are combined in this version.
+
 ## Core v1.5: exploratory eager allocation
 
 The independently frozen [v1.5 policy](../src/attempt_runners/README.md#core-v15-eager-30-slot-experiment)
