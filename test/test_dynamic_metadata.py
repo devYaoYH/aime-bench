@@ -28,3 +28,13 @@ class DynamicMetadataTests(unittest.TestCase):
             m=self.metadata();m['controls']['hyperparameters']['token_budgets']=invalid
             with self.assertRaisesRegex(ValueError,'Metadata schema'):
                 validate_metadata(m,'attempt')
+
+    def test_final_warmup_controls_are_schema_valid_and_retained(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            m=build_metadata(Path(tmp)/'attempt', {
+                'runner_id':'runner_final_v1','strategy':'coverage',
+                'skip_benchmark_prewarm':False,'prewarm_max_tokens':8192,
+                'first_pass_max_tokens':8192,'max_attempts_per_question':4})
+        validate_metadata(m,'attempt')
+        self.assertEqual(m['controls']['hyperparameters']['prewarm_max_tokens'],8192)
+        self.assertFalse(m['controls']['hyperparameters']['skip_benchmark_prewarm'])

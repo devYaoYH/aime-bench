@@ -33,6 +33,16 @@ class AttemptClusterTests(unittest.TestCase):
                               inference_warmup={'duration': 1}, grader_python='/new/python')
         self.assertEqual(first['replication_id'], second['replication_id'])
 
+    def test_workload_warmup_controls_split_families_but_observed_cost_does_not(self):
+        base = self.changed(skip_benchmark_prewarm=False, prewarm_max_tokens=8192,
+                            benchmark_prewarm={'total_latency_s':50,'started_at_utc':'old'})
+        repeat = self.changed(skip_benchmark_prewarm=False, prewarm_max_tokens=8192,
+                              benchmark_prewarm={'total_latency_s':60,'started_at_utc':'new'})
+        self.assertEqual(base['replication_id'], repeat['replication_id'])
+        for changes in ({'skip_benchmark_prewarm':True,'prewarm_max_tokens':8192},
+                        {'skip_benchmark_prewarm':False,'prewarm_max_tokens':4096}):
+            self.assertNotEqual(base['family_id'], self.changed(**changes)['family_id'])
+
     def test_related_seed_profile_reuse_and_source_changes_are_separate_repeats(self):
         base = self.changed()
         for change in [{'seed': 43}, {'benchmark': False}, {'reuse_server': False}, {'git_commit': 'b'*40}]:

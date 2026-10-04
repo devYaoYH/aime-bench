@@ -21,11 +21,12 @@ SOLVING_KEYS = (
     'temperature', 'top_p', 'disable_thinking', 'question_timeout',
     'token_budgets', 'seed_stride', 'max_concurrent_requests', 'budget_mode',
     'initial_rollouts', 'expansion_trigger', 'token_budget_scope', 'grader_cost',
+    'skip_benchmark_prewarm', 'prewarm_max_tokens',
 )
 # Paths, ports, observed service health and timestamps do not change the policy.
 TRANSIENT_KEYS = {
     'attempt_id', 'initialization_started_at_utc', 'official_started_at_utc',
-    'inference_warmup', 'grader_health', 'server_models', 'models_dir',
+    'inference_warmup', 'benchmark_prewarm', 'grader_health', 'server_models', 'models_dir',
     'vllm_python', 'vllm_binary', 'grader_python', 'vllm_url', 'grader_url',
     'vllm_port', 'grader_port', 'model_profile', 'vllm_command', 'questions',
     'dataset_provenance', 'launch_profile', 'system_prompt',

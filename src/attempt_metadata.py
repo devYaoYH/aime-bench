@@ -67,7 +67,7 @@ def build_metadata(folder, config=None):
                      'benchmark', 'buffer_traces', 'no_gpu_telemetry',
                      'token_budgets', 'max_concurrent_requests', 'seed_stride',
                      'budget_mode', 'initial_rollouts', 'expansion_trigger',
-                     'token_budget_scope')
+                     'token_budget_scope', 'skip_benchmark_prewarm', 'prewarm_max_tokens')
     hp = {key: config[key] for key in sampling_keys if key in config}
     hp.update(strategy=strategy, max_tokens=config.get('max_tokens'),
               first_pass_max_tokens=config.get('first_pass_max_tokens', 8192) if coverage else config.get('max_tokens'),
