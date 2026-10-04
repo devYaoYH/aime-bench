@@ -210,3 +210,13 @@ arithmetic warmup. Those older workloads and the 59.316s best draw remain
 separate evidence in the [experiment archive](../runs/README.md).
 For staged fan-out and dynamic allocation, see the
 [historical runner catalogue](../src/attempt_runners/README.md).
+
+## Frozen core v2.2: queue-aware grader feedback
+
+[Core v2.2](core_v2_2/README.md) forks active exact-token streams with a batch of
+actual wrong-verdict feedback only after that question's queued unique answers
+and pending validation have drained. It rechecks after tokenizing feedback,
+retains the four-request cap and uses the existing v2 prompt and v2.1 parser.
+Use `python -m runner_final.run_frozen_v2_2 --benchmark`; the Apex preset is
+`runner_final/presets/apex_core_v2_2.json`. V2.1 remains available as the matched
+policy without runtime correction. No v2.2 GPU speed claim is established yet.

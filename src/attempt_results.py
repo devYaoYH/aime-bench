@@ -96,8 +96,10 @@ def build_results(store):
         try:
             overview = store.overview(attempt['id'])
             metadata = overview['experiment_metadata']
-            is_v2 = overview['config'].get('runner_id') in ('runner_final_core_v2', 'runner_final_core_v2_1')
-            if overview['config'].get('runner_id') == 'runner_final_core_v2_1':
+            is_v2 = overview['config'].get('runner_id') in ('runner_final_core_v2', 'runner_final_core_v2_1', 'runner_final_core_v2_2')
+            if overview['config'].get('runner_id') == 'runner_final_core_v2_2':
+                from runner_final.core_v2_2.metadata import build_metadata as build, validate_metadata as validate, dataset_label
+            elif overview['config'].get('runner_id') == 'runner_final_core_v2_1':
                 from runner_final.core_v2_1.metadata import build_metadata as build, validate_metadata as validate, dataset_label
             elif is_v2:
                 from runner_final.core_v2.metadata import build_metadata as build, validate_metadata as validate, dataset_label

@@ -19,6 +19,9 @@ ATTEMPT_FILES = {"config.json", "summary.json", "metadata.json", "solved.jsonl",
 
 
 def dataset_record(config):
+    if config.get("runner_id") == "runner_final_core_v2_2":
+        from runner_final.core_v2_2.benchmarks import recorded_dataset as recorded_v2_2
+        return recorded_v2_2(config)
     if config.get("runner_id") == "runner_final_core_v2_1":
         from runner_final.core_v2_1.benchmarks import recorded_dataset as recorded_v2_1
         return recorded_v2_1(config)
@@ -131,7 +134,7 @@ class AttemptStore:
         summary = self.read(folder, "summary.json")
         year = metadata['benchmark_year']
         # The injected path remains the historical/default dataset for test fixtures.
-        grader_questions = config.get("runner_id") in ("runner_final_core_v2", "runner_final_core_v2_1")
+        grader_questions = config.get("runner_id") in ("runner_final_core_v2", "runner_final_core_v2_1", "runner_final_core_v2_2")
         dataset = folder / "questions.json" if grader_questions else (
             self.dataset if year == 2025 else self.dataset.parent / f'aime_{year}_problems.jsonl')
         if not dataset.is_file():

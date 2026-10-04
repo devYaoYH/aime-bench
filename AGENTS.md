@@ -126,3 +126,8 @@ support; report those limitations rather than modifying fixtures to hide them.
   manifest, entrypoint and requirements; do not alter v1 or v2 to add it. Apex #25/#26 overlap AIME 2025;
   account for that before claiming unseen transfer. Offline tests establish
   correctness of the runner plumbing, not a new GPU performance result.
+
+- The user-requested v2.2 runtime-correction extension is separately frozen in
+  `runner_final/core_v2_2`. Preserve v2.1 and its measured source. Correction
+  requests count toward four; queue and pending-validation checks precede any
+  cancellation, and actual grader verdicts alone provide negative feedback.

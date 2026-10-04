@@ -187,3 +187,8 @@ GPU experiments; see [AGENTS.md](AGENTS.md). To run the offline suite:
 
 Some legacy checks require ignored raw traces or macOS sandbox support. Frozen
 core manifests reject source drift; preserve them when adding a new policy.
+
+The independently frozen [v2.2 correction runner](runner_final/core_v2_2/README.md)
+adds batched wrong-verdict feedback after queued self-corrections have been checked:
+`python -m runner_final.run_frozen_v2_2 --benchmark`. It preserves the v2.1 parser,
+prompt and four-request budget; see that contract for branching and usage details.
