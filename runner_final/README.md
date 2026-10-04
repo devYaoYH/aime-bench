@@ -1,4 +1,41 @@
-# Final runner v2
+# Frozen runner core v1
+
+The public entrypoint is `python -m runner_final.run_frozen`. It uses the
+[baseline preset](presets/baseline.json), preserving final v2's 30×1 / 8K
+barrier policy and inexpensive warmup. Historical `run.py`, `run_v1.py` and
+validation drivers remain available with their original semantics.
+
+```sh
+~/.venvs/vllm/bin/python -m runner_final.run_frozen --seed 20261011
+```
+
+[core_v1/manifest.json](core_v1/manifest.json) pins 21 source/dependency files.
+Startup verifies their hashes before creating an attempt or launching services;
+drift aborts the run. Scheduling, streamed candidate parsing, exact-ID
+continuations, per-question deduplication and verification serialization,
+correct-verdict cancellation, target stopping, service ownership, buffered
+storage and grader behavior are frozen. Behavior changes require a new core
+version, not rewriting this manifest in place.
+
+Prompts, parameter presets and deployed model profiles are configuration. Every
+attempt saves the resolved arguments, prompt bytes/hash, preset path/hash, core
+manifest hash, Git commit, runtime package versions and deployed profile snapshot.
+Changing a preset or prompt therefore changes the experiment while retaining the
+same core identity. `--system-prompt-file FILE` overrides the preset prompt;
+remaining CLI arguments override preset defaults.
+
+- [baseline.json](presets/baseline.json): selected 30×1, 8K first pass, original prompt.
+- [prompt_adherence.json](presets/prompt_adherence.json): same settings, stronger instructions to emit a prospective boxed answer before rechecking.
+- [30x2_4k.json](presets/30x2_4k.json): two 4K samples per question and the stronger prompt; four requests total leave one continuation per lane.
+
+The two alternative presets are prepared configurations, **not measured strategy
+improvements**. No new experiments were launched during this freeze. The baseline
+remains selected. The next sweeps can vary configurations without duplicating
+solving code. The historical warmed results and the per-question token
+[distribution report](../runs/experiments/runner-final-five-seeds-20261004T000926Z/EXTRACTION_TOKENS.md)
+remain separate from these untested configurations.
+
+## Historical final v2 and validation
 
 Run from the repository root on the remote machine after local tests, commit,
 push and `git pull --ff-only`:
@@ -70,9 +107,11 @@ optional GPU samples and eviction counters are unavailable in benchmark mode.
 Selection is based on the fastest measured completed run, **59.316 seconds**, using
 NVFP4 FlashInfer 30×1. Previous independent scored repeats were **87.356, 59.316,
 86.574 seconds**; consistent sub-71.135-second performance is unconfirmed. The
-pending-verdict alternative repeated at **95.800, 99.235, 83.064 seconds**. These
-five new seeds and the new AIME 2024 warmup are declared before execution; results
-must not be used to select a replacement seed.
+pending-verdict alternative repeated at **95.800, 99.235, 83.064 seconds**. The five historical warmed v1 trials reached 18 in 92.061, 105.337, 66.481,
+78.123 and 78.601 seconds (median 78.601; only one of five within 71.135s).
+The short-warmup default has since been restored; its five-seed protocol is
+prepared but has not been executed as a group. Results must not be used to
+select replacement seeds.
 
 The first final-runner version and its warmed protocol are preserved as
 [run_v1.py](run_v1.py), [validate_v1.py](validate_v1.py), and

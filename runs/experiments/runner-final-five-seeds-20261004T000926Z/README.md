@@ -2,6 +2,8 @@
 
 Question-level follow-up: [what the late correct answers share](TAIL_REASONING.md), with audited streamed reasoning milestones and a visual timeline.
 
+Budget follow-up: [generated tokens to successful extraction per question](EXTRACTION_TOKENS.md), with 4K/8K boundaries and observed early-answer overlap across seeds.
+
 **5/5 reached 18 distinct verified correct questions.** Median time: **78.601s**; range **66.481–105.337s**. **1/5** met the predeclared 71.135-second threshold. Consistent sub-reference speed is **not confirmed**.
 
 ![Five-seed timing](five-seed-timing.png)
