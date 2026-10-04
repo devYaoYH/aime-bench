@@ -70,8 +70,8 @@ support; report those limitations rather than modifying fixtures to hide them.
   and answer timestamp, in attempt logs and summaries.
 
 - The user-requested v1.6 extension changes the cap to at most four **fresh
-  trajectories** per question. Exact-ID continuation segments are separate and
-  may extend each trajectory from an 8K first segment to at most 64K cumulative
+  trajectories** per question. One long exact-ID continuation is separate and
+  may extend each trajectory from an 8K first request to at most 64K cumulative
   output, clipped to served context, or natural completion. Use a v1.5-style slot
   pool, defaulting to the selected question count. Keep v1/v1.1/v1.5 measured
   policies and manifests unchanged; launch with `python -m runner.extensions.v1_6`.

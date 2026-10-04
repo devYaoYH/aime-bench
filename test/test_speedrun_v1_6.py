@@ -84,23 +84,22 @@ class PolicyTests(unittest.IsolatedAsyncioTestCase):
             handler,
             changes={
                 "first_pass_max_tokens": 2,
-                "max_tokens": 4,
                 "max_rollout_tokens": 13,
             },
         )
-        self.assertEqual(len(requests), 16)
-        self.assertEqual([b["max_tokens"] for b in requests], [2, 4, 4, 3] * 4)
+        self.assertEqual(len(requests), 8)
+        self.assertEqual([b["max_tokens"] for b in requests], [2, 11] * 4)
         self.assertEqual(sum("messages" in b for b in requests), 4)
         self.assertEqual(allocation["questions"]["1"]["fresh"], 4)
-        self.assertEqual(allocation["questions"]["1"]["requests"], 16)
+        self.assertEqual(allocation["questions"]["1"]["requests"], 8)
         for sample in range(4):
-            segment = requests[sample * 4 : (sample + 1) * 4]
-            self.assertEqual([len(b.get("prompt", [])) for b in segment], [0, 5, 9, 13])
-            self.assertEqual(segment[2]["prompt"][:5], segment[1]["prompt"])
+            segment = requests[sample * 2 : (sample + 1) * 2]
+            self.assertEqual([len(b.get("prompt", [])) for b in segment], [0, 5])
+            self.assertEqual(segment[1]["prompt"], [101, 102, 103, 500, 501])
         self.assertEqual(
-            [b["seed"] for b in requests[::4]], [20261008, 20261009, 20261010, 20261011]
+            [b["seed"] for b in requests[::2]], [20261008, 20261009, 20261010, 20261011]
         )
-        self.assertEqual(len(set(b["seed"] for b in requests)), 16)
+        self.assertEqual(len(set(b["seed"] for b in requests)), 8)
         self.assertTrue(
             all(r["trajectory_generated_tokens"] <= 13 for r in rows[0]["rollouts"])
         )
@@ -119,7 +118,6 @@ class PolicyTests(unittest.IsolatedAsyncioTestCase):
             changes={
                 "max_concurrent_requests": 4,
                 "first_pass_max_tokens": 2,
-                "max_tokens": 4,
                 "max_rollout_tokens": 6,
             },
         )
@@ -147,11 +145,10 @@ class PolicyTests(unittest.IsolatedAsyncioTestCase):
             changes={
                 "max_context_tokens": 16,
                 "first_pass_max_tokens": 2,
-                "max_tokens": 4,
                 "max_rollout_tokens": 32,
             },
         )
-        self.assertEqual([b["max_tokens"] for b in requests], [2, 4, 4, 3] * 4)
+        self.assertEqual([b["max_tokens"] for b in requests], [2, 11] * 4)
         self.assertTrue(
             all(r["trajectory_generated_tokens"] <= 13 for r in rows[0]["rollouts"])
         )
@@ -175,6 +172,23 @@ class PolicyTests(unittest.IsolatedAsyncioTestCase):
         )
         self.assertEqual(allocation["questions"]["1"]["fresh"], 4)
         self.assertEqual(rows[0]["status"], "unsolved")
+
+    async def test_default_8k_has_one_remaining_56k_continuation(self):
+        requests = []
+
+        async def handler(request):
+            body = json.loads(request.content)
+            requests.append(body)
+            return httpx.Response(200, stream=Stream(capped(body), delay=0))
+
+        rows, allocation = await self.exercise(
+            handler,
+            changes={"max_context_tokens": 65536, "max_fresh_samples_per_question": 1},
+        )
+        self.assertEqual([b["max_tokens"] for b in requests], [8192, 57341])
+        self.assertEqual(len(requests[1]["prompt"]), 8195)
+        self.assertEqual(rows[0]["rollouts"][-1]["trajectory_generated_tokens"], 65533)
+        self.assertEqual(allocation["questions"]["1"]["requests"], 2)
 
     async def test_target_cancels_all_streams_and_recycles_solved_slots(self):
         requests, streams = [], []
@@ -378,6 +392,13 @@ class PolicyTests(unittest.IsolatedAsyncioTestCase):
         self.assertIsNone(args.max_attempts_per_question)
         self.assertIsNone(args.max_rounds)
         self.assertEqual(args.max_rollout_tokens, 65536)
+        self.assertEqual(args.max_tokens, 65536)
+        self.assertEqual(args.model_profile, "vllm-v1_6-long64k.yaml")
+        self.assertEqual(
+            parse_args(["--max-tokens", "32000"]).max_rollout_tokens, 32000
+        )
+        with redirect_stderr(io.StringIO()), self.assertRaises(SystemExit):
+            parse_args(["--model-profile", "../invalid.yaml"])
         for argv in [
             ["--max-fresh-samples-per-question", "5"],
             ["--max-rollout-tokens", "65537"],

@@ -1,7 +1,6 @@
 """Fresh samples and continuation segments have independent, finite budgets."""
 
 from dataclasses import dataclass
-import math
 from runner.lib.continuations import continuation_prefix
 
 
@@ -17,7 +16,7 @@ class Plan:
 def request_bound(args):
     first = min(args.first_pass_max_tokens, args.max_rollout_tokens)
     return args.max_fresh_samples_per_question * (
-        1 + math.ceil((args.max_rollout_tokens - first) / args.max_tokens)
+        1 if first == args.max_rollout_tokens else 2
     )
 
 
@@ -37,6 +36,8 @@ def followup(plan, record, args, folder, artifacts):
         raise RuntimeError(record.get("error", "Generation failed"))
     if record["status"] != "completed" or record["finish_reason"] != "length":
         return None
+    if plan.segment != 1:
+        return None
     generated = plan.generated_before + record["generated_token_ids_count"]
     remaining = args.max_rollout_tokens - generated
     if remaining <= 0:
@@ -46,5 +47,5 @@ def followup(plan, record, args, folder, artifacts):
     )
     if prefix is None:
         return None
-    budget = min(args.max_tokens, remaining, prefix["remaining_context"])
+    budget = min(remaining, prefix["remaining_context"])
     return Plan(plan.fresh_sample, plan.segment + 1, generated, budget, prefix)

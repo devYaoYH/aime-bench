@@ -32,8 +32,13 @@ def parse_args(argv=None):
         dest="max_fresh_samples_per_question",
     )
     parser.add_argument(
-        "--max-rollout-tokens", type=int, default=defaults["max_rollout_tokens"]
+        "--max-rollout-tokens",
+        "--max-tokens",
+        type=int,
+        default=defaults["max_rollout_tokens"],
+        dest="max_rollout_tokens",
     )
+    parser.add_argument("--model-profile", default="vllm-v1_6-long64k.yaml")
     parser.add_argument(
         "--max-concurrent-requests",
         type=int,
@@ -66,14 +71,16 @@ def parse_args(argv=None):
             "Pool slots default to selected question count. Shared service, dataset, sampling, prompt and benchmark flags are described by python -m runner --help. Its round and request-cap controls do not apply here."
         )
         raise SystemExit(0)
-    args = canonical_args(remaining)
+    args = canonical_args(["--model-profile", options.model_profile] + remaining)
     vars(args).update(vars(options))
+    args.max_tokens = args.max_rollout_tokens
     args.max_attempts_per_question = None
     args.max_rounds = None
     args.schedule = "pool"
     args.policy_defaults_file = str(policy_path)
     args.policy_defaults_sha256 = hashlib.sha256(raw).hexdigest()
-    args.token_budget_scope = "Cumulative generated output per fresh trajectory, clipped to served total context"
+    args.token_budget_scope = "Initial 8K then one exact-ID continuation for remaining cumulative output, clipped to served total context"
+    args.continuation_policy = "one long continuation after the initial capped request"
     return args
 
 

@@ -2,16 +2,19 @@
   "schema_version": 1,
   "core_id": "runner_core_v1_6",
   "canonical_manifest_sha256": "165d659a47e0f3e789c9a1cfd4ec9fc4184081af91cbda35d719fe41c339d688",
-  "policy": "V1.5-style question-count slot pool, at most four fresh samples, 8K initial output then 16K exact-ID continuations to cumulative64K or served context/natural EOF",
+  "policy": "V1.5-style question-count slot pool; four fresh samples; initial8K followed by one exact-ID continuation to cumulative64K or served context/natural EOF",
   "sha256": {
     "runner/extensions/v1_6/__init__.py": "de003e834c837e9e369c34413c1d2e24ba198429c18721023dfa75459b8e36e0",
     "runner/extensions/v1_6/__main__.py": "3129adff95e0f38b87ab34cddfc27082c7892bcaec267ff5d40f160fdf55b44a",
     "runner/extensions/v1_6/allocation.py": "b4948f02600cb14de006ce6876317c2f872cf04c45063f3b705debd322b54224",
-    "runner/extensions/v1_6/budgets.py": "5d97c963dc5353bee96c995f719d5845a94c7647e94fbe927d209ebed979ebad",
-    "runner/extensions/v1_6/cli.py": "64c3d610f139a672244b87a5c1e977a724d7b96228901575916fcd467a703ff4",
+    "runner/extensions/v1_6/budgets.py": "234892ed06d23092d22263fbf695e982375db30dc2f8aa96907b0c57c247decb",
+    "runner/extensions/v1_6/cli.py": "a578a59edcf3b5a58bb3494bfb46cf83a40aa9e5c8ac0df0bac6292189c08aa8",
     "runner/extensions/v1_6/integrity.py": "9ae888e0ad4e3dd8bcf1f7a2b0efc3a77992359b3b794a94603e382411817069",
     "runner/extensions/v1_6/policy.py": "2536872dcea812eedba1fb58c3785142d86d3f05bea904ddfa7a0cdb8c84bd7f",
     "runner/extensions/v1_6/policy.json": "0aa62e8cf2282097680d423b0f5f0dbeaeab2c319b91d8ce3592ddeffed7e9c7",
-    "runner/lib/policy_runtime.py": "39e37fcff2b6b7adf33b4852dd8f6947aad2cc1ba0b4c54cb3e14ec1e1ca4460"
-  }
+    "runner/lib/policy_runtime.py": "39e37fcff2b6b7adf33b4852dd8f6947aad2cc1ba0b4c54cb3e14ec1e1ca4460",
+    "configs/vllm/r0b0tlab/VibeThinker-3B-NVFP4/vllm-v1_6-long64k.yaml": "b5f534e9d55f4a2aa0022e00ae7eec0d8b47913279c2eebd0be47680ca3e28e1"
+  },
+  "previous_source_commit": "b7214b3e",
+  "change_reason": "Before GPU measurement, replace recurring 16K segments with one remaining-budget continuation as requested by the user."
 }
