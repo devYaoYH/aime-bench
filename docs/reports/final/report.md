@@ -18,7 +18,7 @@ Each question maintains a candidate queue and a normalized set of already propos
 
 **What we tried.** Beyond streaming extraction and exact-ID continuation, we swept initial fan-out, compared BF16 and NVFP4/Marlin, tested FlashInfer attention, profiled client CPU, deferred trace writes, and tested dynamic60 allocation. Warm vLLM and the sampling batch before timing. Benchmark mode buffers required evidence in RAM and disables optional profiling, then flushes afterward. Initialization, cancellation settlement, and flush are reported separately.
 
-**Start here as a teammate.** Use `python -m runner_final.run_frozen` with the baseline preset; read the core contract and runner catalogue [1]. Historical canonical and experimental entrypoints remain preserved. The stronger-prompt and 30 x 2 / 4K presets are prepared, untested alternatives; no new sweep was launched during the freeze.
+**Start here as a teammate.** Use `python -m runner_final.run_frozen` with the baseline preset; read the core contract and runner catalogue [1]. Historical canonical and experimental entrypoints remain preserved. The stronger prompt has now completed five declared-seed trials; consistent sub-71.135s timing remains unconfirmed. The 30 x 2 / 4K preset is still untested. [10]
 
 <!-- pagebreak -->
 
@@ -47,7 +47,7 @@ At 95% memory, the 30 x 1/2/4 sweep reached 18 in 71.135/77.029/114.615s during 
 
 **Dynamic60 allocation worked; latency did not improve.** It admitted 112 fresh requests and 28 continuations, reached 60 streams, and respected eight requests per question. Winners were thirteen initial, four fresh, and one continuation. Extensions only exercised 8K to 16K. Service took 57.002s, with 61.573s idle. Its 127.565s result was slower than the earlier 106.931s NVFP4 16K run. [6]
 
-Seventeen earlier follow-ups before the backend change did not recover 71.135s. FlashInfer development times were 98.327/64.453/64.399s. Scored validation reached 87.356/59.316/86.574s, failing the all-three-below-71.135s gate; settling took 136.048s. The 59.316s run had only 0.483s grader idle time. Validation first submission averaged 4.78s, so the gain chiefly appears in later candidate arrivals. [4]
+**Frozen-core improved-prompt replication:** all five reached 18 in **71.321 / 77.277 / 82.492 / 81.102 / 62.783s** (median **77.277s**). Only 1/5 beat 71.135s, failing the all-five gate. Core hashes, request caps and verdicts matched. Cheap warmup replaces the earlier AIME 2024 workload; this is not an isolated prompt comparison. [10]
 
 <!-- pagebreak -->
 
@@ -59,7 +59,7 @@ Seventeen earlier follow-ups before the backend change did not recover 71.135s. 
 
 **Use three latency targets to diagnose a run.** The actual verification timeline separates first usable candidate arrival, useful grader service, and late idle gaps. For BF16 30 x 1, 5.055s to first pickup + 54.002s service + 12.076s idle approximately equals 71.135s; BF16 30 x 4 had 46.279s of idle gaps. Bring the first candidate forward, keep the grader supplied while limiting wrong checks, and rein in the late-answer tail. Trace CPU grows with fan-out, but CPU-seconds overlap inference and cannot be added to elapsed time. [3, 5]
 
-**Next experiments after the freeze.** Keep the core fixed and compare prompt adherence first, then 30 x 1 / 8K against 30 x 2 / 4K with exact-ID continuations and the four-request cap. Prior five-seed traces show 10-11 verified questions extracted by 4K versus 14-16 by 8K; their 4K union covers only eleven distinct questions. A second sample may diversify the tail, but an early doubling of solved questions is unsupported. Several late paths spend 6-27s rechecking after the requested result appears. Use predeclared seeds, matched warmup/profiles, all outcomes, and server restarts before claiming repeatability. [10]
+**Next experiments after the freeze.** Keep the core fixed. Pair original/improved prompts with matched warmup and server restarts, then compare 30 x 1 / 8K against 30 x 2 / 4K with exact-ID continuations and the four-request cap. Prior five-seed traces show 10-11 verified questions extracted by 4K versus 14-16 by 8K; their 4K union covers only eleven distinct questions. A second sample may diversify the tail, but an early doubling of solved questions is unsupported. Several late paths spend 6-27s rechecking after the requested result appears. Use predeclared seeds, matched warmup/profiles, all outcomes, and server restarts before claiming repeatability. [10]
 
 **Handoff rule.** Preserve the baseline and versioned policies. Compare the eighteenth distinct positive verdict, grader service/idle time, wrong checks, and request usage; also retain setup and cleanup costs. Change one control at a time where possible and show all outcomes. Stopping at 18 does not establish full 30-question accuracy or arbitrary-seed repeatability. The evidence packet supplies the figures and source records needed to audit these decisions.
 
@@ -76,4 +76,4 @@ The [illustrated evidence packet](evidence.md) ([PDF](output/pdf/callosum-eviden
 - **[7] Alternatives; [8] Python:** Additional-model evidence in Appendix A; direct sources in E6.
 - **[9] Live baseline:** [Completed pass@4 and coverage comparison](../../../attempts/20261003T202152.418590Z/README.md).
 
-- **[10] Final validation:** [All five outcomes](../../../runs/experiments/runner-final-five-seeds-20261004T000926Z/README.md), [late reasoning](../../../runs/experiments/runner-final-five-seeds-20261004T000926Z/TAIL_REASONING.md), and [token distribution](../../../runs/experiments/runner-final-five-seeds-20261004T000926Z/EXTRACTION_TOKENS.md).
+- **[10] Final validation:** [Improved-prompt five seeds](../../../runs/experiments/frozen-core-prompt-five-seeds-20261004T005416Z/README.md); [historical warmed outcomes](../../../runs/experiments/runner-final-five-seeds-20261004T000926Z/README.md), [late reasoning](../../../runs/experiments/runner-final-five-seeds-20261004T000926Z/TAIL_REASONING.md), and [token distribution](../../../runs/experiments/runner-final-five-seeds-20261004T000926Z/EXTRACTION_TOKENS.md).

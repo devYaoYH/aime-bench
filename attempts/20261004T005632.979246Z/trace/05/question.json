@@ -1,0 +1,167 @@
+{
+  "problem_idx": 5,
+  "started_at_utc": "2026-10-04T00:56:33.769+00:00",
+  "finished_at_utc": "2026-10-04T00:57:31.670+00:00",
+  "end_to_end_latency_s": 57.90083372895606,
+  "status": "solved",
+  "winner": {
+    "answer": 279,
+    "part": "content",
+    "kind": "literal_prose",
+    "end": 19474,
+    "line": "Now the problem asks: \"Find the difference between N and 2025.\" So difference = |N - 2025|? Or N - 2025? Let's compute N - 2025 = 2304 - 2025 = 279. So N is larger than 2025, difference = 279 if we take N - 2025. If they intend absolute difference, it's also 279. So answer is 279.",
+    "candidate": "279",
+    "rollout": 1,
+    "observed_at_utc": "2026-10-04T00:57:20.414+00:00",
+    "question_elapsed_s": 46.64459762099432,
+    "verification_started_at_utc": "2026-10-04T00:57:20.414+00:00",
+    "round": 1,
+    "candidate_queue_wait_s": 0.00038040202343836427,
+    "result": {
+      "dataset": {
+        "format": "jsonl",
+        "gold_field": "answer",
+        "id": "aime_2025",
+        "idx_field": "problem_idx",
+        "revision": "c94da77eb22bbd6439e62a323bec18493a421302",
+        "source": "/home/azureuser/aime-bench-core-prompt-7c40f7a/grader/data/aime_2025.jsonl",
+        "year": 2025,
+        "sha256": "d5bcac5904290630fe98e3c3d1c2773260ebf59b57955382735e9ce8c0142b41"
+      },
+      "query_id": "20261004T005632.979246Z-q5-a279",
+      "seq": 18,
+      "agent_id": "20261004T005632.979246Z-q5-r1",
+      "index": 5,
+      "candidate": "279",
+      "verdict": true,
+      "queue_ahead_at_submit": 2,
+      "submitted_at": "2026-10-04T00:57:20.418274Z",
+      "picked_at": "2026-10-04T00:57:28.668251Z",
+      "answered_at": "2026-10-04T00:57:31.669004Z",
+      "queue_wait_s": 8.25,
+      "toll_s": 3.001,
+      "latency_s": 11.251
+    },
+    "verification_finished_at_utc": "2026-10-04T00:57:31.670+00:00",
+    "verification_latency_s": 11.25571601302363
+  },
+  "error": null,
+  "unique_candidates": 1,
+  "candidate_answers": [
+    "279"
+  ],
+  "rollouts": [
+    {
+      "rollout": 1,
+      "round": 1,
+      "started_at_utc": "2026-10-04T00:56:33.776+00:00",
+      "start_monotonic_s": 279641.83922531,
+      "ttft_s": 0.10107791295740753,
+      "last_token_s": 57.4035962880007,
+      "finish_reason": "length",
+      "status": "completed",
+      "done_received": true,
+      "usage": {
+        "prompt_tokens": 254,
+        "total_tokens": 8446,
+        "completion_tokens": 8192,
+        "prompt_tokens_details": {
+          "cached_tokens": 160,
+          "created_cache_tokens": 80
+        }
+      },
+      "endpoint": "/v1/chat/completions",
+      "continuation_of_rollout": null,
+      "requested_max_tokens": 8192,
+      "http_status": 200,
+      "headers_received_s": 0.029087576956953853,
+      "generation_finished_at_utc": "2026-10-04T00:57:31.184+00:00",
+      "generation_end_monotonic_s": 279699.247110559,
+      "generation_latency_s": 57.40788524900563,
+      "generation_censored": true,
+      "generated_token_ids_count": 8192,
+      "prompt_token_ids_count": 254,
+      "cached_prompt_tokens": 160,
+      "prefix_cache_hit_fraction": 0.6299212598425197,
+      "overhead": {
+        "enabled": false,
+        "timings": {},
+        "counters": {},
+        "maxima": {}
+      },
+      "finished_at_utc": "2026-10-04T00:57:31.670+00:00",
+      "end_to_end_latency_s": 57.89410143595887,
+      "end_to_end_scope": "rollout start through question verification/cancellation settlement",
+      "gpu": null
+    }
+  ],
+  "round": 1,
+  "first_solved": {
+    "problem_idx": 5,
+    "round": 1,
+    "rollout": 1,
+    "candidate": "279",
+    "first_solved_at_utc": "2026-10-04T00:57:31.670+00:00",
+    "first_solved_elapsed_s": 57.90251659200294,
+    "grader_answered_at_utc": "2026-10-04T00:57:31.669004Z",
+    "grader_query_id": "20261004T005632.979246Z-q5-a279"
+  },
+  "overhead": {
+    "enabled": false,
+    "timings": {},
+    "counters": {},
+    "maxima": {}
+  },
+  "rounds": [
+    {
+      "round": 1,
+      "status": "solved",
+      "started_at_utc": "2026-10-04T00:56:33.769+00:00",
+      "finished_at_utc": "2026-10-04T00:57:31.670+00:00",
+      "end_to_end_latency_s": 57.90083372895606,
+      "winner": {
+        "answer": 279,
+        "part": "content",
+        "kind": "literal_prose",
+        "end": 19474,
+        "line": "Now the problem asks: \"Find the difference between N and 2025.\" So difference = |N - 2025|? Or N - 2025? Let's compute N - 2025 = 2304 - 2025 = 279. So N is larger than 2025, difference = 279 if we take N - 2025. If they intend absolute difference, it's also 279. So answer is 279.",
+        "candidate": "279",
+        "rollout": 1,
+        "observed_at_utc": "2026-10-04T00:57:20.414+00:00",
+        "question_elapsed_s": 46.64459762099432,
+        "verification_started_at_utc": "2026-10-04T00:57:20.414+00:00",
+        "round": 1,
+        "candidate_queue_wait_s": 0.00038040202343836427,
+        "result": {
+          "dataset": {
+            "format": "jsonl",
+            "gold_field": "answer",
+            "id": "aime_2025",
+            "idx_field": "problem_idx",
+            "revision": "c94da77eb22bbd6439e62a323bec18493a421302",
+            "source": "/home/azureuser/aime-bench-core-prompt-7c40f7a/grader/data/aime_2025.jsonl",
+            "year": 2025,
+            "sha256": "d5bcac5904290630fe98e3c3d1c2773260ebf59b57955382735e9ce8c0142b41"
+          },
+          "query_id": "20261004T005632.979246Z-q5-a279",
+          "seq": 18,
+          "agent_id": "20261004T005632.979246Z-q5-r1",
+          "index": 5,
+          "candidate": "279",
+          "verdict": true,
+          "queue_ahead_at_submit": 2,
+          "submitted_at": "2026-10-04T00:57:20.418274Z",
+          "picked_at": "2026-10-04T00:57:28.668251Z",
+          "answered_at": "2026-10-04T00:57:31.669004Z",
+          "queue_wait_s": 8.25,
+          "toll_s": 3.001,
+          "latency_s": 11.251
+        },
+        "verification_finished_at_utc": "2026-10-04T00:57:31.670+00:00",
+        "verification_latency_s": 11.25571601302363
+      },
+      "error": null
+    }
+  ],
+  "question_start_monotonic_s": 279641.832493017
+}

@@ -1,0 +1,164 @@
+{
+  "problem_idx": 26,
+  "started_at_utc": "2026-10-04T00:57:53.767+00:00",
+  "finished_at_utc": "2026-10-04T00:58:46.134+00:00",
+  "end_to_end_latency_s": 52.367333953035995,
+  "status": "solved",
+  "winner": {
+    "answer": 113,
+    "part": "content",
+    "kind": "literal_prose",
+    "end": 22412,
+    "line": "But we should verify with known AIME problem. Actually, I recall an AIME problem about pairings of vertices of a regular polygon with equal-length segments. Might be 2005 AIME I #15? Not sure. Let's search memory: There is a known problem: \"Let S be the set of vertices of a regular 24-gon. Find the number of ways to draw 12 segments of equal lengths so that each vertex in S is an endpoint of exactly one of the 12 segments.\" This appears like a problem from the 2008 AIME II maybe. I think the answer is 113 indeed. Let's recall known answer: I recall a known answer of 113 for a problem about matchings on a regular 24-gon with equal length chords. Yes, I think the answer is 113. So it's likely correct.",
+    "candidate": "113",
+    "rollout": 1,
+    "observed_at_utc": "2026-10-04T00:58:41.990+00:00",
+    "question_elapsed_s": 48.22294729499845,
+    "verification_started_at_utc": "2026-10-04T00:58:41.990+00:00",
+    "round": 1,
+    "candidate_queue_wait_s": 0.00045796699123457074,
+    "result": {
+      "dataset": {
+        "format": "jsonl",
+        "gold_field": "answer",
+        "id": "aime_2025",
+        "idx_field": "problem_idx",
+        "revision": "c94da77eb22bbd6439e62a323bec18493a421302",
+        "source": "/home/azureuser/aime-bench-core-prompt-7c40f7a/grader/data/aime_2025.jsonl",
+        "year": 2025,
+        "sha256": "d5bcac5904290630fe98e3c3d1c2773260ebf59b57955382735e9ce8c0142b41"
+      },
+      "query_id": "20261004T005752.973818Z-q26-a113",
+      "seq": 16,
+      "agent_id": "20261004T005752.973818Z-q26-r1",
+      "index": 26,
+      "candidate": "113",
+      "verdict": true,
+      "queue_ahead_at_submit": 0,
+      "submitted_at": "2026-10-04T00:58:41.993117Z",
+      "picked_at": "2026-10-04T00:58:43.127720Z",
+      "answered_at": "2026-10-04T00:58:46.127827Z",
+      "queue_wait_s": 1.135,
+      "toll_s": 3.0,
+      "latency_s": 4.135
+    },
+    "verification_finished_at_utc": "2026-10-04T00:58:46.129+00:00",
+    "verification_latency_s": 4.138340812001843
+  },
+  "error": null,
+  "unique_candidates": 1,
+  "candidate_answers": [
+    "113"
+  ],
+  "rollouts": [
+    {
+      "rollout": 1,
+      "round": 1,
+      "started_at_utc": "2026-10-04T00:57:53.784+00:00",
+      "start_monotonic_s": 279721.84697814,
+      "ttft_s": 0.238107655022759,
+      "last_token_s": 52.33773674297845,
+      "finish_reason": null,
+      "status": "cancelled",
+      "done_received": false,
+      "usage": {
+        "prompt_tokens": 232,
+        "total_tokens": 7901,
+        "completion_tokens": 7669,
+        "completion_tokens_details": null
+      },
+      "endpoint": "/v1/chat/completions",
+      "continuation_of_rollout": null,
+      "requested_max_tokens": 8192,
+      "http_status": 200,
+      "headers_received_s": 0.050724763015750796,
+      "generation_finished_at_utc": "2026-10-04T00:58:46.131+00:00",
+      "generation_end_monotonic_s": 279774.193917368,
+      "generation_latency_s": 52.34693922800943,
+      "generation_censored": true,
+      "generated_token_ids_count": 7669,
+      "prompt_token_ids_count": 232,
+      "cached_prompt_tokens": null,
+      "prefix_cache_hit_fraction": null,
+      "overhead": {
+        "enabled": false,
+        "timings": {},
+        "counters": {},
+        "maxima": {}
+      },
+      "finished_at_utc": "2026-10-04T00:58:46.134+00:00",
+      "end_to_end_latency_s": 52.35033411800396,
+      "end_to_end_scope": "rollout start through question verification/cancellation settlement",
+      "gpu": null
+    }
+  ],
+  "round": 1,
+  "first_solved": {
+    "problem_idx": 26,
+    "round": 1,
+    "rollout": 1,
+    "candidate": "113",
+    "first_solved_at_utc": "2026-10-04T00:58:46.129+00:00",
+    "first_solved_elapsed_s": 52.36660705099348,
+    "grader_answered_at_utc": "2026-10-04T00:58:46.127827Z",
+    "grader_query_id": "20261004T005752.973818Z-q26-a113"
+  },
+  "overhead": {
+    "enabled": false,
+    "timings": {},
+    "counters": {},
+    "maxima": {}
+  },
+  "rounds": [
+    {
+      "round": 1,
+      "status": "solved",
+      "started_at_utc": "2026-10-04T00:57:53.767+00:00",
+      "finished_at_utc": "2026-10-04T00:58:46.134+00:00",
+      "end_to_end_latency_s": 52.367333953035995,
+      "winner": {
+        "answer": 113,
+        "part": "content",
+        "kind": "literal_prose",
+        "end": 22412,
+        "line": "But we should verify with known AIME problem. Actually, I recall an AIME problem about pairings of vertices of a regular polygon with equal-length segments. Might be 2005 AIME I #15? Not sure. Let's search memory: There is a known problem: \"Let S be the set of vertices of a regular 24-gon. Find the number of ways to draw 12 segments of equal lengths so that each vertex in S is an endpoint of exactly one of the 12 segments.\" This appears like a problem from the 2008 AIME II maybe. I think the answer is 113 indeed. Let's recall known answer: I recall a known answer of 113 for a problem about matchings on a regular 24-gon with equal length chords. Yes, I think the answer is 113. So it's likely correct.",
+        "candidate": "113",
+        "rollout": 1,
+        "observed_at_utc": "2026-10-04T00:58:41.990+00:00",
+        "question_elapsed_s": 48.22294729499845,
+        "verification_started_at_utc": "2026-10-04T00:58:41.990+00:00",
+        "round": 1,
+        "candidate_queue_wait_s": 0.00045796699123457074,
+        "result": {
+          "dataset": {
+            "format": "jsonl",
+            "gold_field": "answer",
+            "id": "aime_2025",
+            "idx_field": "problem_idx",
+            "revision": "c94da77eb22bbd6439e62a323bec18493a421302",
+            "source": "/home/azureuser/aime-bench-core-prompt-7c40f7a/grader/data/aime_2025.jsonl",
+            "year": 2025,
+            "sha256": "d5bcac5904290630fe98e3c3d1c2773260ebf59b57955382735e9ce8c0142b41"
+          },
+          "query_id": "20261004T005752.973818Z-q26-a113",
+          "seq": 16,
+          "agent_id": "20261004T005752.973818Z-q26-r1",
+          "index": 26,
+          "candidate": "113",
+          "verdict": true,
+          "queue_ahead_at_submit": 0,
+          "submitted_at": "2026-10-04T00:58:41.993117Z",
+          "picked_at": "2026-10-04T00:58:43.127720Z",
+          "answered_at": "2026-10-04T00:58:46.127827Z",
+          "queue_wait_s": 1.135,
+          "toll_s": 3.0,
+          "latency_s": 4.135
+        },
+        "verification_finished_at_utc": "2026-10-04T00:58:46.129+00:00",
+        "verification_latency_s": 4.138340812001843
+      },
+      "error": null
+    }
+  ],
+  "question_start_monotonic_s": 279721.829978305
+}

@@ -1,0 +1,164 @@
+{
+  "problem_idx": 21,
+  "started_at_utc": "2026-10-04T00:57:53.766+00:00",
+  "finished_at_utc": "2026-10-04T00:58:31.131+00:00",
+  "end_to_end_latency_s": 37.364208650018554,
+  "status": "solved",
+  "winner": {
+    "answer": 293,
+    "part": "content",
+    "kind": "literal_prose",
+    "end": 10951,
+    "line": "Thus answer is 293. But need to verify all constraints: rectangle inscribed in ω1, b = a/2, etc. Also need to verify that D is indeed above rectangle top side? The condition that D is closer to FG than to EH ensures b < 12 (which is true) but also perhaps that D is above the rectangle? Actually D is at y=12, rectangle top side is at y=b ≈2.68, bottom side at y=-b ≈ -2.68. So D is far above rectangle. So D is indeed above. So the distance to FG is 12 - b ≈9.316, to EH is 12 + b ≈14.683, so indeed D is closer to FG.",
+    "candidate": "293",
+    "rollout": 1,
+    "observed_at_utc": "2026-10-04T00:58:18.424+00:00",
+    "question_elapsed_s": 24.657631865004078,
+    "verification_started_at_utc": "2026-10-04T00:58:18.424+00:00",
+    "round": 1,
+    "candidate_queue_wait_s": 0.00036100600846111774,
+    "result": {
+      "dataset": {
+        "format": "jsonl",
+        "gold_field": "answer",
+        "id": "aime_2025",
+        "idx_field": "problem_idx",
+        "revision": "c94da77eb22bbd6439e62a323bec18493a421302",
+        "source": "/home/azureuser/aime-bench-core-prompt-7c40f7a/grader/data/aime_2025.jsonl",
+        "year": 2025,
+        "sha256": "d5bcac5904290630fe98e3c3d1c2773260ebf59b57955382735e9ce8c0142b41"
+      },
+      "query_id": "20261004T005752.973818Z-q21-a293",
+      "seq": 11,
+      "agent_id": "20261004T005752.973818Z-q21-r1",
+      "index": 21,
+      "candidate": "293",
+      "verdict": true,
+      "queue_ahead_at_submit": 3,
+      "submitted_at": "2026-10-04T00:58:18.426631Z",
+      "picked_at": "2026-10-04T00:58:28.126203Z",
+      "answered_at": "2026-10-04T00:58:31.126322Z",
+      "queue_wait_s": 9.7,
+      "toll_s": 3.0,
+      "latency_s": 12.7
+    },
+    "verification_finished_at_utc": "2026-10-04T00:58:31.127+00:00",
+    "verification_latency_s": 12.703140797966626
+  },
+  "error": null,
+  "unique_candidates": 1,
+  "candidate_answers": [
+    "293"
+  ],
+  "rollouts": [
+    {
+      "rollout": 1,
+      "round": 1,
+      "started_at_utc": "2026-10-04T00:57:53.781+00:00",
+      "start_monotonic_s": 279721.843758038,
+      "ttft_s": 0.29273102997103706,
+      "last_token_s": 37.34523143497063,
+      "finish_reason": null,
+      "status": "cancelled",
+      "done_received": false,
+      "usage": {
+        "prompt_tokens": 944,
+        "total_tokens": 6543,
+        "completion_tokens": 5599,
+        "completion_tokens_details": null
+      },
+      "endpoint": "/v1/chat/completions",
+      "continuation_of_rollout": null,
+      "requested_max_tokens": 8192,
+      "http_status": 200,
+      "headers_received_s": 0.07221042097080499,
+      "generation_finished_at_utc": "2026-10-04T00:58:31.128+00:00",
+      "generation_end_monotonic_s": 279759.190899126,
+      "generation_latency_s": 37.34714108798653,
+      "generation_censored": true,
+      "generated_token_ids_count": 5599,
+      "prompt_token_ids_count": 944,
+      "cached_prompt_tokens": null,
+      "prefix_cache_hit_fraction": null,
+      "overhead": {
+        "enabled": false,
+        "timings": {},
+        "counters": {},
+        "maxima": {}
+      },
+      "finished_at_utc": "2026-10-04T00:58:31.131+00:00",
+      "end_to_end_latency_s": 37.34981561801396,
+      "end_to_end_scope": "rollout start through question verification/cancellation settlement",
+      "gpu": null
+    }
+  ],
+  "round": 1,
+  "first_solved": {
+    "problem_idx": 21,
+    "round": 1,
+    "rollout": 1,
+    "candidate": "293",
+    "first_solved_at_utc": "2026-10-04T00:58:31.128+00:00",
+    "first_solved_elapsed_s": 37.36538416199619,
+    "grader_answered_at_utc": "2026-10-04T00:58:31.126322Z",
+    "grader_query_id": "20261004T005752.973818Z-q21-a293"
+  },
+  "overhead": {
+    "enabled": false,
+    "timings": {},
+    "counters": {},
+    "maxima": {}
+  },
+  "rounds": [
+    {
+      "round": 1,
+      "status": "solved",
+      "started_at_utc": "2026-10-04T00:57:53.766+00:00",
+      "finished_at_utc": "2026-10-04T00:58:31.131+00:00",
+      "end_to_end_latency_s": 37.364208650018554,
+      "winner": {
+        "answer": 293,
+        "part": "content",
+        "kind": "literal_prose",
+        "end": 10951,
+        "line": "Thus answer is 293. But need to verify all constraints: rectangle inscribed in ω1, b = a/2, etc. Also need to verify that D is indeed above rectangle top side? The condition that D is closer to FG than to EH ensures b < 12 (which is true) but also perhaps that D is above the rectangle? Actually D is at y=12, rectangle top side is at y=b ≈2.68, bottom side at y=-b ≈ -2.68. So D is far above rectangle. So D is indeed above. So the distance to FG is 12 - b ≈9.316, to EH is 12 + b ≈14.683, so indeed D is closer to FG.",
+        "candidate": "293",
+        "rollout": 1,
+        "observed_at_utc": "2026-10-04T00:58:18.424+00:00",
+        "question_elapsed_s": 24.657631865004078,
+        "verification_started_at_utc": "2026-10-04T00:58:18.424+00:00",
+        "round": 1,
+        "candidate_queue_wait_s": 0.00036100600846111774,
+        "result": {
+          "dataset": {
+            "format": "jsonl",
+            "gold_field": "answer",
+            "id": "aime_2025",
+            "idx_field": "problem_idx",
+            "revision": "c94da77eb22bbd6439e62a323bec18493a421302",
+            "source": "/home/azureuser/aime-bench-core-prompt-7c40f7a/grader/data/aime_2025.jsonl",
+            "year": 2025,
+            "sha256": "d5bcac5904290630fe98e3c3d1c2773260ebf59b57955382735e9ce8c0142b41"
+          },
+          "query_id": "20261004T005752.973818Z-q21-a293",
+          "seq": 11,
+          "agent_id": "20261004T005752.973818Z-q21-r1",
+          "index": 21,
+          "candidate": "293",
+          "verdict": true,
+          "queue_ahead_at_submit": 3,
+          "submitted_at": "2026-10-04T00:58:18.426631Z",
+          "picked_at": "2026-10-04T00:58:28.126203Z",
+          "answered_at": "2026-10-04T00:58:31.126322Z",
+          "queue_wait_s": 9.7,
+          "toll_s": 3.0,
+          "latency_s": 12.7
+        },
+        "verification_finished_at_utc": "2026-10-04T00:58:31.127+00:00",
+        "verification_latency_s": 12.703140797966626
+      },
+      "error": null
+    }
+  ],
+  "question_start_monotonic_s": 279721.829365006
+}

@@ -28,8 +28,9 @@ remaining CLI arguments override preset defaults.
 - [prompt_adherence.json](presets/prompt_adherence.json): same settings, stronger instructions to emit a prospective boxed answer before rechecking.
 - [30x2_4k.json](presets/30x2_4k.json): two 4K samples per question and the stronger prompt; four requests total leave one continuation per lane.
 
-The two alternative presets are prepared configurations, **not measured strategy
-improvements**. No new experiments were launched during this freeze. The baseline
+Neither alternative is an established strategy improvement. The improved-prompt
+preset has since been measured below; 30×2/4K remains untested. No new experiments
+were launched during the freeze itself. The baseline
 remains selected. The next sweeps can vary configurations without duplicating
 solving code. The historical warmed results and the per-question token
 [distribution report](../runs/experiments/runner-final-five-seeds-20261004T000926Z/EXTRACTION_TOKENS.md)
@@ -118,8 +119,12 @@ NVFP4 FlashInfer 30×1. Previous independent scored repeats were **87.356, 59.31
 86.574 seconds**; consistent sub-71.135-second performance is unconfirmed. The
 pending-verdict alternative repeated at **95.800, 99.235, 83.064 seconds**. The five historical warmed v1 trials reached 18 in 92.061, 105.337, 66.481,
 78.123 and 78.601 seconds (median 78.601; only one of five within 71.135s).
-The short-warmup default has since been restored; its five-seed protocol is
-prepared but has not been executed as a group. Results must not be used to
+The short-warmup default has since been restored. The [improved-prompt
+five-seed core validation](../runs/experiments/frozen-core-prompt-five-seeds-20261004T005416Z/README.md)
+reached 18 in 71.321, 77.277, 82.492, 81.102 and 62.783 seconds (median 77.277;
+only 1/5 within 71.135s). It kept the core fixed and used one owned server lifetime;
+consistent sub-reference and restart performance remain unconfirmed. The original-
+prompt short-warmup five-seed protocol has not been executed as a group. Results must not be used to
 select replacement seeds.
 
 The first final-runner version and its warmed protocol are preserved as

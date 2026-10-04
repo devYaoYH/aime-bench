@@ -1,0 +1,20 @@
+{
+  "observed_at_utc": "2026-10-04T01:02:58.625791+00:00",
+  "batch_exit_code": 0,
+  "compute_apps_after_cleanup": "",
+  "gpu_after_cleanup": "0 MiB, 81920 MiB, 17 %",
+  "listeners_after_cleanup": {
+    "8000": false,
+    "8077": false
+  },
+  "coarse_server_kv_max_percent": 7.3,
+  "kv_observations": 38,
+  "oom_preemption_warning_lines": [],
+  "scope": "Post-cleanup GPU snapshot and coarse server log KV samples. No complete per-request eviction counters or measured peak VRAM; optional profiling disabled.",
+  "bootstrap_failure": {
+    "batch": "frozen-core-prompt-five-seeds-20261004T005106Z",
+    "source_commit": "9a6cbe5",
+    "exit_code": 1,
+    "reason": "Tracked-clean preflight rejected apparent historical CSV normalization changes before inference server launch. Fixed attributes, then used original five declared seeds. No generation trial began."
+  }
+}

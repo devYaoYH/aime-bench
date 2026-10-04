@@ -1,0 +1,112 @@
+{
+  "problem_idx": 3,
+  "started_at_utc": "2026-10-04T01:00:42.941+00:00",
+  "finished_at_utc": "2026-10-04T01:00:56.400+00:00",
+  "end_to_end_latency_s": 13.458978777984157,
+  "status": "solved",
+  "winner": {
+    "answer": 16,
+    "part": "content",
+    "kind": "literal_prose",
+    "end": 3275,
+    "line": "Thus N = 2016. Need remainder when N divided by 1000 => 2016 mod 1000 = 16? Actually 2016 - 2*1000 = 16. So answer is 16.",
+    "candidate": "16",
+    "rollout": 1,
+    "observed_at_utc": "2026-10-04T01:00:51.690+00:00",
+    "question_elapsed_s": 8.748780574009288,
+    "verification_started_at_utc": "2026-10-04T01:00:51.691+00:00",
+    "round": 1,
+    "candidate_queue_wait_s": 0.0006292790058068931,
+    "result": {
+      "dataset": {
+        "format": "jsonl",
+        "gold_field": "answer",
+        "id": "aime_2025",
+        "idx_field": "problem_idx",
+        "revision": "c94da77eb22bbd6439e62a323bec18493a421302",
+        "source": "/home/azureuser/aime-bench-core-prompt-7c40f7a/grader/data/aime_2025.jsonl",
+        "year": 2025,
+        "sha256": "d5bcac5904290630fe98e3c3d1c2773260ebf59b57955382735e9ce8c0142b41"
+      },
+      "query_id": "20261004T010042.153214Z-q3-a16",
+      "seq": 3,
+      "agent_id": "20261004T010042.153214Z-q3-r1",
+      "index": 3,
+      "candidate": "16",
+      "verdict": true,
+      "queue_ahead_at_submit": 0,
+      "submitted_at": "2026-10-04T01:00:51.694753Z",
+      "picked_at": "2026-10-04T01:00:53.397248Z",
+      "answered_at": "2026-10-04T01:00:56.397424Z",
+      "queue_wait_s": 1.702,
+      "toll_s": 3.0,
+      "latency_s": 4.703
+    },
+    "verification_finished_at_utc": "2026-10-04T01:00:56.399+00:00",
+    "verification_latency_s": 4.708070097025484
+  },
+  "error": null,
+  "unique_candidates": 1,
+  "candidate_answers": [
+    "16"
+  ],
+  "rollouts": [
+    {
+      "rollout": 1,
+      "round": 1,
+      "started_at_utc": "2026-10-04T01:00:42.947+00:00",
+      "start_monotonic_s": 279891.009904909,
+      "ttft_s": 0.17047899001045153,
+      "last_token_s": 13.448968062992208,
+      "finish_reason": null,
+      "status": "cancelled",
+      "done_received": false,
+      "usage": {
+        "prompt_tokens": 287,
+        "total_tokens": 2471,
+        "completion_tokens": 2184,
+        "completion_tokens_details": null
+      },
+      "endpoint": "/v1/chat/completions",
+      "continuation_of_rollout": null,
+      "requested_max_tokens": 8192,
+      "http_status": 200,
+      "headers_received_s": 0.047990161983761936,
+      "generation_finished_at_utc": "2026-10-04T01:00:56.399+00:00",
+      "generation_end_monotonic_s": 279904.46231466,
+      "generation_latency_s": 13.452409751014784,
+      "generation_censored": true,
+      "generated_token_ids_count": 2184,
+      "prompt_token_ids_count": 287,
+      "cached_prompt_tokens": null,
+      "prefix_cache_hit_fraction": null,
+      "overhead": {
+        "enabled": false,
+        "timings": {},
+        "counters": {},
+        "maxima": {}
+      },
+      "finished_at_utc": "2026-10-04T01:00:56.400+00:00",
+      "end_to_end_latency_s": 13.45349757897202,
+      "end_to_end_scope": "rollout start through question verification/cancellation settlement",
+      "gpu": null
+    }
+  ],
+  "round": 1,
+  "first_solved": {
+    "problem_idx": 3,
+    "round": 1,
+    "rollout": 1,
+    "candidate": "16",
+    "first_solved_at_utc": "2026-10-04T01:00:56.399+00:00",
+    "first_solved_elapsed_s": 13.45901126897661,
+    "grader_answered_at_utc": "2026-10-04T01:00:56.397424Z",
+    "grader_query_id": "20261004T010042.153214Z-q3-a16"
+  },
+  "overhead": {
+    "enabled": false,
+    "timings": {},
+    "counters": {},
+    "maxima": {}
+  }
+}

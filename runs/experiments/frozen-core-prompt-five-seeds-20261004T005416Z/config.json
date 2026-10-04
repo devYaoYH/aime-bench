@@ -1,0 +1,61 @@
+{
+  "driver": "runner_final.validate_frozen",
+  "started_at_utc": "2026-10-04T00:54:21.303+00:00",
+  "protocol": {
+    "schema_version": 1,
+    "runner": "runner_final.run_frozen",
+    "preset": "prompt_adherence.json",
+    "system_prompt_sha256": "26b591c39bcf55f4c94f5359dcc90d3c5626a524478eee1c5ce44b5038162364",
+    "seeds": [
+      20261011,
+      20261012,
+      20261013,
+      20261014,
+      20261015
+    ],
+    "argv": [
+      "--benchmark",
+      "--skip-benchmark-prewarm"
+    ],
+    "reference_attempt": "20261003T211557.382358Z",
+    "reference_time_to_target_s": 71.134766841,
+    "scoring": "All five trials scored including first. Keep failures and unmet targets. No seed replacement or unscored settling. Confirmation requires all five valid trials at or below 71.134766841 seconds.",
+    "scope": "Immutable core v1, improved prompt, 30x1 barrier 8K first pass, four requests including continuations, cheap warmup, one owned inference server reused and fresh serial grader/cache reset each trial. AIME 2025 is development data."
+  },
+  "protocol_sha256": "ec45dcec783816dd7891597c35160e3727489581f28f197cec62dc6ac615f251",
+  "source_commit": "7c40f7af5586bc698b444c6b7934013baf99e5cd",
+  "argv": [
+    "--benchmark",
+    "--skip-benchmark-prewarm",
+    "--reuse-server"
+  ],
+  "seed_sequence": [
+    20261011,
+    20261012,
+    20261013,
+    20261014,
+    20261015
+  ],
+  "profile_path": "/home/azureuser/models/r0b0tlab/VibeThinker-3B-NVFP4/vllm-flashinfer.yaml",
+  "profile_sha256": "aa2f451c99233d1e3ba15f9931f550cf5c46273f1ddb837a5802d521cdcf9753",
+  "core_manifest_sha256": "35d6a06315a0e45441b3ac49bd468a2b94553fb172f378bfebc7ea8cc044070f",
+  "system_prompt_sha256": "26b591c39bcf55f4c94f5359dcc90d3c5626a524478eee1c5ce44b5038162364",
+  "system_prompt": "Solve the AIME problem carefully. You must expose each prospective answer as soon as you derive a value for the quantity requested in the original problem. Before any further rechecking, emit a separate line containing \\boxed{N}, where N is the computed integer from 0 to 999. Emit this line inside your reasoning immediately, even if the answer is tentative. Do not postpone it until the end of your reasoning, and do not leave a prospective answer only as an unboxed total or equation. Then continue checking your work. If you revise the prospective answer, immediately emit another boxed integer on its own line. Box only candidates for the original requested quantity, not subproblem values or examples. For a requested sum or difference, compute that quantity before boxing it. End with your final boxed answer.",
+  "preset": "prompt_adherence.json",
+  "server_reused": true,
+  "prefix_cache_reset_between_trials": true,
+  "server_env_override": {
+    "VLLM_SERVER_DEV_MODE": "1"
+  },
+  "server_command": [
+    "/home/azureuser/.venvs/vllm/bin/vllm",
+    "serve",
+    "--config",
+    "/home/azureuser/models/r0b0tlab/VibeThinker-3B-NVFP4/vllm-flashinfer.yaml",
+    "--host",
+    "127.0.0.1",
+    "--port",
+    "8000",
+    "--enable-prompt-tokens-details"
+  ]
+}
