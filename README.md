@@ -16,6 +16,7 @@ uses **core v1 with `prompt_adherence.json`**. The canonical package is
 | Core v1.5 eager30, AIME 2025 | 5/5 reached 18; median 77.352s; range 65.015–85.464s | [Five-seed scheduling experiment](runs/experiments/core-v1_5-five-seeds-20261004T074500Z/README.md) |
 | Core v1.6 initial barrier then pool, AIME 2025 | 5/5 reached 18; median 77.498s; range 63.445–101.123s; smaller tail than latest refactored-v1 batch | [Five-seed pool comparison](runs/experiments/core-v1_6-barrier-five-seeds-20261004T224850Z/README.md) |
 | Core v1.6 BF16 + FlashInfer, AIME 2025 seed 20261011 | 18 correct in 75.640s; zero wrong checks; all wins in initial coverage; one-run comparison | [BF16 vs NVFP4](runs/experiments/core-v1_6-bf16-flashinfer-20261004T230835Z/README.md) |
+| Core v1.6 AWQ + Marlin, AIME 2025 seed 20261011 | 18 correct in 100.163s; one wrong check; long continuation tail; five-seed expansion pending | [AWQ vs NVFP4/BF16](runs/experiments/core-v1_6-awq-marlin-20261004T232028Z/README.md) |
 | General-answer core v2, AIME 2025 | 5/5 reached 18; median 113.415s | [Extension back-test](runs/experiments/core-v2-aime2025-five-seeds-20261004T013100Z/README.md) |
 
 **Read the [three-page report](docs/reports/final/output/pdf/callosum-speedrun-report.pdf)

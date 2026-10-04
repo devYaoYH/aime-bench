@@ -1,0 +1,544 @@
+{
+  "seed": 20261011,
+  "audit": {
+    "valid": true,
+    "attempt_id": "20261004T232342.669339Z",
+    "time_to_target_s": 100.16319314099383,
+    "target_reached": true,
+    "solved": 18,
+    "status": "completed",
+    "reference_attempt_id": "20261004T224952.799732Z",
+    "reference_time_to_target_s": 77.49791123199975,
+    "initial_payload_mismatches": [],
+    "continuation_errors": [],
+    "barrier_valid": true,
+    "cap_valid": true,
+    "peak_active_requests": 30,
+    "barrier_release": {
+      "released_at_utc": "2026-10-04T23:24:45.116+00:00",
+      "elapsed_s": 58.07669605396222,
+      "active_requests": 0
+    },
+    "generation_requests": 66,
+    "fresh_samples": 52,
+    "performance": {
+      "generation_requests": 66,
+      "fresh_samples": 52,
+      "continuation_requests": 14,
+      "fresh_ttft": {
+        "count": 50,
+        "median_s": 3.4107349519617856,
+        "p95_s": 3.5015554680139758
+      },
+      "continuation_ttft": {
+        "count": 14,
+        "median_s": 0.21662077499786392,
+        "p95_s": 0.2491963389911689
+      },
+      "official_gpu": null,
+      "initialization_gpu": null
+    },
+    "grader_timeline": {
+      "completed_queries": 19,
+      "audit_errors": [],
+      "correct": 18,
+      "wrong": 1,
+      "target_service_floor_s": 54.0,
+      "actual_service_s": 57.00219678878784,
+      "idle_between_queries_s": 35.212048292160034,
+      "first_pick_elapsed_s": 7.947767972946167,
+      "scope": "completed oracle jobs; queued/cancelled client jobs may still incur service"
+    },
+    "trace_storage": {
+      "buffered": true,
+      "files_written": 422,
+      "jsonl_rows": 329635,
+      "payload_characters": 116094992,
+      "latency_s": 2.468408787972294,
+      "scope": "Client trace flush after official timing; excluded from time to target and official latency"
+    }
+  },
+  "rows": [
+    {
+      "label": "NVFP4 / Marlin",
+      "attempt_id": "20261004T224952.799732Z",
+      "time_to_18_s": 77.49791123199975,
+      "status": "completed",
+      "target_reached": true,
+      "solved": 18,
+      "requests": 67,
+      "fresh_samples": 54,
+      "initial_30_ttft_median_s": 0.22216231800848618,
+      "grader_timeline": {
+        "completed_queries": 21,
+        "audit_errors": [],
+        "correct": 18,
+        "wrong": 3,
+        "target_service_floor_s": 54.0,
+        "actual_service_s": 63.0025155544281,
+        "idle_between_queries_s": 8.400473356246948,
+        "first_pick_elapsed_s": 6.094102144241333,
+        "scope": "completed oracle jobs; queued/cancelled client jobs may still incur service"
+      },
+      "barrier_release": {
+        "released_at_utc": "2026-10-04T22:50:50.938+00:00",
+        "elapsed_s": 57.255966957018245,
+        "active_requests": 0
+      },
+      "win_sources": {
+        "initial": 15,
+        "continuation": 2,
+        "fresh_sibling": 1
+      },
+      "wins": [
+        {
+          "question_index": 1,
+          "rollout": 1,
+          "first_solved_elapsed_s": 9.095219245995395,
+          "grader_query_id": "20261004T224952.799732Z-q1-a70"
+        },
+        {
+          "question_index": 17,
+          "rollout": 1,
+          "first_solved_elapsed_s": 12.09551392000867,
+          "grader_query_id": "20261004T224952.799732Z-q17-a49"
+        },
+        {
+          "question_index": 3,
+          "rollout": 1,
+          "first_solved_elapsed_s": 15.098078447044827,
+          "grader_query_id": "20261004T224952.799732Z-q3-a16"
+        },
+        {
+          "question_index": 6,
+          "rollout": 1,
+          "first_solved_elapsed_s": 18.095981944003142,
+          "grader_query_id": "20261004T224952.799732Z-q6-a504"
+        },
+        {
+          "question_index": 16,
+          "rollout": 1,
+          "first_solved_elapsed_s": 21.09619820804801,
+          "grader_query_id": "20261004T224952.799732Z-q16-a468"
+        },
+        {
+          "question_index": 4,
+          "rollout": 1,
+          "first_solved_elapsed_s": 24.098116033012047,
+          "grader_query_id": "20261004T224952.799732Z-q4-a117"
+        },
+        {
+          "question_index": 22,
+          "rollout": 1,
+          "first_solved_elapsed_s": 30.099227427039295,
+          "grader_query_id": "20261004T224952.799732Z-q22-a237"
+        },
+        {
+          "question_index": 24,
+          "rollout": 1,
+          "first_solved_elapsed_s": 33.09979144099634,
+          "grader_query_id": "20261004T224952.799732Z-q24-a149"
+        },
+        {
+          "question_index": 26,
+          "rollout": 1,
+          "first_solved_elapsed_s": 36.09820370504167,
+          "grader_query_id": "20261004T224952.799732Z-q26-a113"
+        },
+        {
+          "question_index": 19,
+          "rollout": 1,
+          "first_solved_elapsed_s": 39.10000963200582,
+          "grader_query_id": "20261004T224952.799732Z-q19-a106"
+        },
+        {
+          "question_index": 21,
+          "rollout": 1,
+          "first_solved_elapsed_s": 42.09898041799897,
+          "grader_query_id": "20261004T224952.799732Z-q21-a293"
+        },
+        {
+          "question_index": 5,
+          "rollout": 1,
+          "first_solved_elapsed_s": 48.09931277501164,
+          "grader_query_id": "20261004T224952.799732Z-q5-a279"
+        },
+        {
+          "question_index": 18,
+          "rollout": 1,
+          "first_solved_elapsed_s": 51.09903297404526,
+          "grader_query_id": "20261004T224952.799732Z-q18-a82"
+        },
+        {
+          "question_index": 7,
+          "rollout": 1,
+          "first_solved_elapsed_s": 54.25553788302932,
+          "grader_query_id": "20261004T224952.799732Z-q7-a821"
+        },
+        {
+          "question_index": 27,
+          "rollout": 1,
+          "first_solved_elapsed_s": 57.25544754404109,
+          "grader_query_id": "20261004T224952.799732Z-q27-a19"
+        },
+        {
+          "question_index": 11,
+          "rollout": 2,
+          "first_solved_elapsed_s": 60.58841130003566,
+          "grader_query_id": "20261004T224952.799732Z-q11-a259"
+        },
+        {
+          "question_index": 2,
+          "rollout": 2,
+          "first_solved_elapsed_s": 73.09106808400247,
+          "grader_query_id": "20261004T224952.799732Z-q2-a588"
+        },
+        {
+          "question_index": 8,
+          "rollout": 2,
+          "first_solved_elapsed_s": 77.49791123199975,
+          "grader_query_id": "20261004T224952.799732Z-q8-a77"
+        }
+      ]
+    },
+    {
+      "label": "BF16 / native linear",
+      "attempt_id": "20261004T231002.053899Z",
+      "time_to_18_s": 75.63982491096249,
+      "status": "completed",
+      "target_reached": true,
+      "solved": 18,
+      "requests": 30,
+      "fresh_samples": 30,
+      "initial_30_ttft_median_s": 3.4391276975220535,
+      "grader_timeline": {
+        "completed_queries": 18,
+        "audit_errors": [],
+        "correct": 18,
+        "wrong": 0,
+        "target_service_floor_s": 54.0,
+        "actual_service_s": 54.00209832191467,
+        "idle_between_queries_s": 13.04561161994934,
+        "first_pick_elapsed_s": 8.592077016830444,
+        "scope": "completed oracle jobs; queued/cancelled client jobs may still incur service"
+      },
+      "barrier_release": null,
+      "win_sources": {
+        "initial": 18,
+        "continuation": 0,
+        "fresh_sibling": 0
+      },
+      "wins": [
+        {
+          "question_index": 1,
+          "rollout": 1,
+          "first_solved_elapsed_s": 11.592001884011552,
+          "grader_query_id": "20261004T231002.053899Z-q1-a70"
+        },
+        {
+          "question_index": 17,
+          "rollout": 1,
+          "first_solved_elapsed_s": 16.749545714992564,
+          "grader_query_id": "20261004T231002.053899Z-q17-a49"
+        },
+        {
+          "question_index": 3,
+          "rollout": 1,
+          "first_solved_elapsed_s": 19.76076302898582,
+          "grader_query_id": "20261004T231002.053899Z-q3-a16"
+        },
+        {
+          "question_index": 16,
+          "rollout": 1,
+          "first_solved_elapsed_s": 22.75853863998782,
+          "grader_query_id": "20261004T231002.053899Z-q16-a468"
+        },
+        {
+          "question_index": 6,
+          "rollout": 1,
+          "first_solved_elapsed_s": 25.758797349000815,
+          "grader_query_id": "20261004T231002.053899Z-q6-a504"
+        },
+        {
+          "question_index": 4,
+          "rollout": 1,
+          "first_solved_elapsed_s": 28.75913770700572,
+          "grader_query_id": "20261004T231002.053899Z-q4-a117"
+        },
+        {
+          "question_index": 8,
+          "rollout": 1,
+          "first_solved_elapsed_s": 31.759306113002822,
+          "grader_query_id": "20261004T231002.053899Z-q8-a77"
+        },
+        {
+          "question_index": 25,
+          "rollout": 1,
+          "first_solved_elapsed_s": 34.759491192002315,
+          "grader_query_id": "20261004T231002.053899Z-q25-a907"
+        },
+        {
+          "question_index": 22,
+          "rollout": 1,
+          "first_solved_elapsed_s": 37.75995671300916,
+          "grader_query_id": "20261004T231002.053899Z-q22-a237"
+        },
+        {
+          "question_index": 19,
+          "rollout": 1,
+          "first_solved_elapsed_s": 40.76029622100759,
+          "grader_query_id": "20261004T231002.053899Z-q19-a106"
+        },
+        {
+          "question_index": 21,
+          "rollout": 1,
+          "first_solved_elapsed_s": 43.76076037297025,
+          "grader_query_id": "20261004T231002.053899Z-q21-a293"
+        },
+        {
+          "question_index": 5,
+          "rollout": 1,
+          "first_solved_elapsed_s": 46.76203981495928,
+          "grader_query_id": "20261004T231002.053899Z-q5-a279"
+        },
+        {
+          "question_index": 27,
+          "rollout": 1,
+          "first_solved_elapsed_s": 49.76110124500701,
+          "grader_query_id": "20261004T231002.053899Z-q27-a19"
+        },
+        {
+          "question_index": 24,
+          "rollout": 1,
+          "first_solved_elapsed_s": 52.76105710101547,
+          "grader_query_id": "20261004T231002.053899Z-q24-a149"
+        },
+        {
+          "question_index": 7,
+          "rollout": 1,
+          "first_solved_elapsed_s": 56.459504387981724,
+          "grader_query_id": "20261004T231002.053899Z-q7-a821"
+        },
+        {
+          "question_index": 26,
+          "rollout": 1,
+          "first_solved_elapsed_s": 69.63949758501258,
+          "grader_query_id": "20261004T231002.053899Z-q26-a113"
+        },
+        {
+          "question_index": 18,
+          "rollout": 1,
+          "first_solved_elapsed_s": 72.64004117099103,
+          "grader_query_id": "20261004T231002.053899Z-q18-a82"
+        },
+        {
+          "question_index": 9,
+          "rollout": 1,
+          "first_solved_elapsed_s": 75.63982491096249,
+          "grader_query_id": "20261004T231002.053899Z-q9-a62"
+        }
+      ]
+    },
+    {
+      "label": "AWQ / Marlin",
+      "attempt_id": "20261004T232342.669339Z",
+      "time_to_18_s": 100.16319314099383,
+      "status": "completed",
+      "target_reached": true,
+      "solved": 18,
+      "requests": 66,
+      "fresh_samples": 52,
+      "initial_30_ttft_median_s": 3.439353429013863,
+      "grader_timeline": {
+        "completed_queries": 19,
+        "audit_errors": [],
+        "correct": 18,
+        "wrong": 1,
+        "target_service_floor_s": 54.0,
+        "actual_service_s": 57.00219678878784,
+        "idle_between_queries_s": 35.212048292160034,
+        "first_pick_elapsed_s": 7.947767972946167,
+        "scope": "completed oracle jobs; queued/cancelled client jobs may still incur service"
+      },
+      "barrier_release": {
+        "released_at_utc": "2026-10-04T23:24:45.116+00:00",
+        "elapsed_s": 58.07669605396222,
+        "active_requests": 0
+      },
+      "win_sources": {
+        "initial": 15,
+        "continuation": 3,
+        "fresh_sibling": 0
+      },
+      "wins": [
+        {
+          "question_index": 1,
+          "rollout": 1,
+          "first_solved_elapsed_s": 10.949171919957735,
+          "grader_query_id": "20261004T232342.669339Z-q1-a70"
+        },
+        {
+          "question_index": 17,
+          "rollout": 1,
+          "first_solved_elapsed_s": 13.951640798011795,
+          "grader_query_id": "20261004T232342.669339Z-q17-a49"
+        },
+        {
+          "question_index": 16,
+          "rollout": 1,
+          "first_solved_elapsed_s": 16.95115043997066,
+          "grader_query_id": "20261004T232342.669339Z-q16-a468"
+        },
+        {
+          "question_index": 3,
+          "rollout": 1,
+          "first_solved_elapsed_s": 19.94995131599717,
+          "grader_query_id": "20261004T232342.669339Z-q3-a16"
+        },
+        {
+          "question_index": 6,
+          "rollout": 1,
+          "first_solved_elapsed_s": 22.950531932001468,
+          "grader_query_id": "20261004T232342.669339Z-q6-a504"
+        },
+        {
+          "question_index": 4,
+          "rollout": 1,
+          "first_solved_elapsed_s": 25.95262814796297,
+          "grader_query_id": "20261004T232342.669339Z-q4-a117"
+        },
+        {
+          "question_index": 8,
+          "rollout": 1,
+          "first_solved_elapsed_s": 28.952411192993168,
+          "grader_query_id": "20261004T232342.669339Z-q8-a77"
+        },
+        {
+          "question_index": 25,
+          "rollout": 1,
+          "first_solved_elapsed_s": 31.95136232598452,
+          "grader_query_id": "20261004T232342.669339Z-q25-a907"
+        },
+        {
+          "question_index": 22,
+          "rollout": 1,
+          "first_solved_elapsed_s": 34.95158824196551,
+          "grader_query_id": "20261004T232342.669339Z-q22-a237"
+        },
+        {
+          "question_index": 27,
+          "rollout": 1,
+          "first_solved_elapsed_s": 37.952118935005274,
+          "grader_query_id": "20261004T232342.669339Z-q27-a19"
+        },
+        {
+          "question_index": 24,
+          "rollout": 1,
+          "first_solved_elapsed_s": 40.95227927999804,
+          "grader_query_id": "20261004T232342.669339Z-q24-a149"
+        },
+        {
+          "question_index": 19,
+          "rollout": 1,
+          "first_solved_elapsed_s": 43.95226630300749,
+          "grader_query_id": "20261004T232342.669339Z-q19-a106"
+        },
+        {
+          "question_index": 18,
+          "rollout": 1,
+          "first_solved_elapsed_s": 49.95347393100383,
+          "grader_query_id": "20261004T232342.669339Z-q18-a82"
+        },
+        {
+          "question_index": 21,
+          "rollout": 1,
+          "first_solved_elapsed_s": 52.95360334101133,
+          "grader_query_id": "20261004T232342.669339Z-q21-a293"
+        },
+        {
+          "question_index": 26,
+          "rollout": 1,
+          "first_solved_elapsed_s": 56.21828389400616,
+          "grader_query_id": "20261004T232342.669339Z-q26-a113"
+        },
+        {
+          "question_index": 7,
+          "rollout": 2,
+          "first_solved_elapsed_s": 69.41123564098962,
+          "grader_query_id": "20261004T232342.669339Z-q7-a821"
+        },
+        {
+          "question_index": 12,
+          "rollout": 2,
+          "first_solved_elapsed_s": 82.35028089897241,
+          "grader_query_id": "20261004T232342.669339Z-q12-a510"
+        },
+        {
+          "question_index": 29,
+          "rollout": 2,
+          "first_solved_elapsed_s": 100.16319314099383,
+          "grader_query_id": "20261004T232342.669339Z-q29-a104"
+        }
+      ]
+    }
+  ],
+  "delta_s": {
+    "NVFP4 / Marlin": 22.665281908994075,
+    "BF16 / native linear": 24.523368230031338
+  },
+  "server_evidence": {
+    "max_logged_kv_cache_usage_pct": 10.6,
+    "kv_usage_log_samples": [
+      0.8,
+      3.1,
+      4.6,
+      5.1,
+      5.8,
+      5.8,
+      7.0,
+      8.1,
+      9.1,
+      10.6
+    ],
+    "startup_cache_capacity_lines": [
+      "(EngineCore pid=187681) INFO 10-04 23:23:02 [model_runner.py:407] Model loading took 2.0 GiB memory and 3.136592 seconds",
+      "(EngineCore pid=187681) INFO 10-04 23:23:31 [gpu_worker.py:721] Available KV cache memory: 71.58 GiB",
+      "(EngineCore pid=187681) INFO 10-04 23:23:31 [kv_cache_utils.py:2481] GPU KV cache size: 2,084,976 tokens, Maximum concurrency for 65,536 tokens per request: 31.81x"
+    ],
+    "runtime_backend_lines": [
+      "(EngineCore pid=187681) INFO 10-04 23:22:57 [core.py:129] Initializing a V1 LLM engine (v0.30.1rc1.dev623+g4ac0d0eac) with config: model='/home/azureuser/models/AABoyles/VibeThinker-3B-AWQ', speculative_config=None, tokenizer='/home/azureuser/models/AABoyles/VibeThinker-3B-AWQ', skip_tokenizer_init=False, tokenizer_mode=auto, revision=None, tokenizer_revision=None, trust_remote_code=False, dtype=torch.bfloat16, max_seq_len=65536, download_dir=None, load_format=auto, tensor_parallel_size=1, pipeline_parallel_size=1, data_parallel_size=1, decode_context_parallel_size=1, dcp_comm_backend=ag_rs, disable_custom_all_reduce=False, quantization=auto_awq, quantization_config=None, enforce_eager=False, aux_output_config=AuxOutputConfig(enable_return_routed_experts=False, max_bytes=None), kv_cache_dtype=auto, device_config=cuda, structured_outputs_config=StructuredOutputsConfig(backend='auto', disable_any_whitespace=False, disable_additional_properties=False, reasoning_parser='', reasoning_parser_plugin='', enable_in_reasoning=False), observability_config=ObservabilityConfig(show_hidden_metrics_for_version=None, otlp_traces_endpoint=None, collect_detailed_traces=None, per_request_spec_decode_metrics='none', kv_cache_metrics=False, kv_cache_metrics_sample=0.01, custom_histogram_buckets=None, cudagraph_metrics=False, enable_layerwise_nvtx_tracing=False, enable_mfu_metrics=False, enable_mm_processor_stats=False, enable_logging_iteration_details=False, jit_monitor_mode='warn', jit_monitor_verbose=False), seed=0, served_model_name=AABoyles/VibeThinker-3B-AWQ, enable_prefix_caching=True, enable_chunked_prefill=True, pooler_config=None, compilation_config={'mode': <CompilationMode.VLLM_COMPILE: 3>, 'debug_dump_path': None, 'cache_dir': '', 'compile_cache_save_format': 'binary', 'backend': 'inductor', 'custom_ops': ['none'], 'ir_enable_torch_wrap': True, 'splitting_ops': ['vllm::unified_attention_with_output', 'vllm::unified_mla_attention_with_output', 'vllm::mamba_mixer2', 'vllm::mamba_mixer', 'vllm::short_conv', 'vllm::qwen4_exp_ple_short_conv', 'vllm::qwen4_exp_qsa_with_output', 'vllm::linear_attention', 'vllm::qwen_gdn_attention_core', 'vllm::qwen_gdn_attention_core_fused_norm_packed', 'vllm::gdn_attention_core_xpu', 'vllm::olmo_hybrid_gdn_full_forward', 'vllm::sparse_attn_indexer', 'vllm::rocm_aiter_sparse_attn_indexer', 'vllm::deepseek_v4_attention', 'vllm::hpc_rope_norm_forward', 'vllm::unified_kv_cache_update', 'vllm::unified_mla_kv_cache_update'], 'compile_mm_encoder': False, 'cudagraph_mm_encoder': False, 'encoder_cudagraph_token_budgets': [], 'encoder_cudagraph_max_vision_items_per_batch': 0, 'encoder_cudagraph_max_frames_per_batch': None, 'compile_sizes': [], 'compile_ranges_endpoints': [2048], 'inductor_compile_config': {'enable_auto_functionalized_v2': False, 'combo_kernels': True, 'benchmark_combo_kernel': True}, 'inductor_passes': {}, 'cudagraph_mode': <CUDAGraphMode.FULL_AND_PIECEWISE: (2, 1)>, 'cudagraph_num_of_warmups': 1, 'cudagraph_capture_sizes': [1, 2, 4, 8, 16, 24, 32, 40, 48, 56, 64, 72, 80, 88, 96, 104, 112, 120, 128, 136, 144, 152, 160, 168, 176, 184, 192, 200, 208, 216, 224, 232, 240, 248, 256, 272, 288, 304, 320, 336, 352, 368, 384, 400, 416, 432, 448, 464, 480, 496, 512], 'cudagraph_copy_inputs': False, 'cudagraph_specialize_lora': True, 'use_inductor_graph_partition': False, 'pass_config': {'fuse_norm_quant': False, 'fuse_act_quant': False, 'fuse_attn_quant': False, 'enable_sp': False, 'fuse_gemm_comms': False, 'fuse_allreduce_rms': False, 'enable_qk_norm_rope_fusion': False, 'fuse_rope_kvcache_cat_mla': False, 'fuse_act_padding': False, 'fuse_qk_norm_rope_kvcache': False}, 'max_cudagraph_capture_size': 512, 'dynamic_shapes_config': {'type': <DynamicShapesType.BACKED: 'backed'>, 'evaluate_guards': False, 'assume_32_bit_indexing': False}, 'local_cache_dir': None, 'fast_moe_cold_start': False, 'static_all_moe_layers': []}, kernel_config=KernelConfig(ir_op_priority=IrOpPriorityConfig(rms_norm=['native'], fused_add_rms_norm=['native'], gelu_and_mul_sparse=['triton', 'native']), enable_flashinfer_autotune=True, enable_cutedsl_warmup=True, enable_jit_warmup=True, moe_backend='auto', sparse_indexer_topk_backend='auto', linear_backend='marlin', linear_backend_per_quant=None)",
+      "(EngineCore pid=187681) INFO 10-04 23:22:59 [auto_awq.py:451] Using MarlinLinearKernel for AutoAWQMarlinLinearMethod",
+      "(EngineCore pid=187681) INFO 10-04 23:23:00 [cuda.py:466] Using AttentionBackendEnum.FLASHINFER backend."
+    ],
+    "pressure_warnings": [],
+    "throughput_logs": [
+      "(APIServer pid=187529) INFO 10-04 23:23:52 [loggers.py:328] Engine 000: Avg prompt throughput: 584.9 tokens/s, Avg generation throughput: 1064.8 tokens/s, Running: 30 reqs, Waiting: 0 reqs, GPU KV cache usage: 0.8%, Prefix cache hit rate: 43.7%",
+      "(APIServer pid=187529) INFO 10-04 23:24:02 [loggers.py:328] Engine 000: Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 4997.2 tokens/s, Running: 28 reqs, Waiting: 0 reqs, GPU KV cache usage: 3.1%, Prefix cache hit rate: 43.7%",
+      "(APIServer pid=187529) INFO 10-04 23:24:12 [loggers.py:328] Engine 000: Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 4032.7 tokens/s, Running: 25 reqs, Waiting: 0 reqs, GPU KV cache usage: 4.6%, Prefix cache hit rate: 43.7%",
+      "(APIServer pid=187529) INFO 10-04 23:24:22 [loggers.py:328] Engine 000: Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 3277.0 tokens/s, Running: 20 reqs, Waiting: 0 reqs, GPU KV cache usage: 5.1%, Prefix cache hit rate: 43.7%",
+      "(APIServer pid=187529) INFO 10-04 23:24:32 [loggers.py:328] Engine 000: Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 2691.8 tokens/s, Running: 18 reqs, Waiting: 0 reqs, GPU KV cache usage: 5.8%, Prefix cache hit rate: 43.7%",
+      "(APIServer pid=187529) INFO 10-04 23:24:42 [loggers.py:328] Engine 000: Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 2296.4 tokens/s, Running: 15 reqs, Waiting: 0 reqs, GPU KV cache usage: 5.8%, Prefix cache hit rate: 43.7%",
+      "(APIServer pid=187529) INFO 10-04 23:24:52 [loggers.py:328] Engine 000: Avg prompt throughput: 29.8 tokens/s, Avg generation throughput: 3212.9 tokens/s, Running: 30 reqs, Waiting: 0 reqs, GPU KV cache usage: 7.0%, Prefix cache hit rate: 95.0%",
+      "(APIServer pid=187529) INFO 10-04 23:25:02 [loggers.py:328] Engine 000: Avg prompt throughput: 1.5 tokens/s, Avg generation throughput: 3523.4 tokens/s, Running: 30 reqs, Waiting: 0 reqs, GPU KV cache usage: 8.1%, Prefix cache hit rate: 95.0%",
+      "(APIServer pid=187529) INFO 10-04 23:25:12 [loggers.py:328] Engine 000: Avg prompt throughput: 1.8 tokens/s, Avg generation throughput: 3295.4 tokens/s, Running: 30 reqs, Waiting: 0 reqs, GPU KV cache usage: 9.1%, Prefix cache hit rate: 95.0%",
+      "(APIServer pid=187529) INFO 10-04 23:25:22 [loggers.py:328] Engine 000: Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 3122.4 tokens/s, Running: 30 reqs, Waiting: 0 reqs, GPU KV cache usage: 10.6%, Prefix cache hit rate: 95.0%"
+    ],
+    "jit_warnings": [
+      "(EngineCore pid=187681) WARNING 10-04 23:23:43 [jit_monitor.py:140] Triton kernel JIT compilation during inference: _topp_sb_stats_kernel. This causes a latency spike; consider extending warmup to cover this shape/config.",
+      "(EngineCore pid=187681) WARNING 10-04 23:23:43 [jit_monitor.py:140] Triton kernel JIT compilation during inference: _topp_sb_step_kernel. This causes a latency spike; consider extending warmup to cover this shape/config.",
+      "(EngineCore pid=187681) WARNING 10-04 23:23:44 [jit_monitor.py:140] Triton kernel JIT compilation during inference: _topp_sb_mask_kernel. This causes a latency spike; consider extending warmup to cover this shape/config.",
+      "(EngineCore pid=187681) WARNING 10-04 23:23:45 [jit_monitor.py:140] Triton kernel JIT compilation during inference: _gumbel_sample_kernel. This causes a latency spike; consider extending warmup to cover this shape/config."
+    ],
+    "weight_cast_warning_count": 72,
+    "weight_cast_warning_example": "(EngineCore pid=187681) WARNING 10-04 23:23:00 [utils.py:325] Attempted to load weight layers.0.mlp.down_proj.scales with dtype torch.float16 into parameter with dtype torch.bfloat16",
+    "cleanup": {
+      "gpu": "NVIDIA A100 80GB PCIe, 81920 MiB, 0 MiB, 17 %",
+      "compute_apps": "",
+      "port_8000_open": false,
+      "port_8077_open": false,
+      "tmux_session_present": false
+    },
+    "limitations": "Existing coarse server logs, including startup/warmup/solve; no additional benchmark GPU/engine polling. No sampled peak VRAM or complete eviction/preemption counters. Throughput intervals differ in concurrency/context length."
+  },
+  "source_commit": "f600cd0261318cc6f2ac50161b72043cb865aca6"
+}

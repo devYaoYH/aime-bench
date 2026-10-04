@@ -36,3 +36,28 @@ manifest, requirements where needed, presets, and focused tests. Reuse
 in the extension rather than silently changing v1. Register the public selector
 in `runner.lib.entrypoints.EXTENSIONS`. Adding a version does not promote it.
 See [canonical usage and promotion](../README.md#layout-extensions-and-promotion).
+
+## Matched v1.6 model deployments
+
+The policy can use the committed NVFP4/Marlin, BF16/native or AWQ/Marlin
+profiles without changing its manifest. Provision the chosen profile under
+`~/models/<organization>/<model>/`, alongside the downloaded weights. For AWQ:
+
+```bash
+~/.venvs/vllm/bin/python -m runner.extensions.v1_6 \
+  --model AABoyles/VibeThinker-3B-AWQ \
+  --model-profile vllm-v1_6-awq-marlin.yaml \
+  --seed 20261011 --benchmark --skip-benchmark-prewarm
+```
+
+The [AWQ profile](../../configs/vllm/AABoyles/VibeThinker-3B-AWQ/vllm-v1_6-awq-marlin.yaml)
+uses 95% memory, 64K total context/output ceiling, BF16 activations/KV,
+FlashInfer attention and explicit Marlin linear kernels. Check the startup log
+for `Using MarlinLinearKernel for AutoAWQMarlinLinearMethod`; a requested flag
+alone does not prove runtime dispatch.
+
+`runner.extensions.validation.awq_v1_6` is the single matched-seed comparison
+driver. It starts owned services in a clean pinned worktree, validates all
+policy controls and reference prompt token IDs, retains failures, and compares
+against the existing NVFP4 seed. It requires the reference model/assets and
+versioned reference attempt; the ordinary policy command above does not.
