@@ -1,0 +1,36 @@
+{
+  "schema_version": 1,
+  "runner": "runner_final_core_v1_5",
+  "driver": "runner_final.validate_v1_5",
+  "preset": "prompt_adherence_v1_5.json",
+  "seeds": [
+    20261011,
+    20261012,
+    20261013,
+    20261014,
+    20261015
+  ],
+  "new_seeds": [
+    20261012,
+    20261013,
+    20261014,
+    20261015
+  ],
+  "existing_attempt": "20261004T073532.284668Z",
+  "core_manifest_sha256": "d9357052a556cb0271a23acaf44733706dfc9d0a073acf351e5ccd9d4664e017",
+  "reference_attempts": {
+    "20261011": "20261004T005518.974361Z",
+    "20261012": "20261004T005632.979246Z",
+    "20261013": "20261004T005752.973818Z",
+    "20261014": "20261004T005918.176012Z",
+    "20261015": "20261004T010042.153214Z"
+  },
+  "reference_times_s": {
+    "20261011": 71.32121138199,
+    "20261012": 77.27695375698386,
+    "20261013": 82.49167418194702,
+    "20261014": 81.10196408699267,
+    "20261015": 62.78271700296318
+  },
+  "scope": "User-authorized extension of the initial declared single trial. Retain seed 20261011; execute exactly the remaining four seeds once each with unchanged frozen core v1.5 and standard profile, fresh owned inference server and grader for every trial, cheap arithmetic warmup only. Keep all failures/unmet outcomes; no replacement seeds or selected repeats. Compare the five outcomes to historical same-seed core v1 controls; historical v1 used one server lifetime, v1.5 uses five fresh owned server lifetimes. Setup and warmup remain outside scoring."
+}
