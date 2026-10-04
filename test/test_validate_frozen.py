@@ -1,0 +1,48 @@
+"""Scored frozen-core repeats cannot replace failing trials."""
+import io
+from contextlib import redirect_stdout
+import json
+from pathlib import Path
+import tempfile
+from types import SimpleNamespace
+import unittest
+from unittest.mock import AsyncMock, patch
+
+from runner_final import validate_frozen as driver
+
+
+class ValidationTests(unittest.IsolatedAsyncioTestCase):
+    async def test_failure_retained_and_all_declared_seeds_run(self):
+        seen,closed=[],[]
+        class Services:
+            def launch(self,*a,**kw):return object()
+            async def close(self):closed.append(True)
+        protocol=json.loads(driver.PROTOCOL.read_text())
+        with tempfile.TemporaryDirectory() as tmp,redirect_stdout(io.StringIO()):
+            root=Path(tmp);(root/'attempts').mkdir()
+            profile=root/'models/r0b0tlab/VibeThinker-3B-NVFP4/vllm-flashinfer.yaml'
+            profile.parent.mkdir(parents=True)
+            profile.write_text(Path(driver.__file__).with_name('vllm-flashinfer.yaml').read_text())
+            original=driver.parse_args
+            def parse(argv):return original(argv+['--models-dir',str(root/'models')])
+            async def run(args):
+                seen.append(args.seed)
+                self.assertEqual(args.system_prompt_sha256,protocol['system_prompt_sha256'])
+                self.assertEqual((args.rollouts,args.first_pass_max_tokens,args.max_attempts_per_question),(1,8192,4))
+                out=root/'attempts'/str(args.seed);out.mkdir()
+                if len(seen)==3:raise RuntimeError('failed trial')
+                return out
+            def score(out,seed,reference):return {'attempt_id':out.name,'sampling_seed':seed,'valid':True,'time_to_target_s':60}
+            with patch.object(driver,'ROOT',root),patch.object(driver,'Services',Services),patch.object(driver,'ensure_free'),patch.object(driver,'verify_core',return_value='f'*64),patch.object(driver.runner,'assert_gpu_idle'),patch.object(driver,'parse_args',new=parse),patch.object(driver.runner,'run',new=run),patch.object(driver,'score',new=score),patch.object(driver,'ready',new=AsyncMock()),patch.object(driver,'reset_cache',new=AsyncMock(return_value={'success':True})),patch.object(driver.subprocess,'check_output',side_effect=['','f'*40]):
+                batch=await driver.execute(SimpleNamespace(batch='test-frozen-five'))
+            saved=json.loads((batch/'summary.json').read_text())
+            self.assertEqual(seen,protocol['seeds'])
+            self.assertEqual(len(saved['trials']),5)
+            self.assertEqual(saved['trials'][2]['status'],'failed')
+            self.assertEqual(saved['trials'][2]['attempt_id'],str(seen[2]))
+            self.assertFalse(saved['confirmed'])
+            self.assertEqual(saved['successful_trials'],4)
+            self.assertEqual(closed,[True])
+
+
+if __name__=='__main__':unittest.main()

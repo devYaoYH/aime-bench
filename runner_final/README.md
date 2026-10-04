@@ -35,6 +35,15 @@ solving code. The historical warmed results and the per-question token
 [distribution report](../runs/experiments/runner-final-five-seeds-20261004T000926Z/EXTRACTION_TOKENS.md)
 remain separate from these untested configurations.
 
+The subsequently requested improved-prompt replication uses
+`python -m runner_final.validate_frozen`, with all five seeds declared in
+[five_seeds_prompt_core_v1.json](five_seeds_prompt_core_v1.json). It runs the
+immutable core with the prompt-adherence preset, retaining all outcomes and
+checking initial payloads, core/prompt hashes, correct verdicts and request caps.
+It reuses one owned server with fresh graders, cleared prefix cache and cheap
+warmup per trial. No settling run or seed replacement is allowed. All five
+must finish within 71.135s to pass the repeatability gate.
+
 ## Historical final v2 and validation
 
 Run from the repository root on the remote machine after local tests, commit,
