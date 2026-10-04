@@ -1,24 +1,58 @@
-# Faster verified math answers
+# AIME 2025 Speedrun
 
 **Callosum speedrun report | 4 October 2026**
 
-## 1. Objective, result and runner
+## 1. Objective and results overview
 
-The objective is to reach **18 distinct verified-correct answers out of 30 AIME 2025 questions** as quickly as possible on one A100 PCIe 80GB. The original stop-at-18 batch of frozen core v1 with the improved prompt reached 18 in **5/5 declared trials**, with median **77.277s** and range **62.783-82.492s**. The fastest historical draw was 59.316s, from a separate validation batch whose repeatability gate failed. [E5](output/pdf/callosum-evidence-packet.pdf#nameddest=e5), [E8](output/pdf/callosum-evidence-packet.pdf#nameddest=e8), [E9](output/pdf/callosum-evidence-packet.pdf#nameddest=e9)
+The objective is to reach **18 distinct verified-correct answers out of 30 AIME 2025 questions** as quickly as possible on one A100 PCIe 80GB. The provided verification grader requires 3s to process each attempt and therefore will require a floor of at 54s to achieve this target. The best run (stochastic) resolved 18 verified answers in **59.32s** while a later replication run had a median of **77.28s** (across a group of 5 attempts).
 
-The grader serves one FIFO queue and charges three seconds for every check. Eighteen correct checks therefore require at least **54 seconds**. Diagnose elapsed time as first grader pickup, correct-check service, wrong-check service and later idle gaps. For BF16 30 x 1, 5.055s before pickup + 54.002s service + 12.076s idle reconstructs about 71.135s; this run had no wrong checks. Wrong service is already included when using total service. [E1](output/pdf/callosum-evidence-packet.pdf#nameddest=e1)
+![Figure 1. Time to 18 across all 54 AIME 2025 attempts; only best-so-far frontier points are labeled](evidence-assets/aime2025-history-54.png)
+### Timeline
+(format this nicer as a table)
 
-The useful observation is that the model can derive an answer before finishing its checks. All 30 questions start one streaming rollout, initially capped at 8,192 output tokens. The prompt asks for a prospective integer answer immediately. A static CPU parser recognizes complete boxes, answer lines and supported prose clauses as chunks arrive. Each question deduplicates integers and keeps at most one grader request pending; other questions can queue their own checks. Generation continues during verification. A correct verdict cancels that question's remaining generation, and the eighteenth distinct positive verdict stops the attempt. [E0](output/pdf/callosum-evidence-packet.pdf#nameddest=e0)
+September 30 ~11-12am: initial setup of remote A100 machine
+September 30 ~3-4pm: initial data exploration of AIME benchmark using openrouter api models
+October 3 ~1pm-5pm: Core focus time
+October 3 ~6pm: Additional replication experiment
+<CUTOFF>
+October 3 ~7pm: Thinking about non integer outputs that apex-shortlist will require (need to parse things differently)
+October 4 2-3pm: Final report editing/presentation preparation + repo cleaning
 
-Barrier scheduling completes a coverage round before continuing unsolved questions. Capped trajectories resume their exact token IDs; later requests allow **16,384 additional output tokens**, clipped to total context. Natural completion or exhausted context can start a fresh sample. Four requests per question include continuations. Serving uses NVFP4 VibeThinker-3B, Marlin weights, BF16 activations/KV, FlashInfer attention, 95% allocation and 65,536-token total context. [E0](output/pdf/callosum-evidence-packet.pdf#nameddest=e0), [E10](output/pdf/callosum-evidence-packet.pdf#nameddest=e10)
+### Core Strategy & Approach
 
-Timing excludes server launch, the cheap 30-stream x 32-token warmup, cleanup and buffered trace flush. Benchmark mode keeps required evidence in RAM and disables optional profiling. The final five-seed batch scored every declared trial; an earlier FlashInfer validation had a separate 136.048s settling trial. [E3](output/pdf/callosum-evidence-packet.pdf#nameddest=e3), [E5](output/pdf/callosum-evidence-packet.pdf#nameddest=e5)
+First, exploratory analysis on the AIME benchmark (using Qwen 3.5 35B A3B via openrouter) provided a few key insights into the problem space:
+1. reasoning sequence token length distribution (see Evidence deck E14) showed some clearly hard questions that capped out at 16K seq limit.
+2. reasoning trajectories backtrack and self-verify a lot, yielding quick intermediate answers but lenghty verification loops.
+3. nevertheless model was capable enough of reasoning to at least 18 correct answers.
 
-Start with the [repository quickstart](../../../README.md#run-the-measured-core-v1). The measured entrypoint is `python -m runner_final.run_frozen --preset runner_final/presets/prompt_adherence.json`. Its manifest rejects core drift; change prompts and presets explicitly, and version new policies separately.
+Given an attempt at the AIME benchmark, latency improvements can be roughly split into the following 3 spans:
+1. time to first grader attempt (grader remains idle before first answer is generated)
+2. wasted time due to incorrect grader attempts
+3. time to final 18th question answer generation (tail latency on harder questions)
+
+With the observation that intermediate answers were generated during reasoning traces but not emitted as final answers until much later, my first and core insight is simply to stream and extract intermediate answers to keep grader utilization high together with some light prompt optimizations to instruct models to emit intermediate answers with a specific format.
+
+Thereafter, since I did not observe many incorrect attempts, my core focus was on (1) reducing initial grader attempt down from around 10s during our first serious speedrun attempt to roughly 1-2 seconds afterwards, as well as spending time to tune the vLLM request admission and concurrency settings to increase tok/s on singular requests (rather than throughput) to reduce (3).
 
 <!-- pagebreak -->
 
-## 2. What worked and what did not
+## 2. Runner setup
+
+Serving uses NVFP4 VibeThinker-3B, Marlin weights, BF16 activations/KV, FlashInfer attention, 95% allocation and 65,536-token total context.
+
+The finalized runner does the following sequence of steps:
+1. validate dataset and various startup tests/checks
+2. start the grader service and vLLM server
+3. warmup vLLM server with a batch of simple arithmetic requests `1+1`
+4. (start main latency timer) fanout 1 request per question in the dataset and start inference requests on vLLM server
+5. each request streams chunks back to the runner program and a static extraction policy is used (regex filter) to detect if any intermediate answers are present
+6. whenever a question received a correct verdict, cancel corresponding requests for that question
+7. gather initial questions attempts until 8K tok seq length
+8. continue generation requests up to 64K tokens after initial pass of 30 requests complete
+
+The runner also de-duplicates answers for each question and queues up grader verification requests per-question (so waits until that question receives a verdict before submitting another verification request).
+
+## 3. What worked and what did not
 
 | Measured comparison | Time to 18 | Decision |
 | --- | --- | --- |
@@ -39,16 +73,17 @@ Dynamic60 accumulated 61.573s of idle. The earlier BF16 observations showed abou
 
 <!-- pagebreak -->
 
-## 3. The remaining tail, next steps and handoff
+## 4. Next steps and additional experiments
 
 ![Five declared-seed extended milestone medians and observed ranges; labels show seeds reaching each later milestone](../../../results/post_freeze/measurements-v1-20261004T104200Z/extended-milestones.png)
+*additional run till completion rather than early-exit when 18 answers are verified.*
 
-The historical core banked 14 answers at a median **49.086s**, only 7.086s above the 42s floor. Its next four increased the milestone median by **28.191s**. The late-answer tail is the main opportunity. The new 135.071s outlier spent 75.037s idle with zero wrong checks. [E11](output/pdf/callosum-evidence-packet.pdf#nameddest=e11) [E8](output/pdf/callosum-evidence-packet.pdf#nameddest=e8)
+The finalized runner achieved 14 answers at a median **49.086s**, only 7.086s above the 42s floor. Its next four increased the milestone median by **28.191s**. The late-answer tail is the main latency improvement opportunity. [E11](output/pdf/callosum-evidence-packet.pdf#nameddest=e11) [E8](output/pdf/callosum-evidence-packet.pdf#nameddest=e8)
 
-The new extended trials reached 18 in **5/5**, median **78.305s**, range **63.908-135.071s**. At 24 correct, 5/5 reached the milestone at median 252.871s; at 26, 5/5 reached it at median 333.859s. The 28/30 milestones were reached by 0/5 and 0/5. These are sequential same-seed measurements, not an interleaved comparison. [E10](output/pdf/callosum-evidence-packet.pdf#nameddest=e10), [E11](output/pdf/callosum-evidence-packet.pdf#nameddest=e11)
+As a test of generalizability, AIME 2026 reached 18 in **88.669s**, with 19 checks and one wrong, on one seed without retuning. The selected integer parser fits AIME; broader answer domains need a separate general-answer extension (explored in v2 runner after cutoff). [E5](output/pdf/callosum-evidence-packet.pdf#nameddest=e5), [E10](output/pdf/callosum-evidence-packet.pdf#nameddest=e10)
 
-Next, measure the gap from a requested result's first appearance to parser detection and submission, separating reasoning, format delay and grader queueing. An earlier warmup cohort spent 6-27s rechecking after results appeared. When those delays recur and the grader is idle, test an end-of-thinking probe on a cached prefix, counting it against the request cap. Hosted Qwen Python raised final-only coverage from 15/30 to 19/30; local VibeThinker tool use remains unvalidated. [E13](output/pdf/callosum-evidence-packet.pdf#nameddest=e13), [A1](output/pdf/callosum-evidence-packet.pdf#nameddest=a1)
-
-AIME 2026 reached 18 in **88.669s**, with 19 checks and one wrong, on one seed without retuning. The selected integer parser fits AIME; broader answer domains need the separate general-answer extension. This new batch's first launch-through-18 time was **135.249s**, including setup and warmup, from one cold observation. [E5](output/pdf/callosum-evidence-packet.pdf#nameddest=e5), [E10](output/pdf/callosum-evidence-packet.pdf#nameddest=e10)
-
-Preserve source/preset hashes and every declared outcome. Compare the eighteenth positive verdict, wrong checks, idle time and request usage, while keeping setup and cleanup separate. The [evidence packet](output/pdf/callosum-evidence-packet.pdf) retains methods and raw-record routes; [time allocation](../../../results/post_freeze/measurements-v1-20261004T104200Z/time-allocation.md) separates logged work from unattended compute. Earlier human focused hours were not recorded.
+### Future extensions
+1. probing for answers instead of static parsing
+2. tuning KV cache quantization for long-sequence inference speedups
+3. exploring more models, particularly picking a tool-call small model and attaching python interpreter tooling to tackle some of the more enumeration-based AIME questions
+4. ...
