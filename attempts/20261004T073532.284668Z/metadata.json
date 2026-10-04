@@ -9,9 +9,10 @@
     "changed_variables": [
       "runner version",
       "scheduling: barrier to eager request pool",
-      "fresh sibling admission on freed slots"
+      "fresh sibling admission on freed slots",
+      "server lifecycle: separate fresh owned v1.5 server per trial versus shared v1 batch server"
     ],
-    "comparison_note": "One predeclared exploratory seed. All 30 initial request payloads and serving/prompt/sampling controls match the historical core v1 control. Later fresh starts and continuations retain 16K additional tokens and four total requests/question. Historical sequential comparison, not repeated/interleaved causal validation."
+    "comparison_note": "Included in all-five-seed v1.5 report; the first trial was retained and exactly the remaining four were executed once. All 30 initial payloads match this historical same-seed control; solver manifest, prompt, serving profile, sampling and token/request budgets are unchanged. Setup excluded; historical pairing is not interleaved causal validation."
   },
   "runner": {
     "module": "src.attempt_runners.speedrun_v1_5",

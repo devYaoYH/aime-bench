@@ -8,3 +8,6 @@ See the [experiment report](../../runs/experiments/core-v1_5-eager30-single/READ
 for the policy, unchanged controls, source/manifest checks, tradeoffs and limits.
 `allocation.json` records every admission; `summary.json`, `solved.jsonl` and
 `trace/` retain timing, verdict, request/response and exact token evidence.
+
+This trial was retained in the [complete five-seed report](../../runs/experiments/core-v1_5-five-seeds-20261004T074500Z/README.md),
+which found no improvement to the batch median.

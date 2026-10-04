@@ -8,14 +8,15 @@ uses **frozen core v1 with `prompt_adherence.json`**.
 | --- | --- | --- |
 | AIME 2025, five declared seeds | **5/5 reached 18; median 77.277s; range 62.783–82.492s** | [Validation and traces](runs/experiments/frozen-core-prompt-five-seeds-20261004T005416Z/README.md) |
 | AIME 2026, unchanged v1 policy | **88.669s**, one wrong check | [Single transfer run](runs/experiments/frozen-core-aime2026-lightweight-20261004T011005Z/README.md) |
+| Core v1.5 eager30, AIME 2025 | 5/5 reached 18; median 77.352s; range 65.015–85.464s | [Five-seed scheduling experiment](runs/experiments/core-v1_5-five-seeds-20261004T074500Z/README.md) |
 | General-answer core v2, AIME 2025 | 5/5 reached 18; median 113.415s | [Extension back-test](runs/experiments/core-v2-aime2025-five-seeds-20261004T013100Z/README.md) |
 
 **Read the [three-page report](docs/reports/final/output/pdf/callosum-speedrun-report.pdf)
 and [evidence packet](docs/reports/final/output/pdf/callosum-evidence-packet.pdf).**
 The packet includes the final five-seed marginal curve (E8) and the 54-attempt
 history with frontier captions (E9). The historical fastest draw was 59.316s;
-the final performance claim is the five-run median above. The 2025 trials share
-one inference-server lifetime; 2026 is a single fresh-server transfer check.
+the final performance claim is core v1's five-run median above. Those v1 2025
+trials share one inference-server lifetime; 2026 is a single fresh-server transfer check.
 
 ## Run the measured core v1
 
@@ -137,11 +138,12 @@ same-seed comparison. Its broader parser admitted prompt placeholders, causing
 cover custom datasets and the Apex shortlist. Both frozen cores retain their
 recorded behavior; the extension is separate from the measured v1 submission.
 
-A separate [core v1.5 scheduling trial](runs/experiments/core-v1_5-eager30-single/README.md)
-kept 30 request slots and eagerly admitted continuations or fresh retries. One
-predeclared seed reached 18 in **65.015s**, versus 71.321s for its historical v1
-control, using more generation requests and fewer wrong checks. This exploratory
-result is separate from the five-seed submission headline above.
+The [core v1.5 scheduling experiment](runs/experiments/core-v1_5-five-seeds-20261004T074500Z/README.md)
+eagerly filled 30 request slots with continuations or fresh retries. It reached
+18 in all five seeds, but did not improve the median: **77.352s versus 77.277s**.
+Only one same-seed comparison was faster, despite 71.8% more generation requests.
+V1.5 used a fresh server per trial; v1 shared one server lifetime. The measured
+submission remains core v1.
 
 | Location | Contents |
 | --- | --- |

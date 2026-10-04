@@ -266,7 +266,12 @@ The [single-trial protocol](../../configs/experiments/vibe-core-v1_5-eager30-sin
 predeclares seed 20261011 and comparison to the historical 71.321s core v1 trial.
 This exploratory run does not replace the five-seed final-core headline.
 
-The single trial reached 18 in **65.015s**, versus 71.321s for its historical
-same-seed control. It issued 29 fresh retries and 14 continuations, peaking at
-30 concurrent requests. See the [audited result](../../runs/experiments/core-v1_5-eager30-single/README.md)
-for extra compute cost, grader effects, and the limits of a one-run comparison.
+The [five-seed extension](../../runs/experiments/core-v1_5-five-seeds-20261004T074500Z/README.md)
+retains that first trial and executes the remaining four seeds once each. All
+five reached 18, median **77.352s**, range **65.015–85.464s**, with a fresh owned
+server/grader per trial. Only one was faster than its historical same-seed v1
+control; the median did not improve, with 71.8% more requests and 32.4% more
+client-observed output tokens. Core v1 remains the measured submission policy.
+Use `python -m runner_final.validate_v1_5` to execute the extension protocol and
+`python -m src.experiments.analyze_core_v1_5 --batch core-v1_5-five-seeds-20261004T074500Z`
+to audit the saved evidence offline.

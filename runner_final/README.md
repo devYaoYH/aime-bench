@@ -99,10 +99,11 @@ It is one fresh-server trial, separate from the five-seed 2025 statistics.
 The independently frozen [v1.5 policy](../src/attempt_runners/README.md#core-v15-eager-30-slot-experiment)
 retains v1's adherence prompt, sampling, warmup and token/request budgets, while
 replacing the barrier with a 30-slot pool that prefers ready continuations, then
-fresh starts on least-active unsolved questions. Its [single predeclared trial](../runs/experiments/core-v1_5-eager30-single/README.md)
-reached 18 in **65.015s**, versus 71.321s for the historical same-seed v1 control.
-It issued more requests and incurred fewer wrong checks; one run does not
-establish repeatability. The measured submission remains core v1's five-seed batch.
+fresh starts on least-active unsolved questions. The [five-seed series](../runs/experiments/core-v1_5-five-seeds-20261004T074500Z/README.md)
+reached 18 in 5/5 trials, median **77.352s**, range **65.015–85.464s**.
+Only one historical same-seed comparison was faster; the median did not improve
+on v1's 77.277s despite 71.8% more generation requests. V1.5 used five fresh server
+lifetimes versus v1's shared server. The measured submission remains core v1.
 
 ```bash
 ~/.venvs/vllm/bin/python -m src.attempt_runners.speedrun_v1_5 --seed 20261011

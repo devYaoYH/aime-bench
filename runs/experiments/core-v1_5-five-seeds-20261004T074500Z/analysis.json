@@ -1,0 +1,1051 @@
+{
+  "batch": "core-v1_5-five-seeds-20261004T074500Z",
+  "trials": [
+    {
+      "sampling_seed": 20261011,
+      "attempt_id": "20261004T073532.284668Z",
+      "reference_attempt_id": "20261004T005518.974361Z",
+      "status": "completed",
+      "target_reached": true,
+      "valid": true,
+      "time_to_target_s": 65.0154008929967,
+      "recorded_time_to_target_s": 65.0154008929967,
+      "distinct_solved": 18,
+      "identity_valid": true,
+      "caps_valid": true,
+      "initial_coverage_valid": true,
+      "different_initial_questions": [],
+      "different_control_fields": [],
+      "generation_requests": 73,
+      "later_fresh_requests": 29,
+      "continuation_requests": 14,
+      "peak_active_requests": 30,
+      "observed_output_token_ids": 259042,
+      "grader_timeline": {
+        "completed_queries": 20,
+        "audit_errors": [],
+        "correct": 18,
+        "wrong": 2,
+        "target_service_floor_s": 54.0,
+        "actual_service_s": 60.002429723739624,
+        "idle_between_queries_s": 3.9153292179107666,
+        "first_pick_elapsed_s": 1.0969011783599854,
+        "scope": "completed oracle jobs; queued/cancelled client jobs may still incur service"
+      },
+      "peak_client_generation_requests": 30,
+      "max_requests_per_question": 4,
+      "max_concurrent_per_question": 3,
+      "winners": [
+        {
+          "problem_idx": 1,
+          "rollout": 2,
+          "kind": "fresh_retry"
+        },
+        {
+          "problem_idx": 3,
+          "rollout": 1,
+          "kind": "initial"
+        },
+        {
+          "problem_idx": 4,
+          "rollout": 1,
+          "kind": "initial"
+        },
+        {
+          "problem_idx": 5,
+          "rollout": 1,
+          "kind": "initial"
+        },
+        {
+          "problem_idx": 6,
+          "rollout": 1,
+          "kind": "initial"
+        },
+        {
+          "problem_idx": 7,
+          "rollout": 1,
+          "kind": "initial"
+        },
+        {
+          "problem_idx": 8,
+          "rollout": 1,
+          "kind": "initial"
+        },
+        {
+          "problem_idx": 16,
+          "rollout": 1,
+          "kind": "initial"
+        },
+        {
+          "problem_idx": 17,
+          "rollout": 1,
+          "kind": "initial"
+        },
+        {
+          "problem_idx": 18,
+          "rollout": 3,
+          "kind": "continuation"
+        },
+        {
+          "problem_idx": 19,
+          "rollout": 1,
+          "kind": "initial"
+        },
+        {
+          "problem_idx": 21,
+          "rollout": 1,
+          "kind": "initial"
+        },
+        {
+          "problem_idx": 22,
+          "rollout": 1,
+          "kind": "initial"
+        },
+        {
+          "problem_idx": 23,
+          "rollout": 1,
+          "kind": "initial"
+        },
+        {
+          "problem_idx": 24,
+          "rollout": 1,
+          "kind": "initial"
+        },
+        {
+          "problem_idx": 25,
+          "rollout": 1,
+          "kind": "initial"
+        },
+        {
+          "problem_idx": 26,
+          "rollout": 1,
+          "kind": "initial"
+        },
+        {
+          "problem_idx": 27,
+          "rollout": 1,
+          "kind": "initial"
+        }
+      ],
+      "artifact_audit_passed": true,
+      "source_commit": "ebb1fb8e1a2379276468a2834943c3b6aaed300e",
+      "core_manifest_sha256": "d9357052a556cb0271a23acaf44733706dfc9d0a073acf351e5ccd9d4664e017",
+      "control": {
+        "time_to_target_s": 71.32121138199,
+        "generation_requests": 45,
+        "grader_timeline": {
+          "completed_queries": 22,
+          "audit_errors": [],
+          "correct": 18,
+          "wrong": 4,
+          "target_service_floor_s": 54.0,
+          "actual_service_s": 66.00242400169373,
+          "idle_between_queries_s": 4.2164130210876465,
+          "first_pick_elapsed_s": 1.1020050048828125,
+          "scope": "completed oracle jobs; queued/cancelled client jobs may still incur service"
+        },
+        "observed_output_token_ids": 217285
+      },
+      "milestones": [
+        {
+          "solved": 1,
+          "v1_5_s": 10.628771946008783,
+          "core_v1_s": 10.633738717995584
+        },
+        {
+          "solved": 2,
+          "v1_5_s": 13.629205416014884,
+          "core_v1_s": 13.631777903006878
+        },
+        {
+          "solved": 4,
+          "v1_5_s": 22.62778567598434,
+          "core_v1_s": 22.63504651800031
+        },
+        {
+          "solved": 6,
+          "v1_5_s": 28.628491606970783,
+          "core_v1_s": 28.633665130997542
+        },
+        {
+          "solved": 8,
+          "v1_5_s": 34.630063513002824,
+          "core_v1_s": 34.63451072800672
+        },
+        {
+          "solved": 10,
+          "v1_5_s": 40.63135835202411,
+          "core_v1_s": 40.635316789965145
+        },
+        {
+          "solved": 12,
+          "v1_5_s": 46.63137984002242,
+          "core_v1_s": 46.63728326797718
+        },
+        {
+          "solved": 14,
+          "v1_5_s": 52.631341637985315,
+          "core_v1_s": 52.636785558017436
+        },
+        {
+          "solved": 16,
+          "v1_5_s": 58.632119495014194,
+          "core_v1_s": 62.32035900396295
+        },
+        {
+          "solved": 18,
+          "v1_5_s": 65.0154008929967,
+          "core_v1_s": 71.32121138199
+        }
+      ]
+    },
+    {
+      "sampling_seed": 20261012,
+      "attempt_id": "20261004T074454.604889Z",
+      "reference_attempt_id": "20261004T005632.979246Z",
+      "status": "completed",
+      "target_reached": true,
+      "valid": true,
+      "time_to_target_s": 77.35171486600302,
+      "recorded_time_to_target_s": 77.35171486600302,
+      "distinct_solved": 18,
+      "identity_valid": true,
+      "caps_valid": true,
+      "initial_coverage_valid": true,
+      "different_initial_questions": [],
+      "different_control_fields": [],
+      "generation_requests": 69,
+      "later_fresh_requests": 25,
+      "continuation_requests": 14,
+      "peak_active_requests": 30,
+      "observed_output_token_ids": 296079,
+      "grader_timeline": {
+        "completed_queries": 20,
+        "audit_errors": [],
+        "correct": 18,
+        "wrong": 2,
+        "target_service_floor_s": 54.0,
+        "actual_service_s": 60.00246572494507,
+        "idle_between_queries_s": 12.750707149505615,
+        "first_pick_elapsed_s": 4.5978381633758545,
+        "scope": "completed oracle jobs; queued/cancelled client jobs may still incur service"
+      },
+      "peak_client_generation_requests": 30,
+      "max_requests_per_question": 4,
+      "max_concurrent_per_question": 3,
+      "winners": [
+        {
+          "problem_idx": 1,
+          "rollout": 1,
+          "kind": "initial"
+        },
+        {
+          "problem_idx": 3,
+          "rollout": 1,
+          "kind": "initial"
+        },
+        {
+          "problem_idx": 4,
+          "rollout": 1,
+          "kind": "initial"
+        },
+        {
+          "problem_idx": 5,
+          "rollout": 1,
+          "kind": "initial"
+        },
+        {
+          "problem_idx": 6,
+          "rollout": 1,
+          "kind": "initial"
+        },
+        {
+          "problem_idx": 8,
+          "rollout": 1,
+          "kind": "initial"
+        },
+        {
+          "problem_idx": 11,
+          "rollout": 3,
+          "kind": "continuation"
+        },
+        {
+          "problem_idx": 12,
+          "rollout": 3,
+          "kind": "continuation"
+        },
+        {
+          "problem_idx": 16,
+          "rollout": 1,
+          "kind": "initial"
+        },
+        {
+          "problem_idx": 17,
+          "rollout": 1,
+          "kind": "initial"
+        },
+        {
+          "problem_idx": 18,
+          "rollout": 1,
+          "kind": "initial"
+        },
+        {
+          "problem_idx": 19,
+          "rollout": 1,
+          "kind": "initial"
+        },
+        {
+          "problem_idx": 21,
+          "rollout": 1,
+          "kind": "initial"
+        },
+        {
+          "problem_idx": 22,
+          "rollout": 1,
+          "kind": "initial"
+        },
+        {
+          "problem_idx": 24,
+          "rollout": 1,
+          "kind": "initial"
+        },
+        {
+          "problem_idx": 25,
+          "rollout": 1,
+          "kind": "initial"
+        },
+        {
+          "problem_idx": 26,
+          "rollout": 1,
+          "kind": "initial"
+        },
+        {
+          "problem_idx": 27,
+          "rollout": 1,
+          "kind": "initial"
+        }
+      ],
+      "artifact_audit_passed": true,
+      "source_commit": "884b2a24e9a7a8aee2c0d865e86fbd69e2066216",
+      "core_manifest_sha256": "d9357052a556cb0271a23acaf44733706dfc9d0a073acf351e5ccd9d4664e017",
+      "control": {
+        "time_to_target_s": 77.27695375698386,
+        "generation_requests": 43,
+        "grader_timeline": {
+          "completed_queries": 20,
+          "audit_errors": [],
+          "correct": 18,
+          "wrong": 2,
+          "target_service_floor_s": 54.0,
+          "actual_service_s": 60.00298595428467,
+          "idle_between_queries_s": 13.377408027648926,
+          "first_pick_elapsed_s": 3.895724058151245,
+          "scope": "completed oracle jobs; queued/cancelled client jobs may still incur service"
+        },
+        "observed_output_token_ids": 224978
+      },
+      "milestones": [
+        {
+          "solved": 1,
+          "v1_5_s": 7.600516050995793,
+          "core_v1_s": 9.897672296967357
+        },
+        {
+          "solved": 2,
+          "v1_5_s": 10.600126643956173,
+          "core_v1_s": 15.899385806987993
+        },
+        {
+          "solved": 4,
+          "v1_5_s": 16.60404137900332,
+          "core_v1_s": 21.897932284977287
+        },
+        {
+          "solved": 6,
+          "v1_5_s": 22.60052487399662,
+          "core_v1_s": 27.899561972997617
+        },
+        {
+          "solved": 8,
+          "v1_5_s": 28.603872197971214,
+          "core_v1_s": 33.89926060900325
+        },
+        {
+          "solved": 10,
+          "v1_5_s": 34.60198884597048,
+          "core_v1_s": 39.901147192984354
+        },
+        {
+          "solved": 12,
+          "v1_5_s": 43.60306007100735,
+          "core_v1_s": 45.90053085295949
+        },
+        {
+          "solved": 14,
+          "v1_5_s": 52.604965800011996,
+          "core_v1_s": 51.9011447840021
+        },
+        {
+          "solved": 16,
+          "v1_5_s": 59.71262059296714,
+          "core_v1_s": 57.90251659200294
+        },
+        {
+          "solved": 18,
+          "v1_5_s": 77.35171486600302,
+          "core_v1_s": 77.27695375698386
+        }
+      ]
+    },
+    {
+      "sampling_seed": 20261013,
+      "attempt_id": "20261004T074723.909708Z",
+      "reference_attempt_id": "20261004T005752.973818Z",
+      "status": "completed",
+      "target_reached": true,
+      "valid": true,
+      "time_to_target_s": 85.46411562996218,
+      "recorded_time_to_target_s": 85.46411562996218,
+      "distinct_solved": 18,
+      "identity_valid": true,
+      "caps_valid": true,
+      "initial_coverage_valid": true,
+      "different_initial_questions": [],
+      "different_control_fields": [],
+      "generation_requests": 70,
+      "later_fresh_requests": 25,
+      "continuation_requests": 15,
+      "peak_active_requests": 30,
+      "observed_output_token_ids": 319563,
+      "grader_timeline": {
+        "completed_queries": 20,
+        "audit_errors": [],
+        "correct": 18,
+        "wrong": 2,
+        "target_service_floor_s": 54.0,
+        "actual_service_s": 60.00222730636597,
+        "idle_between_queries_s": 21.890885591506958,
+        "first_pick_elapsed_s": 3.567039966583252,
+        "scope": "completed oracle jobs; queued/cancelled client jobs may still incur service"
+      },
+      "peak_client_generation_requests": 30,
+      "max_requests_per_question": 4,
+      "max_concurrent_per_question": 3,
+      "winners": [
+        {
+          "problem_idx": 1,
+          "rollout": 1,
+          "kind": "initial"
+        },
+        {
+          "problem_idx": 2,
+          "rollout": 3,
+          "kind": "continuation"
+        },
+        {
+          "problem_idx": 3,
+          "rollout": 1,
+          "kind": "initial"
+        },
+        {
+          "problem_idx": 4,
+          "rollout": 1,
+          "kind": "initial"
+        },
+        {
+          "problem_idx": 5,
+          "rollout": 1,
+          "kind": "initial"
+        },
+        {
+          "problem_idx": 6,
+          "rollout": 1,
+          "kind": "initial"
+        },
+        {
+          "problem_idx": 8,
+          "rollout": 1,
+          "kind": "initial"
+        },
+        {
+          "problem_idx": 16,
+          "rollout": 1,
+          "kind": "initial"
+        },
+        {
+          "problem_idx": 17,
+          "rollout": 1,
+          "kind": "initial"
+        },
+        {
+          "problem_idx": 18,
+          "rollout": 1,
+          "kind": "initial"
+        },
+        {
+          "problem_idx": 19,
+          "rollout": 1,
+          "kind": "initial"
+        },
+        {
+          "problem_idx": 21,
+          "rollout": 1,
+          "kind": "initial"
+        },
+        {
+          "problem_idx": 22,
+          "rollout": 1,
+          "kind": "initial"
+        },
+        {
+          "problem_idx": 23,
+          "rollout": 3,
+          "kind": "continuation"
+        },
+        {
+          "problem_idx": 24,
+          "rollout": 1,
+          "kind": "initial"
+        },
+        {
+          "problem_idx": 25,
+          "rollout": 1,
+          "kind": "initial"
+        },
+        {
+          "problem_idx": 26,
+          "rollout": 1,
+          "kind": "initial"
+        },
+        {
+          "problem_idx": 27,
+          "rollout": 1,
+          "kind": "initial"
+        }
+      ],
+      "artifact_audit_passed": true,
+      "source_commit": "884b2a24e9a7a8aee2c0d865e86fbd69e2066216",
+      "core_manifest_sha256": "d9357052a556cb0271a23acaf44733706dfc9d0a073acf351e5ccd9d4664e017",
+      "control": {
+        "time_to_target_s": 82.49167418194702,
+        "generation_requests": 43,
+        "grader_timeline": {
+          "completed_queries": 18,
+          "audit_errors": [],
+          "correct": 18,
+          "wrong": 0,
+          "target_service_floor_s": 54.0,
+          "actual_service_s": 54.00220251083374,
+          "idle_between_queries_s": 24.127625465393066,
+          "first_pick_elapsed_s": 4.360960960388184,
+          "scope": "completed oracle jobs; queued/cancelled client jobs may still incur service"
+        },
+        "observed_output_token_ids": 233051
+      },
+      "milestones": [
+        {
+          "solved": 1,
+          "v1_5_s": 6.569286795973312,
+          "core_v1_s": 7.362333013967145
+        },
+        {
+          "solved": 2,
+          "v1_5_s": 9.56827715295367,
+          "core_v1_s": 10.362608236959204
+        },
+        {
+          "solved": 4,
+          "v1_5_s": 15.56908334599575,
+          "core_v1_s": 16.3655939809978
+        },
+        {
+          "solved": 6,
+          "v1_5_s": 21.569352483958937,
+          "core_v1_s": 22.36397082696203
+        },
+        {
+          "solved": 8,
+          "v1_5_s": 27.570477855973877,
+          "core_v1_s": 28.36454188794596
+        },
+        {
+          "solved": 10,
+          "v1_5_s": 33.57298065396026,
+          "core_v1_s": 34.36491122096777
+        },
+        {
+          "solved": 12,
+          "v1_5_s": 39.57157151098363,
+          "core_v1_s": 40.36551196896471
+        },
+        {
+          "solved": 14,
+          "v1_5_s": 45.57387803896563,
+          "core_v1_s": 46.36622944800183
+        },
+        {
+          "solved": 16,
+          "v1_5_s": 61.5255651960033,
+          "core_v1_s": 52.36660705099348
+        },
+        {
+          "solved": 18,
+          "v1_5_s": 85.46411562996218,
+          "core_v1_s": 82.49167418194702
+        }
+      ]
+    },
+    {
+      "sampling_seed": 20261014,
+      "attempt_id": "20261004T075001.817895Z",
+      "reference_attempt_id": "20261004T005918.176012Z",
+      "status": "completed",
+      "target_reached": true,
+      "valid": true,
+      "time_to_target_s": 83.5371290310286,
+      "recorded_time_to_target_s": 83.5371290310286,
+      "distinct_solved": 18,
+      "identity_valid": true,
+      "caps_valid": true,
+      "initial_coverage_valid": true,
+      "different_initial_questions": [],
+      "different_control_fields": [],
+      "generation_requests": 70,
+      "later_fresh_requests": 25,
+      "continuation_requests": 15,
+      "peak_active_requests": 30,
+      "observed_output_token_ids": 314945,
+      "grader_timeline": {
+        "completed_queries": 19,
+        "audit_errors": [],
+        "correct": 18,
+        "wrong": 1,
+        "target_service_floor_s": 54.0,
+        "actual_service_s": 57.00224781036377,
+        "idle_between_queries_s": 21.610430240631104,
+        "first_pick_elapsed_s": 4.924307823181152,
+        "scope": "completed oracle jobs; queued/cancelled client jobs may still incur service"
+      },
+      "peak_client_generation_requests": 30,
+      "max_requests_per_question": 4,
+      "max_concurrent_per_question": 3,
+      "winners": [
+        {
+          "problem_idx": 1,
+          "rollout": 1,
+          "kind": "initial"
+        },
+        {
+          "problem_idx": 3,
+          "rollout": 1,
+          "kind": "initial"
+        },
+        {
+          "problem_idx": 4,
+          "rollout": 1,
+          "kind": "initial"
+        },
+        {
+          "problem_idx": 5,
+          "rollout": 1,
+          "kind": "initial"
+        },
+        {
+          "problem_idx": 6,
+          "rollout": 1,
+          "kind": "initial"
+        },
+        {
+          "problem_idx": 8,
+          "rollout": 2,
+          "kind": "fresh_retry"
+        },
+        {
+          "problem_idx": 9,
+          "rollout": 1,
+          "kind": "initial"
+        },
+        {
+          "problem_idx": 12,
+          "rollout": 2,
+          "kind": "fresh_retry"
+        },
+        {
+          "problem_idx": 16,
+          "rollout": 1,
+          "kind": "initial"
+        },
+        {
+          "problem_idx": 17,
+          "rollout": 1,
+          "kind": "initial"
+        },
+        {
+          "problem_idx": 19,
+          "rollout": 1,
+          "kind": "initial"
+        },
+        {
+          "problem_idx": 21,
+          "rollout": 1,
+          "kind": "initial"
+        },
+        {
+          "problem_idx": 22,
+          "rollout": 1,
+          "kind": "initial"
+        },
+        {
+          "problem_idx": 23,
+          "rollout": 3,
+          "kind": "continuation"
+        },
+        {
+          "problem_idx": 24,
+          "rollout": 1,
+          "kind": "initial"
+        },
+        {
+          "problem_idx": 25,
+          "rollout": 1,
+          "kind": "initial"
+        },
+        {
+          "problem_idx": 26,
+          "rollout": 3,
+          "kind": "continuation"
+        },
+        {
+          "problem_idx": 27,
+          "rollout": 1,
+          "kind": "initial"
+        }
+      ],
+      "artifact_audit_passed": true,
+      "source_commit": "884b2a24e9a7a8aee2c0d865e86fbd69e2066216",
+      "core_manifest_sha256": "d9357052a556cb0271a23acaf44733706dfc9d0a073acf351e5ccd9d4664e017",
+      "control": {
+        "time_to_target_s": 81.10196408699267,
+        "generation_requests": 45,
+        "grader_timeline": {
+          "completed_queries": 19,
+          "audit_errors": [],
+          "correct": 18,
+          "wrong": 1,
+          "target_service_floor_s": 54.0,
+          "actual_service_s": 57.002217292785645,
+          "idle_between_queries_s": 18.065403699874878,
+          "first_pick_elapsed_s": 6.034121036529541,
+          "scope": "completed oracle jobs; queued/cancelled client jobs may still incur service"
+        },
+        "observed_output_token_ids": 236456
+      },
+      "milestones": [
+        {
+          "solved": 1,
+          "v1_5_s": 7.927021179988515,
+          "core_v1_s": 9.03536185901612
+        },
+        {
+          "solved": 2,
+          "v1_5_s": 11.05308760801563,
+          "core_v1_s": 12.03682260401547
+        },
+        {
+          "solved": 4,
+          "v1_5_s": 20.05540094699245,
+          "core_v1_s": 18.03832352696918
+        },
+        {
+          "solved": 6,
+          "v1_5_s": 26.053669327986427,
+          "core_v1_s": 24.037080942012835
+        },
+        {
+          "solved": 8,
+          "v1_5_s": 32.05384272598894,
+          "core_v1_s": 30.04001438897103
+        },
+        {
+          "solved": 10,
+          "v1_5_s": 38.054767124995124,
+          "core_v1_s": 36.03842141199857
+        },
+        {
+          "solved": 12,
+          "v1_5_s": 44.055441411037464,
+          "core_v1_s": 42.03904186299769
+        },
+        {
+          "solved": 14,
+          "v1_5_s": 52.507107335026376,
+          "core_v1_s": 48.03979720600182
+        },
+        {
+          "solved": 16,
+          "v1_5_s": 67.86548631102778,
+          "core_v1_s": 70.60687755601248
+        },
+        {
+          "solved": 18,
+          "v1_5_s": 83.5371290310286,
+          "core_v1_s": 81.10196408699267
+        }
+      ]
+    },
+    {
+      "sampling_seed": 20261015,
+      "attempt_id": "20261004T075237.870082Z",
+      "reference_attempt_id": "20261004T010042.153214Z",
+      "status": "completed",
+      "target_reached": true,
+      "valid": true,
+      "time_to_target_s": 66.79530152096413,
+      "recorded_time_to_target_s": 66.79530152096413,
+      "distinct_solved": 18,
+      "identity_valid": true,
+      "caps_valid": true,
+      "initial_coverage_valid": true,
+      "different_initial_questions": [],
+      "different_control_fields": [],
+      "generation_requests": 72,
+      "later_fresh_requests": 28,
+      "continuation_requests": 14,
+      "peak_active_requests": 30,
+      "observed_output_token_ids": 266347,
+      "grader_timeline": {
+        "completed_queries": 18,
+        "audit_errors": [],
+        "correct": 18,
+        "wrong": 0,
+        "target_service_floor_s": 54.0,
+        "actual_service_s": 54.00185966491699,
+        "idle_between_queries_s": 8.319836378097534,
+        "first_pick_elapsed_s": 4.473428964614868,
+        "scope": "completed oracle jobs; queued/cancelled client jobs may still incur service"
+      },
+      "peak_client_generation_requests": 30,
+      "max_requests_per_question": 4,
+      "max_concurrent_per_question": 3,
+      "winners": [
+        {
+          "problem_idx": 1,
+          "rollout": 1,
+          "kind": "initial"
+        },
+        {
+          "problem_idx": 2,
+          "rollout": 1,
+          "kind": "initial"
+        },
+        {
+          "problem_idx": 3,
+          "rollout": 1,
+          "kind": "initial"
+        },
+        {
+          "problem_idx": 4,
+          "rollout": 1,
+          "kind": "initial"
+        },
+        {
+          "problem_idx": 5,
+          "rollout": 1,
+          "kind": "initial"
+        },
+        {
+          "problem_idx": 6,
+          "rollout": 1,
+          "kind": "initial"
+        },
+        {
+          "problem_idx": 8,
+          "rollout": 1,
+          "kind": "initial"
+        },
+        {
+          "problem_idx": 9,
+          "rollout": 3,
+          "kind": "continuation"
+        },
+        {
+          "problem_idx": 16,
+          "rollout": 1,
+          "kind": "initial"
+        },
+        {
+          "problem_idx": 17,
+          "rollout": 1,
+          "kind": "initial"
+        },
+        {
+          "problem_idx": 18,
+          "rollout": 1,
+          "kind": "initial"
+        },
+        {
+          "problem_idx": 19,
+          "rollout": 1,
+          "kind": "initial"
+        },
+        {
+          "problem_idx": 21,
+          "rollout": 1,
+          "kind": "initial"
+        },
+        {
+          "problem_idx": 22,
+          "rollout": 1,
+          "kind": "initial"
+        },
+        {
+          "problem_idx": 24,
+          "rollout": 1,
+          "kind": "initial"
+        },
+        {
+          "problem_idx": 25,
+          "rollout": 1,
+          "kind": "initial"
+        },
+        {
+          "problem_idx": 26,
+          "rollout": 1,
+          "kind": "initial"
+        },
+        {
+          "problem_idx": 27,
+          "rollout": 2,
+          "kind": "fresh_retry"
+        }
+      ],
+      "artifact_audit_passed": true,
+      "source_commit": "884b2a24e9a7a8aee2c0d865e86fbd69e2066216",
+      "core_manifest_sha256": "d9357052a556cb0271a23acaf44733706dfc9d0a073acf351e5ccd9d4664e017",
+      "control": {
+        "time_to_target_s": 62.78271700296318,
+        "generation_requests": 30,
+        "grader_timeline": {
+          "completed_queries": 18,
+          "audit_errors": [],
+          "correct": 18,
+          "wrong": 0,
+          "target_service_floor_s": 54.0,
+          "actual_service_s": 54.002132177352905,
+          "idle_between_queries_s": 4.322654962539673,
+          "first_pick_elapsed_s": 4.4566168785095215,
+          "scope": "completed oracle jobs; queued/cancelled client jobs may still incur service"
+        },
+        "observed_output_token_ids": 187741
+      },
+      "milestones": [
+        {
+          "solved": 1,
+          "v1_5_s": 7.474143060971983,
+          "core_v1_s": 7.458185621013399
+        },
+        {
+          "solved": 2,
+          "v1_5_s": 10.474416946992278,
+          "core_v1_s": 10.458231702970807
+        },
+        {
+          "solved": 4,
+          "v1_5_s": 16.47498670598725,
+          "core_v1_s": 16.459135487966705
+        },
+        {
+          "solved": 6,
+          "v1_5_s": 22.477328364970163,
+          "core_v1_s": 22.459719820995815
+        },
+        {
+          "solved": 8,
+          "v1_5_s": 28.476127000991255,
+          "core_v1_s": 28.460453203995712
+        },
+        {
+          "solved": 10,
+          "v1_5_s": 34.47703263297444,
+          "core_v1_s": 34.46097557299072
+        },
+        {
+          "solved": 12,
+          "v1_5_s": 41.787800271005835,
+          "core_v1_s": 40.46111372997984
+        },
+        {
+          "solved": 14,
+          "v1_5_s": 47.78673470497597,
+          "core_v1_s": 49.08599186199717
+        },
+        {
+          "solved": 16,
+          "v1_5_s": 53.789376072003506,
+          "core_v1_s": 56.781997056968976
+        },
+        {
+          "solved": 18,
+          "v1_5_s": 66.79530152096413,
+          "core_v1_s": 62.78271700296318
+        }
+      ]
+    }
+  ],
+  "successful_trials": 5,
+  "declared_trials": 5,
+  "all_declared_seeds_retained": true,
+  "median_time_to_target_s": 77.35171486600302,
+  "min_time_to_target_s": 65.0154008929967,
+  "max_time_to_target_s": 85.46411562996218,
+  "paired_seed_comparisons": [
+    {
+      "sampling_seed": 20261011,
+      "v1_5_s": 65.0154008929967,
+      "v1_s": 71.32121138199,
+      "difference_s": -6.305810488993302
+    },
+    {
+      "sampling_seed": 20261012,
+      "v1_5_s": 77.35171486600302,
+      "v1_s": 77.27695375698386,
+      "difference_s": 0.074761109019164
+    },
+    {
+      "sampling_seed": 20261013,
+      "v1_5_s": 85.46411562996218,
+      "v1_s": 82.49167418194702,
+      "difference_s": 2.972441448015161
+    },
+    {
+      "sampling_seed": 20261014,
+      "v1_5_s": 83.5371290310286,
+      "v1_s": 81.10196408699267,
+      "difference_s": 2.4351649440359324
+    },
+    {
+      "sampling_seed": 20261015,
+      "v1_5_s": 66.79530152096413,
+      "v1_s": 62.78271700296318,
+      "difference_s": 4.012584518000949
+    }
+  ],
+  "faster_than_same_seed_v1_trials": 1,
+  "statistics_scope": "Valid successful trials only; all failures/unmet outcomes retained. Historical seed pairing is not interleaved causal validation.",
+  "all_available_artifact_audits_passed": true,
+  "server_scope": "Five fresh owned v1.5 server/grader lifetimes; historical v1 batch used one server lifetime. Initialization excluded from scoring.",
+  "validation_scope": "Exact initial payload/control matching, additional-token budgets and parent IDs, seed formula, generation intervals <=30, four-request cap, stop admissions at target.",
+  "resource_comparison": {
+    "audited_trials": 5,
+    "v1_5_generation_requests": 354,
+    "core_v1_generation_requests": 206,
+    "request_increase_percent": 71.84466019417475,
+    "v1_5_observed_output_token_ids": 1455976,
+    "core_v1_observed_output_token_ids": 1099511,
+    "observed_output_increase_percent": 32.42032139742121,
+    "v1_5_wrong_checks": 7,
+    "core_v1_wrong_checks": 7,
+    "median_paired_difference_s": 2.4351649440359324,
+    "scope": "Client-observed output IDs; not a complete GPU compute or server-generated token measurement."
+  }
+}

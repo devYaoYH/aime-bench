@@ -1,5 +1,8 @@
 # Core v1.5: one eager 30-slot trial
 
+This is the original single-trial snapshot. The [later five-seed extension](../core-v1_5-five-seeds-20261004T074500Z/README.md)
+retained this attempt, reached 18 in 5/5, and found no median improvement over v1.
+
 The single predeclared v1.5 trial reached **18 verified correct in 65.015s**,
 compared with **71.321s** for the historical core v1 run using seed 20261011:
 **6.306s (8.84%) faster in this comparison**. This is exploratory evidence from
@@ -81,5 +84,6 @@ Command, run from the clean checkout on the provided node:
 
 Full SSE streams, service logs and grader audits remain in the remote checkout
 `/home/azureuser/aime-bench-v1_5-ebb1fb8e`. Git contains the compact viewer/analysis
-evidence, including exact token records and the allocation ledger. Only this one
-trial was executed; there were no replacement seeds or selected repeats.
+evidence, including exact token records and the allocation ledger. This original protocol executed only seed 20261011; the later extension retained
+it and added the other four declared seeds, without replacement seeds or selected
+repeats.
