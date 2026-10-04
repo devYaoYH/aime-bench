@@ -70,10 +70,10 @@ async def execute(options):
         raise RuntimeError('Serving configuration differs from final core v1')
     ncu_options = ['--target-processes', 'all', '--profile-from-start', 'no',
                    '--replay-mode', 'kernel', '--graph-profiling', 'graph',
+                   '--kernel-name', 'graph', '--launch-count', '6', '--kill', 'no',
                    '--cache-control', 'none', '--clock-control', 'none',
-                   '--section', 'SpeedOfLight',
-                   '--section', 'SpeedOfLight_HierarchicalTensorRooflineChart',
-                   '--metrics', 'lts__t_bytes.sum,lts__t_sector_hit_rate.pct,sm__warps_active.avg.pct_of_peak_sustained_active,smsp__issue_active.avg.pct_of_peak_sustained_active',
+                   '--disable-extra-suffixes',
+                   '--metrics', 'gpu__time_duration.sum,dram__bytes_read.sum,dram__bytes_write.sum,sm__ops_path_tensor_src_bf16_dst_fp32_sparsity_off.sum',
                    '--export', str(output/'decode'), '--force-overwrite']
     config = {'driver': 'src.profiling.core_v1_ncu', 'started_at_utc': utc_now(),
               'source_commit': subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=ROOT, text=True).strip(),
@@ -83,7 +83,7 @@ async def execute(options):
               'vllm_binary': '/home/azureuser/.venvs/vllm/bin/vllm',
               'serving_intervention': {'profiler': 'cuda', 'max_iterations': 1},
               'ranked': False, 'counter_access': 'root workload; driver restriction unchanged',
-              'sampling_scope': 'Externally gated decode windows; two worker steps can be captured per window. No application replay.'}
+              'sampling_scope': 'Externally gated whole decode graphs only, at most six samples; two worker steps can be captured per window. No application replay.'}
     save(output/'config.json', config)
     subprocess.run(['nvidia-smi', '-q'], stdout=(output/'device.log').open('w'), check=True)
     env = dict(os.environ, CALLOSUM_NCU_CONFIG=str(output/'config.json'), VLLM_SERVER_DEV_MODE='1')
@@ -96,7 +96,7 @@ async def execute(options):
     phases = ['early_decode', 'long_context_decode', 'after_continuation_admission']
     baseline = early = None
     try:
-        async with httpx.AsyncClient(trust_env=False, timeout=180) as client:
+        async with httpx.AsyncClient(trust_env=False, timeout=900) as client:
             with (output/'serving_samples.jsonl').open('w') as samples:
                 while process.poll() is None:
                     created = set((ROOT/'attempts').iterdir()) - before
