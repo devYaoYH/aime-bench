@@ -14,6 +14,7 @@ uses **core v1 with `prompt_adherence.json`**. The canonical package is
 | AIME 2026, unchanged v1 policy | **88.669s**, one wrong check | [Single transfer run](runs/experiments/frozen-core-aime2026-lightweight-20261004T011005Z/README.md) |
 | Core v1.1 long rollouts, AIME 2025 | 5/5 reached 18; median 77.652s; range 60.906–92.096s | [Five-seed long-context experiment](runs/experiments/core-v1_1-five-seeds-20261004T083800Z/README.md) |
 | Core v1.5 eager30, AIME 2025 | 5/5 reached 18; median 77.352s; range 65.015–85.464s | [Five-seed scheduling experiment](runs/experiments/core-v1_5-five-seeds-20261004T074500Z/README.md) |
+| Core v1.6 initial barrier then pool, AIME 2025 | 5/5 reached 18; median 77.498s; range 63.445–101.123s; smaller tail than latest refactored-v1 batch | [Five-seed pool comparison](runs/experiments/core-v1_6-barrier-five-seeds-20261004T224850Z/README.md) |
 | General-answer core v2, AIME 2025 | 5/5 reached 18; median 113.415s | [Extension back-test](runs/experiments/core-v2-aime2025-five-seeds-20261004T013100Z/README.md) |
 
 **Read the [three-page report](docs/reports/final/output/pdf/callosum-speedrun-report.pdf)
@@ -99,7 +100,9 @@ The new [v1.6 extension](runner/extensions/v1_6/README.md) runs an initial 30×1
 and caps **four fresh samples per question**, with separate exact-token
 continuations up to 64K cumulative output/context limit. Launch it explicitly
 with `python -m runner.extensions.v1_6`; canonical v1 retains its measured
-four-request policy. V1.6 has not yet been benchmarked on the GPU.
+four-request policy. V1.6’s five-seed GPU comparison reached 18 in all trials,
+with a 77.498s median and a smaller observed tail than the latest refactored-v1
+batch; see the comparison above.
 
 ## Browse the evidence locally
 

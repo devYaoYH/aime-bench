@@ -1,0 +1,30 @@
+{
+  "collected_at_utc": "2026-10-04T22:58:09.693570+00:00",
+  "gpu_after_cleanup": {
+    "returncode": 0,
+    "stdout": "name, memory.total [MiB], memory.used [MiB], utilization.gpu [%]\nNVIDIA A100 80GB PCIe, 81920 MiB, 0 MiB, 17 %",
+    "stderr": ""
+  },
+  "compute_processes_after_cleanup": {
+    "returncode": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  "listening_ports_after_cleanup": {
+    "8000": false,
+    "8077": false
+  },
+  "tmux_session": {
+    "returncode": 1,
+    "stdout": "",
+    "stderr": "no server running on /tmp/tmux-1000/default"
+  },
+  "kv_cache_log_observations": 40,
+  "max_logged_kv_cache_usage_pct": 11.2,
+  "pressure_warnings": [],
+  "startup_memory_logs": [
+    "(EngineCore pid=183511) INFO 10-04 22:49:44 [gpu_worker.py:721] Available KV cache memory: 71.87 GiB",
+    "(EngineCore pid=183511) INFO 10-04 22:49:44 [kv_cache_utils.py:2481] GPU KV cache size: 2,093,344 tokens, Maximum concurrency for 65,536 tokens per request: 31.94x"
+  ],
+  "limitations": "Optional GPU and engine profiling disabled. KV observations are coarse existing vLLM logs across startup/warmups/all trials, not per-attempt peaks or complete eviction/preemption counters."
+}

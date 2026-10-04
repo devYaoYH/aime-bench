@@ -83,8 +83,13 @@ The [manifest](manifest.json) pins this policy, the shared extension lifecycle
 and the unchanged canonical primitive dependency. The current canonical v1,
 v1.1 and v1.5 policies/manifests remain unchanged. Launch v1.6 using its direct
 module; the frozen canonical selector has not been changed to register/promote it.
-This implementation has offline policy/lifecycle tests, **no GPU performance
-measurement yet**.
+The corrected coverage-barrier policy was tested on the GPU with all five
+historical seeds: **5/5 reached 18; median 77.498s; range 63.445–101.123s**.
+Compared with the latest refactored-v1 batch, the worst run fell from 128.744s
+and the sample SD fell from 26.475s to 15.049s. Original v1 and v1.5 had tighter
+spreads; the median is essentially unchanged versus original v1. The combined
+policy and continuation seed changes prevent attributing the observed tail
+reduction to the initial barrier alone. See the [full comparison](../../../runs/experiments/core-v1_6-barrier-five-seeds-20261004T224850Z/README.md).
 
 Validation: 391 offline suite checks passed from the staged-source snapshot;
 all 19 focused policy/batch checks passed after adding the named-profile control
@@ -124,5 +129,5 @@ On the idle remote GPU, from a clean worktree of the pushed source:
 This scores seeds 20261011–20261015, reuses one owned server, resets prefix cache
 and performs cheap arithmetic warmup before each trial, and starts a fresh grader.
 All failures and unmet targets remain in the batch; there are no replacement
-seeds. The five-minute-plus startup and trace flush are outside solving latency.
+seeds. Server startup and trace flush are outside solving latency.
 A 600-second per-trial wall safety timeout includes initialization.
