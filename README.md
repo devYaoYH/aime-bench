@@ -137,6 +137,12 @@ same-seed comparison. Its broader parser admitted prompt placeholders, causing
 cover custom datasets and the Apex shortlist. Both frozen cores retain their
 recorded behavior; the extension is separate from the measured v1 submission.
 
+A separate [core v1.5 scheduling trial](runs/experiments/core-v1_5-eager30-single/README.md)
+kept 30 request slots and eagerly admitted continuations or fresh retries. One
+predeclared seed reached 18 in **65.015s**, versus 71.321s for its historical v1
+control, using more generation requests and fewer wrong checks. This exploratory
+result is separate from the five-seed submission headline above.
+
 | Location | Contents |
 | --- | --- |
 | [runner_final/](runner_final/README.md) | Frozen policies, prompts, presets and validation commands |

@@ -1,0 +1,229 @@
+{
+  "attempt_id": "20261004T073532.284668Z",
+  "control_attempt_id": "20261004T005518.974361Z",
+  "source_commit": "ebb1fb8e1a2379276468a2834943c3b6aaed300e",
+  "time_to_target_s": 65.0154008929967,
+  "control_time_to_target_s": 71.32121138199,
+  "difference_s": -6.305810488993302,
+  "matched_control_fields": [
+    "model",
+    "model_profile",
+    "model_profile_sha256",
+    "system_prompt",
+    "system_prompt_sha256",
+    "temperature",
+    "top_p",
+    "seed",
+    "max_tokens",
+    "first_pass_max_tokens",
+    "max_attempts_per_question",
+    "disable_thinking",
+    "grader_cost",
+    "benchmark",
+    "buffer_traces",
+    "no_gpu_telemetry",
+    "no_overhead_profile",
+    "skip_benchmark_prewarm"
+  ],
+  "initial_payloads_identical": 30,
+  "generation_requests": 73,
+  "initial_requests": 30,
+  "continuation_requests": 14,
+  "later_fresh_requests": 29,
+  "peak_client_generation_requests": 30,
+  "peak_admitted_requests": 30,
+  "max_requests_per_question": 4,
+  "max_concurrent_per_question": 3,
+  "admissions": 73,
+  "winners": [
+    {
+      "problem_idx": 1,
+      "rollout": 2,
+      "kind": "fresh_retry"
+    },
+    {
+      "problem_idx": 3,
+      "rollout": 1,
+      "kind": "initial"
+    },
+    {
+      "problem_idx": 4,
+      "rollout": 1,
+      "kind": "initial"
+    },
+    {
+      "problem_idx": 5,
+      "rollout": 1,
+      "kind": "initial"
+    },
+    {
+      "problem_idx": 6,
+      "rollout": 1,
+      "kind": "initial"
+    },
+    {
+      "problem_idx": 7,
+      "rollout": 1,
+      "kind": "initial"
+    },
+    {
+      "problem_idx": 8,
+      "rollout": 1,
+      "kind": "initial"
+    },
+    {
+      "problem_idx": 16,
+      "rollout": 1,
+      "kind": "initial"
+    },
+    {
+      "problem_idx": 17,
+      "rollout": 1,
+      "kind": "initial"
+    },
+    {
+      "problem_idx": 18,
+      "rollout": 3,
+      "kind": "continuation"
+    },
+    {
+      "problem_idx": 19,
+      "rollout": 1,
+      "kind": "initial"
+    },
+    {
+      "problem_idx": 21,
+      "rollout": 1,
+      "kind": "initial"
+    },
+    {
+      "problem_idx": 22,
+      "rollout": 1,
+      "kind": "initial"
+    },
+    {
+      "problem_idx": 23,
+      "rollout": 1,
+      "kind": "initial"
+    },
+    {
+      "problem_idx": 24,
+      "rollout": 1,
+      "kind": "initial"
+    },
+    {
+      "problem_idx": 25,
+      "rollout": 1,
+      "kind": "initial"
+    },
+    {
+      "problem_idx": 26,
+      "rollout": 1,
+      "kind": "initial"
+    },
+    {
+      "problem_idx": 27,
+      "rollout": 1,
+      "kind": "initial"
+    }
+  ],
+  "grader_timeline": {
+    "completed_queries": 20,
+    "audit_errors": [],
+    "correct": 18,
+    "wrong": 2,
+    "target_service_floor_s": 54.0,
+    "actual_service_s": 60.002429723739624,
+    "idle_between_queries_s": 3.9153292179107666,
+    "first_pick_elapsed_s": 1.0969011783599854,
+    "scope": "completed oracle jobs; queued/cancelled client jobs may still incur service"
+  },
+  "control_grader_timeline": {
+    "completed_queries": 22,
+    "audit_errors": [],
+    "correct": 18,
+    "wrong": 4,
+    "target_service_floor_s": 54.0,
+    "actual_service_s": 66.00242400169373,
+    "idle_between_queries_s": 4.2164130210876465,
+    "first_pick_elapsed_s": 1.1020050048828125,
+    "scope": "completed oracle jobs; queued/cancelled client jobs may still incur service"
+  },
+  "milestones": [
+    {
+      "solved": 1,
+      "v1_5_s": 10.628771946008783,
+      "core_v1_s": 10.633738717995584
+    },
+    {
+      "solved": 2,
+      "v1_5_s": 13.629205416014884,
+      "core_v1_s": 13.631777903006878
+    },
+    {
+      "solved": 4,
+      "v1_5_s": 22.62778567598434,
+      "core_v1_s": 22.63504651800031
+    },
+    {
+      "solved": 6,
+      "v1_5_s": 28.628491606970783,
+      "core_v1_s": 28.633665130997542
+    },
+    {
+      "solved": 8,
+      "v1_5_s": 34.630063513002824,
+      "core_v1_s": 34.63451072800672
+    },
+    {
+      "solved": 10,
+      "v1_5_s": 40.63135835202411,
+      "core_v1_s": 40.635316789965145
+    },
+    {
+      "solved": 12,
+      "v1_5_s": 46.63137984002242,
+      "core_v1_s": 46.63728326797718
+    },
+    {
+      "solved": 14,
+      "v1_5_s": 52.631341637985315,
+      "core_v1_s": 52.636785558017436
+    },
+    {
+      "solved": 16,
+      "v1_5_s": 58.632119495014194,
+      "core_v1_s": 62.32035900396295
+    },
+    {
+      "solved": 18,
+      "v1_5_s": 65.0154008929967,
+      "core_v1_s": 71.32121138199
+    }
+  ],
+  "validation": "All assertions passed; initial payload equality, serving/prompt/sampling controls, clean source/manifest, exact continuation prefixes and additional-token budgets, global/per-question caps, admission stop at target.",
+  "service_observations": {
+    "source": "remote retained vllm.log; periodic server observations, not continuous GPU telemetry",
+    "observed_running_max": 30,
+    "observed_waiting_max": 0,
+    "observed_kv_usage_max_percent": 7.2,
+    "oom_lines": [],
+    "error_lines": []
+  },
+  "client_observed_output_token_ids": {
+    "core_v1": 217285,
+    "core_v1_5": 259042,
+    "increase_percent": 19.2176174149159
+  },
+  "validation_tests": {
+    "focused_checks_passed": 11,
+    "clean_source_full_suite_total": 232,
+    "clean_source_full_suite_passed": 230,
+    "clean_source_full_suite_failures": [
+      "test_local_salvage.SafeguardTests.test_explicit_cohort_keeps_incorrect_candidate",
+      "test_local_salvage.SafeguardTests.test_selection_and_control_labels"
+    ],
+    "limitation": "Both failures require ignored local raw trace fixtures absent from the clean Git snapshot. The original working-tree suite also encountered sandbox permissions and a pre-existing unrelated speedrun_v1.py edit."
+  },
+  "runtime_environment_note": "New fresh owned inference server; historical same-seed control was first trial of its five-seed batch on one owned server. Same recorded serving profile; not an interleaved paired experiment."
+}

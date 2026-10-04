@@ -4,9 +4,10 @@ Keep experimental policies in this directory. The canonical runner stays at
 `src/attempt.py`; do not add experimental baseline behavior or switches to it.
 
 The selected final policy is frozen in [runner_final](../../runner_final/README.md).
-Use `python -m runner_final.run --benchmark` for its NVFP4 FlashInfer 30×1
-defaults and inexpensive 30-stream, 32-token prewarming, or `python -m runner_final.validate`
-for the five predeclared seeds. Historical runners below remain available.
+Use `python -m runner_final.run_frozen --preset runner_final/presets/prompt_adherence.json`
+for its measured NVFP4 FlashInfer 30×1 settings and 30-stream, 32-token arithmetic
+warmup, or `python -m runner_final.validate_frozen` for the five predeclared seeds.
+Historical runners below remain available.
 
 | Runner | Entry point | Behavior |
 | --- | --- | --- |
@@ -264,3 +265,8 @@ its dependencies; the original core v1 stays unchanged.
 The [single-trial protocol](../../configs/experiments/vibe-core-v1_5-eager30-single-v1.json)
 predeclares seed 20261011 and comparison to the historical 71.321s core v1 trial.
 This exploratory run does not replace the five-seed final-core headline.
+
+The single trial reached 18 in **65.015s**, versus 71.321s for its historical
+same-seed control. It issued 29 fresh retries and 14 continuations, peaking at
+30 concurrent requests. See the [audited result](../../runs/experiments/core-v1_5-eager30-single/README.md)
+for extra compute cost, grader effects, and the limits of a one-run comparison.

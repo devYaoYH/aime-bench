@@ -94,6 +94,20 @@ The [AIME 2026 transfer run](../runs/experiments/frozen-core-aime2026-lightweigh
 used the same v1 preset and reached 18 in **88.669s**, with one wrong check.
 It is one fresh-server trial, separate from the five-seed 2025 statistics.
 
+## Core v1.5: exploratory eager allocation
+
+The independently frozen [v1.5 policy](../src/attempt_runners/README.md#core-v15-eager-30-slot-experiment)
+retains v1's adherence prompt, sampling, warmup and token/request budgets, while
+replacing the barrier with a 30-slot pool that prefers ready continuations, then
+fresh starts on least-active unsolved questions. Its [single predeclared trial](../runs/experiments/core-v1_5-eager30-single/README.md)
+reached 18 in **65.015s**, versus 71.321s for the historical same-seed v1 control.
+It issued more requests and incurred fewer wrong checks; one run does not
+establish repeatability. The measured submission remains core v1's five-seed batch.
+
+```bash
+~/.venvs/vllm/bin/python -m src.attempt_runners.speedrun_v1_5 --seed 20261011
+```
+
 ## Frozen core v2: general mathematical answers and grader-fed questions
 
 Core v2 is a capability extension with the same barrier scheduling and
