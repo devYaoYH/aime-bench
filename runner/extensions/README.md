@@ -4,11 +4,13 @@ Canonical selection is v1. Launch another policy with `python -m runner --versio
 VERSION ...`, or use its module below. Each delegates to its preserved entrypoint
 and verifies the original source manifest. Use `--help` to inspect version-specific
 flags; canonical v1 preset files cannot be used as another core's presets.
+New v1.6 uses its direct module while the canonical selector stays frozen.
 
 | Version | Module | Difference from v1 |
 | --- | --- | --- |
 | v1.1 | `runner.extensions.v1_1` | Eager serial-per-question fresh long requests within 64K context; no continuation or sibling fan-out |
 | v1.5 | `runner.extensions.v1_5` | Shared fixed-30 request-slot pool; retain v1 sampling/segmented budgets |
+| [v1.6](v1_6/README.md) | `runner.extensions.v1_6` (direct module) | Question-count slot pool; cap four fresh samples, continue each from 8K to cumulative 64K/context limit |
 | v2 | `runner.extensions.v2` | Gold-free grader question API, broader answer formats and relaxed mathematical prompt; v1 round scheduling |
 | v2.1 | `runner.extensions.v2_1` | CPU LaTeX syntax validation and expression-key deduplication before grader submission |
 | v2.2 | `runner.extensions.v2_2` | Wrong-answer feedback forks exact-prefix continuations after other unique queued answers are assessed |

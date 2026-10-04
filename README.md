@@ -95,6 +95,12 @@ See [dataset configuration](runner/README.md#other-datasets),
 runner guide. Recorded GPU results retain their original frozen source identities;
 the historical commands remain available through the `runner_final` alias.
 
+The new [v1.6 extension](runner/extensions/v1_6/README.md) uses a shared slot pool
+and caps **four fresh samples per question**, with separate exact-token
+continuations up to 64K cumulative output/context limit. Launch it explicitly
+with `python -m runner.extensions.v1_6`; canonical v1 retains its measured
+four-request policy. V1.6 has not yet been benchmarked on the GPU.
+
 ## Browse the evidence locally
 
 Use Python 3.11+ from the repository root:
