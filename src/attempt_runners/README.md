@@ -3,6 +3,11 @@
 Keep experimental policies in this directory. The canonical runner stays at
 `src/attempt.py`; do not add experimental baseline behavior or switches to it.
 
+The selected final policy is frozen in [runner_final](../../runner_final/README.md).
+Use `python -m runner_final.run --benchmark` for its NVFP4 FlashInfer 30×1
+defaults and ungraded AIME 2024 prewarming, or `python -m runner_final.validate`
+for the five predeclared seeds. Historical runners below remain available.
+
 | Runner | Entry point | Behavior |
 | --- | --- | --- |
 | [Canonical](../attempt.py) | `python -m src.attempt` | Original streaming candidate extraction, fan-out, and coverage/continuation modes |
