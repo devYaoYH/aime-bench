@@ -1,0 +1,692 @@
+{
+  "warnings": [
+    "20261004T011020.823297Z: reference uses a different AIME year; timing improvement not compared."
+  ],
+  "attempts": [
+    {
+      "attempt_id": "20261003T200718.717581Z",
+      "start_utc": "2026-10-03T20:07:18.717+00:00",
+      "time_to_18_s": 92.42830877000233,
+      "group": "VibeThinker \u00b7 BF16",
+      "frontier_label": "A",
+      "description": "Coverage + prospective verification"
+    },
+    {
+      "attempt_id": "20261003T202152.418590Z",
+      "start_utc": "2026-10-03T20:21:52.418+00:00",
+      "time_to_18_s": 336.4966775950161,
+      "group": "VibeThinker \u00b7 BF16",
+      "frontier_label": "",
+      "description": "Final-only pass@4 control"
+    },
+    {
+      "attempt_id": "20261003T203338.063138Z",
+      "start_utc": "2026-10-03T20:33:38.063+00:00",
+      "time_to_18_s": 517.715925787983,
+      "group": "Qwen 35B \u00b7 GPTQ Int4",
+      "frontier_label": "",
+      "description": "Larger MoE model + GPTQ Int4"
+    },
+    {
+      "attempt_id": "20261003T205350.742196Z",
+      "start_utc": "2026-10-03T20:53:50.742+00:00",
+      "time_to_18_s": 85.5460709920153,
+      "group": "VibeThinker \u00b7 NVFP4",
+      "frontier_label": "B",
+      "description": "NVFP4 + 95% VRAM envelope"
+    },
+    {
+      "attempt_id": "20261003T210230.379752Z",
+      "start_utc": "2026-10-03T21:02:30.379+00:00",
+      "time_to_18_s": 97.3454069129657,
+      "group": "VibeThinker \u00b7 BF16",
+      "frontier_label": "",
+      "description": "95% VRAM + overhead profiling"
+    },
+    {
+      "attempt_id": "20261003T211054.387701Z",
+      "start_utc": "2026-10-03T21:10:54.387+00:00",
+      "time_to_18_s": 114.61539082898526,
+      "group": "VibeThinker \u00b7 BF16",
+      "frontier_label": "",
+      "description": "Speedrun v1 \u00b7 eager pass@4"
+    },
+    {
+      "attempt_id": "20261003T211346.861294Z",
+      "start_utc": "2026-10-03T21:13:46.861+00:00",
+      "time_to_18_s": 77.02886824501911,
+      "group": "VibeThinker \u00b7 BF16",
+      "frontier_label": "C",
+      "description": "Reduce eager fan-out: 4 \u2192 2"
+    },
+    {
+      "attempt_id": "20261003T211557.382358Z",
+      "start_utc": "2026-10-03T21:15:57.382+00:00",
+      "time_to_18_s": 71.13476684101624,
+      "group": "VibeThinker \u00b7 BF16",
+      "frontier_label": "D",
+      "description": "Barrier pass@1 control"
+    },
+    {
+      "attempt_id": "20261003T212812.156610Z",
+      "start_utc": "2026-10-03T21:28:12.156+00:00",
+      "time_to_18_s": 106.57033936999505,
+      "group": "VibeThinker \u00b7 NVFP4",
+      "frontier_label": "",
+      "description": "NVFP4 and 16K first pass"
+    },
+    {
+      "attempt_id": "20261003T215349.326138Z",
+      "start_utc": "2026-10-03T21:53:49.326+00:00",
+      "time_to_18_s": 106.93084363895468,
+      "group": "VibeThinker \u00b7 NVFP4",
+      "frontier_label": "",
+      "description": "Disable optional profiling; buffer client traces in RAM"
+    },
+    {
+      "attempt_id": "20261003T220008.957658Z",
+      "start_utc": "2026-10-03T22:00:08.957+00:00",
+      "time_to_18_s": 113.62524503498571,
+      "group": "VibeThinker \u00b7 BF16",
+      "frontier_label": "",
+      "description": "Replicate best BF16 30\u00d71 run with benchmark mode"
+    },
+    {
+      "attempt_id": "20261003T222009.163270Z",
+      "start_utc": "2026-10-03T22:20:09.163+00:00",
+      "time_to_18_s": 127.56545108102728,
+      "group": "VibeThinker \u00b7 NVFP4",
+      "frontier_label": "",
+      "description": "Dynamic 60-slot allocation with growing exact-ID continuations"
+    },
+    {
+      "attempt_id": "20261003T224137.318281Z",
+      "start_utc": "2026-10-03T22:41:37.318+00:00",
+      "time_to_18_s": 117.16710380697623,
+      "group": "VibeThinker \u00b7 BF16",
+      "frontier_label": "",
+      "description": "Warmed fixed-seed best-run replication"
+    },
+    {
+      "attempt_id": "20261003T224337.444734Z",
+      "start_utc": "2026-10-03T22:43:37.444+00:00",
+      "time_to_18_s": 134.51945366401924,
+      "group": "VibeThinker \u00b7 BF16",
+      "frontier_label": "",
+      "description": "Warmed fixed-seed best-run replication"
+    },
+    {
+      "attempt_id": "20261003T224555.051695Z",
+      "start_utc": "2026-10-03T22:45:55.051+00:00",
+      "time_to_18_s": 135.65415808197577,
+      "group": "VibeThinker \u00b7 BF16",
+      "frontier_label": "",
+      "description": "Warmed fixed-seed best-run replication"
+    },
+    {
+      "attempt_id": "20261003T224917.672353Z",
+      "start_utc": "2026-10-03T22:49:17.672+00:00",
+      "time_to_18_s": 116.28082345199073,
+      "group": "VibeThinker \u00b7 BF16",
+      "frontier_label": "",
+      "description": "Restore original instrumentation for warmed best-run replication"
+    },
+    {
+      "attempt_id": "20261003T225115.111184Z",
+      "start_utc": "2026-10-03T22:51:15.111+00:00",
+      "time_to_18_s": 150.06680695002433,
+      "group": "VibeThinker \u00b7 BF16",
+      "frontier_label": "",
+      "description": "Restore original instrumentation for warmed best-run replication"
+    },
+    {
+      "attempt_id": "20261003T225346.318962Z",
+      "start_utc": "2026-10-03T22:53:46.319+00:00",
+      "time_to_18_s": 152.00736279698322,
+      "group": "VibeThinker \u00b7 BF16",
+      "frontier_label": "",
+      "description": "Restore original instrumentation for warmed best-run replication"
+    },
+    {
+      "attempt_id": "20261003T225721.655059Z",
+      "start_utc": "2026-10-03T22:57:21.655+00:00",
+      "time_to_18_s": 115.40267900400795,
+      "group": "VibeThinker \u00b7 NVFP4",
+      "frontier_label": "",
+      "description": "Paired quantized-model best-run comparison"
+    },
+    {
+      "attempt_id": "20261003T225920.250528Z",
+      "start_utc": "2026-10-03T22:59:20.250+00:00",
+      "time_to_18_s": 96.66871280298801,
+      "group": "VibeThinker \u00b7 NVFP4",
+      "frontier_label": "",
+      "description": "Paired quantized-model best-run comparison"
+    },
+    {
+      "attempt_id": "20261003T230059.890071Z",
+      "start_utc": "2026-10-03T23:00:59.890+00:00",
+      "time_to_18_s": 96.66657860501437,
+      "group": "VibeThinker \u00b7 NVFP4",
+      "frontier_label": "",
+      "description": "Paired quantized-model best-run comparison"
+    },
+    {
+      "attempt_id": "20261003T230345.674426Z",
+      "start_utc": "2026-10-03T23:03:45.674+00:00",
+      "time_to_18_s": 92.01308104995405,
+      "group": "VibeThinker \u00b7 BF16",
+      "frontier_label": "",
+      "description": "Dynamic slot recycling with original four-request cap"
+    },
+    {
+      "attempt_id": "20261003T230521.104610Z",
+      "start_utc": "2026-10-03T23:05:21.104+00:00",
+      "time_to_18_s": 105.39546995097771,
+      "group": "VibeThinker \u00b7 BF16",
+      "frontier_label": "",
+      "description": "Dynamic slot recycling with original four-request cap"
+    },
+    {
+      "attempt_id": "20261003T230709.939894Z",
+      "start_utc": "2026-10-03T23:07:09.940+00:00",
+      "time_to_18_s": 114.29782699700445,
+      "group": "VibeThinker \u00b7 BF16",
+      "frontier_label": "",
+      "description": "Dynamic slot recycling with original four-request cap"
+    },
+    {
+      "attempt_id": "20261003T230915.710605Z",
+      "start_utc": "2026-10-03T23:09:15.710+00:00",
+      "time_to_18_s": 102.98680064303335,
+      "group": "VibeThinker \u00b7 BF16",
+      "frontier_label": "",
+      "description": "Faithful historical source replay"
+    },
+    {
+      "attempt_id": "20261003T231454.883045Z",
+      "start_utc": "2026-10-03T23:14:54.883+00:00",
+      "time_to_18_s": 118.1876939520007,
+      "group": "VibeThinker \u00b7 NVFP4",
+      "frontier_label": "",
+      "description": "Declared-seed quantized model comparison"
+    },
+    {
+      "attempt_id": "20261003T231656.190953Z",
+      "start_utc": "2026-10-03T23:16:56.191+00:00",
+      "time_to_18_s": 94.5912100810092,
+      "group": "VibeThinker \u00b7 NVFP4",
+      "frontier_label": "",
+      "description": "Declared-seed quantized model comparison"
+    },
+    {
+      "attempt_id": "20261003T231833.718658Z",
+      "start_utc": "2026-10-03T23:18:33.718+00:00",
+      "time_to_18_s": 126.42831404600292,
+      "group": "VibeThinker \u00b7 NVFP4",
+      "frontier_label": "",
+      "description": "Declared-seed quantized model comparison"
+    },
+    {
+      "attempt_id": "20261003T232043.406577Z",
+      "start_utc": "2026-10-03T23:20:43.406+00:00",
+      "time_to_18_s": 114.44097790296655,
+      "group": "VibeThinker \u00b7 NVFP4",
+      "frontier_label": "",
+      "description": "Declared-seed quantized model comparison"
+    },
+    {
+      "attempt_id": "20261003T233132.790330Z",
+      "start_utc": "2026-10-03T23:31:32.790+00:00",
+      "time_to_18_s": 98.32661871000892,
+      "group": "VibeThinker \u00b7 NVFP4",
+      "frontier_label": "",
+      "description": "NVFP4 FlashInfer attention backend development comparison"
+    },
+    {
+      "attempt_id": "20261003T233317.639206Z",
+      "start_utc": "2026-10-03T23:33:17.639+00:00",
+      "time_to_18_s": 64.45259054499911,
+      "group": "VibeThinker \u00b7 NVFP4",
+      "frontier_label": "E",
+      "description": "NVFP4 FlashInfer attention backend development comparison"
+    },
+    {
+      "attempt_id": "20261003T233424.568380Z",
+      "start_utc": "2026-10-03T23:34:24.568+00:00",
+      "time_to_18_s": 64.39872194494819,
+      "group": "VibeThinker \u00b7 NVFP4",
+      "frontier_label": "F",
+      "description": "NVFP4 FlashInfer attention backend development comparison"
+    },
+    {
+      "attempt_id": "20261003T233726.660316Z",
+      "start_utc": "2026-10-03T23:37:26.660+00:00",
+      "time_to_18_s": 136.048130856012,
+      "group": "VibeThinker \u00b7 NVFP4",
+      "frontier_label": "",
+      "description": "Independent FlashInfer repeat validation \u2014 settling"
+    },
+    {
+      "attempt_id": "20261003T233946.145732Z",
+      "start_utc": "2026-10-03T23:39:46.145+00:00",
+      "time_to_18_s": 87.35640389600303,
+      "group": "VibeThinker \u00b7 NVFP4",
+      "frontier_label": "",
+      "description": "Independent FlashInfer repeat validation \u2014 scored validation"
+    },
+    {
+      "attempt_id": "20261003T234116.410095Z",
+      "start_utc": "2026-10-03T23:41:16.410+00:00",
+      "time_to_18_s": 59.315726654022,
+      "group": "VibeThinker \u00b7 NVFP4",
+      "frontier_label": "G",
+      "description": "Independent FlashInfer repeat validation \u2014 scored validation"
+    },
+    {
+      "attempt_id": "20261003T234218.148913Z",
+      "start_utc": "2026-10-03T23:42:18.149+00:00",
+      "time_to_18_s": 86.57378545898246,
+      "group": "VibeThinker \u00b7 NVFP4",
+      "frontier_label": "",
+      "description": "Independent FlashInfer repeat validation \u2014 scored validation"
+    },
+    {
+      "attempt_id": "20261003T235950.730539Z",
+      "start_utc": "2026-10-03T23:59:50.730+00:00",
+      "time_to_18_s": 95.80034739000257,
+      "group": "VibeThinker \u00b7 NVFP4",
+      "frontier_label": "",
+      "description": "Pause streams while verdict pending; recycle up to 30 (NVFP4 FlashInfer)"
+    },
+    {
+      "attempt_id": "20261004T000130.389143Z",
+      "start_utc": "2026-10-04T00:01:30.389+00:00",
+      "time_to_18_s": 99.23514497996075,
+      "group": "VibeThinker \u00b7 NVFP4",
+      "frontier_label": "",
+      "description": "Pause streams while verdict pending; recycle up to 30 (NVFP4 FlashInfer)"
+    },
+    {
+      "attempt_id": "20261004T000313.230605Z",
+      "start_utc": "2026-10-04T00:03:13.230+00:00",
+      "time_to_18_s": 83.06419389595976,
+      "group": "VibeThinker \u00b7 NVFP4",
+      "frontier_label": "",
+      "description": "Pause streams while verdict pending; recycle up to 30 (NVFP4 FlashInfer)"
+    },
+    {
+      "attempt_id": "20261004T001031.904887Z",
+      "start_utc": "2026-10-04T00:10:31.905+00:00",
+      "time_to_18_s": 92.06094608496642,
+      "group": "VibeThinker \u00b7 NVFP4",
+      "frontier_label": "",
+      "description": "Final v1 NVFP4 FlashInfer, ungraded AIME 2024 prewarm, seed 20261011"
+    },
+    {
+      "attempt_id": "20261004T001305.557540Z",
+      "start_utc": "2026-10-04T00:13:05.557+00:00",
+      "time_to_18_s": 105.33684468601132,
+      "group": "VibeThinker \u00b7 NVFP4",
+      "frontier_label": "",
+      "description": "Final v1 NVFP4 FlashInfer, ungraded AIME 2024 prewarm, seed 20261012"
+    },
+    {
+      "attempt_id": "20261004T001552.242772Z",
+      "start_utc": "2026-10-04T00:15:52.242+00:00",
+      "time_to_18_s": 66.48107519402402,
+      "group": "VibeThinker \u00b7 NVFP4",
+      "frontier_label": "",
+      "description": "Final v1 NVFP4 FlashInfer, ungraded AIME 2024 prewarm, seed 20261013"
+    },
+    {
+      "attempt_id": "20261004T001759.855839Z",
+      "start_utc": "2026-10-04T00:17:59.855+00:00",
+      "time_to_18_s": 78.12302461900981,
+      "group": "VibeThinker \u00b7 NVFP4",
+      "frontier_label": "",
+      "description": "Final v1 NVFP4 FlashInfer, ungraded AIME 2024 prewarm, seed 20261014"
+    },
+    {
+      "attempt_id": "20261004T002019.503194Z",
+      "start_utc": "2026-10-04T00:20:19.503+00:00",
+      "time_to_18_s": 78.60067636496387,
+      "group": "VibeThinker \u00b7 NVFP4",
+      "frontier_label": "",
+      "description": "Final v1 NVFP4 FlashInfer, ungraded AIME 2024 prewarm, seed 20261015"
+    },
+    {
+      "attempt_id": "20261004T005518.974361Z",
+      "start_utc": "2026-10-04T00:55:18.974+00:00",
+      "time_to_18_s": 71.32121138199,
+      "group": "Final core v1 \u00b7 5 seeds",
+      "frontier_label": "",
+      "description": "Frozen core v1, improved prompt, cheap warmup, seed 20261011"
+    },
+    {
+      "attempt_id": "20261004T005632.979246Z",
+      "start_utc": "2026-10-04T00:56:32.979+00:00",
+      "time_to_18_s": 77.27695375698386,
+      "group": "Final core v1 \u00b7 5 seeds",
+      "frontier_label": "",
+      "description": "Frozen core v1, improved prompt, cheap warmup, seed 20261012"
+    },
+    {
+      "attempt_id": "20261004T005752.973818Z",
+      "start_utc": "2026-10-04T00:57:52.973+00:00",
+      "time_to_18_s": 82.49167418194702,
+      "group": "Final core v1 \u00b7 5 seeds",
+      "frontier_label": "",
+      "description": "Frozen core v1, improved prompt, cheap warmup, seed 20261013"
+    },
+    {
+      "attempt_id": "20261004T005918.176012Z",
+      "start_utc": "2026-10-04T00:59:18.176+00:00",
+      "time_to_18_s": 81.10196408699267,
+      "group": "Final core v1 \u00b7 5 seeds",
+      "frontier_label": "",
+      "description": "Frozen core v1, improved prompt, cheap warmup, seed 20261014"
+    },
+    {
+      "attempt_id": "20261004T010042.153214Z",
+      "start_utc": "2026-10-04T01:00:42.153+00:00",
+      "time_to_18_s": 62.78271700296318,
+      "group": "Final core v1 \u00b7 5 seeds",
+      "frontier_label": "",
+      "description": "Frozen core v1, improved prompt, cheap warmup, seed 20261015"
+    },
+    {
+      "attempt_id": "20261004T013249.730690Z",
+      "start_utc": "2026-10-04T01:32:49.730+00:00",
+      "time_to_18_s": 136.24086610402446,
+      "group": "Core v2 extension",
+      "frontier_label": "",
+      "description": "Frozen core v2 mathematical prompt, AIME 2025 seed 20261011"
+    },
+    {
+      "attempt_id": "20261004T013509.220456Z",
+      "start_utc": "2026-10-04T01:35:09.220+00:00",
+      "time_to_18_s": 86.08815379301086,
+      "group": "Core v2 extension",
+      "frontier_label": "",
+      "description": "Frozen core v2 mathematical prompt, AIME 2025 seed 20261012"
+    },
+    {
+      "attempt_id": "20261004T013637.874104Z",
+      "start_utc": "2026-10-04T01:36:37.874+00:00",
+      "time_to_18_s": 145.43683255201904,
+      "group": "Core v2 extension",
+      "frontier_label": "",
+      "description": "Frozen core v2 mathematical prompt, AIME 2025 seed 20261013"
+    },
+    {
+      "attempt_id": "20261004T013906.682967Z",
+      "start_utc": "2026-10-04T01:39:06.683+00:00",
+      "time_to_18_s": 101.10859073302709,
+      "group": "Core v2 extension",
+      "frontier_label": "",
+      "description": "Frozen core v2 mathematical prompt, AIME 2025 seed 20261014"
+    },
+    {
+      "attempt_id": "20261004T014050.831978Z",
+      "start_utc": "2026-10-04T01:40:50.832+00:00",
+      "time_to_18_s": 113.41475677600829,
+      "group": "Core v2 extension",
+      "frontier_label": "",
+      "description": "Frozen core v2 mathematical prompt, AIME 2025 seed 20261015"
+    }
+  ],
+  "marginal_trials": [
+    {
+      "trial": 1,
+      "sampling_seed": 20261011,
+      "valid": true,
+      "time_to_target_s": 71.32121138199,
+      "attempt_id": "20261004T005518.974361Z",
+      "status": "completed",
+      "target_reached": true,
+      "recorded_time_to_target_s": 71.32121138199,
+      "initialization_and_attempt_latency_s": 72.19087998301256,
+      "benchmark_prewarm": null,
+      "performance": {
+        "generation_requests": 45,
+        "fresh_ttft": {
+          "count": 30,
+          "median_s": 0.24649341095937416,
+          "p95_s": 0.2977955980459228
+        },
+        "continuation_ttft": {
+          "count": 15,
+          "median_s": 0.17505261802580208,
+          "p95_s": 0.19322894397191703
+        },
+        "official_gpu": null,
+        "initialization_gpu": null
+      },
+      "grader_timeline": {
+        "completed_queries": 22,
+        "audit_errors": [],
+        "correct": 18,
+        "wrong": 4,
+        "target_service_floor_s": 54.0,
+        "actual_service_s": 66.00242400169373,
+        "idle_between_queries_s": 4.2164130210876465,
+        "first_pick_elapsed_s": 1.1020050048828125,
+        "scope": "completed oracle jobs; queued/cancelled client jobs may still incur service"
+      },
+      "matched_requests": {
+        "initial_requests": 30,
+        "different_questions": [],
+        "sampling_seed": 20261011,
+        "reference_attempt": "20261003T211557.382358Z"
+      },
+      "request_cap_valid": true,
+      "distinct_solved": 18,
+      "cache_reset": {
+        "success": true,
+        "at_utc": "2026-10-04T00:55:18.968+00:00"
+      }
+    },
+    {
+      "trial": 2,
+      "sampling_seed": 20261012,
+      "valid": true,
+      "time_to_target_s": 77.27695375698386,
+      "attempt_id": "20261004T005632.979246Z",
+      "status": "completed",
+      "target_reached": true,
+      "recorded_time_to_target_s": 77.27695375698386,
+      "initialization_and_attempt_latency_s": 78.11711019999348,
+      "benchmark_prewarm": null,
+      "performance": {
+        "generation_requests": 43,
+        "fresh_ttft": {
+          "count": 30,
+          "median_s": 0.2385137529927306,
+          "p95_s": 0.2909424799727276
+        },
+        "continuation_ttft": {
+          "count": 13,
+          "median_s": 0.1515777039458044,
+          "p95_s": 0.16795463202288374
+        },
+        "official_gpu": null,
+        "initialization_gpu": null
+      },
+      "grader_timeline": {
+        "completed_queries": 20,
+        "audit_errors": [],
+        "correct": 18,
+        "wrong": 2,
+        "target_service_floor_s": 54.0,
+        "actual_service_s": 60.00298595428467,
+        "idle_between_queries_s": 13.377408027648926,
+        "first_pick_elapsed_s": 3.895724058151245,
+        "scope": "completed oracle jobs; queued/cancelled client jobs may still incur service"
+      },
+      "matched_requests": {
+        "initial_requests": 30,
+        "different_questions": [],
+        "sampling_seed": 20261012,
+        "reference_attempt": "20261003T211557.382358Z"
+      },
+      "request_cap_valid": true,
+      "distinct_solved": 18,
+      "cache_reset": {
+        "success": true,
+        "at_utc": "2026-10-04T00:56:32.973+00:00"
+      }
+    },
+    {
+      "trial": 3,
+      "sampling_seed": 20261013,
+      "valid": true,
+      "time_to_target_s": 82.49167418194702,
+      "attempt_id": "20261004T005752.973818Z",
+      "status": "completed",
+      "target_reached": true,
+      "recorded_time_to_target_s": 82.49167418194702,
+      "initialization_and_attempt_latency_s": 83.33711256599054,
+      "benchmark_prewarm": null,
+      "performance": {
+        "generation_requests": 43,
+        "fresh_ttft": {
+          "count": 30,
+          "median_s": 0.2402891109813936,
+          "p95_s": 0.29273102997103706
+        },
+        "continuation_ttft": {
+          "count": 13,
+          "median_s": 0.15981018403545022,
+          "p95_s": 0.17854986200109124
+        },
+        "official_gpu": null,
+        "initialization_gpu": null
+      },
+      "grader_timeline": {
+        "completed_queries": 18,
+        "audit_errors": [],
+        "correct": 18,
+        "wrong": 0,
+        "target_service_floor_s": 54.0,
+        "actual_service_s": 54.00220251083374,
+        "idle_between_queries_s": 24.127625465393066,
+        "first_pick_elapsed_s": 4.360960960388184,
+        "scope": "completed oracle jobs; queued/cancelled client jobs may still incur service"
+      },
+      "matched_requests": {
+        "initial_requests": 30,
+        "different_questions": [],
+        "sampling_seed": 20261013,
+        "reference_attempt": "20261003T211557.382358Z"
+      },
+      "request_cap_valid": true,
+      "distinct_solved": 18,
+      "cache_reset": {
+        "success": true,
+        "at_utc": "2026-10-04T00:57:52.968+00:00"
+      }
+    },
+    {
+      "trial": 4,
+      "sampling_seed": 20261014,
+      "valid": true,
+      "time_to_target_s": 81.10196408699267,
+      "attempt_id": "20261004T005918.176012Z",
+      "status": "completed",
+      "target_reached": true,
+      "recorded_time_to_target_s": 81.10196408699267,
+      "initialization_and_attempt_latency_s": 81.9437598620425,
+      "benchmark_prewarm": null,
+      "performance": {
+        "generation_requests": 45,
+        "fresh_ttft": {
+          "count": 30,
+          "median_s": 0.2402747700107284,
+          "p95_s": 0.2934171740198508
+        },
+        "continuation_ttft": {
+          "count": 15,
+          "median_s": 0.17676304798806086,
+          "p95_s": 0.1997408259776421
+        },
+        "official_gpu": null,
+        "initialization_gpu": null
+      },
+      "grader_timeline": {
+        "completed_queries": 19,
+        "audit_errors": [],
+        "correct": 18,
+        "wrong": 1,
+        "target_service_floor_s": 54.0,
+        "actual_service_s": 57.002217292785645,
+        "idle_between_queries_s": 18.065403699874878,
+        "first_pick_elapsed_s": 6.034121036529541,
+        "scope": "completed oracle jobs; queued/cancelled client jobs may still incur service"
+      },
+      "matched_requests": {
+        "initial_requests": 30,
+        "different_questions": [],
+        "sampling_seed": 20261014,
+        "reference_attempt": "20261003T211557.382358Z"
+      },
+      "request_cap_valid": true,
+      "distinct_solved": 18,
+      "cache_reset": {
+        "success": true,
+        "at_utc": "2026-10-04T00:59:18.170+00:00"
+      }
+    },
+    {
+      "trial": 5,
+      "sampling_seed": 20261015,
+      "valid": true,
+      "time_to_target_s": 62.78271700296318,
+      "attempt_id": "20261004T010042.153214Z",
+      "status": "completed",
+      "target_reached": true,
+      "recorded_time_to_target_s": 62.78271700296318,
+      "initialization_and_attempt_latency_s": 63.57351970899617,
+      "benchmark_prewarm": null,
+      "performance": {
+        "generation_requests": 30,
+        "fresh_ttft": {
+          "count": 30,
+          "median_s": 0.24035127804381773,
+          "p95_s": 0.2927271960070357
+        },
+        "continuation_ttft": {
+          "count": 0,
+          "median_s": null,
+          "p95_s": null
+        },
+        "official_gpu": null,
+        "initialization_gpu": null
+      },
+      "grader_timeline": {
+        "completed_queries": 18,
+        "audit_errors": [],
+        "correct": 18,
+        "wrong": 0,
+        "target_service_floor_s": 54.0,
+        "actual_service_s": 54.002132177352905,
+        "idle_between_queries_s": 4.322654962539673,
+        "first_pick_elapsed_s": 4.4566168785095215,
+        "scope": "completed oracle jobs; queued/cancelled client jobs may still incur service"
+      },
+      "matched_requests": {
+        "initial_requests": 30,
+        "different_questions": [],
+        "sampling_seed": 20261015,
+        "reference_attempt": "20261003T211557.382358Z"
+      },
+      "request_cap_valid": true,
+      "distinct_solved": 18,
+      "cache_reset": {
+        "success": true,
+        "at_utc": "2026-10-04T01:00:42.147+00:00"
+      }
+    }
+  ],
+  "policy": "All 54 reached AIME 2025 attempts; frontier excludes the same two retrospective baselines as viewer.js."
+}

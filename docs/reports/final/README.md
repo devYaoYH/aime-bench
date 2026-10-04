@@ -3,6 +3,13 @@
 [Three-page report source](report.md) and [PDF](output/pdf/callosum-speedrun-report.pdf).
 [Illustrated evidence source](evidence.md) and [PDF](output/pdf/callosum-evidence-packet.pdf).
 
+The evidence packet is now 11 pages. E8 (page 10) adds the final core v1
+five-seed marginal curve at 1, 2, 4, 6, 8, 10, 12, 14, 16 and 18 verified
+answers. E9 (page 11) shows all 54 target-reaching AIME 2025 attempts, with
+frontier labels and descriptions. The figure sources and fixed data snapshot
+are under `evidence-assets/` and `analysis/reporting-figures/`. Historical
+single-run bests remain separate from the final five-seed median of 77.277s.
+
 The final-strategy description was checked against the selected frozen core and
 baseline preset at `fc0d724`. [Strategy audit](strategy-audit.json) records exact
 configuration, manifest and source hashes, the historical five-trial outcomes,

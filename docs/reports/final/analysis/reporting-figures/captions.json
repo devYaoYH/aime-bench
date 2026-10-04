@@ -1,0 +1,37 @@
+{
+  "frontier": [
+    [
+      "A \u00b7 92.428s \u2014 Coverage + early verification",
+      "BF16 VibeThinker, one stream per question, streamed candidates and exact-ID continuation. Several controls differ from final-only pass@4."
+    ],
+    [
+      "B \u00b7 85.546s \u2014 Quantized coverage",
+      "NVFP4 / Marlin with a 95% memory envelope. Checkpoint, kernels and memory allocation changed together."
+    ],
+    [
+      "C \u00b7 77.029s \u2014 Smaller initial fan-out",
+      "BF16 eager scheduling with two samples per question, down from four; remaining requests permit continuations."
+    ],
+    [
+      "D \u00b7 71.135s \u2014 One stream, barrier schedule",
+      "BF16 30 \u00d7 1, 8K initial budget, four-request cap. A historical best draw; later repeats were slower."
+    ],
+    [
+      "E / F \u00b7 64.453 / 64.399s \u2014 FlashInfer development",
+      "Two consecutive NVFP4 / Marlin / FlashInfer trials set new bests. The earlier 98.327s trial is also plotted."
+    ],
+    [
+      "G \u00b7 59.316s \u2014 Fastest observed validation trial",
+      "One scored FlashInfer trial. The three scored times were 87.356 / 59.316 / 86.574s; the repeatability gate failed."
+    ]
+  ],
+  "headline": {
+    "trials": 5,
+    "successes": 5,
+    "median_s": 77.27695375698386,
+    "range_s": [
+      62.78271700296318,
+      82.49167418194702
+    ]
+  }
+}

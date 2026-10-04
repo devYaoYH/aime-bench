@@ -6,7 +6,7 @@
 
 ## E0. Start here: claims, decisions, and where to look
 
-This packet grounds the three-page report in **local VibeThinker-3B BF16 and NVFP4 results on an A100 PCIe 80GB**. Figures retain their recorded analyses. Measurements and hypotheses remain distinct; hosted Qwen and other models appear separately in Appendix A.
+This packet supports the three-page report with **local VibeThinker-3B BF16 and NVFP4 evidence on one A100 PCIe 80GB**. Hosted-model experiments appear separately in Appendix A.
 
 | Interview question | Evidence to open | PDF page |
 | --- | --- | --- |
@@ -18,18 +18,20 @@ This packet grounds the three-page report in **local VibeThinker-3B BF16 and NVF
 | Where is each report citation and its raw evidence? | [E6: collated docket, original IDs 1-9](#e6) | 7 |
 | What happened with Qwen, CPU salvage, tools, and voting? | [Appendix A: additional experiments](#a1) | 8 |
 | Did quantization improve decoding, TTFT, and first submission? | [E7: run-level latency analysis](#e7) | 9 |
+| How quickly does the final core v1 bank answers? | [E8: five-seed marginal timing](#e8) | 10 |
+| How did best-observed timing progress across all 54 successful attempts? | [E9: full experiment history](#e9) | 11 |
 
 ### The strongest observed strategy comparison
 
-The completed BF16 final-only pass@4 baseline reached 18 in **336.497s**. The initial BF16 coverage/continuation run reached 18 in **92.428s**: a **3.64x observed improvement**. Both used the same model, an 80% memory envelope, and 18 correct checks with zero wrong checks. Prompts, concurrency, seeds, budgets, context, and continuation differed; the comparison establishes the performance of complete strategies, rather than the isolated effect of any one change. [Baseline and paired strategy record](../../../attempts/20261003T202152.418590Z/README.md).
+BF16 final-only pass@4 reached 18 in **336.497s**, versus **92.428s** for coverage/continuation: **3.64x observed improvement**. Both used the same model, 80% memory allocation and zero wrong checks. Other controls differed; this compares complete strategies, not isolated effects. [Baseline and strategy record](../../../attempts/20261003T202152.418590Z/README.md).
 
 ### Measurement contract
 
-**Time to 18** ends at the eighteenth distinct first positive verdict. Setup and warmup, cancellation settlement, and final buffered writes are separate. The accurate grader serializes all questions in a global FIFO queue, charging three seconds per check. Eighteen correct checks cost at least 54 seconds, before first-answer delay, wrong checks, and idle gaps.
+**Time to 18** ends at the eighteenth distinct positive verdict. Setup, warmup, cancellation settlement and buffered writes are separate. The global FIFO grader charges three seconds per check: a **54-second floor**, plus first-answer delay, wrong checks and idle gaps.
 
-**TTFT is first output, not first answer.** Tokens per second measure generation rate, CPU-seconds measure client work, and grader timestamps measure the verification path. These quantities cannot be added indiscriminately: inference, client work, and queue waits overlap.
+**TTFT measures first output; answer arrival is separate.** Generation, client CPU work and grader waits overlap, so their durations cannot be added indiscriminately.
 
-**Selected policy and status language.** Frozen core v1 uses NVFP4/Marlin + FlashInfer, 30 x 1 barrier and four requests per question; dynamic60 is experimental. Use "observed" for individual runs and "not yet isolated" for causal effects. A stopped-at-18 run does not establish full accuracy or repeatability. The initial audit launched no inference; the subsequent improved-prompt replication is reported in E5. [Current core and presets](../../../runner_final/README.md).
+**Selected policy.** Frozen core v1 uses NVFP4/Marlin + FlashInfer, 30 x 1 barrier and four requests per question. Dynamic60 remains experimental. Five-seed replication is in E5/E8; stopping at 18 does not establish full accuracy. Historical frontier draws are distinct from repeated performance. [Core and presets](../../../runner_final/README.md).
 
 <!-- pagebreak -->
 
@@ -250,3 +252,43 @@ Replicate the answer-arrival and Python findings on the scored GPU/model before 
 **Next test:** randomized interleaved blocks across model/backend combinations, predeclared seeds and endpoints, consistent warmup, and repeated server starts. Analyze run-level outcomes; use paired differences only for deliberately matched blocks.
 
 **Audit:** [per-run measurements](analysis/first-grader/runs.csv), [initial-stream counts/rates](analysis/first-grader/initial-streams.csv), [tests, caveats, and input hashes](analysis/first-grader/results.json), [reproduction script](analyze_first_grader.py). Method: [SciPy Welch/one-sided test](https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.ttest_ind.html). Original citation **[4]**; docket E6.
+
+<!-- pagebreak -->
+
+<a id="e8"></a>
+
+## E8. Final core v1: marginal time to verified answers
+
+![Figure 6. Median and observed range at each requested solve milestone across the five declared-seed final core v1 trials](evidence-assets/core-v1-marginal-time.png)
+
+**Headline.** All five trials reached 18: median **77.277s**, range **62.783-82.492s**. The solid curve is the pointwise median; faint lines show individual trials and shading shows their observed minimum and maximum, not a confidence interval. The dashed line is the ideal three-second serial-grader service floor. Connected milestones do not imply that the pointwise median is one actual trajectory.
+
+**Recorded milestone medians (seconds):** 1: **9.035**; 2: **12.037**; 4: **18.038**; 6: **24.037**; 8: **30.040**; 10: **36.038**; 12: **42.039**; 14: **49.086**; 16: **57.903**; 18: **77.277**. No time to 20 or higher was measured because these trials stopped at 18.
+
+**Measured policy.** Frozen core v1 with the prompt-adherence preset; NVFP4 VibeThinker-3B, Marlin weights and FlashInfer attention on one A100 80GB. All 30 questions start one stream; barrier scheduling, 8K initial output, exact-ID continuations and four requests per question. The five declared seeds are 20261011-20261015, using one reused inference server, a fresh grader and cleared prefix cache per trial. Only the cheap warmup precedes timing; setup, warmup and teardown are excluded.
+
+**Sources:** [five-seed validation and audit](../../../runs/experiments/frozen-core-prompt-five-seeds-20261004T005416Z/README.md), [per-seed milestones](analysis/reporting-figures/core-v1-milestones.csv), [milestone summary](analysis/reporting-figures/core-v1-milestone-summary.csv). All 18 distinct first-solved events per trial were checked against saved positive grader verdicts. These figures reuse recorded evidence and launch no new inference.
+
+<!-- pagebreak -->
+
+<a id="e9"></a>
+
+## E9. Full history: 54 successful AIME 2025 attempts
+
+![Figure 7. Time to 18 across all 54 target-reaching AIME 2025 attempts; only best-so-far frontier points are labeled](evidence-assets/aime2025-history-54.png)
+
+**A - 92.428s: coverage and early verification.** BF16 VibeThinker, one stream per question, streamed candidates and exact-ID continuation. Several controls differ from the final-only pass@4 baseline.
+
+**B - 85.546s: quantized coverage.** NVFP4/Marlin with a 95% memory envelope. Checkpoint, kernels and memory allocation changed together.
+
+**C - 77.029s: smaller initial fan-out.** BF16 eager scheduling with two samples per question, down from four; remaining requests permit continuations.
+
+**D - 71.135s: one stream, barrier schedule.** BF16 30 x 1, 8K initial output and four-request cap. This historical best draw was followed by slower repeats.
+
+**E/F - 64.453/64.399s: FlashInfer development.** Two consecutive NVFP4/Marlin/FlashInfer trials set new bests. The earlier 98.327s development trial is also plotted.
+
+**G - 59.316s: fastest observed validation trial.** The three scored FlashInfer times were 87.356/59.316/86.574s; the predeclared repeatability gate failed. This single-run best is separate from the final v1 headline: **5/5, median 77.277s**.
+
+**Scope and reading.** Colors identify model/configuration groups; the dotted step tracks historical bests, not isolated causal effects. The axis break omits 165-300s. Both retrospective baselines are included among the 54 dots but excluded from the frontier, matching the viewer's frontier convention. Six AIME 2025 attempts without a measured time to 18 and the separate AIME 2026 transfer run are outside this figure. The x-axis is initialization time; the y-axis excludes setup and warmup and ends at the eighteenth distinct positive verdict.
+
+**Sources:** [54-point data and frontier labels](analysis/reporting-figures/aime2025-history-54.csv), [fixed source snapshot](analysis/reporting-figures/source-snapshot.json), [canonical aggregation logic](../../../src/attempt_results.py), [viewer frontier convention](../../../src/viewer/results/viewer.js). The five core v2 extension results are included as a separate color; they do not replace the final core v1 measurements.

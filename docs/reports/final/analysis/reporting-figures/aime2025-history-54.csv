@@ -1,0 +1,55 @@
+attempt_id,start_utc,time_to_18_s,group,frontier_label,description
+20261003T200718.717581Z,2026-10-03T20:07:18.717+00:00,92.42830877000233,VibeThinker · BF16,A,Coverage + prospective verification
+20261003T202152.418590Z,2026-10-03T20:21:52.418+00:00,336.4966775950161,VibeThinker · BF16,,Final-only pass@4 control
+20261003T203338.063138Z,2026-10-03T20:33:38.063+00:00,517.715925787983,Qwen 35B · GPTQ Int4,,Larger MoE model + GPTQ Int4
+20261003T205350.742196Z,2026-10-03T20:53:50.742+00:00,85.5460709920153,VibeThinker · NVFP4,B,NVFP4 + 95% VRAM envelope
+20261003T210230.379752Z,2026-10-03T21:02:30.379+00:00,97.3454069129657,VibeThinker · BF16,,95% VRAM + overhead profiling
+20261003T211054.387701Z,2026-10-03T21:10:54.387+00:00,114.61539082898526,VibeThinker · BF16,,Speedrun v1 · eager pass@4
+20261003T211346.861294Z,2026-10-03T21:13:46.861+00:00,77.02886824501911,VibeThinker · BF16,C,Reduce eager fan-out: 4 → 2
+20261003T211557.382358Z,2026-10-03T21:15:57.382+00:00,71.13476684101624,VibeThinker · BF16,D,Barrier pass@1 control
+20261003T212812.156610Z,2026-10-03T21:28:12.156+00:00,106.57033936999505,VibeThinker · NVFP4,,NVFP4 and 16K first pass
+20261003T215349.326138Z,2026-10-03T21:53:49.326+00:00,106.93084363895468,VibeThinker · NVFP4,,Disable optional profiling; buffer client traces in RAM
+20261003T220008.957658Z,2026-10-03T22:00:08.957+00:00,113.62524503498571,VibeThinker · BF16,,Replicate best BF16 30×1 run with benchmark mode
+20261003T222009.163270Z,2026-10-03T22:20:09.163+00:00,127.56545108102728,VibeThinker · NVFP4,,Dynamic 60-slot allocation with growing exact-ID continuations
+20261003T224137.318281Z,2026-10-03T22:41:37.318+00:00,117.16710380697623,VibeThinker · BF16,,Warmed fixed-seed best-run replication
+20261003T224337.444734Z,2026-10-03T22:43:37.444+00:00,134.51945366401924,VibeThinker · BF16,,Warmed fixed-seed best-run replication
+20261003T224555.051695Z,2026-10-03T22:45:55.051+00:00,135.65415808197577,VibeThinker · BF16,,Warmed fixed-seed best-run replication
+20261003T224917.672353Z,2026-10-03T22:49:17.672+00:00,116.28082345199073,VibeThinker · BF16,,Restore original instrumentation for warmed best-run replication
+20261003T225115.111184Z,2026-10-03T22:51:15.111+00:00,150.06680695002433,VibeThinker · BF16,,Restore original instrumentation for warmed best-run replication
+20261003T225346.318962Z,2026-10-03T22:53:46.319+00:00,152.00736279698322,VibeThinker · BF16,,Restore original instrumentation for warmed best-run replication
+20261003T225721.655059Z,2026-10-03T22:57:21.655+00:00,115.40267900400795,VibeThinker · NVFP4,,Paired quantized-model best-run comparison
+20261003T225920.250528Z,2026-10-03T22:59:20.250+00:00,96.66871280298801,VibeThinker · NVFP4,,Paired quantized-model best-run comparison
+20261003T230059.890071Z,2026-10-03T23:00:59.890+00:00,96.66657860501437,VibeThinker · NVFP4,,Paired quantized-model best-run comparison
+20261003T230345.674426Z,2026-10-03T23:03:45.674+00:00,92.01308104995405,VibeThinker · BF16,,Dynamic slot recycling with original four-request cap
+20261003T230521.104610Z,2026-10-03T23:05:21.104+00:00,105.39546995097771,VibeThinker · BF16,,Dynamic slot recycling with original four-request cap
+20261003T230709.939894Z,2026-10-03T23:07:09.940+00:00,114.29782699700445,VibeThinker · BF16,,Dynamic slot recycling with original four-request cap
+20261003T230915.710605Z,2026-10-03T23:09:15.710+00:00,102.98680064303335,VibeThinker · BF16,,Faithful historical source replay
+20261003T231454.883045Z,2026-10-03T23:14:54.883+00:00,118.1876939520007,VibeThinker · NVFP4,,Declared-seed quantized model comparison
+20261003T231656.190953Z,2026-10-03T23:16:56.191+00:00,94.5912100810092,VibeThinker · NVFP4,,Declared-seed quantized model comparison
+20261003T231833.718658Z,2026-10-03T23:18:33.718+00:00,126.42831404600292,VibeThinker · NVFP4,,Declared-seed quantized model comparison
+20261003T232043.406577Z,2026-10-03T23:20:43.406+00:00,114.44097790296655,VibeThinker · NVFP4,,Declared-seed quantized model comparison
+20261003T233132.790330Z,2026-10-03T23:31:32.790+00:00,98.32661871000892,VibeThinker · NVFP4,,NVFP4 FlashInfer attention backend development comparison
+20261003T233317.639206Z,2026-10-03T23:33:17.639+00:00,64.45259054499911,VibeThinker · NVFP4,E,NVFP4 FlashInfer attention backend development comparison
+20261003T233424.568380Z,2026-10-03T23:34:24.568+00:00,64.39872194494819,VibeThinker · NVFP4,F,NVFP4 FlashInfer attention backend development comparison
+20261003T233726.660316Z,2026-10-03T23:37:26.660+00:00,136.048130856012,VibeThinker · NVFP4,,Independent FlashInfer repeat validation — settling
+20261003T233946.145732Z,2026-10-03T23:39:46.145+00:00,87.35640389600303,VibeThinker · NVFP4,,Independent FlashInfer repeat validation — scored validation
+20261003T234116.410095Z,2026-10-03T23:41:16.410+00:00,59.315726654022,VibeThinker · NVFP4,G,Independent FlashInfer repeat validation — scored validation
+20261003T234218.148913Z,2026-10-03T23:42:18.149+00:00,86.57378545898246,VibeThinker · NVFP4,,Independent FlashInfer repeat validation — scored validation
+20261003T235950.730539Z,2026-10-03T23:59:50.730+00:00,95.80034739000257,VibeThinker · NVFP4,,Pause streams while verdict pending; recycle up to 30 (NVFP4 FlashInfer)
+20261004T000130.389143Z,2026-10-04T00:01:30.389+00:00,99.23514497996075,VibeThinker · NVFP4,,Pause streams while verdict pending; recycle up to 30 (NVFP4 FlashInfer)
+20261004T000313.230605Z,2026-10-04T00:03:13.230+00:00,83.06419389595976,VibeThinker · NVFP4,,Pause streams while verdict pending; recycle up to 30 (NVFP4 FlashInfer)
+20261004T001031.904887Z,2026-10-04T00:10:31.905+00:00,92.06094608496642,VibeThinker · NVFP4,,"Final v1 NVFP4 FlashInfer, ungraded AIME 2024 prewarm, seed 20261011"
+20261004T001305.557540Z,2026-10-04T00:13:05.557+00:00,105.33684468601132,VibeThinker · NVFP4,,"Final v1 NVFP4 FlashInfer, ungraded AIME 2024 prewarm, seed 20261012"
+20261004T001552.242772Z,2026-10-04T00:15:52.242+00:00,66.48107519402402,VibeThinker · NVFP4,,"Final v1 NVFP4 FlashInfer, ungraded AIME 2024 prewarm, seed 20261013"
+20261004T001759.855839Z,2026-10-04T00:17:59.855+00:00,78.12302461900981,VibeThinker · NVFP4,,"Final v1 NVFP4 FlashInfer, ungraded AIME 2024 prewarm, seed 20261014"
+20261004T002019.503194Z,2026-10-04T00:20:19.503+00:00,78.60067636496387,VibeThinker · NVFP4,,"Final v1 NVFP4 FlashInfer, ungraded AIME 2024 prewarm, seed 20261015"
+20261004T005518.974361Z,2026-10-04T00:55:18.974+00:00,71.32121138199,Final core v1 · 5 seeds,,"Frozen core v1, improved prompt, cheap warmup, seed 20261011"
+20261004T005632.979246Z,2026-10-04T00:56:32.979+00:00,77.27695375698386,Final core v1 · 5 seeds,,"Frozen core v1, improved prompt, cheap warmup, seed 20261012"
+20261004T005752.973818Z,2026-10-04T00:57:52.973+00:00,82.49167418194702,Final core v1 · 5 seeds,,"Frozen core v1, improved prompt, cheap warmup, seed 20261013"
+20261004T005918.176012Z,2026-10-04T00:59:18.176+00:00,81.10196408699267,Final core v1 · 5 seeds,,"Frozen core v1, improved prompt, cheap warmup, seed 20261014"
+20261004T010042.153214Z,2026-10-04T01:00:42.153+00:00,62.78271700296318,Final core v1 · 5 seeds,,"Frozen core v1, improved prompt, cheap warmup, seed 20261015"
+20261004T013249.730690Z,2026-10-04T01:32:49.730+00:00,136.24086610402446,Core v2 extension,,"Frozen core v2 mathematical prompt, AIME 2025 seed 20261011"
+20261004T013509.220456Z,2026-10-04T01:35:09.220+00:00,86.08815379301086,Core v2 extension,,"Frozen core v2 mathematical prompt, AIME 2025 seed 20261012"
+20261004T013637.874104Z,2026-10-04T01:36:37.874+00:00,145.43683255201904,Core v2 extension,,"Frozen core v2 mathematical prompt, AIME 2025 seed 20261013"
+20261004T013906.682967Z,2026-10-04T01:39:06.683+00:00,101.10859073302709,Core v2 extension,,"Frozen core v2 mathematical prompt, AIME 2025 seed 20261014"
+20261004T014050.831978Z,2026-10-04T01:40:50.832+00:00,113.41475677600829,Core v2 extension,,"Frozen core v2 mathematical prompt, AIME 2025 seed 20261015"
