@@ -6,7 +6,7 @@
     "manifest_sha256": "35d6a06315a0e45441b3ac49bd468a2b94553fb172f378bfebc7ea8cc044070f"
   },
   "policy": "V1 bounded round scheduling, integer candidate extraction, exact-ID continuations and four-request ceiling. Canonical packaging includes a custom integer-dataset adapter.",
-  "change_reason": "Refactor canonical v1 into a self-contained runner package; preserve measured policy via differential replay; retain archived source identities and provide gold-free custom integer-dataset startup.",
+  "change_reason": "Refactor canonical v1 into a self-contained runner package; preserve measured policy via differential replay; retain archived identities and exclude machine-local environments from canonical source snapshots.",
   "sha256": {
     "runner/__init__.py": "d910a63c8f3ceb4160a448fe96bb056eff69cf08021b9a25964a45e378189659",
     "runner/__main__.py": "6e6f0ef09281655fb8240054015413e9d25404e164c6eff7358e1449cc6120bb",
@@ -48,6 +48,6 @@
     "runner/run.py": "946f2ee6aad4b440c5c1603979cf75b2e7b8cd1db3b69b80bead83c4e6c09fac",
     "runner/scheduler.py": "d46120ca0f73d0844fa54f5395109a879a7ac81f44de647670098e027d57c0dc",
     "runner/tools/__init__.py": "27060608b8e1ad10c57cb26a9c9c1a5b6a17fe64cbedc4ec73968015110294ff",
-    "runner/tools/pin.py": "6d642ebce738ee46ea0a9e49f9935a45259b53d660ff6f67f27cc4911c62f2b2"
+    "runner/tools/pin.py": "f16d3c0fc13626c8313fb7c523af1034d59fccbf3e432b4155f3de6842c6dabb"
   }
 }

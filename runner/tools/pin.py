@@ -11,7 +11,7 @@ def build(reason):
         p
         for p in PACKAGE.rglob("*.py")
         if "extensions" not in p.relative_to(PACKAGE).parts
-        and "__pycache__" not in p.parts
+        and not {"__pycache__", ".venv", "venv", ".cache"}.intersection(p.parts)
     ]
     files += [
         PACKAGE / "metadata.schema.json",

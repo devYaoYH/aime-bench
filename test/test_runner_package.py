@@ -137,6 +137,40 @@ class PackageBoundaryTests(unittest.TestCase):
             with self.assertRaisesRegex(RuntimeError, "source drift"):
                 verify_core(root)
 
+    def test_snapshot_excludes_installed_environments_and_archives(self):
+        from runner.tools import pin
+
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            package = root / "runner"
+            for name in (
+                "__init__.py",
+                "lib/common.py",
+                "grader/server.py",
+                "grader/.venv/site-packages/installed.py",
+                "lib/__pycache__/cache.py",
+                "extensions/variant/runner.py",
+            ):
+                path = package / name
+                path.parent.mkdir(parents=True, exist_ok=True)
+                path.write_text("")
+            for name in (
+                "metadata.schema.json",
+                "requirements.txt",
+                "grader/requirements.txt",
+                "grader/requirements-local.txt",
+            ):
+                (package / name).write_text("")
+            with patch.object(pin, "ROOT", root), patch.object(pin, "PACKAGE", package):
+                files = pin.build("test")["sha256"]
+            self.assertIn("runner/grader/server.py", files)
+            self.assertFalse(
+                any(
+                    "/.venv/" in p or "/extensions/" in p or "/__pycache__/" in p
+                    for p in files
+                )
+            )
+
     def test_registry_routes_explicit_version_and_promoted_default(self):
         with patch.object(cli, "launch_extension") as launch:
             cli.main(["--version", "v2.3", "--help"])
