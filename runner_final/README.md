@@ -1,4 +1,20 @@
-# Frozen runner core v1
+# Frozen runner versions
+
+The current general mathematical entrypoint is
+`python -m runner_final.run_frozen_v2`, using `presets/math_core_v2.json`.
+See the repository [usage guide and execution diagram](../README.md#run-the-frozen-core-v2)
+and the [v2 answer/dataset contract](#frozen-core-v2-general-mathematical-answers-and-grader-fed-questions).
+Core v1 and earlier final runners remain preserved comparison controls.
+
+`python -m runner_final.backtest_v2` runs all five seeds declared in
+[five_seeds_core_v2_aime2025.json](five_seeds_core_v2_aime2025.json), keeping failures
+and unmet targets. It checks the frozen deployed profile, source/prompt hashes,
+initial payloads against each same-seed v1 control, true verdicts, dataset
+fingerprints and four-request caps. It reuses one owned inference server, clears
+the prefix cache, and starts a fresh grader and cheap warmup per trial. Historical
+seed pairing is not an interleaved experiment isolating the parser's effect.
+
+## Frozen core v1 (preserved control)
 
 The public entrypoint is `python -m runner_final.run_frozen`. It uses the
 [baseline preset](presets/baseline.json), preserving final v2's 30×1 / 8K
@@ -150,7 +166,14 @@ Use `python -m runner_final.run_frozen_v2`. This is a separate immutable core;
 v1 sources, grader and manifest are unchanged. V2 retains 30×1 barrier scheduling,
 8K initial / 16K later requests, at most four requests per question including
 continuations, the serial grader toll, first-solved timing, and benchmark storage.
-No v2 GPU performance result has been measured yet.
+The [five-seed AIME 2025 back-test](../runs/experiments/core-v2-aime2025-five-seeds-20261004T013100Z/README.md)
+reached 18 in 5/5 trials: median **113.415s**, range **86.088–145.437s**.
+All five were slower than their same-seed v1 controls (median 77.277s). V2's
+broader extraction admitted placeholder boxes, including literal `EXPRESSION`
+from the prompt example; there were 62 wrong checks versus seven in the v1
+batch. This is a capability extension, not an observed AIME speed improvement.
+Both cores and the tested prompt remain unchanged; the back-test retains the
+failure mode rather than changing settings or replacing seeds during the run.
 
 ```sh
 # Start an owned v2 grader using the pinned Apex bundle (47 questions).

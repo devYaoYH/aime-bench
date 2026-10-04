@@ -1,0 +1,82 @@
+{
+  "driver": "runner_final.backtest_v2",
+  "started_at_utc": "2026-10-04T01:31:52.527+00:00",
+  "protocol": {
+    "schema_version": 1,
+    "runner": "runner_final.run_frozen_v2",
+    "preset": "math_core_v2.json",
+    "system_prompt_sha256": "6499890af0d686e8c0ad76e58ec86c2ab7d117625554509a005e0bef528b6e9e",
+    "core_manifest_sha256": "8e6cf003ae04b063ce5479c43cc72bc6128cd5e828df054334373017e0a7187e",
+    "seeds": [
+      20261011,
+      20261012,
+      20261013,
+      20261014,
+      20261015
+    ],
+    "argv": [
+      "--benchmark-year",
+      "2025",
+      "--benchmark-role",
+      "development",
+      "--benchmark",
+      "--skip-benchmark-prewarm"
+    ],
+    "reference_attempts": {
+      "20261011": "20261004T005518.974361Z",
+      "20261012": "20261004T005632.979246Z",
+      "20261013": "20261004T005752.973818Z",
+      "20261014": "20261004T005918.176012Z",
+      "20261015": "20261004T010042.153214Z"
+    },
+    "reference_times_s": {
+      "20261011": 71.32121138199,
+      "20261012": 77.27695375698386,
+      "20261013": 82.49167418194702,
+      "20261014": 81.10196408699267,
+      "20261015": 62.78271700296318
+    },
+    "scoring": "All five trials scored; retain failures and unmet targets. No replacement seeds or unscored settling. Report target success count, median, range and paired-seed timing changes.",
+    "scope": "Core v2 plus math prompt, AIME 2025 development back-test. Same seeds, NVFP4/Marlin/FlashInfer profile, 30x1 barrier, 8K initial, 16K additional, cap four and cheap warmup as core-v1 improved-prompt five-seed batch. One owned inference server reused, cleared prefix cache and fresh owned v2 grader per trial. Sequential historical pairing does not isolate prompt from extraction or eliminate run-state variance."
+  },
+  "protocol_sha256": "a5fc9dc6dab5d76e6a779ecebb2a4f1c4aae17bf906e8d26c7794e1858fd9176",
+  "source_commit": "68a79c6c12f79d0d85013dea0e012a012f6b1362",
+  "argv": [
+    "--benchmark-year",
+    "2025",
+    "--benchmark-role",
+    "development",
+    "--benchmark",
+    "--skip-benchmark-prewarm",
+    "--reuse-server"
+  ],
+  "seed_sequence": [
+    20261011,
+    20261012,
+    20261013,
+    20261014,
+    20261015
+  ],
+  "profile_path": "/home/azureuser/models/r0b0tlab/VibeThinker-3B-NVFP4/vllm-flashinfer.yaml",
+  "profile_sha256": "aa2f451c99233d1e3ba15f9931f550cf5c46273f1ddb837a5802d521cdcf9753",
+  "core_manifest_sha256": "8e6cf003ae04b063ce5479c43cc72bc6128cd5e828df054334373017e0a7187e",
+  "system_prompt_sha256": "6499890af0d686e8c0ad76e58ec86c2ab7d117625554509a005e0bef528b6e9e",
+  "system_prompt": "Solve the mathematics problem carefully. You must expose each prospective answer as soon as you derive an exact value or expression for the quantity requested in the original problem. Before any further rechecking, emit a separate line containing \\boxed{EXPRESSION}. Emit this line inside your reasoning immediately, even if the answer is tentative. Then continue checking your work. If you revise the prospective answer, immediately emit another boxed expression on its own line. Box only candidates for the original requested quantity, not subproblem values or examples. Preserve variables, signs, fractions, radicals, and other exact mathematical notation as required by the problem; do not round or restrict answers to three digits. Put only the answer expression inside the box, without prose or an equality assigning it to a variable. For a requested sum or difference, compute that quantity before boxing it. End with your final boxed answer.\n",
+  "preset": "math_core_v2.json",
+  "server_reused": true,
+  "prefix_cache_reset_between_trials": true,
+  "server_env_override": {
+    "VLLM_SERVER_DEV_MODE": "1"
+  },
+  "server_command": [
+    "/home/azureuser/.venvs/vllm/bin/vllm",
+    "serve",
+    "--config",
+    "/home/azureuser/models/r0b0tlab/VibeThinker-3B-NVFP4/vllm-flashinfer.yaml",
+    "--host",
+    "127.0.0.1",
+    "--port",
+    "8000",
+    "--enable-prompt-tokens-details"
+  ]
+}

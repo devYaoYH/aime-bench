@@ -47,7 +47,14 @@ The server profile is included as [a reference](runner_final/vllm-flashinfer.yam
 Weights and the deployed profile must already exist under `~/models`; read that
 machine's `~/models/README.md` for provisioning. vLLM runs in `~/.venvs/vllm`;
 the runner launches the grader with `grader/.venv/bin/python`. For a new checkout,
-create that environment and install `grader/requirements-local.txt`. The root
+create that environment and install `grader/requirements-local.txt`:
+
+```bash
+python3 -m venv grader/.venv
+grader/.venv/bin/pip install -r grader/requirements-local.txt
+```
+
+The root
 `requirements.txt` supports local analysis and tests; it does not provision vLLM.
 All commands below assume those remote environments are ready.
 
@@ -104,6 +111,8 @@ complete standalone `Answer:` line. It does not extract unmarked prose or
 restrict answers to three-digit integers. Deduplication uses trimmed strings;
 mathematical equivalence is decided by the grader. A candidate is only a solved
 answer after a positive grader verdict.
+The four-request cap limits generation requests, not verifier queries: every
+distinct submitted candidate can incur another three-second check.
 
 ### Services, datasets and saved evidence
 
@@ -127,13 +136,20 @@ record distinct first-solved verdict timestamps and time to target.
 their `rollout-01/`, `rollout-02/`, etc. hold requests, responses, exact tokens,
 start/end times and time to first token.
 
-Official time starts after service initialization and warmup and ends at the
-target verdict. Initialization, final trace flushing and service cleanup are
-reported separately. Default `--benchmark` disables optional CPU/GPU/engine
+`time_to_target_s` starts after service initialization and warmup and ends at
+receipt of the target verdict; `official_latency_s` also includes cancellation
+settlement. Initialization, final trace flushing and service cleanup are reported
+separately. Default `--benchmark` disables optional CPU/GPU/engine
 sampling and holds required evidence in RAM until timing ends; it therefore
 does **not** provide a measured peak VRAM or KV eviction counter. For profiling, select
 `--preset runner_final/presets/math_core_v2_profile.json`, which omits benchmark
 mode and enables optional sampling. A hard crash can lose buffered evidence.
+
+Use stdout for live question/round progress; buffered traces are not complete
+until the final flush. Inspect `summary.json` for `target_reached` and
+`time_to_target_s`: a finished process alone does not prove the target was met.
+Graceful interruption saves partial evidence when possible; unmet and failed
+attempts stay unranked.
 
 Copy reviewed artifacts back locally, then run
 `python -m runner_final.core_v2.metadata ATTEMPT_DIRECTORY` to validate v2 metadata
@@ -166,22 +182,23 @@ requirements.txt     Python dependencies
 
 ## Setup
 
-Run commands from the repository root:
+Use Python 3.11 or newer. Run commands from the repository root:
 
 ```bash
 python3 -m venv .venv
-.venv/bin/pip install -r requirements.txt
-cp .env.example .env
+.venv/bin/pip install -r requirements.txt -r grader/requirements-local.txt
 ```
 
-Set `OPENROUTER_API_KEY` in `.env` or export it in your environment. The dataset
-is included in `data/`; to fetch it again:
+The remote vLLM runner does not need an OpenRouter key. For the older API
+experiments below, copy `.env.example` to `.env` and set `OPENROUTER_API_KEY`,
+or export it in your environment. The dataset is included in `data/`; to fetch
+it again:
 
 ```bash
 .venv/bin/python -m src.fetch_dataset
 ```
 
-## Run and inspect
+## Earlier API experiments and viewers
 
 Start a new 30-question benchmark (makes paid OpenRouter requests):
 
@@ -212,7 +229,7 @@ and marks the 54-second minimum serial grader toll (18 × 3s). It links each
 intervention to its reference attempt and exposes changed and matched controls.
 Unmet targets, failed runs, and missing timing evidence remain explicitly unranked.
 Each attempt's `metadata.json` follows [the metadata schema](data/attempt_metadata.schema.json).
-After importing new attempts, run `python -m src.attempt_metadata --all`, then
+After importing new attempts, run `python -m runner_final.core_v2.metadata --all`, then
 annotate the intervention/reference fields; existing annotations are preserved.
 The x-axis uses initialization timestamps; latency uses the official clock after
 warmup. Plot logic can be checked with `node test/test_results_history.js`.
@@ -229,7 +246,7 @@ median/range. Expand a group to inspect its individual attempts and provenance.
 These are descriptive groups from recorded controls, not proof of independent
 replication. Canonical evidence stays at `attempts/<ID>/` so existing links work.
 
-## Canonical remote attempts
+## Original canonical remote attempts (preserved)
 
 See [the attempt workflow](docs/attempts.md) and [repo agent instructions](AGENTS.md).
 On `callosum`, with a free GPU and configured model under `~/models`:
@@ -281,20 +298,35 @@ AIME 2024 is bundled as a separate 30-question prewarming workload. Select it
 with `--benchmark-year 2024`; its default role is `prewarming`. See
 [prewarming instructions](docs/attempts.md#aime-2024-prewarming-workload).
 
-## Final speedrun handoff
+## Measured AIME results and preserved controls
 
-Use `python -m runner_final.run_frozen --preset runner_final/presets/prompt_adherence.json`
-for the strategy behind the current five-run statistics and 2026 transfer check.
-The original `baseline.json` preset remains available as a preserved control.
-The [frozen core and configuration presets](runner_final/README.md) preserve
-30×1 barrier coverage, exact-ID continuation and the four-request cap.
-The [audited strategy report](docs/reports/final/report.md) distinguishes that
-baseline from the measured improved-prompt and prepared 30×2/4K experiments; its
-[source audit](docs/reports/final/strategy-audit.json) records the resolved settings.
+The [core-v2 AIME 2025 back-test](runs/experiments/core-v2-aime2025-five-seeds-20261004T013100Z/README.md)
+reached 18 in **5/5 declared-seed trials**: median **113.415s**, range
+**86.088–145.437s**. Every same-seed v2 trial was slower than its historical v1
+control. V2 incurred **62 wrong checks**, versus seven in the v1 batch;
+**54 were literal placeholders**, costing 162 seconds across the batch. Its
+broader parser admitted boxes such as `EXPRESSION`, `...` and `?`. V2 provides generalized mathematical answer support, but this
+prompt/parser bundle does not improve the measured AIME speed. The comparison
+keeps model/profile, seeds, scheduling, budgets and cheap warmup matched; the
+batches ran sequentially on separate server lifetimes, so it does not isolate
+prompt, parser or run-state effects.
 
-The subsequent [improved-prompt core validation](runs/experiments/frozen-core-prompt-five-seeds-20261004T005416Z/README.md)
-reached 18 in all five declared-seed trials: median **77.277s**, range
-**62.783–82.492s**, five successes across the declared seeds on one server. These measured
-batch statistics replace historical best-draw timing as the current headline. The core and original baseline preset are unchanged.
+For the faster measured AIME configuration, use the preserved frozen v1 core
+with its improved prompt:
 
-[The lightweight AIME 2026 transfer check](runs/experiments/frozen-core-aime2026-lightweight-20261004T011005Z/README.md) reached 18 verified correct in **88.669s** with one wrong check, using the unchanged improved-prompt core. This is one predeclared seed, separate from the five-run 2025 headline statistics.
+```bash
+~/.venvs/vllm/bin/python -m runner_final.run_frozen \
+  --preset runner_final/presets/prompt_adherence.json --seed 20261011
+```
+
+[That five-seed AIME 2025 batch](runs/experiments/frozen-core-prompt-five-seeds-20261004T005416Z/README.md)
+reached 18 in **5/5 trials**, median **77.277s**, range **62.783–82.492s** on one
+server. These batch statistics are the supported AIME speed reference; a fastest
+historical draw is secondary context. The original `baseline.json` remains a
+preserved prompt control. Both immutable cores and their manifests are unchanged.
+
+[The v1 lightweight AIME 2026 transfer check](runs/experiments/frozen-core-aime2026-lightweight-20261004T011005Z/README.md)
+reached 18 in **88.669s** with one wrong check. That single declared seed is
+separate from the five-run 2025 statistics and is not a v2 transfer result.
+See [runner version details](runner_final/README.md) and the earlier
+[audited strategy report](docs/reports/final/report.md) for historical evidence.
