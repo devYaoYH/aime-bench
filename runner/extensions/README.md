@@ -61,3 +61,5 @@ driver. It starts owned services in a clean pinned worktree, validates all
 policy controls and reference prompt token IDs, retains failures, and compares
 against the existing NVFP4 seed. It requires the reference model/assets and
 versioned reference attempt; the ordinary policy command above does not.
+
+The [five paired AWQ/NVFP4 trials](../../runs/experiments/core-v1_6-awq-five-seeds-20261004T232747Z/README.md) all reached 18. AWQ's median was 88.835s versus NVFP4's 77.498s, with similar sample spread; two paired seeds favored AWQ. These are deployment comparisons with different server lifetimes, as detailed in the report.

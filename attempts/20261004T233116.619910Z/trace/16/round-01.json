@@ -1,0 +1,116 @@
+{
+  "problem_idx": 16,
+  "started_at_utc": "2026-10-04T23:31:17.498+00:00",
+  "finished_at_utc": "2026-10-04T23:31:32.783+00:00",
+  "end_to_end_latency_s": 15.28500700602308,
+  "status": "solved",
+  "winner": {
+    "answer": 468,
+    "part": "content",
+    "kind": "literal_prose",
+    "end": 3722,
+    "line": "But we need to double-check that no other constraints (like G's coordinates might not be (58,24) but could be (58,-24), but area magnitude same). So answer is 468.",
+    "candidate": "468",
+    "rollout": 1,
+    "observed_at_utc": "2026-10-04T23:31:26.394+00:00",
+    "question_elapsed_s": 8.895717929000966,
+    "verification_started_at_utc": "2026-10-04T23:31:26.396+00:00",
+    "round": 1,
+    "candidate_queue_wait_s": 0.0019063720246776938,
+    "result": {
+      "dataset": {
+        "format": "jsonl",
+        "gold_field": "answer",
+        "id": "aime_2025",
+        "idx_field": "problem_idx",
+        "revision": "c94da77eb22bbd6439e62a323bec18493a421302",
+        "source": "/home/azureuser/aime-bench-awq-five-b634e1a7/runner/grader/data/aime_2025.jsonl",
+        "year": 2025,
+        "sha256": "d5bcac5904290630fe98e3c3d1c2773260ebf59b57955382735e9ce8c0142b41"
+      },
+      "query_id": "20261004T233116.619910Z-q16-a468",
+      "seq": 4,
+      "agent_id": "20261004T233116.619910Z-q16-r1",
+      "index": 16,
+      "candidate": "468",
+      "verdict": true,
+      "queue_ahead_at_submit": 1,
+      "submitted_at": "2026-10-04T23:31:26.401443Z",
+      "picked_at": "2026-10-04T23:31:29.774946Z",
+      "answered_at": "2026-10-04T23:31:32.775066Z",
+      "queue_wait_s": 3.374,
+      "toll_s": 3.0,
+      "latency_s": 6.374
+    },
+    "verification_finished_at_utc": "2026-10-04T23:31:32.776+00:00",
+    "verification_latency_s": 6.380741108034272
+  },
+  "error": null,
+  "unique_candidates": 1,
+  "candidate_answers": [
+    "468"
+  ],
+  "rollouts": [
+    {
+      "rollout": 1,
+      "round": 1,
+      "started_at_utc": "2026-10-04T23:31:17.511+00:00",
+      "start_monotonic_s": 360925.574393625,
+      "ttft_s": 0.2524841029662639,
+      "last_token_s": 15.261654286005069,
+      "finish_reason": null,
+      "status": "cancelled",
+      "done_received": false,
+      "usage": {
+        "prompt_tokens": 275,
+        "total_tokens": 2835,
+        "completion_tokens": 2560,
+        "completion_tokens_details": null
+      },
+      "endpoint": "/v1/chat/completions",
+      "continuation_of_rollout": null,
+      "requested_max_tokens": 8192,
+      "http_status": 200,
+      "headers_received_s": 0.06753577495692298,
+      "generation_finished_at_utc": "2026-10-04T23:31:32.777+00:00",
+      "generation_end_monotonic_s": 360940.839899895,
+      "generation_latency_s": 15.26550626999233,
+      "generation_censored": true,
+      "generated_token_ids_count": 2560,
+      "prompt_token_ids_count": 275,
+      "cached_prompt_tokens": null,
+      "prefix_cache_hit_fraction": null,
+      "overhead": {
+        "enabled": false,
+        "timings": {},
+        "counters": {},
+        "maxima": {}
+      },
+      "fresh_sample": 1,
+      "segment": 1,
+      "trajectory_generated_before": 0,
+      "trajectory_generated_tokens": 2560,
+      "finished_at_utc": "2026-10-04T23:31:32.783+00:00",
+      "end_to_end_latency_s": 15.271716728981119,
+      "end_to_end_scope": "rollout start through question verification/cancellation settlement",
+      "gpu": null
+    }
+  ],
+  "round": 1,
+  "first_solved": {
+    "problem_idx": 16,
+    "round": 1,
+    "rollout": 1,
+    "candidate": "468",
+    "first_solved_at_utc": "2026-10-04T23:31:32.777+00:00",
+    "first_solved_elapsed_s": 15.279567462042905,
+    "grader_answered_at_utc": "2026-10-04T23:31:32.775066Z",
+    "grader_query_id": "20261004T233116.619910Z-q16-a468"
+  },
+  "overhead": {
+    "enabled": false,
+    "timings": {},
+    "counters": {},
+    "maxima": {}
+  }
+}

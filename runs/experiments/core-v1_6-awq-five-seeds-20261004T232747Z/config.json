@@ -1,0 +1,29 @@
+{
+  "driver": "runner.extensions.validation.awq_v1_6_batch",
+  "source_commit": "b634e1a7cf4c2c256101be581b30dc8201d1ff11",
+  "core_manifest_sha256": "15e943454e6f4840325f560bbfd9d18daafab090d24561e2abd6e1018a435017",
+  "started_at_utc": "2026-10-04T23:28:05.744+00:00",
+  "model": "AABoyles/VibeThinker-3B-AWQ",
+  "profile": "vllm-v1_6-awq-marlin.yaml",
+  "reference_batch": "core-v1_6-barrier-five-seeds-20261004T224850Z",
+  "plan": {
+    "pilot_batch": "core-v1_6-awq-marlin-20261004T232028Z",
+    "pilot_source_commit": "f600cd0261318cc6f2ac50161b72043cb865aca6",
+    "seeds": [
+      20261011,
+      20261012,
+      20261013,
+      20261014,
+      20261015
+    ],
+    "remaining_seeds": [
+      20261012,
+      20261013,
+      20261014,
+      20261015
+    ]
+  },
+  "server_lifetime_note": "Five fresh AWQ server lifetimes, each prefix-reset and cheaply warmed. NVFP4 control used one shared server lifetime across five seeds. Official solve time excludes startup/warmup; residual compilation/cache state may still affect latency.",
+  "trial_wall_timeout_s": 600,
+  "replacement_trials": false
+}

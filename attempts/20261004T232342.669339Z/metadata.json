@@ -4,14 +4,14 @@
   "attempt_id": "20261004T232342.669339Z",
   "label": "AABoyles/VibeThinker-3B-AWQ",
   "intervention": {
-    "label": "AWQ int4/group128 Marlin, unchanged v1.6",
+    "label": "AWQ int4/group128 Marlin, unchanged v1.6 paired-seed batch",
     "reference_attempt_id": "20261004T224952.799732Z",
     "changed_variables": [
-      "model weights: NVFP4 artifact to AWQ int4/group128 artifact",
-      "quantizer and model weight revision",
-      "tokenizer serialization, with identical semantic prompt IDs and output decoding"
+      "model weights/quantizer: NVFP4 to AWQ int4/group128",
+      "model weight revision and tokenizer serialization (semantic prompt IDs/decoding match)",
+      "batch service lifetime policy: fresh AWQ server per trial versus shared NVFP4 server across five seeds"
     ],
-    "comparison_note": "Same seed, frozen v1.6 manifest, initial payloads after model normalization, prompt/sampling, 95% GPU memory, BF16 activations/KV, FlashInfer attention, cheap warmup and benchmark mode. Both use Marlin linear kernels. AWQ tokenizer assets differ in bytes but all reference prompt IDs, vocabulary/special IDs and decoded outputs match. Base revision/calibration is not pinned; this compares downloaded deployments, not a pure fixed-checkpoint quantization effect."
+    "comparison_note": "Five declared matching seeds, reusing the previously completed AWQ seed 20261011 without replacement. Frozen v1.6 manifest, dataset/prompt, initial request payloads after model normalization, sampling, 95% memory, BF16 activations/KV, FlashInfer attention, Marlin linear backend, token limits, benchmark mode and cheap warmup match. Fresh server lifetimes do not clear persistent compilation caches. Base revision/calibration is not pinned; these are deployment-level descriptive comparisons, not an isolated quantization effect. Both servers for the first paired seed were newly started; later AWQ seeds restart the server whereas later NVFP4 seeds reuse it."
   },
   "runner": {
     "module": "runner.extensions.v1_6",

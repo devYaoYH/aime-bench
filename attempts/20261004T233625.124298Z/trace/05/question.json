@@ -1,0 +1,168 @@
+{
+  "problem_idx": 5,
+  "started_at_utc": "2026-10-04T23:36:26.004+00:00",
+  "finished_at_utc": "2026-10-04T23:37:10.273+00:00",
+  "end_to_end_latency_s": 44.26818182802526,
+  "status": "solved",
+  "winner": {
+    "answer": 279,
+    "part": "content",
+    "kind": "literal_prose",
+    "end": 15106,
+    "line": "Check: N = number of 8-digit permutations divisible by 22. Then difference between N and 2025 = N - 2025 = 2304 - 2025 = 279. So answer is 279. That is within 0-999.",
+    "candidate": "279",
+    "rollout": 1,
+    "observed_at_utc": "2026-10-04T23:36:59.729+00:00",
+    "question_elapsed_s": 33.724652755015995,
+    "verification_started_at_utc": "2026-10-04T23:36:59.729+00:00",
+    "round": 1,
+    "candidate_queue_wait_s": 0.0003728679730556905,
+    "result": {
+      "dataset": {
+        "format": "jsonl",
+        "gold_field": "answer",
+        "id": "aime_2025",
+        "idx_field": "problem_idx",
+        "revision": "c94da77eb22bbd6439e62a323bec18493a421302",
+        "source": "/home/azureuser/aime-bench-awq-five-b634e1a7/runner/grader/data/aime_2025.jsonl",
+        "year": 2025,
+        "sha256": "d5bcac5904290630fe98e3c3d1c2773260ebf59b57955382735e9ce8c0142b41"
+      },
+      "query_id": "20261004T233625.124298Z-q5-a279",
+      "seq": 13,
+      "agent_id": "20261004T233625.124298Z-q5-r1",
+      "index": 5,
+      "candidate": "279",
+      "verdict": true,
+      "queue_ahead_at_submit": 2,
+      "submitted_at": "2026-10-04T23:36:59.733627Z",
+      "picked_at": "2026-10-04T23:37:07.261982Z",
+      "answered_at": "2026-10-04T23:37:10.262129Z",
+      "queue_wait_s": 7.528,
+      "toll_s": 3.0,
+      "latency_s": 10.529
+    },
+    "verification_finished_at_utc": "2026-10-04T23:37:10.263+00:00",
+    "verification_latency_s": 10.53395500802435
+  },
+  "error": null,
+  "unique_candidates": 1,
+  "candidate_answers": [
+    "279"
+  ],
+  "rollouts": [
+    {
+      "rollout": 1,
+      "round": 1,
+      "started_at_utc": "2026-10-04T23:36:26.011+00:00",
+      "start_monotonic_s": 361234.073543722,
+      "ttft_s": 0.11137559200869873,
+      "last_token_s": 44.245287461031694,
+      "finish_reason": null,
+      "status": "cancelled",
+      "done_received": false,
+      "usage": {
+        "prompt_tokens": 254,
+        "total_tokens": 6964,
+        "completion_tokens": 6710,
+        "completion_tokens_details": null
+      },
+      "endpoint": "/v1/chat/completions",
+      "continuation_of_rollout": null,
+      "requested_max_tokens": 8192,
+      "http_status": 200,
+      "headers_received_s": 0.04165268799988553,
+      "generation_finished_at_utc": "2026-10-04T23:37:10.265+00:00",
+      "generation_end_monotonic_s": 361278.32788877,
+      "generation_latency_s": 44.25434504804434,
+      "generation_censored": true,
+      "generated_token_ids_count": 6710,
+      "prompt_token_ids_count": 254,
+      "cached_prompt_tokens": null,
+      "prefix_cache_hit_fraction": null,
+      "overhead": {
+        "enabled": false,
+        "timings": {},
+        "counters": {},
+        "maxima": {}
+      },
+      "fresh_sample": 1,
+      "segment": 1,
+      "trajectory_generated_before": 0,
+      "trajectory_generated_tokens": 6710,
+      "finished_at_utc": "2026-10-04T23:37:10.273+00:00",
+      "end_to_end_latency_s": 44.26196824503131,
+      "end_to_end_scope": "rollout start through question verification/cancellation settlement",
+      "gpu": null
+    }
+  ],
+  "round": 1,
+  "first_solved": {
+    "problem_idx": 5,
+    "round": 1,
+    "rollout": 1,
+    "candidate": "279",
+    "first_solved_at_utc": "2026-10-04T23:37:10.263+00:00",
+    "first_solved_elapsed_s": 44.259619268006645,
+    "grader_answered_at_utc": "2026-10-04T23:37:10.262129Z",
+    "grader_query_id": "20261004T233625.124298Z-q5-a279"
+  },
+  "overhead": {
+    "enabled": false,
+    "timings": {},
+    "counters": {},
+    "maxima": {}
+  },
+  "rounds": [
+    {
+      "round": 1,
+      "status": "solved",
+      "started_at_utc": "2026-10-04T23:36:26.004+00:00",
+      "finished_at_utc": "2026-10-04T23:37:10.273+00:00",
+      "end_to_end_latency_s": 44.26818182802526,
+      "winner": {
+        "answer": 279,
+        "part": "content",
+        "kind": "literal_prose",
+        "end": 15106,
+        "line": "Check: N = number of 8-digit permutations divisible by 22. Then difference between N and 2025 = N - 2025 = 2304 - 2025 = 279. So answer is 279. That is within 0-999.",
+        "candidate": "279",
+        "rollout": 1,
+        "observed_at_utc": "2026-10-04T23:36:59.729+00:00",
+        "question_elapsed_s": 33.724652755015995,
+        "verification_started_at_utc": "2026-10-04T23:36:59.729+00:00",
+        "round": 1,
+        "candidate_queue_wait_s": 0.0003728679730556905,
+        "result": {
+          "dataset": {
+            "format": "jsonl",
+            "gold_field": "answer",
+            "id": "aime_2025",
+            "idx_field": "problem_idx",
+            "revision": "c94da77eb22bbd6439e62a323bec18493a421302",
+            "source": "/home/azureuser/aime-bench-awq-five-b634e1a7/runner/grader/data/aime_2025.jsonl",
+            "year": 2025,
+            "sha256": "d5bcac5904290630fe98e3c3d1c2773260ebf59b57955382735e9ce8c0142b41"
+          },
+          "query_id": "20261004T233625.124298Z-q5-a279",
+          "seq": 13,
+          "agent_id": "20261004T233625.124298Z-q5-r1",
+          "index": 5,
+          "candidate": "279",
+          "verdict": true,
+          "queue_ahead_at_submit": 2,
+          "submitted_at": "2026-10-04T23:36:59.733627Z",
+          "picked_at": "2026-10-04T23:37:07.261982Z",
+          "answered_at": "2026-10-04T23:37:10.262129Z",
+          "queue_wait_s": 7.528,
+          "toll_s": 3.0,
+          "latency_s": 10.529
+        },
+        "verification_finished_at_utc": "2026-10-04T23:37:10.263+00:00",
+        "verification_latency_s": 10.53395500802435
+      },
+      "error": null
+    }
+  ],
+  "question_start_monotonic_s": 361234.067330139
+}

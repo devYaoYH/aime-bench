@@ -1,0 +1,1797 @@
+{
+  "source_commit": "b634e1a7cf4c2c256101be581b30dc8201d1ff11",
+  "pairs": [
+    {
+      "seed": 20261011,
+      "audit": {
+        "valid": true,
+        "attempt_id": "20261004T232342.669339Z",
+        "time_to_target_s": 100.16319314099383,
+        "target_reached": true,
+        "solved": 18,
+        "status": "completed",
+        "reference_attempt_id": "20261004T224952.799732Z",
+        "reference_time_to_target_s": 77.49791123199975,
+        "initial_payload_mismatches": [],
+        "continuation_errors": [],
+        "barrier_valid": true,
+        "cap_valid": true,
+        "peak_active_requests": 30,
+        "barrier_release": {
+          "released_at_utc": "2026-10-04T23:24:45.116+00:00",
+          "elapsed_s": 58.07669605396222,
+          "active_requests": 0
+        },
+        "generation_requests": 66,
+        "fresh_samples": 52,
+        "performance": {
+          "generation_requests": 66,
+          "fresh_samples": 52,
+          "continuation_requests": 14,
+          "fresh_ttft": {
+            "count": 50,
+            "median_s": 3.4107349519617856,
+            "p95_s": 3.5015554680139758
+          },
+          "continuation_ttft": {
+            "count": 14,
+            "median_s": 0.21662077499786392,
+            "p95_s": 0.2491963389911689
+          },
+          "official_gpu": null,
+          "initialization_gpu": null
+        },
+        "grader_timeline": {
+          "completed_queries": 19,
+          "audit_errors": [],
+          "correct": 18,
+          "wrong": 1,
+          "target_service_floor_s": 54.0,
+          "actual_service_s": 57.00219678878784,
+          "idle_between_queries_s": 35.212048292160034,
+          "first_pick_elapsed_s": 7.947767972946167,
+          "scope": "completed oracle jobs; queued/cancelled client jobs may still incur service"
+        },
+        "trace_storage": {
+          "buffered": true,
+          "files_written": 422,
+          "jsonl_rows": 329635,
+          "payload_characters": 116094992,
+          "latency_s": 2.468408787972294,
+          "scope": "Client trace flush after official timing; excluded from time to target and official latency"
+        }
+      },
+      "awq": {
+        "label": "AWQ / Marlin",
+        "attempt_id": "20261004T232342.669339Z",
+        "time_to_18_s": 100.16319314099383,
+        "status": "completed",
+        "target_reached": true,
+        "solved": 18,
+        "requests": 66,
+        "fresh_samples": 52,
+        "initial_30_ttft_median_s": 3.439353429013863,
+        "grader_timeline": {
+          "completed_queries": 19,
+          "audit_errors": [],
+          "correct": 18,
+          "wrong": 1,
+          "target_service_floor_s": 54.0,
+          "actual_service_s": 57.00219678878784,
+          "idle_between_queries_s": 35.212048292160034,
+          "first_pick_elapsed_s": 7.947767972946167,
+          "scope": "completed oracle jobs; queued/cancelled client jobs may still incur service"
+        },
+        "barrier_release": {
+          "released_at_utc": "2026-10-04T23:24:45.116+00:00",
+          "elapsed_s": 58.07669605396222,
+          "active_requests": 0
+        },
+        "win_sources": {
+          "initial": 15,
+          "continuation": 3,
+          "fresh_sibling": 0
+        },
+        "wins": [
+          {
+            "question_index": 1,
+            "rollout": 1,
+            "first_solved_elapsed_s": 10.949171919957735,
+            "grader_query_id": "20261004T232342.669339Z-q1-a70"
+          },
+          {
+            "question_index": 17,
+            "rollout": 1,
+            "first_solved_elapsed_s": 13.951640798011795,
+            "grader_query_id": "20261004T232342.669339Z-q17-a49"
+          },
+          {
+            "question_index": 16,
+            "rollout": 1,
+            "first_solved_elapsed_s": 16.95115043997066,
+            "grader_query_id": "20261004T232342.669339Z-q16-a468"
+          },
+          {
+            "question_index": 3,
+            "rollout": 1,
+            "first_solved_elapsed_s": 19.94995131599717,
+            "grader_query_id": "20261004T232342.669339Z-q3-a16"
+          },
+          {
+            "question_index": 6,
+            "rollout": 1,
+            "first_solved_elapsed_s": 22.950531932001468,
+            "grader_query_id": "20261004T232342.669339Z-q6-a504"
+          },
+          {
+            "question_index": 4,
+            "rollout": 1,
+            "first_solved_elapsed_s": 25.95262814796297,
+            "grader_query_id": "20261004T232342.669339Z-q4-a117"
+          },
+          {
+            "question_index": 8,
+            "rollout": 1,
+            "first_solved_elapsed_s": 28.952411192993168,
+            "grader_query_id": "20261004T232342.669339Z-q8-a77"
+          },
+          {
+            "question_index": 25,
+            "rollout": 1,
+            "first_solved_elapsed_s": 31.95136232598452,
+            "grader_query_id": "20261004T232342.669339Z-q25-a907"
+          },
+          {
+            "question_index": 22,
+            "rollout": 1,
+            "first_solved_elapsed_s": 34.95158824196551,
+            "grader_query_id": "20261004T232342.669339Z-q22-a237"
+          },
+          {
+            "question_index": 27,
+            "rollout": 1,
+            "first_solved_elapsed_s": 37.952118935005274,
+            "grader_query_id": "20261004T232342.669339Z-q27-a19"
+          },
+          {
+            "question_index": 24,
+            "rollout": 1,
+            "first_solved_elapsed_s": 40.95227927999804,
+            "grader_query_id": "20261004T232342.669339Z-q24-a149"
+          },
+          {
+            "question_index": 19,
+            "rollout": 1,
+            "first_solved_elapsed_s": 43.95226630300749,
+            "grader_query_id": "20261004T232342.669339Z-q19-a106"
+          },
+          {
+            "question_index": 18,
+            "rollout": 1,
+            "first_solved_elapsed_s": 49.95347393100383,
+            "grader_query_id": "20261004T232342.669339Z-q18-a82"
+          },
+          {
+            "question_index": 21,
+            "rollout": 1,
+            "first_solved_elapsed_s": 52.95360334101133,
+            "grader_query_id": "20261004T232342.669339Z-q21-a293"
+          },
+          {
+            "question_index": 26,
+            "rollout": 1,
+            "first_solved_elapsed_s": 56.21828389400616,
+            "grader_query_id": "20261004T232342.669339Z-q26-a113"
+          },
+          {
+            "question_index": 7,
+            "rollout": 2,
+            "first_solved_elapsed_s": 69.41123564098962,
+            "grader_query_id": "20261004T232342.669339Z-q7-a821"
+          },
+          {
+            "question_index": 12,
+            "rollout": 2,
+            "first_solved_elapsed_s": 82.35028089897241,
+            "grader_query_id": "20261004T232342.669339Z-q12-a510"
+          },
+          {
+            "question_index": 29,
+            "rollout": 2,
+            "first_solved_elapsed_s": 100.16319314099383,
+            "grader_query_id": "20261004T232342.669339Z-q29-a104"
+          }
+        ]
+      },
+      "nvfp4": {
+        "label": "NVFP4 / Marlin",
+        "attempt_id": "20261004T224952.799732Z",
+        "time_to_18_s": 77.49791123199975,
+        "status": "completed",
+        "target_reached": true,
+        "solved": 18,
+        "requests": 67,
+        "fresh_samples": 54,
+        "initial_30_ttft_median_s": 0.22216231800848618,
+        "grader_timeline": {
+          "completed_queries": 21,
+          "audit_errors": [],
+          "correct": 18,
+          "wrong": 3,
+          "target_service_floor_s": 54.0,
+          "actual_service_s": 63.0025155544281,
+          "idle_between_queries_s": 8.400473356246948,
+          "first_pick_elapsed_s": 6.094102144241333,
+          "scope": "completed oracle jobs; queued/cancelled client jobs may still incur service"
+        },
+        "barrier_release": {
+          "released_at_utc": "2026-10-04T22:50:50.938+00:00",
+          "elapsed_s": 57.255966957018245,
+          "active_requests": 0
+        },
+        "win_sources": {
+          "initial": 15,
+          "continuation": 2,
+          "fresh_sibling": 1
+        },
+        "wins": [
+          {
+            "question_index": 1,
+            "rollout": 1,
+            "first_solved_elapsed_s": 9.095219245995395,
+            "grader_query_id": "20261004T224952.799732Z-q1-a70"
+          },
+          {
+            "question_index": 17,
+            "rollout": 1,
+            "first_solved_elapsed_s": 12.09551392000867,
+            "grader_query_id": "20261004T224952.799732Z-q17-a49"
+          },
+          {
+            "question_index": 3,
+            "rollout": 1,
+            "first_solved_elapsed_s": 15.098078447044827,
+            "grader_query_id": "20261004T224952.799732Z-q3-a16"
+          },
+          {
+            "question_index": 6,
+            "rollout": 1,
+            "first_solved_elapsed_s": 18.095981944003142,
+            "grader_query_id": "20261004T224952.799732Z-q6-a504"
+          },
+          {
+            "question_index": 16,
+            "rollout": 1,
+            "first_solved_elapsed_s": 21.09619820804801,
+            "grader_query_id": "20261004T224952.799732Z-q16-a468"
+          },
+          {
+            "question_index": 4,
+            "rollout": 1,
+            "first_solved_elapsed_s": 24.098116033012047,
+            "grader_query_id": "20261004T224952.799732Z-q4-a117"
+          },
+          {
+            "question_index": 22,
+            "rollout": 1,
+            "first_solved_elapsed_s": 30.099227427039295,
+            "grader_query_id": "20261004T224952.799732Z-q22-a237"
+          },
+          {
+            "question_index": 24,
+            "rollout": 1,
+            "first_solved_elapsed_s": 33.09979144099634,
+            "grader_query_id": "20261004T224952.799732Z-q24-a149"
+          },
+          {
+            "question_index": 26,
+            "rollout": 1,
+            "first_solved_elapsed_s": 36.09820370504167,
+            "grader_query_id": "20261004T224952.799732Z-q26-a113"
+          },
+          {
+            "question_index": 19,
+            "rollout": 1,
+            "first_solved_elapsed_s": 39.10000963200582,
+            "grader_query_id": "20261004T224952.799732Z-q19-a106"
+          },
+          {
+            "question_index": 21,
+            "rollout": 1,
+            "first_solved_elapsed_s": 42.09898041799897,
+            "grader_query_id": "20261004T224952.799732Z-q21-a293"
+          },
+          {
+            "question_index": 5,
+            "rollout": 1,
+            "first_solved_elapsed_s": 48.09931277501164,
+            "grader_query_id": "20261004T224952.799732Z-q5-a279"
+          },
+          {
+            "question_index": 18,
+            "rollout": 1,
+            "first_solved_elapsed_s": 51.09903297404526,
+            "grader_query_id": "20261004T224952.799732Z-q18-a82"
+          },
+          {
+            "question_index": 7,
+            "rollout": 1,
+            "first_solved_elapsed_s": 54.25553788302932,
+            "grader_query_id": "20261004T224952.799732Z-q7-a821"
+          },
+          {
+            "question_index": 27,
+            "rollout": 1,
+            "first_solved_elapsed_s": 57.25544754404109,
+            "grader_query_id": "20261004T224952.799732Z-q27-a19"
+          },
+          {
+            "question_index": 11,
+            "rollout": 2,
+            "first_solved_elapsed_s": 60.58841130003566,
+            "grader_query_id": "20261004T224952.799732Z-q11-a259"
+          },
+          {
+            "question_index": 2,
+            "rollout": 2,
+            "first_solved_elapsed_s": 73.09106808400247,
+            "grader_query_id": "20261004T224952.799732Z-q2-a588"
+          },
+          {
+            "question_index": 8,
+            "rollout": 2,
+            "first_solved_elapsed_s": 77.49791123199975,
+            "grader_query_id": "20261004T224952.799732Z-q8-a77"
+          }
+        ]
+      },
+      "delta_s": 22.665281908994075
+    },
+    {
+      "seed": 20261012,
+      "audit": {
+        "valid": true,
+        "attempt_id": "20261004T232909.168373Z",
+        "time_to_target_s": 61.21076566702686,
+        "target_reached": true,
+        "solved": 18,
+        "status": "completed",
+        "reference_attempt_id": "20261004T225113.454134Z",
+        "reference_time_to_target_s": 77.51159514999017,
+        "initial_payload_mismatches": [],
+        "continuation_errors": [],
+        "barrier_valid": true,
+        "cap_valid": true,
+        "peak_active_requests": 30,
+        "barrier_release": {
+          "released_at_utc": "2026-10-04T23:30:06.287+00:00",
+          "elapsed_s": 56.24210580898216,
+          "active_requests": 0
+        },
+        "generation_requests": 62,
+        "fresh_samples": 49,
+        "performance": {
+          "generation_requests": 62,
+          "fresh_samples": 49,
+          "continuation_requests": 13,
+          "fresh_ttft": {
+            "count": 47,
+            "median_s": 0.18078854901250452,
+            "p95_s": 0.28530205599963665
+          },
+          "continuation_ttft": {
+            "count": 13,
+            "median_s": 0.2161955059855245,
+            "p95_s": 0.2495771769899875
+          },
+          "official_gpu": null,
+          "initialization_gpu": null
+        },
+        "grader_timeline": {
+          "completed_queries": 18,
+          "audit_errors": [],
+          "correct": 18,
+          "wrong": 0,
+          "target_service_floor_s": 54.0,
+          "actual_service_s": 54.002281188964844,
+          "idle_between_queries_s": 1.9724218845367432,
+          "first_pick_elapsed_s": 5.235655069351196,
+          "scope": "completed oracle jobs; queued/cancelled client jobs may still incur service"
+        },
+        "trace_storage": {
+          "buffered": true,
+          "files_written": 402,
+          "jsonl_rows": 207011,
+          "payload_characters": 73428668,
+          "latency_s": 1.6419295719824731,
+          "scope": "Client trace flush after official timing; excluded from time to target and official latency"
+        }
+      },
+      "awq": {
+        "label": "AWQ / Marlin",
+        "attempt_id": "20261004T232909.168373Z",
+        "time_to_18_s": 61.21076566702686,
+        "status": "completed",
+        "target_reached": true,
+        "solved": 18,
+        "requests": 62,
+        "fresh_samples": 49,
+        "initial_30_ttft_median_s": 0.21244127952377312,
+        "grader_timeline": {
+          "completed_queries": 18,
+          "audit_errors": [],
+          "correct": 18,
+          "wrong": 0,
+          "target_service_floor_s": 54.0,
+          "actual_service_s": 54.002281188964844,
+          "idle_between_queries_s": 1.9724218845367432,
+          "first_pick_elapsed_s": 5.235655069351196,
+          "scope": "completed oracle jobs; queued/cancelled client jobs may still incur service"
+        },
+        "barrier_release": {
+          "released_at_utc": "2026-10-04T23:30:06.287+00:00",
+          "elapsed_s": 56.24210580898216,
+          "active_requests": 0
+        },
+        "win_sources": {
+          "initial": 17,
+          "continuation": 1,
+          "fresh_sibling": 0
+        },
+        "wins": [
+          {
+            "question_index": 17,
+            "rollout": 1,
+            "first_solved_elapsed_s": 8.236669076024555,
+            "grader_query_id": "20261004T232909.168373Z-q17-a49"
+          },
+          {
+            "question_index": 1,
+            "rollout": 1,
+            "first_solved_elapsed_s": 11.237770194013137,
+            "grader_query_id": "20261004T232909.168373Z-q1-a70"
+          },
+          {
+            "question_index": 3,
+            "rollout": 1,
+            "first_solved_elapsed_s": 14.236976163985673,
+            "grader_query_id": "20261004T232909.168373Z-q3-a16"
+          },
+          {
+            "question_index": 6,
+            "rollout": 1,
+            "first_solved_elapsed_s": 17.23753179301275,
+            "grader_query_id": "20261004T232909.168373Z-q6-a504"
+          },
+          {
+            "question_index": 19,
+            "rollout": 1,
+            "first_solved_elapsed_s": 20.23819506401196,
+            "grader_query_id": "20261004T232909.168373Z-q19-a106"
+          },
+          {
+            "question_index": 4,
+            "rollout": 1,
+            "first_solved_elapsed_s": 23.23885776201496,
+            "grader_query_id": "20261004T232909.168373Z-q4-a117"
+          },
+          {
+            "question_index": 16,
+            "rollout": 1,
+            "first_solved_elapsed_s": 26.238030307984445,
+            "grader_query_id": "20261004T232909.168373Z-q16-a468"
+          },
+          {
+            "question_index": 8,
+            "rollout": 1,
+            "first_solved_elapsed_s": 29.24004700302612,
+            "grader_query_id": "20261004T232909.168373Z-q8-a77"
+          },
+          {
+            "question_index": 25,
+            "rollout": 1,
+            "first_solved_elapsed_s": 32.23999434401048,
+            "grader_query_id": "20261004T232909.168373Z-q25-a907"
+          },
+          {
+            "question_index": 22,
+            "rollout": 1,
+            "first_solved_elapsed_s": 35.23944664601004,
+            "grader_query_id": "20261004T232909.168373Z-q22-a237"
+          },
+          {
+            "question_index": 24,
+            "rollout": 1,
+            "first_solved_elapsed_s": 38.23967373999767,
+            "grader_query_id": "20261004T232909.168373Z-q24-a149"
+          },
+          {
+            "question_index": 27,
+            "rollout": 1,
+            "first_solved_elapsed_s": 41.24112713598879,
+            "grader_query_id": "20261004T232909.168373Z-q27-a19"
+          },
+          {
+            "question_index": 21,
+            "rollout": 1,
+            "first_solved_elapsed_s": 44.24036558897933,
+            "grader_query_id": "20261004T232909.168373Z-q21-a293"
+          },
+          {
+            "question_index": 5,
+            "rollout": 1,
+            "first_solved_elapsed_s": 47.240785752015654,
+            "grader_query_id": "20261004T232909.168373Z-q5-a279"
+          },
+          {
+            "question_index": 2,
+            "rollout": 1,
+            "first_solved_elapsed_s": 50.240977698995266,
+            "grader_query_id": "20261004T232909.168373Z-q2-a588"
+          },
+          {
+            "question_index": 29,
+            "rollout": 1,
+            "first_solved_elapsed_s": 53.24144187098136,
+            "grader_query_id": "20261004T232909.168373Z-q29-a104"
+          },
+          {
+            "question_index": 9,
+            "rollout": 1,
+            "first_solved_elapsed_s": 56.24133154802257,
+            "grader_query_id": "20261004T232909.168373Z-q9-a62"
+          },
+          {
+            "question_index": 26,
+            "rollout": 2,
+            "first_solved_elapsed_s": 61.21076566702686,
+            "grader_query_id": "20261004T232909.168373Z-q26-a113"
+          }
+        ]
+      },
+      "nvfp4": {
+        "label": "NVFP4 / Marlin",
+        "attempt_id": "20261004T225113.454134Z",
+        "time_to_18_s": 77.51159514999017,
+        "status": "completed",
+        "target_reached": true,
+        "solved": 18,
+        "requests": 64,
+        "fresh_samples": 50,
+        "initial_30_ttft_median_s": 0.2392353015311528,
+        "grader_timeline": {
+          "completed_queries": 20,
+          "audit_errors": [],
+          "correct": 18,
+          "wrong": 2,
+          "target_service_floor_s": 54.0,
+          "actual_service_s": 60.00240707397461,
+          "idle_between_queries_s": 13.615160942077637,
+          "first_pick_elapsed_s": 3.8938980102539062,
+          "scope": "completed oracle jobs; queued/cancelled client jobs may still incur service"
+        },
+        "barrier_release": {
+          "released_at_utc": "2026-10-04T22:52:12.211+00:00",
+          "elapsed_s": 57.900314240017906,
+          "active_requests": 0
+        },
+        "win_sources": {
+          "initial": 16,
+          "continuation": 2,
+          "fresh_sibling": 0
+        },
+        "wins": [
+          {
+            "question_index": 17,
+            "rollout": 1,
+            "first_solved_elapsed_s": 9.894889915012754,
+            "grader_query_id": "20261004T225113.454134Z-q17-a49"
+          },
+          {
+            "question_index": 1,
+            "rollout": 1,
+            "first_solved_elapsed_s": 15.895779450016562,
+            "grader_query_id": "20261004T225113.454134Z-q1-a70"
+          },
+          {
+            "question_index": 4,
+            "rollout": 1,
+            "first_solved_elapsed_s": 18.89711494097719,
+            "grader_query_id": "20261004T225113.454134Z-q4-a117"
+          },
+          {
+            "question_index": 3,
+            "rollout": 1,
+            "first_solved_elapsed_s": 21.897420511988457,
+            "grader_query_id": "20261004T225113.454134Z-q3-a16"
+          },
+          {
+            "question_index": 8,
+            "rollout": 1,
+            "first_solved_elapsed_s": 24.897007355990354,
+            "grader_query_id": "20261004T225113.454134Z-q8-a77"
+          },
+          {
+            "question_index": 6,
+            "rollout": 1,
+            "first_solved_elapsed_s": 27.898640535015147,
+            "grader_query_id": "20261004T225113.454134Z-q6-a504"
+          },
+          {
+            "question_index": 25,
+            "rollout": 1,
+            "first_solved_elapsed_s": 30.897577932977583,
+            "grader_query_id": "20261004T225113.454134Z-q25-a907"
+          },
+          {
+            "question_index": 19,
+            "rollout": 1,
+            "first_solved_elapsed_s": 33.8980378350243,
+            "grader_query_id": "20261004T225113.454134Z-q19-a106"
+          },
+          {
+            "question_index": 16,
+            "rollout": 1,
+            "first_solved_elapsed_s": 36.898173640016466,
+            "grader_query_id": "20261004T225113.454134Z-q16-a468"
+          },
+          {
+            "question_index": 21,
+            "rollout": 1,
+            "first_solved_elapsed_s": 39.89891823497601,
+            "grader_query_id": "20261004T225113.454134Z-q21-a293"
+          },
+          {
+            "question_index": 22,
+            "rollout": 1,
+            "first_solved_elapsed_s": 42.89986783097265,
+            "grader_query_id": "20261004T225113.454134Z-q22-a237"
+          },
+          {
+            "question_index": 27,
+            "rollout": 1,
+            "first_solved_elapsed_s": 45.89902712899493,
+            "grader_query_id": "20261004T225113.454134Z-q27-a19"
+          },
+          {
+            "question_index": 24,
+            "rollout": 1,
+            "first_solved_elapsed_s": 48.899290822970215,
+            "grader_query_id": "20261004T225113.454134Z-q24-a149"
+          },
+          {
+            "question_index": 5,
+            "rollout": 1,
+            "first_solved_elapsed_s": 51.89964316698024,
+            "grader_query_id": "20261004T225113.454134Z-q5-a279"
+          },
+          {
+            "question_index": 26,
+            "rollout": 1,
+            "first_solved_elapsed_s": 54.9002064379747,
+            "grader_query_id": "20261004T225113.454134Z-q26-a113"
+          },
+          {
+            "question_index": 18,
+            "rollout": 1,
+            "first_solved_elapsed_s": 57.89985819498543,
+            "grader_query_id": "20261004T225113.454134Z-q18-a82"
+          },
+          {
+            "question_index": 12,
+            "rollout": 2,
+            "first_solved_elapsed_s": 73.27547227597097,
+            "grader_query_id": "20261004T225113.454134Z-q12-a510"
+          },
+          {
+            "question_index": 29,
+            "rollout": 2,
+            "first_solved_elapsed_s": 77.51159514999017,
+            "grader_query_id": "20261004T225113.454134Z-q29-a104"
+          }
+        ]
+      },
+      "delta_s": -16.30082948296331
+    },
+    {
+      "seed": 20261013,
+      "audit": {
+        "valid": true,
+        "attempt_id": "20261004T233116.619910Z",
+        "time_to_target_s": 94.21699606999755,
+        "target_reached": true,
+        "solved": 18,
+        "status": "completed",
+        "reference_attempt_id": "20261004T225234.136076Z",
+        "reference_time_to_target_s": 65.1764165799832,
+        "initial_payload_mismatches": [],
+        "continuation_errors": [],
+        "barrier_valid": true,
+        "cap_valid": true,
+        "peak_active_requests": 30,
+        "barrier_release": {
+          "released_at_utc": "2026-10-04T23:32:12.979+00:00",
+          "elapsed_s": 55.48236672102939,
+          "active_requests": 0
+        },
+        "generation_requests": 66,
+        "fresh_samples": 51,
+        "performance": {
+          "generation_requests": 66,
+          "fresh_samples": 51,
+          "continuation_requests": 15,
+          "fresh_ttft": {
+            "count": 49,
+            "median_s": 0.19469318399205804,
+            "p95_s": 0.2881640199921094
+          },
+          "continuation_ttft": {
+            "count": 15,
+            "median_s": 0.23806616401998326,
+            "p95_s": 0.2778819689992815
+          },
+          "official_gpu": null,
+          "initialization_gpu": null
+        },
+        "grader_timeline": {
+          "completed_queries": 20,
+          "audit_errors": [],
+          "correct": 18,
+          "wrong": 2,
+          "target_service_floor_s": 54.0,
+          "actual_service_s": 60.00244069099426,
+          "idle_between_queries_s": 30.936679363250732,
+          "first_pick_elapsed_s": 3.276839017868042,
+          "scope": "completed oracle jobs; queued/cancelled client jobs may still incur service"
+        },
+        "trace_storage": {
+          "buffered": true,
+          "files_written": 422,
+          "jsonl_rows": 319627,
+          "payload_characters": 112663313,
+          "latency_s": 2.443084351019934,
+          "scope": "Client trace flush after official timing; excluded from time to target and official latency"
+        }
+      },
+      "awq": {
+        "label": "AWQ / Marlin",
+        "attempt_id": "20261004T233116.619910Z",
+        "time_to_18_s": 94.21699606999755,
+        "status": "completed",
+        "target_reached": true,
+        "solved": 18,
+        "requests": 66,
+        "fresh_samples": 51,
+        "initial_30_ttft_median_s": 0.2142632154864259,
+        "grader_timeline": {
+          "completed_queries": 20,
+          "audit_errors": [],
+          "correct": 18,
+          "wrong": 2,
+          "target_service_floor_s": 54.0,
+          "actual_service_s": 60.00244069099426,
+          "idle_between_queries_s": 30.936679363250732,
+          "first_pick_elapsed_s": 3.276839017868042,
+          "scope": "completed oracle jobs; queued/cancelled client jobs may still incur service"
+        },
+        "barrier_release": {
+          "released_at_utc": "2026-10-04T23:32:12.979+00:00",
+          "elapsed_s": 55.48236672102939,
+          "active_requests": 0
+        },
+        "win_sources": {
+          "initial": 15,
+          "continuation": 3,
+          "fresh_sibling": 0
+        },
+        "wins": [
+          {
+            "question_index": 1,
+            "rollout": 1,
+            "first_solved_elapsed_s": 6.278491058037616,
+            "grader_query_id": "20261004T233116.619910Z-q1-a70"
+          },
+          {
+            "question_index": 17,
+            "rollout": 1,
+            "first_solved_elapsed_s": 9.27997364802286,
+            "grader_query_id": "20261004T233116.619910Z-q17-a49"
+          },
+          {
+            "question_index": 3,
+            "rollout": 1,
+            "first_solved_elapsed_s": 12.281116271042265,
+            "grader_query_id": "20261004T233116.619910Z-q3-a16"
+          },
+          {
+            "question_index": 16,
+            "rollout": 1,
+            "first_solved_elapsed_s": 15.279567462042905,
+            "grader_query_id": "20261004T233116.619910Z-q16-a468"
+          },
+          {
+            "question_index": 4,
+            "rollout": 1,
+            "first_solved_elapsed_s": 18.27976176800439,
+            "grader_query_id": "20261004T233116.619910Z-q4-a117"
+          },
+          {
+            "question_index": 6,
+            "rollout": 1,
+            "first_solved_elapsed_s": 21.27988433401333,
+            "grader_query_id": "20261004T233116.619910Z-q6-a504"
+          },
+          {
+            "question_index": 8,
+            "rollout": 1,
+            "first_solved_elapsed_s": 24.282739441026933,
+            "grader_query_id": "20261004T233116.619910Z-q8-a77"
+          },
+          {
+            "question_index": 22,
+            "rollout": 1,
+            "first_solved_elapsed_s": 27.28097927599447,
+            "grader_query_id": "20261004T233116.619910Z-q22-a237"
+          },
+          {
+            "question_index": 25,
+            "rollout": 1,
+            "first_solved_elapsed_s": 30.281924842041917,
+            "grader_query_id": "20261004T233116.619910Z-q25-a907"
+          },
+          {
+            "question_index": 5,
+            "rollout": 1,
+            "first_solved_elapsed_s": 33.282318865996785,
+            "grader_query_id": "20261004T233116.619910Z-q5-a279"
+          },
+          {
+            "question_index": 26,
+            "rollout": 1,
+            "first_solved_elapsed_s": 42.28246592503274,
+            "grader_query_id": "20261004T233116.619910Z-q26-a113"
+          },
+          {
+            "question_index": 19,
+            "rollout": 1,
+            "first_solved_elapsed_s": 45.282688200997654,
+            "grader_query_id": "20261004T233116.619910Z-q19-a106"
+          },
+          {
+            "question_index": 21,
+            "rollout": 1,
+            "first_solved_elapsed_s": 48.28323636902496,
+            "grader_query_id": "20261004T233116.619910Z-q21-a293"
+          },
+          {
+            "question_index": 9,
+            "rollout": 1,
+            "first_solved_elapsed_s": 51.28340580302756,
+            "grader_query_id": "20261004T233116.619910Z-q9-a62"
+          },
+          {
+            "question_index": 27,
+            "rollout": 1,
+            "first_solved_elapsed_s": 54.283143423032016,
+            "grader_query_id": "20261004T233116.619910Z-q27-a19"
+          },
+          {
+            "question_index": 18,
+            "rollout": 2,
+            "first_solved_elapsed_s": 58.932984918996226,
+            "grader_query_id": "20261004T233116.619910Z-q18-a82"
+          },
+          {
+            "question_index": 24,
+            "rollout": 2,
+            "first_solved_elapsed_s": 73.99120985699119,
+            "grader_query_id": "20261004T233116.619910Z-q24-a149"
+          },
+          {
+            "question_index": 23,
+            "rollout": 2,
+            "first_solved_elapsed_s": 94.21699606999755,
+            "grader_query_id": "20261004T233116.619910Z-q23-a610"
+          }
+        ]
+      },
+      "nvfp4": {
+        "label": "NVFP4 / Marlin",
+        "attempt_id": "20261004T225234.136076Z",
+        "time_to_18_s": 65.1764165799832,
+        "status": "completed",
+        "target_reached": true,
+        "solved": 18,
+        "requests": 64,
+        "fresh_samples": 50,
+        "initial_30_ttft_median_s": 0.2397585375001654,
+        "grader_timeline": {
+          "completed_queries": 19,
+          "audit_errors": [],
+          "correct": 18,
+          "wrong": 1,
+          "target_service_floor_s": 54.0,
+          "actual_service_s": 57.0019850730896,
+          "idle_between_queries_s": 3.812764883041382,
+          "first_pick_elapsed_s": 4.3612961769104,
+          "scope": "completed oracle jobs; queued/cancelled client jobs may still incur service"
+        },
+        "barrier_release": {
+          "released_at_utc": "2026-10-04T22:53:33.759+00:00",
+          "elapsed_s": 58.68140003300505,
+          "active_requests": 0
+        },
+        "win_sources": {
+          "initial": 16,
+          "continuation": 2,
+          "fresh_sibling": 0
+        },
+        "wins": [
+          {
+            "question_index": 17,
+            "rollout": 1,
+            "first_solved_elapsed_s": 7.361904495977797,
+            "grader_query_id": "20261004T225234.136076Z-q17-a49"
+          },
+          {
+            "question_index": 1,
+            "rollout": 1,
+            "first_solved_elapsed_s": 10.362135005998425,
+            "grader_query_id": "20261004T225234.136076Z-q1-a70"
+          },
+          {
+            "question_index": 3,
+            "rollout": 1,
+            "first_solved_elapsed_s": 13.362640559964348,
+            "grader_query_id": "20261004T225234.136076Z-q3-a16"
+          },
+          {
+            "question_index": 6,
+            "rollout": 1,
+            "first_solved_elapsed_s": 16.363197575963568,
+            "grader_query_id": "20261004T225234.136076Z-q6-a504"
+          },
+          {
+            "question_index": 8,
+            "rollout": 1,
+            "first_solved_elapsed_s": 19.36327159096254,
+            "grader_query_id": "20261004T225234.136076Z-q8-a77"
+          },
+          {
+            "question_index": 4,
+            "rollout": 1,
+            "first_solved_elapsed_s": 22.36375447997125,
+            "grader_query_id": "20261004T225234.136076Z-q4-a117"
+          },
+          {
+            "question_index": 19,
+            "rollout": 1,
+            "first_solved_elapsed_s": 25.36371516896179,
+            "grader_query_id": "20261004T225234.136076Z-q19-a106"
+          },
+          {
+            "question_index": 25,
+            "rollout": 1,
+            "first_solved_elapsed_s": 28.364169172011316,
+            "grader_query_id": "20261004T225234.136076Z-q25-a907"
+          },
+          {
+            "question_index": 22,
+            "rollout": 1,
+            "first_solved_elapsed_s": 31.3643032219843,
+            "grader_query_id": "20261004T225234.136076Z-q22-a237"
+          },
+          {
+            "question_index": 16,
+            "rollout": 1,
+            "first_solved_elapsed_s": 34.365041362005286,
+            "grader_query_id": "20261004T225234.136076Z-q16-a468"
+          },
+          {
+            "question_index": 21,
+            "rollout": 1,
+            "first_solved_elapsed_s": 37.3652374529629,
+            "grader_query_id": "20261004T225234.136076Z-q21-a293"
+          },
+          {
+            "question_index": 27,
+            "rollout": 1,
+            "first_solved_elapsed_s": 40.365188665979076,
+            "grader_query_id": "20261004T225234.136076Z-q27-a19"
+          },
+          {
+            "question_index": 24,
+            "rollout": 1,
+            "first_solved_elapsed_s": 46.365860586985946,
+            "grader_query_id": "20261004T225234.136076Z-q24-a149"
+          },
+          {
+            "question_index": 5,
+            "rollout": 1,
+            "first_solved_elapsed_s": 49.3664548539673,
+            "grader_query_id": "20261004T225234.136076Z-q5-a279"
+          },
+          {
+            "question_index": 18,
+            "rollout": 1,
+            "first_solved_elapsed_s": 52.36634021397913,
+            "grader_query_id": "20261004T225234.136076Z-q18-a82"
+          },
+          {
+            "question_index": 23,
+            "rollout": 1,
+            "first_solved_elapsed_s": 58.68091892200755,
+            "grader_query_id": "20261004T225234.136076Z-q23-a610"
+          },
+          {
+            "question_index": 12,
+            "rollout": 2,
+            "first_solved_elapsed_s": 62.17808369197883,
+            "grader_query_id": "20261004T225234.136076Z-q12-a510"
+          },
+          {
+            "question_index": 26,
+            "rollout": 2,
+            "first_solved_elapsed_s": 65.1764165799832,
+            "grader_query_id": "20261004T225234.136076Z-q26-a113"
+          }
+        ]
+      },
+      "delta_s": 29.040579490014352
+    },
+    {
+      "seed": 20261014,
+      "audit": {
+        "valid": true,
+        "attempt_id": "20261004T233357.876262Z",
+        "time_to_target_s": 80.82621511799516,
+        "target_reached": true,
+        "solved": 18,
+        "status": "completed",
+        "reference_attempt_id": "20261004T225342.150827Z",
+        "reference_time_to_target_s": 101.1226152079762,
+        "initial_payload_mismatches": [],
+        "continuation_errors": [],
+        "barrier_valid": true,
+        "cap_valid": true,
+        "peak_active_requests": 30,
+        "barrier_release": {
+          "released_at_utc": "2026-10-04T23:34:56.796+00:00",
+          "elapsed_s": 58.04249083600007,
+          "active_requests": 0
+        },
+        "generation_requests": 67,
+        "fresh_samples": 52,
+        "performance": {
+          "generation_requests": 67,
+          "fresh_samples": 52,
+          "continuation_requests": 15,
+          "fresh_ttft": {
+            "count": 50,
+            "median_s": 0.18524765700567514,
+            "p95_s": 0.27822787704644725
+          },
+          "continuation_ttft": {
+            "count": 15,
+            "median_s": 0.21197140397271141,
+            "p95_s": 0.25280778598971665
+          },
+          "official_gpu": null,
+          "initialization_gpu": null
+        },
+        "grader_timeline": {
+          "completed_queries": 20,
+          "audit_errors": [],
+          "correct": 18,
+          "wrong": 2,
+          "target_service_floor_s": 54.0,
+          "actual_service_s": 60.00247359275818,
+          "idle_between_queries_s": 17.81585144996643,
+          "first_pick_elapsed_s": 3.0069448947906494,
+          "scope": "completed oracle jobs; queued/cancelled client jobs may still incur service"
+        },
+        "trace_storage": {
+          "buffered": true,
+          "files_written": 427,
+          "jsonl_rows": 271823,
+          "payload_characters": 96022995,
+          "latency_s": 2.0319698399980552,
+          "scope": "Client trace flush after official timing; excluded from time to target and official latency"
+        }
+      },
+      "awq": {
+        "label": "AWQ / Marlin",
+        "attempt_id": "20261004T233357.876262Z",
+        "time_to_18_s": 80.82621511799516,
+        "status": "completed",
+        "target_reached": true,
+        "solved": 18,
+        "requests": 67,
+        "fresh_samples": 52,
+        "initial_30_ttft_median_s": 0.17705484249745496,
+        "grader_timeline": {
+          "completed_queries": 20,
+          "audit_errors": [],
+          "correct": 18,
+          "wrong": 2,
+          "target_service_floor_s": 54.0,
+          "actual_service_s": 60.00247359275818,
+          "idle_between_queries_s": 17.81585144996643,
+          "first_pick_elapsed_s": 3.0069448947906494,
+          "scope": "completed oracle jobs; queued/cancelled client jobs may still incur service"
+        },
+        "barrier_release": {
+          "released_at_utc": "2026-10-04T23:34:56.796+00:00",
+          "elapsed_s": 58.04249083600007,
+          "active_requests": 0
+        },
+        "win_sources": {
+          "initial": 15,
+          "continuation": 3,
+          "fresh_sibling": 0
+        },
+        "wins": [
+          {
+            "question_index": 1,
+            "rollout": 1,
+            "first_solved_elapsed_s": 6.009736213018186,
+            "grader_query_id": "20261004T233357.876262Z-q1-a70"
+          },
+          {
+            "question_index": 17,
+            "rollout": 1,
+            "first_solved_elapsed_s": 9.884368145023473,
+            "grader_query_id": "20261004T233357.876262Z-q17-a49"
+          },
+          {
+            "question_index": 6,
+            "rollout": 1,
+            "first_solved_elapsed_s": 12.88428301300155,
+            "grader_query_id": "20261004T233357.876262Z-q6-a504"
+          },
+          {
+            "question_index": 3,
+            "rollout": 1,
+            "first_solved_elapsed_s": 15.884263650979847,
+            "grader_query_id": "20261004T233357.876262Z-q3-a16"
+          },
+          {
+            "question_index": 4,
+            "rollout": 1,
+            "first_solved_elapsed_s": 18.88590352999745,
+            "grader_query_id": "20261004T233357.876262Z-q4-a117"
+          },
+          {
+            "question_index": 16,
+            "rollout": 1,
+            "first_solved_elapsed_s": 21.884726891992614,
+            "grader_query_id": "20261004T233357.876262Z-q16-a468"
+          },
+          {
+            "question_index": 25,
+            "rollout": 1,
+            "first_solved_elapsed_s": 24.885705000022426,
+            "grader_query_id": "20261004T233357.876262Z-q25-a907"
+          },
+          {
+            "question_index": 22,
+            "rollout": 1,
+            "first_solved_elapsed_s": 27.885565102973487,
+            "grader_query_id": "20261004T233357.876262Z-q22-a237"
+          },
+          {
+            "question_index": 19,
+            "rollout": 1,
+            "first_solved_elapsed_s": 30.885987735004164,
+            "grader_query_id": "20261004T233357.876262Z-q19-a106"
+          },
+          {
+            "question_index": 8,
+            "rollout": 1,
+            "first_solved_elapsed_s": 33.88594692101469,
+            "grader_query_id": "20261004T233357.876262Z-q8-a77"
+          },
+          {
+            "question_index": 5,
+            "rollout": 1,
+            "first_solved_elapsed_s": 36.88795244198991,
+            "grader_query_id": "20261004T233357.876262Z-q5-a279"
+          },
+          {
+            "question_index": 21,
+            "rollout": 1,
+            "first_solved_elapsed_s": 39.88634841598105,
+            "grader_query_id": "20261004T233357.876262Z-q21-a293"
+          },
+          {
+            "question_index": 26,
+            "rollout": 1,
+            "first_solved_elapsed_s": 45.886951502994634,
+            "grader_query_id": "20261004T233357.876262Z-q26-a113"
+          },
+          {
+            "question_index": 18,
+            "rollout": 1,
+            "first_solved_elapsed_s": 55.042374878015835,
+            "grader_query_id": "20261004T233357.876262Z-q18-a82"
+          },
+          {
+            "question_index": 9,
+            "rollout": 1,
+            "first_solved_elapsed_s": 58.04180089302827,
+            "grader_query_id": "20261004T233357.876262Z-q9-a62"
+          },
+          {
+            "question_index": 27,
+            "rollout": 2,
+            "first_solved_elapsed_s": 64.36536197498208,
+            "grader_query_id": "20261004T233357.876262Z-q27-a19"
+          },
+          {
+            "question_index": 12,
+            "rollout": 2,
+            "first_solved_elapsed_s": 74.74691929802066,
+            "grader_query_id": "20261004T233357.876262Z-q12-a510"
+          },
+          {
+            "question_index": 7,
+            "rollout": 2,
+            "first_solved_elapsed_s": 80.82621511799516,
+            "grader_query_id": "20261004T233357.876262Z-q7-a821"
+          }
+        ]
+      },
+      "nvfp4": {
+        "label": "NVFP4 / Marlin",
+        "attempt_id": "20261004T225342.150827Z",
+        "time_to_18_s": 101.1226152079762,
+        "status": "completed",
+        "target_reached": true,
+        "solved": 18,
+        "requests": 65,
+        "fresh_samples": 51,
+        "initial_30_ttft_median_s": 0.23898705147439614,
+        "grader_timeline": {
+          "completed_queries": 18,
+          "audit_errors": [],
+          "correct": 18,
+          "wrong": 0,
+          "target_service_floor_s": 54.0,
+          "actual_service_s": 54.00209641456604,
+          "idle_between_queries_s": 41.090208530426025,
+          "first_pick_elapsed_s": 6.029633045196533,
+          "scope": "completed oracle jobs; queued/cancelled client jobs may still incur service"
+        },
+        "barrier_release": {
+          "released_at_utc": "2026-10-04T22:54:39.570+00:00",
+          "elapsed_s": 56.56278322299477,
+          "active_requests": 0
+        },
+        "win_sources": {
+          "initial": 16,
+          "continuation": 2,
+          "fresh_sibling": 0
+        },
+        "wins": [
+          {
+            "question_index": 1,
+            "rollout": 1,
+            "first_solved_elapsed_s": 9.030686755024362,
+            "grader_query_id": "20261004T225342.150827Z-q1-a70"
+          },
+          {
+            "question_index": 6,
+            "rollout": 1,
+            "first_solved_elapsed_s": 12.031646205985453,
+            "grader_query_id": "20261004T225342.150827Z-q6-a504"
+          },
+          {
+            "question_index": 3,
+            "rollout": 1,
+            "first_solved_elapsed_s": 15.031564327015076,
+            "grader_query_id": "20261004T225342.150827Z-q3-a16"
+          },
+          {
+            "question_index": 16,
+            "rollout": 1,
+            "first_solved_elapsed_s": 18.032014119031373,
+            "grader_query_id": "20261004T225342.150827Z-q16-a468"
+          },
+          {
+            "question_index": 17,
+            "rollout": 1,
+            "first_solved_elapsed_s": 21.033424583030865,
+            "grader_query_id": "20261004T225342.150827Z-q17-a49"
+          },
+          {
+            "question_index": 19,
+            "rollout": 1,
+            "first_solved_elapsed_s": 24.033429991977755,
+            "grader_query_id": "20261004T225342.150827Z-q19-a106"
+          },
+          {
+            "question_index": 4,
+            "rollout": 1,
+            "first_solved_elapsed_s": 27.03343600098742,
+            "grader_query_id": "20261004T225342.150827Z-q4-a117"
+          },
+          {
+            "question_index": 22,
+            "rollout": 1,
+            "first_solved_elapsed_s": 30.032959852018394,
+            "grader_query_id": "20261004T225342.150827Z-q22-a237"
+          },
+          {
+            "question_index": 8,
+            "rollout": 1,
+            "first_solved_elapsed_s": 33.03320645802887,
+            "grader_query_id": "20261004T225342.150827Z-q8-a77"
+          },
+          {
+            "question_index": 25,
+            "rollout": 1,
+            "first_solved_elapsed_s": 36.03354122902965,
+            "grader_query_id": "20261004T225342.150827Z-q25-a907"
+          },
+          {
+            "question_index": 21,
+            "rollout": 1,
+            "first_solved_elapsed_s": 39.0338543090038,
+            "grader_query_id": "20261004T225342.150827Z-q21-a293"
+          },
+          {
+            "question_index": 27,
+            "rollout": 1,
+            "first_solved_elapsed_s": 42.03427075402578,
+            "grader_query_id": "20261004T225342.150827Z-q27-a19"
+          },
+          {
+            "question_index": 24,
+            "rollout": 1,
+            "first_solved_elapsed_s": 45.03449441900011,
+            "grader_query_id": "20261004T225342.150827Z-q24-a149"
+          },
+          {
+            "question_index": 5,
+            "rollout": 1,
+            "first_solved_elapsed_s": 48.03501282498473,
+            "grader_query_id": "20261004T225342.150827Z-q5-a279"
+          },
+          {
+            "question_index": 26,
+            "rollout": 1,
+            "first_solved_elapsed_s": 51.03531299700262,
+            "grader_query_id": "20261004T225342.150827Z-q26-a113"
+          },
+          {
+            "question_index": 12,
+            "rollout": 1,
+            "first_solved_elapsed_s": 54.03517546900548,
+            "grader_query_id": "20261004T225342.150827Z-q12-a510"
+          },
+          {
+            "question_index": 7,
+            "rollout": 2,
+            "first_solved_elapsed_s": 98.1224288920057,
+            "grader_query_id": "20261004T225342.150827Z-q7-a821"
+          },
+          {
+            "question_index": 20,
+            "rollout": 2,
+            "first_solved_elapsed_s": 101.1226152079762,
+            "grader_query_id": "20261004T225342.150827Z-q20-a336"
+          }
+        ]
+      },
+      "delta_s": -20.296400089981034
+    },
+    {
+      "seed": 20261015,
+      "audit": {
+        "valid": true,
+        "attempt_id": "20261004T233625.124298Z",
+        "time_to_target_s": 88.83537337102462,
+        "target_reached": true,
+        "solved": 18,
+        "status": "completed",
+        "reference_attempt_id": "20261004T225526.955249Z",
+        "reference_time_to_target_s": 63.44489381997846,
+        "initial_payload_mismatches": [],
+        "continuation_errors": [],
+        "barrier_valid": true,
+        "cap_valid": true,
+        "peak_active_requests": 30,
+        "barrier_release": {
+          "released_at_utc": "2026-10-04T23:37:25.266+00:00",
+          "elapsed_s": 59.26250250299927,
+          "active_requests": 0
+        },
+        "generation_requests": 65,
+        "fresh_samples": 51,
+        "performance": {
+          "generation_requests": 65,
+          "fresh_samples": 51,
+          "continuation_requests": 14,
+          "fresh_ttft": {
+            "count": 48,
+            "median_s": 0.18353676400147378,
+            "p95_s": 0.2785776639939286
+          },
+          "continuation_ttft": {
+            "count": 14,
+            "median_s": 0.21637110004667193,
+            "p95_s": 0.25112337101018056
+          },
+          "official_gpu": null,
+          "initialization_gpu": null
+        },
+        "grader_timeline": {
+          "completed_queries": 20,
+          "audit_errors": [],
+          "correct": 18,
+          "wrong": 2,
+          "target_service_floor_s": 54.0,
+          "actual_service_s": 60.003045082092285,
+          "idle_between_queries_s": 25.737326860427856,
+          "first_pick_elapsed_s": 3.0948760509490967,
+          "scope": "completed oracle jobs; queued/cancelled client jobs may still incur service"
+        },
+        "trace_storage": {
+          "buffered": true,
+          "files_written": 417,
+          "jsonl_rows": 291909,
+          "payload_characters": 102970490,
+          "latency_s": 2.220747431041673,
+          "scope": "Client trace flush after official timing; excluded from time to target and official latency"
+        }
+      },
+      "awq": {
+        "label": "AWQ / Marlin",
+        "attempt_id": "20261004T233625.124298Z",
+        "time_to_18_s": 88.83537337102462,
+        "status": "completed",
+        "target_reached": true,
+        "solved": 18,
+        "requests": 65,
+        "fresh_samples": 51,
+        "initial_30_ttft_median_s": 0.1775152014743071,
+        "grader_timeline": {
+          "completed_queries": 20,
+          "audit_errors": [],
+          "correct": 18,
+          "wrong": 2,
+          "target_service_floor_s": 54.0,
+          "actual_service_s": 60.003045082092285,
+          "idle_between_queries_s": 25.737326860427856,
+          "first_pick_elapsed_s": 3.0948760509490967,
+          "scope": "completed oracle jobs; queued/cancelled client jobs may still incur service"
+        },
+        "barrier_release": {
+          "released_at_utc": "2026-10-04T23:37:25.266+00:00",
+          "elapsed_s": 59.26250250299927,
+          "active_requests": 0
+        },
+        "win_sources": {
+          "initial": 16,
+          "continuation": 2,
+          "fresh_sibling": 0
+        },
+        "wins": [
+          {
+            "question_index": 1,
+            "rollout": 1,
+            "first_solved_elapsed_s": 6.096235806995537,
+            "grader_query_id": "20261004T233625.124298Z-q1-a70"
+          },
+          {
+            "question_index": 17,
+            "rollout": 1,
+            "first_solved_elapsed_s": 11.25835541402921,
+            "grader_query_id": "20261004T233625.124298Z-q17-a49"
+          },
+          {
+            "question_index": 4,
+            "rollout": 1,
+            "first_solved_elapsed_s": 14.258360564010218,
+            "grader_query_id": "20261004T233625.124298Z-q4-a117"
+          },
+          {
+            "question_index": 6,
+            "rollout": 1,
+            "first_solved_elapsed_s": 17.256668684014585,
+            "grader_query_id": "20261004T233625.124298Z-q6-a504"
+          },
+          {
+            "question_index": 3,
+            "rollout": 1,
+            "first_solved_elapsed_s": 20.25854587298818,
+            "grader_query_id": "20261004T233625.124298Z-q3-a16"
+          },
+          {
+            "question_index": 16,
+            "rollout": 1,
+            "first_solved_elapsed_s": 23.259869590983726,
+            "grader_query_id": "20261004T233625.124298Z-q16-a468"
+          },
+          {
+            "question_index": 25,
+            "rollout": 1,
+            "first_solved_elapsed_s": 26.259912929031998,
+            "grader_query_id": "20261004T233625.124298Z-q25-a907"
+          },
+          {
+            "question_index": 8,
+            "rollout": 1,
+            "first_solved_elapsed_s": 29.257934431021567,
+            "grader_query_id": "20261004T233625.124298Z-q8-a77"
+          },
+          {
+            "question_index": 21,
+            "rollout": 1,
+            "first_solved_elapsed_s": 32.25803842098685,
+            "grader_query_id": "20261004T233625.124298Z-q21-a293"
+          },
+          {
+            "question_index": 19,
+            "rollout": 1,
+            "first_solved_elapsed_s": 35.25820444099372,
+            "grader_query_id": "20261004T233625.124298Z-q19-a106"
+          },
+          {
+            "question_index": 22,
+            "rollout": 1,
+            "first_solved_elapsed_s": 38.25910422101151,
+            "grader_query_id": "20261004T233625.124298Z-q22-a237"
+          },
+          {
+            "question_index": 27,
+            "rollout": 1,
+            "first_solved_elapsed_s": 41.260733850998804,
+            "grader_query_id": "20261004T233625.124298Z-q27-a19"
+          },
+          {
+            "question_index": 5,
+            "rollout": 1,
+            "first_solved_elapsed_s": 44.259619268006645,
+            "grader_query_id": "20261004T233625.124298Z-q5-a279"
+          },
+          {
+            "question_index": 24,
+            "rollout": 1,
+            "first_solved_elapsed_s": 47.25978338601999,
+            "grader_query_id": "20261004T233625.124298Z-q24-a149"
+          },
+          {
+            "question_index": 26,
+            "rollout": 1,
+            "first_solved_elapsed_s": 53.26129724999191,
+            "grader_query_id": "20261004T233625.124298Z-q26-a113"
+          },
+          {
+            "question_index": 18,
+            "rollout": 1,
+            "first_solved_elapsed_s": 59.261796634003986,
+            "grader_query_id": "20261004T233625.124298Z-q18-a82"
+          },
+          {
+            "question_index": 23,
+            "rollout": 2,
+            "first_solved_elapsed_s": 67.54591987101594,
+            "grader_query_id": "20261004T233625.124298Z-q23-a610"
+          },
+          {
+            "question_index": 2,
+            "rollout": 2,
+            "first_solved_elapsed_s": 88.83537337102462,
+            "grader_query_id": "20261004T233625.124298Z-q2-a588"
+          }
+        ]
+      },
+      "nvfp4": {
+        "label": "NVFP4 / Marlin",
+        "attempt_id": "20261004T225526.955249Z",
+        "time_to_18_s": 63.44489381997846,
+        "status": "completed",
+        "target_reached": true,
+        "solved": 18,
+        "requests": 63,
+        "fresh_samples": 50,
+        "initial_30_ttft_median_s": 0.24015298049198464,
+        "grader_timeline": {
+          "completed_queries": 18,
+          "audit_errors": [],
+          "correct": 18,
+          "wrong": 0,
+          "target_service_floor_s": 54.0,
+          "actual_service_s": 54.00187683105469,
+          "idle_between_queries_s": 4.982507228851318,
+          "first_pick_elapsed_s": 4.457505941390991,
+          "scope": "completed oracle jobs; queued/cancelled client jobs may still incur service"
+        },
+        "barrier_release": {
+          "released_at_utc": "2026-10-04T22:56:26.164+00:00",
+          "elapsed_s": 58.35007755400147,
+          "active_requests": 0
+        },
+        "win_sources": {
+          "initial": 17,
+          "continuation": 1,
+          "fresh_sibling": 0
+        },
+        "wins": [
+          {
+            "question_index": 1,
+            "rollout": 1,
+            "first_solved_elapsed_s": 7.45842503599124,
+            "grader_query_id": "20261004T225526.955249Z-q1-a70"
+          },
+          {
+            "question_index": 17,
+            "rollout": 1,
+            "first_solved_elapsed_s": 10.461046432959847,
+            "grader_query_id": "20261004T225526.955249Z-q17-a49"
+          },
+          {
+            "question_index": 3,
+            "rollout": 1,
+            "first_solved_elapsed_s": 13.458645840000827,
+            "grader_query_id": "20261004T225526.955249Z-q3-a16"
+          },
+          {
+            "question_index": 6,
+            "rollout": 1,
+            "first_solved_elapsed_s": 16.461914208950475,
+            "grader_query_id": "20261004T225526.955249Z-q6-a504"
+          },
+          {
+            "question_index": 21,
+            "rollout": 1,
+            "first_solved_elapsed_s": 19.4596662959666,
+            "grader_query_id": "20261004T225526.955249Z-q21-a293"
+          },
+          {
+            "question_index": 25,
+            "rollout": 1,
+            "first_solved_elapsed_s": 22.45985991298221,
+            "grader_query_id": "20261004T225526.955249Z-q25-a907"
+          },
+          {
+            "question_index": 22,
+            "rollout": 1,
+            "first_solved_elapsed_s": 25.46050294797169,
+            "grader_query_id": "20261004T225526.955249Z-q22-a237"
+          },
+          {
+            "question_index": 19,
+            "rollout": 1,
+            "first_solved_elapsed_s": 28.46070564800175,
+            "grader_query_id": "20261004T225526.955249Z-q19-a106"
+          },
+          {
+            "question_index": 8,
+            "rollout": 1,
+            "first_solved_elapsed_s": 31.461047502991278,
+            "grader_query_id": "20261004T225526.955249Z-q8-a77"
+          },
+          {
+            "question_index": 4,
+            "rollout": 1,
+            "first_solved_elapsed_s": 34.4615071649896,
+            "grader_query_id": "20261004T225526.955249Z-q4-a117"
+          },
+          {
+            "question_index": 16,
+            "rollout": 1,
+            "first_solved_elapsed_s": 37.46158611995634,
+            "grader_query_id": "20261004T225526.955249Z-q16-a468"
+          },
+          {
+            "question_index": 24,
+            "rollout": 1,
+            "first_solved_elapsed_s": 40.46170494996477,
+            "grader_query_id": "20261004T225526.955249Z-q24-a149"
+          },
+          {
+            "question_index": 26,
+            "rollout": 1,
+            "first_solved_elapsed_s": 43.46193355199648,
+            "grader_query_id": "20261004T225526.955249Z-q26-a113"
+          },
+          {
+            "question_index": 27,
+            "rollout": 1,
+            "first_solved_elapsed_s": 46.46224553795764,
+            "grader_query_id": "20261004T225526.955249Z-q27-a19"
+          },
+          {
+            "question_index": 5,
+            "rollout": 1,
+            "first_solved_elapsed_s": 49.462701895972714,
+            "grader_query_id": "20261004T225526.955249Z-q5-a279"
+          },
+          {
+            "question_index": 2,
+            "rollout": 1,
+            "first_solved_elapsed_s": 52.46256878395798,
+            "grader_query_id": "20261004T225526.955249Z-q2-a588"
+          },
+          {
+            "question_index": 12,
+            "rollout": 1,
+            "first_solved_elapsed_s": 58.34956802998204,
+            "grader_query_id": "20261004T225526.955249Z-q12-a510"
+          },
+          {
+            "question_index": 11,
+            "rollout": 2,
+            "first_solved_elapsed_s": 63.44489381997846,
+            "grader_query_id": "20261004T225526.955249Z-q11-a259"
+          }
+        ]
+      },
+      "delta_s": 25.390479551046155
+    }
+  ],
+  "awq": {
+    "reached": 5,
+    "trials": 5,
+    "median_s": 88.83537337102462,
+    "mean_s": 85.0505086734076,
+    "min_s": 61.21076566702686,
+    "max_s": 100.16319314099383,
+    "sample_sd_s": 15.107290677356001
+  },
+  "nvfp4": {
+    "reached": 5,
+    "trials": 5,
+    "median_s": 77.49791123199975,
+    "mean_s": 76.95068639798555,
+    "min_s": 63.44489381997846,
+    "max_s": 101.1226152079762,
+    "sample_sd_s": 15.049386025263336
+  },
+  "paired_mean_delta_s": 8.099822275422047,
+  "paired_median_delta_s": 22.665281908994075,
+  "awq_faster_seeds": 2,
+  "awq_last_three_question_frequencies": {
+    "7": 2,
+    "12": 2,
+    "29": 2,
+    "9": 1,
+    "26": 1,
+    "18": 2,
+    "24": 1,
+    "23": 2,
+    "27": 1,
+    "2": 1
+  },
+  "nvfp4_last_three_question_frequencies": {
+    "11": 2,
+    "2": 2,
+    "8": 1,
+    "18": 1,
+    "12": 4,
+    "29": 1,
+    "23": 1,
+    "26": 1,
+    "7": 1,
+    "20": 1
+  },
+  "server_lifetime_note": "Five fresh AWQ server lifetimes, each prefix-reset and cheaply warmed. NVFP4 control used one shared server lifetime across five seeds. Official solve time excludes startup/warmup; residual compilation/cache state may still affect latency.",
+  "aggregate_diagnostics": {
+    "nvfp4": {
+      "initial_30_ttft_median_of_trial_medians_s": 0.2392353015311528,
+      "grader_service_total_s": 288.01088094711304,
+      "grader_idle_total_s": 71.90111494064331,
+      "wrong_checks_total": 6,
+      "requests_total": 323
+    },
+    "awq": {
+      "initial_30_ttft_median_of_trial_medians_s": 0.21244127952377312,
+      "grader_service_total_s": 291.0124373435974,
+      "grader_idle_total_s": 111.6743278503418,
+      "wrong_checks_total": 7,
+      "requests_total": 326
+    }
+  }
+}

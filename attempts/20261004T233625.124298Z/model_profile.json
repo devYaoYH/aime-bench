@@ -1,0 +1,5 @@
+{
+  "path": "/home/azureuser/models/AABoyles/VibeThinker-3B-AWQ/vllm-v1_6-awq-marlin.yaml",
+  "yaml": "# Matched A100 v1.6 deployment: AWQ int4/group128 weights, Marlin.\n# HF revision d32ba299f24c77d241832556d7cf5308699354b7.\nmodel: /home/azureuser/models/AABoyles/VibeThinker-3B-AWQ\nserved-model-name: AABoyles/VibeThinker-3B-AWQ\nhost: \"127.0.0.1\"\nport: 8000\ndtype: bfloat16\nquantization: awq\nlinear-backend: marlin\nkv-cache-dtype: auto\ntensor-parallel-size: 1\nmax-model-len: 65536\ngpu-memory-utilization: 0.95\noverride-generation-config: '{\"max_new_tokens\": 65536}'\nenable-prefix-caching: true\nenable-prompt-tokens-details: true\nattention-backend: FLASHINFER\n",
+  "sha256": "919385d99c326c761eb99906ccaa81d92ee2ccc32936f1561d27fd015aea9b00"
+}
