@@ -1,0 +1,19 @@
+{
+  "model": "r0b0tlab/VibeThinker-3B-NVFP4",
+  "messages": [
+    {
+      "role": "system",
+      "content": "Solve the AIME problem. Whenever you have a prospective answer to the original problem, immediately emit it as \\boxed{N}, where N is an integer from 0 to 999. You may continue checking your work afterward. End with your final boxed answer."
+    },
+    {
+      "role": "user",
+      "content": "Torus $T$ is the surface produced by revolving a circle with radius 3 around an axis in the plane of the circle that is a distance 6 from the center of the circle (so like a donut). Let $S$ be a sphere with a radius 11. When $T$ rests on the inside of $S$, it is internally tangent to $S$ along a circle with radius $r_i$, and when $T$ rests on the outside of $S$, it is externally tangent to $S$ along a circle with radius $r_o$. The difference $r_i-r_o$ can be written as $\\frac{m}{n}$, where $m$ and $n$ are relatively prime positive integers. Find $m+n$.\n\n<asy>\nunitsize(0.3 inch);\ndraw(ellipse((0,0), 3, 1.75));\ndraw((-1.2,0.1)..(-0.8,-0.03)..(-0.4,-0.11)..(0,-0.15)..(0.4,-0.11)..(0.8,-0.03)..(1.2,0.1));\ndraw((-1,0.04)..(-0.5,0.12)..(0,0.16)..(0.5,0.12)..(1,0.04));\ndraw((0,2.4)--(0,-0.15));\ndraw((0,-0.15)--(0,-1.75), dashed);\ndraw((0,-1.75)--(0,-2.25));\ndraw(ellipse((2,0), 1, 0.9));\ndraw((2.03,-0.02)--(2.9,-0.4));\n</asy>\n"
+    }
+  ],
+  "max_tokens": 8192,
+  "temperature": 0.8,
+  "top_p": 0.95,
+  "seed": 21261037,
+  "stream": false,
+  "return_token_ids": true
+}

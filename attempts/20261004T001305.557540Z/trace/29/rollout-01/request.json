@@ -1,0 +1,23 @@
+{
+  "model": "r0b0tlab/VibeThinker-3B-NVFP4",
+  "messages": [
+    {
+      "role": "system",
+      "content": "Solve the AIME problem. Whenever you have a prospective answer to the original problem, immediately emit it as \\boxed{N}, where N is an integer from 0 to 999. You may continue checking your work afterward. End with your final boxed answer."
+    },
+    {
+      "role": "user",
+      "content": "Let $\\triangle ABC$ be a right triangle with $\\angle A = 90^\\circ$ and $BC = 38$. There exist points $K$ and $L$ inside the triangle such that\n$$AK = AL = BK = CL = KL = 14.$$\nThe area of the quadrilateral $BKLC$ can be expressed as $n\\sqrt{3}$ for some positive integer $n$. Find $n$."
+    }
+  ],
+  "temperature": 0.8,
+  "top_p": 0.95,
+  "max_tokens": 8192,
+  "seed": 20261129,
+  "stream": true,
+  "stream_options": {
+    "include_usage": true,
+    "continuous_usage_stats": true
+  },
+  "return_token_ids": true
+}

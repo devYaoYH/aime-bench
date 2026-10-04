@@ -1,0 +1,19 @@
+{
+  "model": "r0b0tlab/VibeThinker-3B-NVFP4",
+  "messages": [
+    {
+      "role": "system",
+      "content": "Solve the AIME problem. Whenever you have a prospective answer to the original problem, immediately emit it as \\boxed{N}, where N is an integer from 0 to 999. You may continue checking your work afterward. End with your final boxed answer."
+    },
+    {
+      "role": "user",
+      "content": "Find the number of rectangles that can be formed inside a fixed regular dodecagon ($12$-gon) where each side of the rectangle lies on either a side or a diagonal of the dodecagon. The diagram below shows three of those rectangles.\n\n<asy>\nunitsize(0.6 inch);\nfor(int i=0; i<360; i+=30) {\ndot(dir(i), 4+black);\ndraw(dir(i)--dir(i+30));\n}\ndraw(dir(120)--dir(330));\nfilldraw(dir(210)--dir(240)--dir(30)--dir(60)--cycle, mediumgray, linewidth(1.5));\ndraw((0,0.366)--(0.366,0), linewidth(1.5));\n</asy>\n"
+    }
+  ],
+  "max_tokens": 8192,
+  "temperature": 0.8,
+  "top_p": 0.95,
+  "seed": 21261042,
+  "stream": false,
+  "return_token_ids": true
+}

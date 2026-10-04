@@ -1,0 +1,164 @@
+{
+  "problem_idx": 17,
+  "started_at_utc": "2026-10-04T00:11:31.378+00:00",
+  "finished_at_utc": "2026-10-04T00:11:39.735+00:00",
+  "end_to_end_latency_s": 8.356954856019001,
+  "status": "solved",
+  "winner": {
+    "answer": 49,
+    "part": "content",
+    "kind": "literal_prose",
+    "end": 2103,
+    "line": "Now we need sum of all positive integers n satisfying condition: sum = 1+11+37 = 49. So answer is 49.",
+    "candidate": "49",
+    "rollout": 1,
+    "observed_at_utc": "2026-10-04T00:11:36.726+00:00",
+    "question_elapsed_s": 5.34858891897602,
+    "verification_started_at_utc": "2026-10-04T00:11:36.727+00:00",
+    "round": 1,
+    "candidate_queue_wait_s": 0.0003300280077382922,
+    "result": {
+      "dataset": {
+        "format": "jsonl",
+        "gold_field": "answer",
+        "id": "aime_2025",
+        "idx_field": "problem_idx",
+        "revision": "c94da77eb22bbd6439e62a323bec18493a421302",
+        "source": "/home/azureuser/aime-bench-final-ccca184/grader/data/aime_2025.jsonl",
+        "year": 2025,
+        "sha256": "d5bcac5904290630fe98e3c3d1c2773260ebf59b57955382735e9ce8c0142b41"
+      },
+      "query_id": "20261004T001031.904887Z-q17-a49",
+      "seq": 1,
+      "agent_id": "20261004T001031.904887Z-q17-r1",
+      "index": 17,
+      "candidate": "49",
+      "verdict": true,
+      "queue_ahead_at_submit": 0,
+      "submitted_at": "2026-10-04T00:11:36.730329Z",
+      "picked_at": "2026-10-04T00:11:36.730435Z",
+      "answered_at": "2026-10-04T00:11:39.730560Z",
+      "queue_wait_s": 0.0,
+      "toll_s": 3.0,
+      "latency_s": 3.0
+    },
+    "verification_finished_at_utc": "2026-10-04T00:11:39.732+00:00",
+    "verification_latency_s": 3.005128832999617
+  },
+  "error": null,
+  "unique_candidates": 1,
+  "candidate_answers": [
+    "49"
+  ],
+  "rollouts": [
+    {
+      "rollout": 1,
+      "round": 1,
+      "started_at_utc": "2026-10-04T00:11:31.390+00:00",
+      "start_monotonic_s": 276939.452753584,
+      "ttft_s": 0.16824461496435106,
+      "last_token_s": 8.33767555799568,
+      "finish_reason": null,
+      "status": "cancelled",
+      "done_received": false,
+      "usage": {
+        "prompt_tokens": 102,
+        "total_tokens": 1499,
+        "completion_tokens": 1397,
+        "completion_tokens_details": null
+      },
+      "endpoint": "/v1/chat/completions",
+      "continuation_of_rollout": null,
+      "requested_max_tokens": 8192,
+      "http_status": 200,
+      "headers_received_s": 0.04508888098644093,
+      "generation_finished_at_utc": "2026-10-04T00:11:39.733+00:00",
+      "generation_end_monotonic_s": 276947.795574812,
+      "generation_latency_s": 8.34282122796867,
+      "generation_censored": true,
+      "generated_token_ids_count": 1397,
+      "prompt_token_ids_count": 102,
+      "cached_prompt_tokens": null,
+      "prefix_cache_hit_fraction": null,
+      "overhead": {
+        "enabled": false,
+        "timings": {},
+        "counters": {},
+        "maxima": {}
+      },
+      "finished_at_utc": "2026-10-04T00:11:39.735+00:00",
+      "end_to_end_latency_s": 8.344800735998433,
+      "end_to_end_scope": "rollout start through question verification/cancellation settlement",
+      "gpu": null
+    }
+  ],
+  "round": 1,
+  "first_solved": {
+    "problem_idx": 17,
+    "round": 1,
+    "rollout": 1,
+    "candidate": "49",
+    "first_solved_at_utc": "2026-10-04T00:11:39.732+00:00",
+    "first_solved_elapsed_s": 8.35778909898363,
+    "grader_answered_at_utc": "2026-10-04T00:11:39.730560Z",
+    "grader_query_id": "20261004T001031.904887Z-q17-a49"
+  },
+  "overhead": {
+    "enabled": false,
+    "timings": {},
+    "counters": {},
+    "maxima": {}
+  },
+  "rounds": [
+    {
+      "round": 1,
+      "status": "solved",
+      "started_at_utc": "2026-10-04T00:11:31.378+00:00",
+      "finished_at_utc": "2026-10-04T00:11:39.735+00:00",
+      "end_to_end_latency_s": 8.356954856019001,
+      "winner": {
+        "answer": 49,
+        "part": "content",
+        "kind": "literal_prose",
+        "end": 2103,
+        "line": "Now we need sum of all positive integers n satisfying condition: sum = 1+11+37 = 49. So answer is 49.",
+        "candidate": "49",
+        "rollout": 1,
+        "observed_at_utc": "2026-10-04T00:11:36.726+00:00",
+        "question_elapsed_s": 5.34858891897602,
+        "verification_started_at_utc": "2026-10-04T00:11:36.727+00:00",
+        "round": 1,
+        "candidate_queue_wait_s": 0.0003300280077382922,
+        "result": {
+          "dataset": {
+            "format": "jsonl",
+            "gold_field": "answer",
+            "id": "aime_2025",
+            "idx_field": "problem_idx",
+            "revision": "c94da77eb22bbd6439e62a323bec18493a421302",
+            "source": "/home/azureuser/aime-bench-final-ccca184/grader/data/aime_2025.jsonl",
+            "year": 2025,
+            "sha256": "d5bcac5904290630fe98e3c3d1c2773260ebf59b57955382735e9ce8c0142b41"
+          },
+          "query_id": "20261004T001031.904887Z-q17-a49",
+          "seq": 1,
+          "agent_id": "20261004T001031.904887Z-q17-r1",
+          "index": 17,
+          "candidate": "49",
+          "verdict": true,
+          "queue_ahead_at_submit": 0,
+          "submitted_at": "2026-10-04T00:11:36.730329Z",
+          "picked_at": "2026-10-04T00:11:36.730435Z",
+          "answered_at": "2026-10-04T00:11:39.730560Z",
+          "queue_wait_s": 0.0,
+          "toll_s": 3.0,
+          "latency_s": 3.0
+        },
+        "verification_finished_at_utc": "2026-10-04T00:11:39.732+00:00",
+        "verification_latency_s": 3.005128832999617
+      },
+      "error": null
+    }
+  ],
+  "question_start_monotonic_s": 276939.440599464
+}

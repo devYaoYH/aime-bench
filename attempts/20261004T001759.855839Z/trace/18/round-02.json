@@ -1,0 +1,112 @@
+{
+  "problem_idx": 18,
+  "started_at_utc": "2026-10-04T00:19:55.952+00:00",
+  "finished_at_utc": "2026-10-04T00:20:17.497+00:00",
+  "end_to_end_latency_s": 21.544954510056414,
+  "status": "solved",
+  "winner": {
+    "answer": 82,
+    "part": "content",
+    "kind": "literal_prose",
+    "end": 32015,
+    "line": "Now sum: 1+8+16+8+16+8+16+8+1 = let's sum: (1+8)=9; +16=25; +8=33; +16=49; +8=57; +16=73; +8=81; +1=82. So total = 82. That matches the enumeration we just did. So answer should be 82, not 98. Indeed our earlier total 98 was based on erroneous count for (2,0). Let's recalc carefully: The sum appears to be 82.",
+    "candidate": "82",
+    "rollout": 2,
+    "observed_at_utc": "2026-10-04T00:20:14.208+00:00",
+    "question_elapsed_s": 18.25540424202336,
+    "verification_started_at_utc": "2026-10-04T00:20:14.208+00:00",
+    "round": 2,
+    "candidate_queue_wait_s": 0.0006700070225633681,
+    "result": {
+      "dataset": {
+        "format": "jsonl",
+        "gold_field": "answer",
+        "id": "aime_2025",
+        "idx_field": "problem_idx",
+        "revision": "c94da77eb22bbd6439e62a323bec18493a421302",
+        "source": "/home/azureuser/aime-bench-final-ccca184/grader/data/aime_2025.jsonl",
+        "year": 2025,
+        "sha256": "d5bcac5904290630fe98e3c3d1c2773260ebf59b57955382735e9ce8c0142b41"
+      },
+      "query_id": "20261004T001759.855839Z-q18-a82",
+      "seq": 19,
+      "agent_id": "20261004T001759.855839Z-q18-r2",
+      "index": 18,
+      "candidate": "82",
+      "verdict": true,
+      "queue_ahead_at_submit": 0,
+      "submitted_at": "2026-10-04T00:20:14.210286Z",
+      "picked_at": "2026-10-04T00:20:14.492587Z",
+      "answered_at": "2026-10-04T00:20:17.492666Z",
+      "queue_wait_s": 0.282,
+      "toll_s": 3.0,
+      "latency_s": 3.282
+    },
+    "verification_finished_at_utc": "2026-10-04T00:20:17.493+00:00",
+    "verification_latency_s": 3.285156444006134
+  },
+  "error": null,
+  "unique_candidates": 2,
+  "candidate_answers": [
+    "82",
+    "98"
+  ],
+  "rollouts": [
+    {
+      "rollout": 2,
+      "round": 2,
+      "started_at_utc": "2026-10-04T00:19:56.008+00:00",
+      "start_monotonic_s": 277444.071109427,
+      "ttft_s": 0.17507985699921846,
+      "last_token_s": 21.483070778951515,
+      "finish_reason": null,
+      "status": "cancelled",
+      "done_received": false,
+      "usage": {
+        "prompt_tokens": 8529,
+        "total_tokens": 11350,
+        "completion_tokens": 2821
+      },
+      "endpoint": "/v1/completions",
+      "continuation_of_rollout": 1,
+      "requested_max_tokens": 16384,
+      "http_status": 200,
+      "headers_received_s": 0.06943934195442125,
+      "generation_finished_at_utc": "2026-10-04T00:20:17.494+00:00",
+      "generation_end_monotonic_s": 277465.55691198,
+      "generation_latency_s": 21.485802552953828,
+      "generation_censored": true,
+      "generated_token_ids_count": 2821,
+      "prompt_token_ids_count": 8529,
+      "cached_prompt_tokens": null,
+      "prefix_cache_hit_fraction": null,
+      "overhead": {
+        "enabled": false,
+        "timings": {},
+        "counters": {},
+        "maxima": {}
+      },
+      "finished_at_utc": "2026-10-04T00:20:17.497+00:00",
+      "end_to_end_latency_s": 21.48909733700566,
+      "end_to_end_scope": "rollout start through question verification/cancellation settlement",
+      "gpu": null
+    }
+  ],
+  "round": 2,
+  "first_solved": {
+    "problem_idx": 18,
+    "round": 2,
+    "rollout": 2,
+    "candidate": "82",
+    "first_solved_at_utc": "2026-10-04T00:20:17.494+00:00",
+    "first_solved_elapsed_s": 78.12302461900981,
+    "grader_answered_at_utc": "2026-10-04T00:20:17.492666Z",
+    "grader_query_id": "20261004T001759.855839Z-q18-a82"
+  },
+  "overhead": {
+    "enabled": false,
+    "timings": {},
+    "counters": {},
+    "maxima": {}
+  }
+}

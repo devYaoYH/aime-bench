@@ -1,0 +1,164 @@
+{
+  "problem_idx": 22,
+  "started_at_utc": "2026-10-04T00:18:59.375+00:00",
+  "finished_at_utc": "2026-10-04T00:19:29.327+00:00",
+  "end_to_end_latency_s": 29.95195088197943,
+  "status": "solved",
+  "winner": {
+    "answer": 237,
+    "part": "content",
+    "kind": "literal_prose",
+    "end": 8156,
+    "line": "Thus answer should be 237. But let's double-check for any nuance: The selection of B is a \"randomly selected subset of A\". Usually it's uniform over all subsets. So denominator = 2^{15}. Good. However, sometimes some problems consider \"random nonempty subset\". But the problem statement says \"probability that B is a nonempty set with the property that the LCM ... is 2025\". That phrase could be interpreted as probability that B is nonempty and has LCM=2025. So indeed the event includes both conditions: B is nonempty AND LCM =2025. So denominator includes all subsets (including empty). So probability = (# subsets with LCM=2025)/2^{15}. Since empty set doesn't satisfy LCM condition, it's automatically excluded. So we are correct.",
+    "candidate": "237",
+    "rollout": 1,
+    "observed_at_utc": "2026-10-04T00:19:18.017+00:00",
+    "question_elapsed_s": 18.6420638730051,
+    "verification_started_at_utc": "2026-10-04T00:19:18.018+00:00",
+    "round": 1,
+    "candidate_queue_wait_s": 0.0007451059645973146,
+    "result": {
+      "dataset": {
+        "format": "jsonl",
+        "gold_field": "answer",
+        "id": "aime_2025",
+        "idx_field": "problem_idx",
+        "revision": "c94da77eb22bbd6439e62a323bec18493a421302",
+        "source": "/home/azureuser/aime-bench-final-ccca184/grader/data/aime_2025.jsonl",
+        "year": 2025,
+        "sha256": "d5bcac5904290630fe98e3c3d1c2773260ebf59b57955382735e9ce8c0142b41"
+      },
+      "query_id": "20261004T001759.855839Z-q22-a237",
+      "seq": 8,
+      "agent_id": "20261004T001759.855839Z-q22-r1",
+      "index": 22,
+      "candidate": "237",
+      "verdict": true,
+      "queue_ahead_at_submit": 2,
+      "submitted_at": "2026-10-04T00:19:18.020065Z",
+      "picked_at": "2026-10-04T00:19:26.321456Z",
+      "answered_at": "2026-10-04T00:19:29.321550Z",
+      "queue_wait_s": 8.301,
+      "toll_s": 3.0,
+      "latency_s": 11.301
+    },
+    "verification_finished_at_utc": "2026-10-04T00:19:29.325+00:00",
+    "verification_latency_s": 11.306742665998172
+  },
+  "error": null,
+  "unique_candidates": 1,
+  "candidate_answers": [
+    "237"
+  ],
+  "rollouts": [
+    {
+      "rollout": 1,
+      "round": 1,
+      "started_at_utc": "2026-10-04T00:18:59.390+00:00",
+      "start_monotonic_s": 277387.453380193,
+      "ttft_s": 0.23659409704850987,
+      "last_token_s": 29.93230222602142,
+      "finish_reason": null,
+      "status": "cancelled",
+      "done_received": false,
+      "usage": {
+        "prompt_tokens": 159,
+        "total_tokens": 4744,
+        "completion_tokens": 4585,
+        "completion_tokens_details": null
+      },
+      "endpoint": "/v1/chat/completions",
+      "continuation_of_rollout": null,
+      "requested_max_tokens": 8192,
+      "http_status": 200,
+      "headers_received_s": 0.05860844301059842,
+      "generation_finished_at_utc": "2026-10-04T00:19:29.325+00:00",
+      "generation_end_monotonic_s": 277417.387916525,
+      "generation_latency_s": 29.934536332031712,
+      "generation_censored": true,
+      "generated_token_ids_count": 4585,
+      "prompt_token_ids_count": 159,
+      "cached_prompt_tokens": null,
+      "prefix_cache_hit_fraction": null,
+      "overhead": {
+        "enabled": false,
+        "timings": {},
+        "counters": {},
+        "maxima": {}
+      },
+      "finished_at_utc": "2026-10-04T00:19:29.327+00:00",
+      "end_to_end_latency_s": 29.936553322011605,
+      "end_to_end_scope": "rollout start through question verification/cancellation settlement",
+      "gpu": null
+    }
+  ],
+  "round": 1,
+  "first_solved": {
+    "problem_idx": 22,
+    "round": 1,
+    "rollout": 1,
+    "candidate": "237",
+    "first_solved_at_utc": "2026-10-04T00:19:29.325+00:00",
+    "first_solved_elapsed_s": 29.954063037992455,
+    "grader_answered_at_utc": "2026-10-04T00:19:29.321550Z",
+    "grader_query_id": "20261004T001759.855839Z-q22-a237"
+  },
+  "overhead": {
+    "enabled": false,
+    "timings": {},
+    "counters": {},
+    "maxima": {}
+  },
+  "rounds": [
+    {
+      "round": 1,
+      "status": "solved",
+      "started_at_utc": "2026-10-04T00:18:59.375+00:00",
+      "finished_at_utc": "2026-10-04T00:19:29.327+00:00",
+      "end_to_end_latency_s": 29.95195088197943,
+      "winner": {
+        "answer": 237,
+        "part": "content",
+        "kind": "literal_prose",
+        "end": 8156,
+        "line": "Thus answer should be 237. But let's double-check for any nuance: The selection of B is a \"randomly selected subset of A\". Usually it's uniform over all subsets. So denominator = 2^{15}. Good. However, sometimes some problems consider \"random nonempty subset\". But the problem statement says \"probability that B is a nonempty set with the property that the LCM ... is 2025\". That phrase could be interpreted as probability that B is nonempty and has LCM=2025. So indeed the event includes both conditions: B is nonempty AND LCM =2025. So denominator includes all subsets (including empty). So probability = (# subsets with LCM=2025)/2^{15}. Since empty set doesn't satisfy LCM condition, it's automatically excluded. So we are correct.",
+        "candidate": "237",
+        "rollout": 1,
+        "observed_at_utc": "2026-10-04T00:19:18.017+00:00",
+        "question_elapsed_s": 18.6420638730051,
+        "verification_started_at_utc": "2026-10-04T00:19:18.018+00:00",
+        "round": 1,
+        "candidate_queue_wait_s": 0.0007451059645973146,
+        "result": {
+          "dataset": {
+            "format": "jsonl",
+            "gold_field": "answer",
+            "id": "aime_2025",
+            "idx_field": "problem_idx",
+            "revision": "c94da77eb22bbd6439e62a323bec18493a421302",
+            "source": "/home/azureuser/aime-bench-final-ccca184/grader/data/aime_2025.jsonl",
+            "year": 2025,
+            "sha256": "d5bcac5904290630fe98e3c3d1c2773260ebf59b57955382735e9ce8c0142b41"
+          },
+          "query_id": "20261004T001759.855839Z-q22-a237",
+          "seq": 8,
+          "agent_id": "20261004T001759.855839Z-q22-r1",
+          "index": 22,
+          "candidate": "237",
+          "verdict": true,
+          "queue_ahead_at_submit": 2,
+          "submitted_at": "2026-10-04T00:19:18.020065Z",
+          "picked_at": "2026-10-04T00:19:26.321456Z",
+          "answered_at": "2026-10-04T00:19:29.321550Z",
+          "queue_wait_s": 8.301,
+          "toll_s": 3.0,
+          "latency_s": 11.301
+        },
+        "verification_finished_at_utc": "2026-10-04T00:19:29.325+00:00",
+        "verification_latency_s": 11.306742665998172
+      },
+      "error": null
+    }
+  ],
+  "question_start_monotonic_s": 277387.437982633
+}

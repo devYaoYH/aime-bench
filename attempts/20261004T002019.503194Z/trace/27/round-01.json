@@ -1,0 +1,112 @@
+{
+  "problem_idx": 27,
+  "started_at_utc": "2026-10-04T00:21:20.124+00:00",
+  "finished_at_utc": "2026-10-04T00:22:11.063+00:00",
+  "end_to_end_latency_s": 50.93985451501794,
+  "status": "solved",
+  "winner": {
+    "answer": 19,
+    "part": "content",
+    "kind": "literal_prose",
+    "end": 18389,
+    "line": "Check the condition \"no prime divides all of m, p, and q\". Since p = 1 has no prime factors, the condition holds trivially. So answer is 19.",
+    "candidate": "19",
+    "rollout": 1,
+    "observed_at_utc": "2026-10-04T00:22:08.056+00:00",
+    "question_elapsed_s": 47.932510468002874,
+    "verification_started_at_utc": "2026-10-04T00:22:08.056+00:00",
+    "round": 1,
+    "candidate_queue_wait_s": 0.00011727900709956884,
+    "result": {
+      "dataset": {
+        "format": "jsonl",
+        "gold_field": "answer",
+        "id": "aime_2025",
+        "idx_field": "problem_idx",
+        "revision": "c94da77eb22bbd6439e62a323bec18493a421302",
+        "source": "/home/azureuser/aime-bench-final-ccca184/grader/data/aime_2025.jsonl",
+        "year": 2025,
+        "sha256": "d5bcac5904290630fe98e3c3d1c2773260ebf59b57955382735e9ce8c0142b41"
+      },
+      "query_id": "20261004T002019.503194Z-q27-a19",
+      "seq": 14,
+      "agent_id": "20261004T002019.503194Z-q27-r1",
+      "index": 27,
+      "candidate": "19",
+      "verdict": true,
+      "queue_ahead_at_submit": 0,
+      "submitted_at": "2026-10-04T00:22:08.058382Z",
+      "picked_at": "2026-10-04T00:22:08.058465Z",
+      "answered_at": "2026-10-04T00:22:11.058548Z",
+      "queue_wait_s": 0.0,
+      "toll_s": 3.0,
+      "latency_s": 3.0
+    },
+    "verification_finished_at_utc": "2026-10-04T00:22:11.060+00:00",
+    "verification_latency_s": 3.003574795962777
+  },
+  "error": null,
+  "unique_candidates": 1,
+  "candidate_answers": [
+    "19"
+  ],
+  "rollouts": [
+    {
+      "rollout": 1,
+      "round": 1,
+      "started_at_utc": "2026-10-04T00:21:20.141+00:00",
+      "start_monotonic_s": 277528.20377115,
+      "ttft_s": 0.2759000030346215,
+      "last_token_s": 50.91376144904643,
+      "finish_reason": null,
+      "status": "cancelled",
+      "done_received": false,
+      "usage": {
+        "prompt_tokens": 328,
+        "total_tokens": 7727,
+        "completion_tokens": 7399,
+        "completion_tokens_details": null
+      },
+      "endpoint": "/v1/chat/completions",
+      "continuation_of_rollout": null,
+      "requested_max_tokens": 8192,
+      "http_status": 200,
+      "headers_received_s": 0.06955865805502981,
+      "generation_finished_at_utc": "2026-10-04T00:22:11.060+00:00",
+      "generation_end_monotonic_s": 277579.123138311,
+      "generation_latency_s": 50.91936716105556,
+      "generation_censored": true,
+      "generated_token_ids_count": 7399,
+      "prompt_token_ids_count": 328,
+      "cached_prompt_tokens": null,
+      "prefix_cache_hit_fraction": null,
+      "overhead": {
+        "enabled": false,
+        "timings": {},
+        "counters": {},
+        "maxima": {}
+      },
+      "finished_at_utc": "2026-10-04T00:22:11.063+00:00",
+      "end_to_end_latency_s": 50.92261356202653,
+      "end_to_end_scope": "rollout start through question verification/cancellation settlement",
+      "gpu": null
+    }
+  ],
+  "round": 1,
+  "first_solved": {
+    "problem_idx": 27,
+    "round": 1,
+    "rollout": 1,
+    "candidate": "19",
+    "first_solved_at_utc": "2026-10-04T00:22:11.060+00:00",
+    "first_solved_elapsed_s": 50.941311194968875,
+    "grader_answered_at_utc": "2026-10-04T00:22:11.058548Z",
+    "grader_query_id": "20261004T002019.503194Z-q27-a19"
+  },
+  "overhead": {
+    "enabled": false,
+    "timings": {},
+    "counters": {},
+    "maxima": {}
+  }
+}

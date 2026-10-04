@@ -1,0 +1,19 @@
+{
+  "model": "r0b0tlab/VibeThinker-3B-NVFP4",
+  "messages": [
+    {
+      "role": "system",
+      "content": "Solve the AIME problem. Whenever you have a prospective answer to the original problem, immediately emit it as \\boxed{N}, where N is an integer from 0 to 999. You may continue checking your work afterward. End with your final boxed answer."
+    },
+    {
+      "role": "user",
+      "content": "There are $25$ indistinguishable white chips and $25$ indistinguishable black chips. Find the number of ways to place some of these chips in a $5 \\times 5$ grid such that\n\n* each cell contains at most one chip\n\n* all chips in the same row and all chips in the same column have the same colour\n\n* any additional chip placed on the grid would violate one or more of the previous two conditions.\n"
+    }
+  ],
+  "max_tokens": 8192,
+  "temperature": 0.8,
+  "top_p": 0.95,
+  "seed": 21261036,
+  "stream": false,
+  "return_token_ids": true
+}
