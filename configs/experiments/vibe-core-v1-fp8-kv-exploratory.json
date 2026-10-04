@@ -1,0 +1,50 @@
+{
+  "schema_version": 1,
+  "scope": "One exploratory attempt; no repeats or significance claim. Match the finalized five-run core v1 batch, changing only KV-cache storage dtype.",
+  "runner": "runner_final.run_frozen",
+  "preset": "runner_final/presets/prompt_adherence.json",
+  "model": "r0b0tlab/VibeThinker-3B-NVFP4",
+  "models_dir": "/home/azureuser/aime-bench/configs/vllm",
+  "model_profile": "vllm-flashinfer-fp8-kv.yaml",
+  "seed": 20261011,
+  "control_attempt": "20261004T005518.974361Z",
+  "control_batch": "runs/experiments/frozen-core-prompt-five-seeds-20261004T005416Z",
+  "control_time_to_18_s": 71.32121138199,
+  "serving_intervention": {
+    "kv-cache-dtype": {
+      "control": "auto",
+      "experimental": "fp8"
+    }
+  },
+  "retained_controls": [
+    "NVFP4 checkpoint/Marlin",
+    "FLASHINFER",
+    "BF16 activations",
+    "64K total context",
+    "95% memory allocation",
+    "prompt-adherence preset",
+    "30x1 barrier",
+    "8K initial / 16K later",
+    "four requests per question including continuations",
+    "stop at 18",
+    "benchmark storage",
+    "cheap 30x32-token warmup"
+  ],
+  "metrics": [
+    "first client grader submission",
+    "time to 18 distinct correct verdicts",
+    "initial request TTFT",
+    "observed initial-stream decoding rate",
+    "wrong checks",
+    "grader service/idle time",
+    "request count",
+    "setup/cleanup latency"
+  ],
+  "limitations": [
+    "Single run versus a historical same-seed control; not randomized/interleaved.",
+    "This starts an owned server; historical trial reused its batch server.",
+    "KV quantization can change sampled trajectories as well as storage and decoding speed.",
+    "Default FP8 scale policy retained; capture startup warnings and scales configuration."
+  ],
+  "failures": "Retain startup/runtime failure or target unmet; do not substitute a new seed or change backend/core."
+}
