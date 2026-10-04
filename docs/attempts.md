@@ -1,8 +1,12 @@
-# Canonical remote attempts
+# Historical canonical remote attempts
 
 Develop locally, test, commit and push; then `ssh callosum` and pull the tested
 commit into `~/aime-bench` before running experiments. See [AGENTS.md](../AGENTS.md).
-The canonical entry point is `python -m src.attempt` (Python 3.11+).
+This guide describes the original `python -m src.attempt` runner (Python 3.11+).
+The measured final submission uses frozen core v1 and the prompt-adherence preset;
+see the [final quickstart](../README.md#run-the-measured-core-v1) and
+[runner contract](../runner_final/README.md). The defaults below belong to the
+historical runner.
 
 ## Remote setup
 

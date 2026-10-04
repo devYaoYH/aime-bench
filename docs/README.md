@@ -1,20 +1,35 @@
 # Documentation
 
-Start with the [repository README](../README.md) for setup and the
-[experiment guide](experiments.md) for runnable commands. Run every command
-from the repository root. Utilities use `python -m src.<module>`; experiment
-entry points use `python -m src.experiments.<family>.<module>`. See the
-[script guide](scripts.md) and [saved-run provenance](../runs/README.md).
+Start with the [repository README](../README.md) for the final core v1 command,
+execution diagram and results. The [runner contract](../runner_final/README.md)
+explains retry budgets, continuations, service ownership and the v2 extension.
+Run commands from the repository root.
 
-See [canonical remote attempts](attempts.md) for the managed vLLM/grader runner
-and the local-development-to-remote-experiment workflow.
+## Final submission and results
 
-| Canonical attempt | Result |
+| Document | Purpose |
 | --- | --- |
-| [Initial Qwen 8 × 4](../attempts/20261003T193711.679999Z/README.md) | 5/30 correct in 999.5 seconds |
-| [VibeThinker-3B coverage and continuation](../attempts/20261003T200718.717581Z/README.md) | Target 18 correct in 92.5 seconds |
-| [VibeThinker-3B NVFP4 coverage, 95% VRAM](../attempts/20261003T205350.742196Z/README.md) | Target 18 correct in 85.6 seconds |
-| [VibeThinker-3B naive pass@4, 16K context](../attempts/20261003T202152.418590Z/README.md) | Target 18 correct in 336.5 seconds; final responses only |
+| [Three-page report](reports/final/output/pdf/callosum-speedrun-report.pdf) | Strategy, measured results, negative findings and next steps |
+| [Evidence packet](reports/final/output/pdf/callosum-evidence-packet.pdf) | Eleven pages of figures, captions and source links; marginal curve in E8, history in E9 |
+| [Final v1 validation](../runs/experiments/frozen-core-prompt-five-seeds-20261004T005416Z/README.md) | 5/5 reached 18; median 77.277s; range 62.783–82.492s |
+| [AIME 2026 transfer](../runs/experiments/frozen-core-aime2026-lightweight-20261004T011005Z/README.md) | Same v1 policy, one declared seed; 88.669s |
+| [General-answer v2 back-test](../runs/experiments/core-v2-aime2025-five-seeds-20261004T013100Z/README.md) | 5/5 reached 18; median 113.415s; placeholder failure analysis |
+
+## Historical local baselines
+
+These are complete-strategy observations, separate from the final five-seed claim.
+The [historical managed-runner guide](attempts.md) documents `src.attempt`;
+the [experiment guide](experiments.md), [script guide](scripts.md) and
+[saved-run provenance](../runs/README.md) cover the archive.
+
+| Attempt | Time to eighteenth positive verdict |
+| --- | --- |
+| [VibeThinker BF16 coverage](../attempts/20261003T200718.717581Z/README.md) | 92.428s |
+| [VibeThinker NVFP4 coverage, 95% memory](../attempts/20261003T205350.742196Z/README.md) | 85.546s |
+| [VibeThinker BF16 final-only pass@4](../attempts/20261003T202152.418590Z/README.md) | 336.497s |
+
+The following reports describe hosted-model exploration and offline replays.
+Their accuracy and simulated verification timings are separate from scored local runs.
 
 ## Baseline and sampling
 
@@ -59,7 +74,7 @@ reports that belong to a specific run stay beside that run's plots and records.
 reports directly into `docs/reports/`. Dataset provenance and manually audited
 scope exclusions live in `data/`.
 
-Git includes run summaries, analysis data, reports, and plots. Raw traces, SSE
-streams, progress records, and manifests containing trace excerpts stay local.
-Links to those files require the original local run artifacts; a fresh clone
-contains the published statistics rather than the full model conversations.
+Git includes canonical attempt requests/responses, exact tokens, verdict records,
+run summaries, reports and plots. Full SSE/service/grader logs and some historical
+hosted-model raw traces remain outside Git. Analyses of those archived traces need
+the original artifacts; the final canonical evidence is available from a fresh clone.

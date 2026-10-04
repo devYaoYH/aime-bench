@@ -1,6 +1,9 @@
-# Experiment guide
+# Exploratory experiment guide
 
-This repo runs one independent `qwen/qwen3-30b-a3b` sample for each of the 30
+This guide covers the historical hosted-model experiments and offline analyses.
+For the scored local core v1 run, use the [repository quickstart](../README.md#run-the-measured-core-v1).
+
+The original benchmark runs one independent `qwen/qwen3-30b-a3b` sample for each of the 30
 [MathArena AIME 2025](https://huggingface.co/datasets/MathArena/aime_2025)
 questions. The runner fans requests out concurrently and grades each final answer
 locally against MathArena's official answer key. Its timer starts immediately before

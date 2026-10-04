@@ -6,6 +6,21 @@ root with `.venv/bin/python -m <module>`. Full examples are in the
 [experiment guide](experiments.md); historical producers and cohorts are in
 [run provenance](../runs/README.md).
 
+## Final runner and evidence
+
+Use `~/.venvs/vllm/bin/python` for GPU runs on the provided node. The
+[quickstart](../README.md#run-the-measured-core-v1) includes setup and the measured preset.
+
+| Command | Purpose |
+| --- | --- |
+| `python -m runner_final.run_frozen --preset runner_final/presets/prompt_adherence.json` | Measured core v1 strategy |
+| `python -m runner_final.validate_frozen` | Five declared v1 seeds with all outcomes retained |
+| `python -m runner_final.run_frozen_v2` | General-answer extension, separate from the final v1 claim |
+| `python -m runner_final.backtest_v2` | Five-seed v2 comparison against historical v1 controls |
+| `python docs/reports/final/render_report.py --evidence` | Rebuild the evidence PDF |
+
+The remaining catalogue describes shared utilities and archived exploratory workflows.
+
 ## Common utilities and libraries
 
 These stay directly in `src/`. Libraries are imported by experiments; only the
