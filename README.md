@@ -24,6 +24,10 @@ adds a measured decode roofline: three graph samples attain 18–49% of nominal
 HBM bandwidth, with growing context traffic as the active batch shrinks.
 Its instrumented timing is excluded from the scored results above.
 
+The [token and tail analysis](runs/analyses/core-v1-five-seeds-answer-tokens/README.md)
+shows exact per-question tokens and verification slots 17/18 for the selected
+five runs. An 8K cumulative cutoff would discard eight of their 90 recorded wins.
+
 ## Run the measured core v1
 
 On the provided `callosum` node, use a tested checkout, an available GPU and free

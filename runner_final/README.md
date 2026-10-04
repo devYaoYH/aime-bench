@@ -100,6 +100,11 @@ It preserves the frozen core and final solving settings, but its timing is
 unranked because profiling perturbs execution. The report includes the measured
 roofline, context traffic, limitations and the retained failed initial capture.
 
+The [per-question token and tail analysis](../runs/analyses/core-v1-five-seeds-answer-tokens/README.md)
+replays the selected five v1 runs' original SSE traces. It separates winning
+candidate production from verification latency and identifies the last two
+positive-verdict slots; it does not launch or simulate an alternative policy.
+
 ## Core v1.1: long fresh rollouts
 
 The separately frozen [v1.1 policy](core_v1_1/README.md) removes the round barrier

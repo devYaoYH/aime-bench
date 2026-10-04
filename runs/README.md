@@ -11,6 +11,7 @@ see the [experiment guide](../docs/experiments.md).
 
 | Run or analysis | Experiment |
 | --- | --- |
+| [Core v1 answer tokens and tail](analyses/core-v1-five-seeds-answer-tokens/README.md) | Exact SSE replay of the selected five seeds, all 30-question distributions and verification slots 17/18 |
 | [Core v1.1 five seeds](experiments/core-v1_1-five-seeds-20261004T083800Z/README.md) | Long uninterrupted initial rollouts; 5/5 reached 18, median 77.652s, fresh retries unexercised |
 | [Core v1 Nsight Compute](profiling/core-v1-ncu-20261004-single-pass/README.md) | Three single-pass decode graph roofline samples; one completed unranked diagnostic, with failed initial capture retained |
 | [20260930-155212](20260930-155212/README.md) | Original single-pass Qwen baseline |
