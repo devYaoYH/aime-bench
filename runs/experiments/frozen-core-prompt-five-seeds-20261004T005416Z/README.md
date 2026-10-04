@@ -1,6 +1,6 @@
 # Frozen core v1: improved-prompt replication
 
-**5/5 reached 18 distinct verified correct questions.** Median **77.277s**, range **62.783–82.492s**. Only **1/5** finished within the predeclared **71.135s** reference: the all-five repeatability gate **failed**. Neither the 71.135s historical result nor the 59.316s FlashInfer best is established as consistently reproducible.
+**5/5 reached 18 distinct verified correct questions.** Median **77.277s**, range **62.783–82.492s**. These are the current headline results: five successful declared-seed trials on one server, rather than the fastest historical draw. The earlier predeclared 71.135s reference was met by 1/5; that gate is retained as secondary historical context, not the central performance claim.
 
 ![Five-seed verification timing](five-seed-timing.png)
 

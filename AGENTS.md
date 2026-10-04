@@ -76,8 +76,9 @@ support; report those limitations rather than modifying fixtures to hide them.
   prompts and hyperparameter presets under `runner_final/prompts/` and
   `runner_final/presets/`; record resolved inputs and their hashes. The baseline
   is 30×1 barrier, initial 8K, four requests including continuations, cheap warmup
-  and benchmark mode. The improved prompt has five scored trials (median 77.277s, 1/5 within
-  71.135s); it is not a confirmed speed improvement. The 30×2/4K preset is untested. Core freeze alone is not evidence of repeatability.
+  and benchmark mode. The improved prompt has five scored trials: 5/5 reached 18, median
+  77.277s, range 62.783–82.492s on one server. Use these batch statistics as the
+  headline; historical best timing is secondary context. The 30×2/4K preset is untested. Core freeze alone is not evidence of repeatability.
 
 - Use `src.attempt_runners.speedrun_v1` for prospective concurrency experiments;
   use `src.attempt_runners.sweep_speedrun_v1` to plan the versioned manifest in

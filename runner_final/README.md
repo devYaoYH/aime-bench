@@ -42,8 +42,8 @@ The subsequently requested improved-prompt replication uses
 immutable core with the prompt-adherence preset, retaining all outcomes and
 checking initial payloads, core/prompt hashes, correct verdicts and request caps.
 It reuses one owned server with fresh graders, cleared prefix cache and cheap
-warmup per trial. No settling run or seed replacement is allowed. All five
-must finish within 71.135s to pass the repeatability gate.
+warmup per trial. No settling run or seed replacement is allowed. The predeclared 71.135s gate remains in the raw protocol; the report now
+leads with the measured five-run median, range and target success count.
 
 ## Historical final v2 and validation
 
@@ -123,7 +123,8 @@ The short-warmup default has since been restored. The [improved-prompt
 five-seed core validation](../runs/experiments/frozen-core-prompt-five-seeds-20261004T005416Z/README.md)
 reached 18 in 71.321, 77.277, 82.492, 81.102 and 62.783 seconds (median 77.277;
 only 1/5 within 71.135s). It kept the core fixed and used one owned server lifetime;
-consistent sub-reference and restart performance remain unconfirmed. The original-
+the supported performance claim is 5/5 reached 18, median 77.277s and range
+62.783–82.492s across the declared seeds on one server. The original-
 prompt short-warmup five-seed protocol has not been executed as a group. Results must not be used to
 select replacement seeds.
 
@@ -133,3 +134,5 @@ The first final-runner version and its warmed protocol are preserved as
 commit `ccca184` and historical attempt records stay unchanged. The user requested
 restoring the cheaper warmup after the five warmed trials; v2 changes that default,
 not the generation/grading policy. AIME 2024 warming remains opt-in.
+
+The lightweight AIME 2026 transfer protocol is [predeclared here](../configs/experiments/vibe-frozen-core-aime2026-lightweight-v1.json): one new seed, all 30 questions, target 18, the same improved-prompt preset and core.

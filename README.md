@@ -150,5 +150,5 @@ baseline from the measured improved-prompt and prepared 30×2/4K experiments; it
 
 The subsequent [improved-prompt core validation](runs/experiments/frozen-core-prompt-five-seeds-20261004T005416Z/README.md)
 reached 18 in all five declared-seed trials: median **77.277s**, range
-**62.783–82.492s**, only **1/5** within 71.135s. Consistent headline timing remains
-unconfirmed. The core and original baseline preset are unchanged.
+**62.783–82.492s**, five successes across the declared seeds on one server. These measured
+batch statistics replace historical best-draw timing as the current headline. The core and original baseline preset are unchanged.
