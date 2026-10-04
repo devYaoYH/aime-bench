@@ -1,0 +1,73 @@
+{
+  "problem_idx": 15,
+  "started_at_utc": "2026-10-04T08:10:46.820+00:00",
+  "finished_at_utc": "2026-10-04T08:13:49.071+00:00",
+  "end_to_end_latency_s": 182.2509083719924,
+  "status": "error",
+  "winner": null,
+  "error": "attempt interrupted",
+  "unique_candidates": 0,
+  "candidate_answers": [],
+  "rollouts": [
+    {
+      "rollout": 1,
+      "round": 1,
+      "started_at_utc": "2026-10-04T08:10:46.832+00:00",
+      "start_monotonic_s": 305694.895317642,
+      "ttft_s": 0.39723439095541835,
+      "last_token_s": 1.1779694450087845,
+      "finish_reason": null,
+      "status": "cancelled",
+      "done_received": false,
+      "usage": {
+        "prompt_tokens": 250,
+        "total_tokens": 320,
+        "completion_tokens": 70,
+        "completion_tokens_details": null
+      },
+      "endpoint": "/v1/chat/completions",
+      "continuation_of_rollout": null,
+      "requested_max_tokens": 8192,
+      "http_status": 200,
+      "headers_received_s": 0.06780777696985751,
+      "generation_finished_at_utc": "2026-10-04T08:13:49.063+00:00",
+      "generation_end_monotonic_s": 305877.126218356,
+      "generation_latency_s": 182.2309007139993,
+      "generation_censored": true,
+      "generated_token_ids_count": 70,
+      "prompt_token_ids_count": 250,
+      "cached_prompt_tokens": null,
+      "prefix_cache_hit_fraction": null,
+      "overhead": {
+        "enabled": false,
+        "timings": {},
+        "counters": {},
+        "maxima": {}
+      },
+      "finished_at_utc": "2026-10-04T08:13:49.071+00:00",
+      "end_to_end_latency_s": 182.2390847869683,
+      "end_to_end_scope": "rollout start through question verification/cancellation settlement",
+      "gpu": null
+    }
+  ],
+  "round": 1,
+  "first_solved": null,
+  "overhead": {
+    "enabled": false,
+    "timings": {},
+    "counters": {},
+    "maxima": {}
+  },
+  "rounds": [
+    {
+      "round": 1,
+      "status": "error",
+      "started_at_utc": "2026-10-04T08:10:46.820+00:00",
+      "finished_at_utc": "2026-10-04T08:13:49.071+00:00",
+      "end_to_end_latency_s": 182.2509083719924,
+      "winner": null,
+      "error": "attempt interrupted"
+    }
+  ],
+  "question_start_monotonic_s": 305694.883494057
+}

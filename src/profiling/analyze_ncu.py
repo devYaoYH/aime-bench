@@ -3,7 +3,6 @@ import argparse
 import csv
 import hashlib
 import json
-import math
 from pathlib import Path
 
 from src.common import ROOT, atomic_json
@@ -90,11 +89,19 @@ def analyze(folder):
                           'different_control_fields': [k for k in keys if config.get(k) != controls.get(k)],
                           'all_question_request_caps_valid': all(len(row['rollouts']) <= 4 for row in q),
                           'generation_requests': len(rollouts),
-                          'continuations': sum(r['continuation_of_rollout'] is not None for r in rollouts),
-                          'later_fresh': sum(r['rollout'] > 1 and r['continuation_of_rollout'] is None for r in rollouts)}}
+              'continuations': sum(r['continuation_of_rollout'] is not None for r in rollouts),
+              'later_fresh': sum(r['rollout'] > 1 and r['continuation_of_rollout'] is None for r in rollouts)}}
+    with (folder/'serving_samples.csv').open() as stream:
+        serving = list(csv.DictReader(stream))
+    result['serving_context'] = {
+        'sample_count': len(serving),
+        'max_observed_kv_fraction': max(float(r['vllm:kv_cache_usage_perc']) for r in serving),
+        'max_waiting_requests': max(float(r['vllm:num_requests_waiting']) for r in serving),
+        'samples_with_waiting_requests': sum(float(r['vllm:num_requests_waiting']) > 0 for r in serving),
+        'max_running_requests': max(float(r['vllm:num_requests_running']) for r in serving)}
     atomic_json(folder/'analysis.json', result)
     with (folder/'roofline_points.csv').open('w', newline='') as stream:
-        writer = csv.DictWriter(stream, fieldnames=list(measured[0]))
+        writer = csv.DictWriter(stream, fieldnames=list(measured[0]), lineterminator='\n')
         writer.writeheader(); writer.writerows(measured)
     return result
 
@@ -117,6 +124,11 @@ def plot(folder, result):
               'after_continuation_admission': '#54854d', None: '#777777'}
     names = {'early_decode': 'Early decode', 'long_context_decode': 'Long context decode',
              'after_continuation_admission': 'After continuation admission', None: 'Unassigned sample'}
+    active = {w['phase']: int(w['before']['vllm:num_requests_running']) for w in result['windows']}
+    annotations = {'early_decode': (f"Early ({active.get('early_decode', '?')} active)", (14, -8)),
+                   'long_context_decode': (f"Long context ({active.get('long_context_decode', '?')})", (-110, 22)),
+                   'after_continuation_admission': (f"Continuation ({active.get('after_continuation_admission', '?')})", (-122, -28)),
+                   None: ('Sample', (12, 8))}
     phases = list(dict.fromkeys(p['phase'] for p in points))
     for phase in phases:
         selected = [p for p in points if p['phase'] == phase]
@@ -124,20 +136,42 @@ def plot(folder, result):
                    [p['tensor_tops'] for p in selected], c=colors[phase], s=70,
                    edgecolors='white', linewidths=.8, zorder=4, label=names[phase])
         chosen = selected[len(selected)//2]
-        ax.annotate(names[phase], (chosen['tensor_ops_per_dram_byte'], chosen['tensor_tops']),
-                    xytext=(10, 10 if phase != 'long_context_decode' else -22),
-                    textcoords='offset points', fontsize=10, color=colors[phase])
+        label, offset = annotations[phase]
+        ax.annotate(label, (chosen['tensor_ops_per_dram_byte'], chosen['tensor_tops']),
+                    xytext=offset, textcoords='offset points', fontsize=10, color=colors[phase],
+                    arrowprops={'arrowstyle': '-', 'color': colors[phase], 'lw': .7},
+                    bbox={'facecolor': 'white', 'edgecolor': 'none', 'alpha': .88, 'pad': 1.5})
     ax.axvline(312/1.935, color='#abb5bb', lw=.8, ls=':')
     ax.text(312/1.935*1.08, 2, 'Ridge: 161 ops/byte', rotation=90, color='#7c8790', fontsize=9)
     ax.set(xlabel='Measured BF16 dense Tensor Core operations / measured DRAM byte',
            ylabel='Measured BF16 dense Tensor Core throughput (TOP/s)',
-           title='Core v1 decode on the A100: measured roofline samples', xlim=(.1, 10000), ylim=(.1, 700))
+           title='Core v1 decode on the A100: measured roofline samples', xlim=(1, 1000), ylim=(1, 600))
     ax.grid(True, which='major', alpha=.16)
     ax.legend(loc='upper left', frameon=False, fontsize=9)
     fig.savefig(folder/'roofline.png', dpi=190)
     fig.savefig(folder/'roofline.svg')
     fig.savefig(folder/'roofline.pdf')
     plt.close(fig)
+    fig, axes = plt.subplots(1, 2, figsize=(10, 4), constrained_layout=True)
+    short = {'early_decode': 'Early', 'long_context_decode': 'Long context',
+             'after_continuation_admission': 'Continuation', None: 'Sample'}
+    labels = [f"{short[p['phase']]}\n{active.get(p['phase'], '?')} active" for p in points]
+    for ax, key, scale, ylabel in [(axes[0], 'dram_bytes', 1e9, 'DRAM traffic per graph (GB)'),
+                                   (axes[1], 'duration_us', 1000, 'GPU graph duration (ms)')]:
+        ax.bar(labels, [p[key]/scale for p in points],
+               color=[colors[p['phase']] for p in points], width=.58)
+        for i, p in enumerate(points):
+            ax.text(i, p[key]/scale+.12, f'{p[key]/scale:.2f}', ha='center', fontsize=11)
+        ax.set_ylabel(ylabel)
+        ax.set_ylim(0, max(p[key]/scale for p in points)*1.22)
+        ax.grid(axis='y', alpha=.15); ax.set_axisbelow(True)
+    fig.suptitle('Longer contexts increase traffic as the active batch shrinks')
+    fig.savefig(folder/'decode_cost.png', dpi=190)
+    fig.savefig(folder/'decode_cost.svg')
+    plt.close(fig)
+    for name in ('roofline.svg', 'decode_cost.svg'):
+        svg = folder/name
+        svg.write_text('\n'.join(line.rstrip() for line in svg.read_text().splitlines())+'\n')
 
 
 def main():

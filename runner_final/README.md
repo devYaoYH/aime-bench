@@ -94,6 +94,12 @@ The [AIME 2026 transfer run](../runs/experiments/frozen-core-aime2026-lightweigh
 used the same v1 preset and reached 18 in **88.669s**, with one wrong check.
 It is one fresh-server trial, separate from the five-seed 2025 statistics.
 
+The [Nsight Compute report](../runs/profiling/core-v1-ncu-20261004-single-pass/README.md)
+profiles three decode graphs from one completed core v1 diagnostic attempt.
+It preserves the frozen core and final solving settings, but its timing is
+unranked because profiling perturbs execution. The report includes the measured
+roofline, context traffic, limitations and the retained failed initial capture.
+
 ## Core v1.5: exploratory eager allocation
 
 The independently frozen [v1.5 policy](../src/attempt_runners/README.md#core-v15-eager-30-slot-experiment)

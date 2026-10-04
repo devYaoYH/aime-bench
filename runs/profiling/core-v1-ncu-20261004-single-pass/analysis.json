@@ -1,0 +1,137 @@
+{
+  "scope": "Selected workloads in one instrumented attempt; not a workload-frequency or scored-time estimate.",
+  "raw_csv_sha256": "df0fc8584bd5c3613fd28a197e956665e825414cedafb1917e42d344da107fa1",
+  "profiled_workloads": 3,
+  "nonzero_tensor_workloads": 3,
+  "points": [
+    {
+      "id": 0,
+      "name": "graph",
+      "duration_us": 5986.400000000001,
+      "bf16_dense_tensor_ops": 191662129152.0,
+      "dram_bytes": 2059242624.0,
+      "tensor_ops_per_dram_byte": 93.0740879769202,
+      "tensor_tops": 32.01625837765602,
+      "dram_gb_per_s": 343.9868074301751,
+      "nominal_hbm_roof_pct": 17.777095991223515,
+      "nominal_dense_tensor_roof_pct": 10.26162127488975,
+      "nominal_roof_at_intensity_pct": 17.777095991223515,
+      "dram_counter_pct": null,
+      "sm_counter_pct": null,
+      "tensor_pipe_pct": null,
+      "l2_hit_pct": null,
+      "l2_bytes": null,
+      "active_warps_pct": null,
+      "issue_active_pct": null,
+      "phase": "early_decode"
+    },
+    {
+      "id": 1,
+      "name": "graph",
+      "duration_us": 6277.344000000001,
+      "bf16_dense_tensor_ops": 235884773376.0,
+      "dram_bytes": 4884596096.0,
+      "tensor_ops_per_dram_byte": 48.291561623522206,
+      "tensor_tops": 37.57716215265564,
+      "dram_gb_per_s": 778.1310210178061,
+      "nominal_hbm_roof_pct": 40.213489458284556,
+      "nominal_dense_tensor_roof_pct": 12.04396222841527,
+      "nominal_roof_at_intensity_pct": 40.213489458284556,
+      "dram_counter_pct": null,
+      "sm_counter_pct": null,
+      "tensor_pipe_pct": null,
+      "l2_hit_pct": null,
+      "l2_bytes": null,
+      "active_warps_pct": null,
+      "issue_active_pct": null,
+      "phase": "long_context_decode"
+    },
+    {
+      "id": 2,
+      "name": "graph",
+      "duration_us": 7047.712,
+      "bf16_dense_tensor_ops": 178943164416.0,
+      "dram_bytes": 6643333376.0,
+      "tensor_ops_per_dram_byte": 26.93574961365901,
+      "tensor_tops": 25.390249263307012,
+      "dram_gb_per_s": 942.6227087599493,
+      "nominal_hbm_roof_pct": 48.71435187389919,
+      "nominal_dense_tensor_roof_pct": 8.137900404906095,
+      "nominal_roof_at_intensity_pct": 48.71435187389919,
+      "dram_counter_pct": null,
+      "sm_counter_pct": null,
+      "tensor_pipe_pct": null,
+      "l2_hit_pct": null,
+      "l2_bytes": null,
+      "active_warps_pct": null,
+      "issue_active_pct": null,
+      "phase": "after_continuation_admission"
+    }
+  ],
+  "windows": [
+    {
+      "phase": "early_decode",
+      "requested_at_utc": "2026-10-04T08:17:43.977+00:00",
+      "before": {
+        "timestamp_utc": "2026-10-04T08:17:43.977+00:00",
+        "monotonic_s": 306112.039850466,
+        "vllm:generation_tokens_total": 2461.0,
+        "vllm:prompt_tokens_total": 11724.0,
+        "vllm:num_requests_running": 30.0,
+        "vllm:num_requests_waiting": 0.0,
+        "vllm:kv_cache_usage_perc": 0.0038483858159493733
+      },
+      "profiler_limit": 1,
+      "start_ack_at_utc": "2026-10-04T08:17:43.993+00:00",
+      "stop_ack_at_utc": "2026-10-04T08:17:45.011+00:00"
+    },
+    {
+      "phase": "long_context_decode",
+      "requested_at_utc": "2026-10-04T08:18:26.828+00:00",
+      "before": {
+        "timestamp_utc": "2026-10-04T08:18:26.828+00:00",
+        "monotonic_s": 306154.890942149,
+        "vllm:generation_tokens_total": 100972.0,
+        "vllm:prompt_tokens_total": 11724.0,
+        "vllm:num_requests_running": 21.0,
+        "vllm:num_requests_waiting": 0.0,
+        "vllm:kv_cache_usage_perc": 0.0403927796951834
+      },
+      "profiler_limit": 1,
+      "start_ack_at_utc": "2026-10-04T08:18:26.838+00:00",
+      "stop_ack_at_utc": "2026-10-04T08:18:27.849+00:00"
+    },
+    {
+      "phase": "after_continuation_admission",
+      "requested_at_utc": "2026-10-04T08:19:16.310+00:00",
+      "before": {
+        "timestamp_utc": "2026-10-04T08:19:16.310+00:00",
+        "monotonic_s": 306204.372783461,
+        "vllm:generation_tokens_total": 181417.0,
+        "vllm:prompt_tokens_total": 149241.0,
+        "vllm:num_requests_running": 16.0,
+        "vllm:num_requests_waiting": 0.0,
+        "vllm:kv_cache_usage_perc": 0.06463608319843617
+      },
+      "profiler_limit": 1,
+      "start_ack_at_utc": "2026-10-04T08:19:16.315+00:00",
+      "stop_ack_at_utc": "2026-10-04T08:19:17.331+00:00"
+    }
+  ],
+  "control": {
+    "reference_attempt_id": "20261004T005518.974361Z",
+    "different_initial_questions": [],
+    "different_control_fields": [],
+    "all_question_request_caps_valid": true,
+    "generation_requests": 46,
+    "continuations": 16,
+    "later_fresh": 0
+  },
+  "serving_context": {
+    "sample_count": 423,
+    "max_observed_kv_fraction": 0.07066063956507129,
+    "max_waiting_requests": 10.0,
+    "samples_with_waiting_requests": 1,
+    "max_running_requests": 30.0
+  }
+}

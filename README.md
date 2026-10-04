@@ -18,6 +18,11 @@ history with frontier captions (E9). The historical fastest draw was 59.316s;
 the final performance claim is core v1's five-run median above. Those v1 2025
 trials share one inference-server lifetime; 2026 is a single fresh-server transfer check.
 
+The [Nsight Compute diagnostic](runs/profiling/core-v1-ncu-20261004-single-pass/README.md)
+adds a measured decode roofline: three graph samples attain 18–49% of nominal
+HBM bandwidth, with growing context traffic as the active batch shrinks.
+Its instrumented timing is excluded from the scored results above.
+
 ## Run the measured core v1
 
 On the provided `callosum` node, use a tested checkout, an available GPU and free
