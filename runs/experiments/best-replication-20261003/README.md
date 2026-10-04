@@ -1,6 +1,6 @@
 # Replicating the 71-second best run
 
-The new fastest observed time to 18 verified correct answers is **59.316s**, using NVFP4 with FlashInfer attention. Reliable repetition remains unproven: a separately declared validation failed, with scored times of **87.356 / 59.316 / 86.574s** after a 136.048s settling run. This changes model/backend configuration rather than exactly replicating the original BF16 run. All twenty-four completed follow-ups are retained; the goal remains active.
+The new fastest observed time to 18 verified correct answers is **59.316s**, using NVFP4 with FlashInfer attention. Reliable repetition remains unproven: a separately declared validation failed, with scored times of **87.356 / 59.316 / 86.574s** after a 136.048s settling run. This changes model/backend configuration rather than exactly replicating the original BF16 run. All twenty-seven completed follow-ups are retained; the goal remains active.
 
 ![Timing comparison](timing-comparison.png)
 
@@ -14,6 +14,7 @@ The new fastest observed time to 18 verified correct answers is **59.316s**, usi
 | NVFP4 benchmark, four predeclared different seeds | 4 | 118.19 / 94.59 / 126.43 / 114.44s | 116.31s |
 | NVFP4 FlashInfer, development comparison | 3 | 98.33 / 64.45 / 64.40s | 64.45s |
 | NVFP4 FlashInfer, independent scored validation | 3 + 1 settling | 136.05s settling; 87.36 / 59.32 / 86.57s scored | 86.57s scored |
+| NVFP4 FlashInfer, suspend pending verdict v5 | 3 | 95.80 / 99.24 / 83.06s | 95.80s |
 
 The reference's grader used 54.002s of service and waited 12.076s between checks. Earlier unsuccessful comparisons waited 26.964–91.676s; the two faster FlashInfer trials waited only 2.611/2.473s despite using 57s of service for 19 checks. The figure stacks first grader pickup, completed service and idle time; their sum agrees with each first-18 time within 0.03s. Initial TTFT is the conventional median of the first request per question. Startup, cleanup and buffered final writes are outside this solving window.
 
@@ -39,4 +40,4 @@ Batch evidence: [BF16 benchmark](../bf16-best-warm-replicate-20261003T224038Z/RE
 
 The fastest run used 54.003s grader service, started checking at 4.829s and waited only 0.483s between checks. The other scored trials waited 25.657/27.739s. A 59s observed result is therefore close to this grader's floor; the remaining challenge is making correct candidates arrive that early consistently.
 
-[Selected server evidence](flashinfer-server-evidence.json) confirms FlashInfer attention and Marlin NVFP4 weights in both batches, plus startup compilation and throughput observations. [Pending-verdict overlap](pending-verdict-overlap.json) measures 106–143 overlapping stream-seconds after eventual correct candidates in selected runs. Those sums are not additive wall-time savings. A separate versioned policy can test releasing GPU work while verdicts are pending, then safely resume exact observed token IDs after wrong verdicts, preserving the request cap. No such policy is implemented in these results.
+[Selected server evidence](flashinfer-server-evidence.json) confirms FlashInfer attention and Marlin NVFP4 weights in both batches, plus startup compilation and throughput observations. [Pending-verdict overlap](pending-verdict-overlap.json) measures 106–143 overlapping stream-seconds after eventual correct candidates in selected runs. Those sums are not additive wall-time savings. A separate versioned policy can test releasing GPU work while verdicts are pending, then safely resume exact observed token IDs after wrong verdicts, preserving the request cap. The [v5 suspension experiment](../nvfp4-pending-verdict30-v5-20261003T235852Z/README.md) now tests this approach; its three repeats did not beat 71.135s. The selected [final runner](../../../runner_final/README.md) retains the barrier policy and adds a separately declared ungraded AIME 2024 workload warmup.

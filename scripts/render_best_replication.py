@@ -21,6 +21,7 @@ BATCHES = [
     ("NVFP4 varied seed", "nvfp4-30x1-seed-comparison-20261003T231357Z"),
     ("NVFP4 FlashInfer", "nvfp4-flashinfer-best-replicate-20261003T233008Z"),
     ("FlashInfer validation", "nvfp4-flashinfer-validation-20261003T233628Z"),
+    ("NVFP4 suspend verdict", "nvfp4-pending-verdict30-v5-20261003T235852Z"),
 ]
 
 

@@ -1,0 +1,4 @@
+{
+  "reasoning": "",
+  "content": "<think>We need to solve the problem: Count ordered integer pairs (x, y) with -100 ≤ x ≤ 100, -100 ≤ y ≤ 100, such that 12 x^2 - x y - 6 y^2 = 0.\n\nWe must find all integer solutions to quadratic homogeneous equation. It's a binary quadratic form equal to zero. Equivalent to solving 12x^2 - x y - 6 y^2 = 0. This can be factored? Let's see: 12x^2 - xy - 6y^2 = 0. This is a quadratic in x: 12x^2 - xy - 6y^2 = 0 => treat as equation in rational ratio x:y.\n\nWe can rewrite as (x/y) ratio solving: If y=0, then equation reduces to 12x^2 = 0 => x=0. So (0,0) is a solution. For y ≠ 0, we can divide both sides by y^2: 12 (x/y)^2 - (x/y) - 6 = 0. Let t = x / y, rational possibly. Then 12 t^2 - t - 6 = 0 => solve for t: quadratic: t = [1 ± sqrt(1 + 288)]/(24) = [1 ± sqrt(289)]/24 = [1 ± 17]/24. So t = (1+17)/24 = 18/24 = 3/4, or t = (1-17)/24 = -16/24 = -2/3. So"
+}

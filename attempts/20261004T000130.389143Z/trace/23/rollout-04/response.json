@@ -1,0 +1,4 @@
+{
+  "reasoning": "",
+  "content": "<think>We need to count the number of N in [1,1000] such that the greedy algorithm using coin denominations 1,10,25 yields a minimal number of coins (i.e., is optimal) for that amount N.\n\nWe have unlimited supply of coin denominations: 1,10,25 (like US coin system but without 5). The greedy algorithm picks the largest coin not exceeding remaining amount. For each N, we can compute greedy representation: number of 25c coins = floor(N/25), then remaining r1 = N mod 25; then number of 10c coins = floor(r1/10), remaining r2 = r1 mod 10; then number of 1c coins = r2.\n\nThus greedy representation yields coin count G"
+}
