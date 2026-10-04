@@ -12,10 +12,17 @@ count toward its budget. A natural end or exhausted context/budget can free a
 slot for another fresh sample; a correct verdict cancels every stream for that
 question. The overall attempt stops at 18 distinct correct verdicts by default.
 
-The pool initially covers every selected question. Its size defaults to the
-selected question count (30 for AIME 2025). As generation ends or questions solve,
-ready continuations take priority, followed by fresh samples on least-active
-unsolved questions, with rotating ties. Multiple fresh trajectories for one
+The initial phase launches exactly one 8K request per selected question (30×1
+for AIME 2025), with a **coverage barrier**. Freed slots stay idle until all initial
+generations and their queued grader checks settle, matching v1’s first-round
+barrier. Correct verdicts still cancel their question immediately, and reaching
+the solve target ends the attempt without opening the pool.
+
+After that one barrier, the pool opens with a slot count defaulting to the
+selected question count (30 for AIME 2025). Ready continuations take priority,
+followed by fresh samples on least-active unsolved questions, with rotating ties.
+There are no subsequent global barriers: slots refill as requests end or
+questions solve. Multiple fresh trajectories for one
 question may run concurrently, but their cumulative fresh count never exceeds
 four. This is a finite allowance, not a requirement to use all four.
 
@@ -60,7 +67,8 @@ therefore does not renumber another trajectory's seeds.
 Saved `rollout-NN` folders index **HTTP segments**. Their telemetry identifies
 `fresh_sample`, `segment`, `continuation_of_rollout`, generated tokens before the
 segment and cumulative trajectory tokens. `allocation.json` records each
-admission and separate fresh/request counters. Summaries likewise distinguish
+admission, its coverage/pool phase, the barrier release time, and separate
+fresh/request counters. Summaries likewise distinguish
 fresh samples from continuation requests. There is no independent four-HTTP-call
 or four-round cutoff. For example, one sample with a large enough context can
 use 8K + 56K = 64K across two HTTP requests; four such samples can use eight
@@ -78,8 +86,13 @@ module; the frozen canonical selector has not been changed to register/promote i
 This implementation has offline policy/lifecycle tests, **no GPU performance
 measurement yet**.
 
-Validation: all 13 focused v1.6 checks and the full 386-test offline suite passed
-from an exact staged-source snapshot, excluding unrelated working-tree edits.
+Validation: 391 offline suite checks passed from the staged-source snapshot;
+all 19 focused policy/batch checks passed after adding the named-profile control
+check. Unrelated working-tree edits were excluded from the suite snapshot.
+
+The initial-coverage barrier is covered by offline tests for freed slots, queued
+wrong verdicts, excess configured capacity and cancellation. The batch comparison
+uses the original five seeds without replacement.
 
 Run the focused checks with:
 
@@ -93,8 +106,23 @@ Run the focused checks with:
 | --- | --- | --- | --- |
 | v1.1 | Eager, at most one live generation per question; freed solved slots do not create siblings | One long request, up to 64K total context; fresh retry after it ends and queued checks finish | Four fresh requests; no continuations |
 | v1.5 | Fixed 30-slot pool; continuations first, then least-active fresh samples | First request per question 8K; subsequent requests up to 16K additional output | Four HTTP requests including continuations |
-| v1.6 | Question-count pool with the same admission priorities | Every fresh sample starts at 8K; one long continuation to cumulative 64K/context cap | Four fresh trajectories; the continuation is separate |
+| v1.6 | Initial coverage/check barrier, then question-count pool with the same admission priorities | Every fresh sample starts at 8K; one long continuation to cumulative 64K/context cap | Four fresh trajectories; the continuation is separate |
 
 The original five-seed medians were 77.652s for v1.1 and 77.352s for v1.5.
 Their different budgets and allocation policies prevent attributing that small
 difference to a single change. These measurements do not establish a v1.6 speedup.
+
+## Five-seed comparison batch
+
+On the idle remote GPU, from a clean worktree of the pushed source:
+
+```bash
+~/.venvs/vllm/bin/python -m runner.extensions.validation.v1_6_batch \
+  --grader-python /home/azureuser/aime-bench/grader/.venv/bin/python
+```
+
+This scores seeds 20261011–20261015, reuses one owned server, resets prefix cache
+and performs cheap arithmetic warmup before each trial, and starts a fresh grader.
+All failures and unmet targets remain in the batch; there are no replacement
+seeds. The five-minute-plus startup and trace flush are outside solving latency.
+A 600-second per-trial wall safety timeout includes initialization.

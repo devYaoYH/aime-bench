@@ -21,6 +21,20 @@ class PoolQuestion(QuestionRun):
         self.candidates.put_nowait(None)
         self.exhausted.set()
 
+    def coverage_finished(self):
+        # This sentinel follows every candidate from the initial generation.
+        # The shared verifier drains them before acknowledging the barrier.
+        self.candidates.put_nowait(None)
+
+    async def verify_candidates(self):
+        async with asyncio.timeout(self.args.question_timeout):
+            await super().verify_candidates()
+            if self.winner:
+                return
+            self.pool.coverage_settled(self.index)
+            await self.pool.expanded.wait()
+            await super().verify_candidates()
+
     async def generate(self, rollout, plan):
         self.streams.append(asyncio.current_task())
         proxy = copy(self)
@@ -62,6 +76,7 @@ class PoolQuestion(QuestionRun):
             self.generate,
             lambda sample: first_plan(self.problem, self.policy_args, sample),
             self.on_exhausted,
+            self.coverage_finished,
         )
         self.producer = asyncio.create_task(self.exhausted.wait())
         try:
@@ -80,6 +95,7 @@ class PoolQuestion(QuestionRun):
             await self.pool.close_question(self.index)
             self.exhausted.set()
             await self.settle()
+            self.pool.coverage_settled(self.index)
         if self.result["status"] == "error":
             raise RuntimeError(f"Q{self.index} failed: {self.question_error}")
         return self.result
@@ -123,8 +139,9 @@ async def run_speedrun(
         for p in problems
     }
     work = asyncio.gather(*tasks.values())
-    allocator, reached = asyncio.create_task(pool.run()), asyncio.create_task(
-        target.wait()
+    allocator, reached = (
+        asyncio.create_task(pool.run()),
+        asyncio.create_task(target.wait()),
     )
     try:
         await asyncio.wait(

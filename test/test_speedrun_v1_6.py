@@ -213,7 +213,7 @@ class PolicyTests(unittest.IsolatedAsyncioTestCase):
             all(a["active_requests"] <= 3 for a in allocation["admissions"])
         )
 
-    async def test_freed_slot_launches_sibling_after_initial_coverage(self):
+    async def test_freed_slots_wait_for_initial_barrier_then_launch_siblings(self):
         streams, requests, checks = [], [], []
 
         async def handler(request):
@@ -225,7 +225,14 @@ class PolicyTests(unittest.IsolatedAsyncioTestCase):
             q = int(body["messages"][1]["content"])
             requests.append(q)
             text = "\\boxed{070}" if q == 1 or requests.count(q) > 1 else "thinking"
-            stream = Stream([chunk(text)], hang=True)
+            first = requests.count(q) == 1
+            if not first:
+                self.assertTrue(all(s.closed for s in streams[:3]))
+            stream = Stream(
+                [chunk(text, finish="stop" if first and q != 1 else None)],
+                hang=not first or q == 1,
+                delay=0.025 if first and q != 1 else 0,
+            )
             streams.append(stream)
             return httpx.Response(200, stream=stream)
 
@@ -234,9 +241,55 @@ class PolicyTests(unittest.IsolatedAsyncioTestCase):
         )
         self.assertEqual(requests[:3], [1, 2, 3])
         self.assertGreater(len(requests), 3)
-        self.assertEqual(sum(r["status"] == "solved" for r in rows), 2)
+        self.assertGreaterEqual(sum(r["status"] == "solved" for r in rows), 2)
         self.assertTrue(all(s.closed for s in streams))
         self.assertTrue(all(s["fresh"] <= 4 for s in allocation["questions"].values()))
+        self.assertTrue(
+            all(a["phase"] == "coverage" for a in allocation["admissions"][:3])
+        )
+        release = allocation["barrier_release"]["elapsed_s"]
+        self.assertTrue(
+            all(
+                a["phase"] == "pool" and a["elapsed_s"] >= release
+                for a in allocation["admissions"][3:]
+            )
+        )
+
+    async def test_barrier_waits_for_queued_wrong_verdict_and_ignores_extra_slots(self):
+        requests, verdict_done = [], False
+
+        async def handler(request):
+            nonlocal verdict_done
+            body = json.loads(request.content)
+            if request.url.path == "/verify":
+                await asyncio.sleep(0.025)
+                verdict_done = True
+                return httpx.Response(200, json={"verdict": False})
+            if len(requests) >= 2:
+                self.assertTrue(verdict_done)
+            requests.append(body)
+            return httpx.Response(
+                200, stream=Stream(capped(body, "\\boxed{070}"), delay=0)
+            )
+
+        rows, allocation = await self.exercise(
+            handler,
+            count=2,
+            changes={
+                "max_concurrent_requests": 4,
+                "first_pass_max_tokens": 2,
+                "max_rollout_tokens": 6,
+                "max_fresh_samples_per_question": 1,
+            },
+        )
+        self.assertEqual(len(requests), 4)
+        self.assertEqual(
+            [a["phase"] for a in allocation["admissions"]],
+            ["coverage"] * 2 + ["pool"] * 2,
+        )
+        self.assertTrue(
+            all(s["coverage_settled"] for s in allocation["questions"].values())
+        )
 
     async def test_missing_exact_ids_and_service_errors_fail_fast(self):
         for fail in ["ids", "inference", "grader"]:
@@ -334,30 +387,33 @@ class PolicyTests(unittest.IsolatedAsyncioTestCase):
 
         with tempfile.TemporaryDirectory() as tmp, redirect_stdout(io.StringIO()):
             root = Path(tmp)
-            with patch.object(runtime, "ROOT", root), patch.object(
-                runtime, "Services", return_value=services
-            ), patch.object(runtime, "ensure_free"), patch.object(
-                runtime, "git_state", return_value=dict(git_commit=None, git_dirty=None)
-            ), patch.object(
-                runtime, "local_dataset", side_effect=local
-            ), patch.object(
-                runtime,
-                "read_profile",
-                return_value=(
-                    root / "profile.yaml",
-                    "max-model-len: 65536",
-                    {"max-model-len": 65536},
+            with (
+                patch.object(runtime, "ROOT", root),
+                patch.object(runtime, "Services", return_value=services),
+                patch.object(runtime, "ensure_free"),
+                patch.object(
+                    runtime,
+                    "git_state",
+                    return_value=dict(git_commit=None, git_dirty=None),
                 ),
-            ), patch.object(
-                runtime, "prepare_inference", side_effect=inference
-            ), patch.object(
-                runtime,
-                "prepare_grader",
-                new=AsyncMock(return_value=[dict(problem_idx=1, problem="test")]),
-            ), patch.object(
-                runtime, "warm_inference", side_effect=warmup
-            ), patch.object(
-                runtime.httpx, "AsyncClient", return_value=client
+                patch.object(runtime, "local_dataset", side_effect=local),
+                patch.object(
+                    runtime,
+                    "read_profile",
+                    return_value=(
+                        root / "profile.yaml",
+                        "max-model-len: 65536",
+                        {"max-model-len": 65536},
+                    ),
+                ),
+                patch.object(runtime, "prepare_inference", side_effect=inference),
+                patch.object(
+                    runtime,
+                    "prepare_grader",
+                    new=AsyncMock(return_value=[dict(problem_idx=1, problem="test")]),
+                ),
+                patch.object(runtime, "warm_inference", side_effect=warmup),
+                patch.object(runtime.httpx, "AsyncClient", return_value=client),
             ):
                 output = await runtime.run_policy(
                     args,
@@ -405,9 +461,11 @@ class PolicyTests(unittest.IsolatedAsyncioTestCase):
             ["--max-rounds", "4"],
             ["--no-continuation"],
         ]:
-            with self.subTest(argv=argv), redirect_stderr(
-                io.StringIO()
-            ), self.assertRaises(SystemExit):
+            with (
+                self.subTest(argv=argv),
+                redirect_stderr(io.StringIO()),
+                self.assertRaises(SystemExit),
+            ):
                 parse_args(argv)
 
     def test_separate_manifest_pins_policy_and_preserves_v1(self):
@@ -428,9 +486,12 @@ class PolicyTests(unittest.IsolatedAsyncioTestCase):
                 (ROOT / "runner/extensions/v1_6/manifest.json").read_text()
             )
             (folder / "manifest.json").write_text(json.dumps(manifest))
-            with patch(
-                "runner.extensions.v1_6.integrity.verify_base", return_value=base
-            ), self.assertRaisesRegex(RuntimeError, "source drift"):
+            with (
+                patch(
+                    "runner.extensions.v1_6.integrity.verify_base", return_value=base
+                ),
+                self.assertRaisesRegex(RuntimeError, "source drift"),
+            ):
                 verify_core(root)
 
 

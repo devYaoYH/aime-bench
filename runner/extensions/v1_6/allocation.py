@@ -1,4 +1,4 @@
-"""V1.5-style rotating slot pool; only fresh admissions spend sample allowance."""
+"""Initial coverage barrier, then a rotating pool with a fresh-sample cap."""
 
 import asyncio
 from collections import deque
@@ -19,6 +19,9 @@ class AllocationPool:
                 closed=False,
                 exhausted=False,
                 ready=deque(),
+                coverage_settled=False,
+                coverage_settled_elapsed_s=None,
+                initial_generation_retired_elapsed_s=None,
             )
             for q in indices
         }
@@ -26,10 +29,16 @@ class AllocationPool:
         self.changed, self.registered = asyncio.Event(), asyncio.Event()
         self.halt_requested, self.cursor, self.peak_active = False, 0, 0
         self.admissions = []
+        self.phase = "coverage"
+        self.expanded = asyncio.Event()
+        self.barrier_release = None
 
-    def register(self, index, generate, fresh_plan, exhausted):
+    def register(self, index, generate, fresh_plan, exhausted, coverage_finished):
         self.states[index].update(
-            generate=generate, fresh_plan=fresh_plan, on_exhausted=exhausted
+            generate=generate,
+            fresh_plan=fresh_plan,
+            on_exhausted=exhausted,
+            coverage_finished=coverage_finished,
         )
         if all("generate" in s for s in self.states.values()):
             self.registered.set()
@@ -41,6 +50,10 @@ class AllocationPool:
             del self.tasks[task]
             state = self.states[index]
             state["active"] -= 1
+            if self.phase == "coverage":
+                state["initial_generation_retired_elapsed_s"] = (
+                    time.perf_counter() - self.attempt_start
+                )
             if task.cancelled():
                 if not state["closed"]:
                     raise RuntimeError(
@@ -50,6 +63,17 @@ class AllocationPool:
             next_plan = task.result()
             if next_plan and not state["closed"]:
                 state["ready"].append(next_plan)
+            if self.phase == "coverage" and not state["closed"]:
+                state["coverage_finished"]()
+
+    def coverage_settled(self, index):
+        state = self.states[index]
+        if not state["coverage_settled"]:
+            state["coverage_settled"] = True
+            state["coverage_settled_elapsed_s"] = (
+                time.perf_counter() - self.attempt_start
+            )
+        self.changed.set()
 
     def choose(self):
         indices = list(self.states)
@@ -91,6 +115,7 @@ class AllocationPool:
         self.admissions.append(
             dict(
                 problem_idx=index,
+                phase=self.phase,
                 rollout=state["requests"],
                 fresh_sample=plan.fresh_sample,
                 segment=plan.segment,
@@ -120,7 +145,8 @@ class AllocationPool:
         self.artifacts.write_json(
             self.output / "allocation.json",
             dict(
-                policy="continuations first, then least-active fresh samples; rotating ties",
+                policy="initial one-per-question coverage barrier including queued checks; then continuations first, least-active fresh samples with rotating ties",
+                barrier_release=self.barrier_release,
                 max_concurrent_requests=self.args.max_concurrent_requests,
                 peak_active_requests=self.peak_active,
                 max_fresh_samples_per_question=self.args.max_fresh_samples_per_question,
@@ -135,6 +161,9 @@ class AllocationPool:
                             "peak_active",
                             "closed",
                             "exhausted",
+                            "coverage_settled",
+                            "coverage_settled_elapsed_s",
+                            "initial_generation_retired_elapsed_s",
                         )
                     }
                     for q, s in self.states.items()
@@ -146,6 +175,27 @@ class AllocationPool:
     async def run(self):
         await self.registered.wait()
         try:
+            # Admit exactly one initial sample per question, even with a larger
+            # configured pool. Freed slots remain idle until coverage settles.
+            for index in self.states:
+                self.admit(index)
+            while True:
+                self.changed.clear()
+                self.retire()
+                if self.halt_requested:
+                    return
+                if not self.tasks and all(
+                    s["coverage_settled"] for s in self.states.values()
+                ):
+                    break
+                await self.changed.wait()
+            self.phase = "pool"
+            self.barrier_release = dict(
+                released_at_utc=utc_now(),
+                elapsed_s=time.perf_counter() - self.attempt_start,
+                active_requests=0,
+            )
+            self.expanded.set()
             while True:
                 self.changed.clear()
                 self.retire()

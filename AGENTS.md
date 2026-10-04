@@ -73,7 +73,8 @@ support; report those limitations rather than modifying fixtures to hide them.
   trajectories** per question. One long exact-ID continuation is separate and
   may extend each trajectory from an 8K first request to at most 64K cumulative
   output, clipped to served context, or natural completion. Use a v1.5-style slot
-  pool, defaulting to the selected question count. Keep v1/v1.1/v1.5 measured
+  pool after an initial one-per-question coverage barrier including queued checks,
+  defaulting to the selected question count. Keep v1/v1.1/v1.5 measured
   policies and manifests unchanged; launch with `python -m runner.extensions.v1_6`.
 
 ## Speedrun sweeps and overhead

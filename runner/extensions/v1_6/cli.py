@@ -76,7 +76,8 @@ def parse_args(argv=None):
     args.max_tokens = args.max_rollout_tokens
     args.max_attempts_per_question = None
     args.max_rounds = None
-    args.schedule = "pool"
+    args.schedule = "coverage_barrier_then_pool"
+    args.initial_coverage_barrier = True
     args.policy_defaults_file = str(policy_path)
     args.policy_defaults_sha256 = hashlib.sha256(raw).hexdigest()
     args.token_budget_scope = "Initial 8K then one exact-ID continuation for remaining cumulative output, clipped to served total context"
@@ -127,7 +128,8 @@ def metadata(folder, config):
         max_rollout_tokens=config["max_rollout_tokens"],
         max_concurrent_requests=config["max_concurrent_requests"],
         continuation_enabled=True,
-        schedule="pool",
+        schedule="coverage_barrier_then_pool",
+        initial_coverage_barrier=True,
         cap_scope="fresh samples only; continuation segments do not consume fresh allowance",
     )
     return value
