@@ -195,3 +195,11 @@ The independently frozen [v2.2 correction runner](runner_final/core_v2_2/README.
 adds batched wrong-verdict feedback after queued self-corrections have been checked:
 `python -m runner_final.run_frozen_v2_2 --benchmark`. It preserves the v2.1 parser,
 prompt and four-request budget; see that contract for branching and usage details.
+
+[Core v2.3](runner_final/core_v2_3/README.md) adds v1.5-style shared slots sized to
+the selected question count (30 for AIME, 47 for Apex), with freed slots admitting
+continuations or fresh siblings without a barrier. Each fresh rollout gets one
+long request clipped to the 65,536 total context, including its prompt. It retains
+v2.2 feedback and the four-request cap. Use
+`python -m runner_final.run_frozen_v2_3 --benchmark`; provision its separate
+`vllm-v2_3-long64k.yaml` profile first. V2.3 has no scored GPU result yet.

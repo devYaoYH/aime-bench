@@ -223,3 +223,18 @@ retains the four-request cap and uses the existing v2 prompt and v2.1 parser.
 Use `python -m runner_final.run_frozen_v2_2 --benchmark`; the Apex preset is
 `runner_final/presets/apex_core_v2_2.json`. V2.1 remains available as the matched
 policy without runtime correction. No v2.2 GPU speed claim is established yet.
+
+## Frozen core v2.3: shared slots and long requests
+
+[Core v2.3](core_v2_3/README.md) uses v1.5's continuation-first, least-active sample
+allocation with one global slot per selected question. It starts one rollout per
+question, then recycles freed slots into unsolved questions without a barrier.
+Fresh samples use one long request with output clipped to 65,536 total context
+minus the served prompt. V2.2 feedback corrections share that pool and the hard
+four-request cap. The parser and system prompt are unchanged.
+
+Use `python -m runner_final.run_frozen_v2_3 --benchmark` or the
+`runner_final/presets/apex_core_v2_3.json` preset after provisioning the new 95%
+memory `vllm-v2_3-long64k.yaml` profile from the checked-out repo. Saved
+`allocation.json` records all admissions and peak concurrency. No v2.3 GPU timing
+or KV-pressure result is established yet; earlier cores remain matched controls.

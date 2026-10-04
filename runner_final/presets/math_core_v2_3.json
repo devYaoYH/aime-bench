@@ -1,0 +1,23 @@
+{
+  "schema_version": 1,
+  "core_id": "runner_final_core_v2_3",
+  "prompt_file": "../prompts/math_core_v2.txt",
+  "argv": [
+    "--benchmark",
+    "--skip-benchmark-prewarm",
+    "--rollouts",
+    "1",
+    "--first-pass-max-tokens",
+    "65536",
+    "--max-tokens",
+    "65536",
+    "--max-attempts-per-question",
+    "4",
+    "--schedule",
+    "eager_pool",
+    "--target-correct",
+    "18",
+    "--model-profile",
+    "vllm-v2_3-long64k.yaml"
+  ]
+}

@@ -131,3 +131,12 @@ support; report those limitations rather than modifying fixtures to hide them.
   `runner_final/core_v2_2`. Preserve v2.1 and its measured source. Correction
   requests count toward four; queue and pending-validation checks precede any
   cancellation, and actual grader verdicts alone provide negative feedback.
+
+- V2.3 is separately frozen in `runner_final/core_v2_3`, combining v1.5's shared
+  slot pool with v2.2 feedback. Slots equal selected question count; ready
+  continuations precede least-active fresh samples with rotating ties. Each fresh
+  sample uses one long request clipped to the served 65,536 total context after
+  reserving the chat-template prompt. Feedback shares the pool and four-request
+  budget. Provision the distinct `vllm-v2_3-long64k.yaml` from committed repo
+  configuration; do not change older profiles/manifests. Benchmark mode buffers
+  required evidence, including `allocation.json`; optional telemetry is disabled.
