@@ -1,5 +1,7 @@
 # Why the five warmed runs vary
 
+For the question-level reasoning patterns behind the tail, see [the audited late-answer report](TAIL_REASONING.md). Q26 repeatedly spends 23–24s recounting after reaching 113; slow Q23 spends 26.6s after reaching 610. Exact saved streaming chunks support these timings.
+
 The fastest/slowest spread is **38.856s**. **37.704s (97.0%)** comes from extra grader idle time. All five use 19 completed grader checks, one wrong, and approximately 57.002s of service. Candidate arrival in the final few questions explains most of the measured difference. This identifies the timing bottleneck; it does not prove the numerical cause of each reasoning trajectory.
 
 | Seed | First 18 | First-round winners among the final 18 | Initial median TTFT | Same capped questions: median generation | Same capped questions: effective decode | Local candidate wait median |
