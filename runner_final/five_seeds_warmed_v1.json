@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "runner": "runner_final.run",
+  "runner": "runner_final.run_v1",
   "seeds": [
     20261011,
     20261012,
@@ -16,7 +16,7 @@
   "fastest_attempt": "20261003T234116.410095Z",
   "fastest_time_to_target_s": 59.315726654,
   "selection": "NVFP4 FlashInfer 30x1 barrier produced the fastest measured run. Earlier independent same-seed validation was 87.36, 59.32, 86.57 seconds, so reliable speed is unconfirmed. Pending-verdict suspension has not improved that best.",
-  "prewarming": "Only the normal 30-stream, 32-token warmup; AIME 2024 workload is disabled by default after the warmup comparison. Prefix cache resets between trials. No unscored settling run.",
+  "prewarming": "Before EACH trial: all 30 AIME 2024 questions, one ungraded sample each, cap 8192 output tokens. No verifier or correctness checks. Clear prefix cache before and afterward; retain compiled kernels. Normal 30x32-token warmup also retained. Report warmup cost separately.",
   "scoring": "All five declared seeds scored, including the first trial. Keep failures and unmet targets. No seed replacement, early batch stopping, or unscored settling run. Record count at or below 71.134766841 seconds, all-target completion, median, range, and total initialization cost. Confirmation requires all five successful targets at or below that threshold.",
-  "scope": "Five-seed repeat of final v2 using the inexpensive warmup. Existing warmed v1 trials are preserved separately. AIME 2025 remains the development benchmark."
+  "scope": "AIME 2025 is the existing development benchmark, not a fresh held-out evaluation. Warmup is a new intervention; five warmed results alone cannot isolate its causal benefit. Benchmark mode omits optional GPU/CPU sampling while retaining exact tokens, required timings and verification evidence."
 }

@@ -1,4 +1,4 @@
-# Final runner v1
+# Final runner v2
 
 Run from the repository root on the remote machine after local tests, commit,
 push and `git pull --ff-only`:
@@ -11,7 +11,7 @@ push and `git pull --ff-only`:
 `validate` runs exactly the five seeds declared in [five_seeds.json](five_seeds.json),
 sequentially on one owned inference server. Every trial is scored, including the
 first; failures remain in the report. Each has a fresh serial grader, cleared
-prefix cache, and its own AIME 2024 warmup. It checks the deployed profile against
+prefix cache, and the inexpensive 30-stream, 32-token warmup. It checks the deployed profile against
 the [frozen profile](vllm-flashinfer.yaml) and requires clean tracked source.
 The model weights and matching profile live under
 `~/models/r0b0tlab/VibeThinker-3B-NVFP4/`.
@@ -41,21 +41,22 @@ attempt. Capped unsolved outputs continue only with complete exact token IDs;
 natural completion or context exhaustion can start a fresh sample. There is no
 grader-pending stream suspension or dynamic fan-out in this selected policy.
 
-Before the grader starts, all 30 AIME 2024 questions receive one ungraded sample
+The default uses only the inexpensive 30-stream, 32-token warmup.
+`--benchmark-prewarm` explicitly enables the ungraded workload: before the grader
+starts, all 30 AIME 2024 questions receive one ungraded sample
 with the same prompt and sampling settings, capped at 8,192 output tokens. This
 stage does not parse candidates or inspect correctness. It runs to natural
 completion or the cap, records requests/responses and per-request latency under
 `prewarming-2024/`, and writes `prewarm.json`. Prefixes are cleared before and
-afterward without resetting running requests. `--skip-benchmark-prewarm` provides
-an explicit comparison; the five-seed protocol keeps prewarming enabled. Normal
-30-stream, 32-token inference warmup is also retained.
+afterward without resetting running requests. `--skip-benchmark-prewarm` is an explicit spelling of the current default. The
+normal 30-stream, 32-token inference warmup is retained in both modes.
 
 Warmup may exercise paths that a short request does not, but improvement has not
 been established. vLLM already performs graph warmup during initialization;
 [its compilation configuration](https://docs.vllm.ai/en/v0.30.0/api/vllm/config/compilation/)
 describes that behavior. A workload warmup does not replace startup compilation.
-The five warmed trials measure the new configuration; comparison with historical
-trials cannot isolate warmup's causal benefit. A paired warmed/unwarmed experiment
+The historical five warmed v1 trials measure that configuration; comparison with
+historical trials cannot isolate warmup's causal benefit. A paired warmed/unwarmed experiment
 would be needed for that claim.
 
 Official timing starts only after initialization and both warmup stages. Reports
@@ -72,3 +73,10 @@ NVFP4 FlashInfer 30×1. Previous independent scored repeats were **87.356, 59.31
 pending-verdict alternative repeated at **95.800, 99.235, 83.064 seconds**. These
 five new seeds and the new AIME 2024 warmup are declared before execution; results
 must not be used to select a replacement seed.
+
+The first final-runner version and its warmed protocol are preserved as
+[run_v1.py](run_v1.py), [validate_v1.py](validate_v1.py), and
+[five_seeds_warmed_v1.json](five_seeds_warmed_v1.json). Their original source
+commit `ccca184` and historical attempt records stay unchanged. The user requested
+restoring the cheaper warmup after the five warmed trials; v2 changes that default,
+not the generation/grading policy. AIME 2024 warming remains opt-in.

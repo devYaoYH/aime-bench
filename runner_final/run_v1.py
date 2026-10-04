@@ -1,4 +1,4 @@
-"""Final v2: NVFP4 FlashInfer 30x1 barrier with the inexpensive short warmup."""
+"""Final v1: frozen 30x1 barrier policy, NVFP4 FlashInfer, AIME 2024 prewarming."""
 
 from __future__ import annotations
 
@@ -36,7 +36,7 @@ from runner_final._ports import ensure_free
 from runner_final.prewarm import prewarm_benchmark
 from runner_final._streaming import PROMPT, continuation_prefix, run_question
 
-RUNNER_ID = "runner_final_v2"
+RUNNER_ID = "runner_final_v1"
 
 
 def assert_gpu_idle(device):
@@ -218,7 +218,7 @@ async def run(args):
             )
         ),
         "runner_id": RUNNER_ID,
-        "runner_module": "runner_final.run",
+        "runner_module": "runner_final.run_v1",
         "system_prompt": PROMPT,
         "grading": "single vendored grader; no local answer-key comparisons",
         "gpu_scope": ("disabled for benchmark" if args.no_gpu_telemetry else "device-level NVML; vLLM preallocates VRAM"),
@@ -587,12 +587,8 @@ def parse_args(argv=None):
         default=1.0,
         help="vLLM metrics polling seconds",
     )
-    prewarming = parser.add_mutually_exclusive_group()
-    prewarming.add_argument("--benchmark-prewarm", dest="skip_benchmark_prewarm", action="store_false",
-                            help="Opt in to the ungraded 30-question AIME 2024 workload")
-    prewarming.add_argument("--skip-benchmark-prewarm", action="store_true",
-                            help="Use only the inexpensive short warmup (default)")
-    parser.set_defaults(skip_benchmark_prewarm=True)
+    parser.add_argument("--skip-benchmark-prewarm", action="store_true",
+                        help="Omit AIME 2024 warmup for an explicit comparison")
     parser.add_argument("--prewarm-max-tokens", type=int, default=8192)
     add_benchmark_args(parser)
     args = apply_benchmark_args(parser.parse_args(argv))
@@ -604,7 +600,7 @@ def parse_args(argv=None):
         parser.error("Rollouts exceed the per-question attempt limit")
     if args.max_attempts_per_question > 4:
         parser.error(
-            "Final v2 has a hard ceiling of four generation requests per question"
+            "Final v1 has a hard ceiling of four generation requests per question"
         )
     if Path(
         args.model_profile

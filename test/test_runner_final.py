@@ -38,10 +38,20 @@ class FinalSettingsTests(unittest.TestCase):
         self.assertTrue(all(s > 20261007 for s in protocol['seeds']))
 
     def test_refuses_fifth_request_and_warming_test_year(self):
-        for argv in (['--max-attempts-per-question','5'], ['--benchmark-year','2024'], ['--seed','-1'], ['--prewarm-max-tokens','0']):
+        for argv in (['--max-attempts-per-question','5'], ['--benchmark-year','2024','--benchmark-prewarm'], ['--seed','-1'], ['--prewarm-max-tokens','0']):
             with redirect_stderr(io.StringIO()), self.assertRaises(SystemExit):
                 parse_args(argv)
         self.assertEqual(parse_args(['--benchmark-year','2024','--skip-benchmark-prewarm']).benchmark_year, 2024)
+
+    def test_cheaper_default_and_explicit_preserved_workload_option(self):
+        from runner_final import run_v1
+        self.assertTrue(parse_args([]).skip_benchmark_prewarm)
+        self.assertFalse(parse_args(['--benchmark-prewarm']).skip_benchmark_prewarm)
+        self.assertFalse(run_v1.parse_args([]).skip_benchmark_prewarm)
+        self.assertEqual(run_v1.RUNNER_ID,'runner_final_v1')
+        self.assertEqual(final_runner.RUNNER_ID,'runner_final_v2')
+        with redirect_stderr(io.StringIO()), self.assertRaises(SystemExit):
+            parse_args(['--benchmark-prewarm','--skip-benchmark-prewarm'])
 
     def test_confirmation_includes_failed_first_trial(self):
         rows = [{'valid':True,'time_to_target_s':60}] * 4
@@ -132,6 +142,12 @@ class PrewarmTests(unittest.IsolatedAsyncioTestCase):
             self.assertFalse((Path(tmp)/'prewarm.json').exists())
 
     async def test_managed_prewarm_precedes_grader_and_official_timing(self):
+        await self.managed_warmup_mode(True)
+
+    async def test_managed_default_skips_workload_but_retains_short_warmup(self):
+        await self.managed_warmup_mode(False)
+
+    async def managed_warmup_mode(self, enabled):
         launches=[];order=[]
         class Process:
             returncode=0
@@ -140,13 +156,14 @@ class PrewarmTests(unittest.IsolatedAsyncioTestCase):
             def launch(self,command,*a,**kw):launches.append(command);return Process()
             async def close(self):order.append('cleanup')
         async def warm(args,client,output):
+            self.assertTrue(enabled, 'Default runner unexpectedly warmed AIME 2024')
             self.assertFalse(any('server.py' in ' '.join(cmd) for cmd in launches))
             self.assertFalse((output/'config.json').read_text().find('official_started_at_utc')>=0)
             order.append('prewarm')
             return {'total_latency_s':3, 'grader_queries':0}
         async def solve(problems,args,client,output,gpu,started,profiler):
             self.assertTrue(any('server.py' in ' '.join(cmd) for cmd in launches))
-            self.assertEqual(order,['prewarm'])
+            self.assertEqual(order,['prewarm'] if enabled else [])
             order.append('solve')
             profiler.artifacts.write_json(output/'trace/01/question.json',{'problem_idx':1,'status':'stopped','end_to_end_latency_s':0,'unique_candidates':0,'winner':None,'round':1,'rollouts':[],'first_solved':None})
             return profiler.artifacts.questions()
@@ -155,12 +172,14 @@ class PrewarmTests(unittest.IsolatedAsyncioTestCase):
             import yaml
             profile.write_text(yaml.safe_dump({'max-model-len':65536,'override-generation-config':'{"max_new_tokens":16384}'}))
             args=parse_args(['--benchmark','--target-correct','1','--models-dir',str(root/'models')])
+            args.skip_benchmark_prewarm=not enabled
             health={'queries_so_far':0,'cost_c':3,'dataset':{'sha256':final_runner.dataset_provenance(2025)['grader_sha256']}}
             with patch.object(final_runner,'ROOT',root),patch.object(final_runner,'Services',Services),patch.object(final_runner,'ensure_free'),patch.object(final_runner,'assert_gpu_idle'),patch.object(final_runner.subprocess,'check_output',return_value='f'*40),patch.object(final_runner,'ready',new=AsyncMock(side_effect=[{'data':[{'id':args.model,'max_model_len':65536}]},health])),patch.object(final_runner,'prewarm_benchmark',new=warm),patch.object(final_runner,'warm_inference',new=AsyncMock(return_value={'latency_s':0,'batch_size':30,'tokens_per_request':32})),patch.object(final_runner,'load_questions',return_value=[{'problem_idx':1,'problem':'test'}]),patch.object(final_runner,'run_speedrun',new=solve):
                 output=await final_runner.run(args)
-            self.assertEqual(order,['prewarm','solve','cleanup'])
+            self.assertEqual(order,['prewarm','solve','cleanup'] if enabled else ['solve','cleanup'])
             result=json.loads((output/'summary.json').read_text())
-            self.assertEqual(result['benchmark_prewarm']['grader_queries'],0)
+            if enabled:self.assertEqual(result['benchmark_prewarm']['grader_queries'],0)
+            else:self.assertIsNone(result['benchmark_prewarm'])
             self.assertFalse(result['target_reached'])
 
     async def test_buffered_continuation_exact_ids_before_flush(self):

@@ -5,7 +5,7 @@ Keep experimental policies in this directory. The canonical runner stays at
 
 The selected final policy is frozen in [runner_final](../../runner_final/README.md).
 Use `python -m runner_final.run --benchmark` for its NVFP4 FlashInfer 30×1
-defaults and ungraded AIME 2024 prewarming, or `python -m runner_final.validate`
+defaults and inexpensive 30-stream, 32-token prewarming, or `python -m runner_final.validate`
 for the five predeclared seeds. Historical runners below remain available.
 
 | Runner | Entry point | Behavior |
