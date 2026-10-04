@@ -106,10 +106,10 @@ def model_provenance(models_dir, reference):
         body = harness.baseline.load(request_path)
         saved = harness.baseline.load(request_path.with_name("tokens.json"))
         messages = body["messages"]
-        ids = awq.apply_chat_template(messages, tokenize=True, add_generation_prompt=True)
+        ids = awq.apply_chat_template(messages, tokenize=True, add_generation_prompt=True, return_dict=False)
         expected = saved["prompt_token_ids"]
         if ids != expected or ids != nv.apply_chat_template(
-            messages, tokenize=True, add_generation_prompt=True
+            messages, tokenize=True, add_generation_prompt=True, return_dict=False
         ):
             raise RuntimeError("AWQ rendered prompt IDs differ: " + str(request_path))
         # Check decoding too, because extraction consumes decoded stream text.

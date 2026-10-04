@@ -5,6 +5,8 @@ from pathlib import Path
 import tempfile
 import shutil
 import unittest
+import sys
+from types import SimpleNamespace
 from unittest.mock import patch
 import yaml
 from runner.extensions.validation import awq_v1_6 as driver
@@ -13,6 +15,47 @@ from runner.lib.common import ROOT
 
 
 class ComparisonTests(unittest.TestCase):
+    def test_semantic_token_check_requests_plain_ids_on_new_transformers(self):
+        reference = driver.reference_trial(20261011)
+        folder = ROOT / "attempts" / reference["attempt_id"]
+        reference_ids = {}
+        for path in folder.glob("trace/*/rollout-01/request.json"):
+            messages = json.loads(path.read_text())["messages"]
+            reference_ids[json.dumps(messages)] = json.loads(
+                path.with_name("tokens.json").read_text()
+            )["prompt_token_ids"]
+        test = self
+
+        class Tokenizer:
+            all_special_ids = [151643]
+
+            def get_vocab(self):
+                return {"test": 1}
+
+            def apply_chat_template(self, messages, **kwargs):
+                test.assertIs(kwargs.get("return_dict"), False)
+                return reference_ids[json.dumps(messages)]
+
+            def decode(self, tokens):
+                return str(tokens)
+
+        fake = SimpleNamespace(AutoTokenizer=SimpleNamespace(
+            from_pretrained=lambda *a, **k: Tokenizer()
+        ))
+        with tempfile.TemporaryDirectory() as tmp, patch.dict(sys.modules, {"transformers": fake}):
+            old_model = json.loads((folder / "config.json").read_text())["model"]
+            for model in (driver.MODEL, old_model):
+                location = Path(tmp) / model
+                location.mkdir(parents=True)
+                config = {"quantization_config": {
+                    "quant_method": "awq", "bits": 4,
+                    "group_size": 128, "zero_point": True,
+                } if model == driver.MODEL else {"quant_method": "modelopt_fp4"}}
+                (location / "config.json").write_text(json.dumps(config))
+                (location / "generation_config.json").write_text("{}")
+            evidence = driver.model_provenance(tmp, reference)
+            self.assertEqual(len(evidence["tokenizer_semantic_check"]["questions"]), 30)
+
     def test_same_policy_and_controls_except_model_identity(self):
         ref = driver.reference_trial(20261011)
         old = driver.harness.baseline.load(
