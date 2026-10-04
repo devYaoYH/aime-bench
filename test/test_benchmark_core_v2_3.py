@@ -24,13 +24,14 @@ class BenchmarkPlanTests(unittest.IsolatedAsyncioTestCase):
     async def test_deadline_failure_is_retained_and_next_job_runs(self):
         with tempfile.TemporaryDirectory() as tmp:
             root=Path(tmp)
-            deadline=AsyncMock(side_effect=[{'deadline_reached':True,'attempt_id':None},
+            deadline=AsyncMock(side_effect=[{'deadline_reached':True,'attempt_id':'partial'},
                                            {'deadline_reached':False,'attempt_id':None,'error':'startup failed'}])
             options=SimpleNamespace(batch='test',seed=20261011,aime_deadline_s=900,apex_deadline_s=300)
             with (patch.object(batch,'ROOT',root),
                   patch.object(batch.subprocess,'check_output',side_effect=['','test-commit']),
                   patch.object(batch,'verify_core',return_value='f'*64),
                   patch.object(batch,'parse_args',return_value=object()),
+                  patch.object(batch,'measure',side_effect=FileNotFoundError('partial artifacts')),
                   patch.object(batch,'with_official_deadline',deadline)):
                 await batch.execute(options)
             result=json.loads((root/'runs/experiments/test/summary.json').read_text())
@@ -38,4 +39,5 @@ class BenchmarkPlanTests(unittest.IsolatedAsyncioTestCase):
             self.assertEqual([c.args[3] for c in deadline.await_args_list],[900,300])
             self.assertEqual(len(result['trials']),2)
             self.assertTrue(result['trials'][0]['deadline_reached'])
+            self.assertIn('partial artifacts',result['trials'][0]['measurement_error'])
             self.assertEqual(result['trials'][1]['error'],'startup failed')

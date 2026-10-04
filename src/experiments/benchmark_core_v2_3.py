@@ -86,7 +86,12 @@ async def execute(options):
         trial.update(outcome)
         trial['finished_at_utc']=utc_now()
         if outcome.get('attempt_id'):
-            trial['measurement']=measure(ROOT/'attempts'/outcome['attempt_id'])
+            try:
+                trial['measurement']=measure(ROOT/'attempts'/outcome['attempt_id'])
+            except Exception as error:
+                # Retain an initialization/partial-artifact failure and proceed
+                # to the next declared dataset without a replacement trial.
+                trial['measurement_error']=f'{type(error).__name__}: {error}'
         atomic_json(batch/'summary.json',records)
     records.update(status='complete',finished_at_utc=utc_now())
     atomic_json(batch/'summary.json',records)
