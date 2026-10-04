@@ -42,13 +42,13 @@ def reference_trial(seed):
     return next(r for r in rows if r["sampling_seed"] == seed)
 
 
-def trial_args(seed, grader_python):
+def trial_args(seed, grader_python, *, model=MODEL, profile=PROFILE):
     return parse_args(
         [
             "--model",
-            MODEL,
+            model,
             "--model-profile",
-            PROFILE,
+            profile,
             "--seed",
             str(seed),
             "--max-concurrent-requests",
@@ -160,7 +160,7 @@ def model_provenance(models_dir, reference):
     return evidence
 
 
-def audit(output, reference, core_hash):
+def audit(output, reference, core_hash, *, model=MODEL):
     config, summary = (
         baseline.load(output / "config.json"),
         baseline.load(output / "summary.json"),
@@ -247,7 +247,7 @@ def audit(output, reference, core_hash):
         and config["core_manifest_sha256"] == core_hash
         and not config["git_dirty"]
         and config["runner_id"] == "runner_core_v1_6"
-        and config["model"] == MODEL
+        and config["model"] == model
         and config["max_context_tokens"] == old["max_context_tokens"]
         and config["served_prompt_tokens"] == old["served_prompt_tokens"]
         and all(
@@ -286,27 +286,32 @@ def audit(output, reference, core_hash):
     )
 
 
-async def execute(options):
+async def execute(options, *, deployment=None):
+    # Deployment adapters share ownership, timing and matched-policy checks.
+    if deployment is None:
+        import sys
+
+        deployment = sys.modules[__name__]
     if subprocess.check_output(
         ["git", "status", "--porcelain", "--untracked-files=no"], cwd=ROOT, text=True
     ).strip():
         raise RuntimeError(
             "Use a clean pinned worktree; preserve primary checkout changes"
         )
-    reference = reference_trial(options.seed)
-    args = trial_args(options.seed, options.grader_python)
+    reference = deployment.reference_trial(options.seed)
+    args = deployment.trial_args(options.seed, options.grader_python)
     old = baseline.load(ROOT / "attempts" / reference["attempt_id"] / "config.json")
     check_controls(vars(args), old)
     core_hash = verify_core(ROOT)
     if core_hash != old["core_manifest_sha256"]:
         raise RuntimeError("V1.6 policy differs from NVFP4 control")
-    profile = Path(args.models_dir).expanduser() / MODEL / PROFILE
-    validate_profile(profile, reference)
-    provenance = model_provenance(args.models_dir, reference)
+    profile = Path(args.models_dir).expanduser() / deployment.MODEL / deployment.PROFILE
+    deployment.validate_profile(profile, reference)
+    provenance = deployment.model_provenance(args.models_dir, reference)
     batch = ROOT / "runs/experiments" / options.batch
     batch.mkdir(parents=True, exist_ok=False)
     config = dict(
-        driver="runner.extensions.validation.bf16_v1_6",
+        driver=getattr(deployment, "DRIVER_ID", "runner.extensions.validation.bf16_v1_6"),
         model_provenance=provenance,
         source_commit=subprocess.check_output(
             ["git", "rev-parse", "HEAD"], cwd=ROOT, text=True
@@ -320,7 +325,7 @@ async def execute(options):
         profile_sha256=hashlib.sha256(profile.read_bytes()).hexdigest(),
         grader_semantic_hashes=baseline.grader_semantics(),
         trial_wall_timeout_s=options.trial_timeout,
-        scope="One matched-seed deployment comparison: BF16 automatic native linear kernels versus NVFP4 Marlin; FlashInfer attention, BF16 KV/activations and runner policy unchanged. Not a repeatability estimate.",
+        scope=getattr(deployment, "COMPARISON_SCOPE", "One matched-seed deployment comparison: BF16 automatic native linear kernels versus NVFP4 Marlin; FlashInfer attention, BF16 KV/activations and runner policy unchanged. Not a repeatability estimate."),
     )
     atomic_json(batch / "config.json", config)
     result = dict(
@@ -361,7 +366,7 @@ async def execute(options):
             async with asyncio.timeout(options.trial_timeout):
                 output = await baseline.run(args)
             result.update(
-                audit(output, reference, core_hash), completed_at_utc=utc_now()
+                deployment.audit(output, reference, core_hash), completed_at_utc=utc_now()
             )
     except BaseException as error:
         result.update(
@@ -377,7 +382,7 @@ async def execute(options):
     finally:
         await services.close()
         atomic_json(batch / "summary.json", result)
-        print("BF16 RESULT " + json.dumps(result), flush=True)
+        print(deployment.MODEL + " RESULT " + json.dumps(result), flush=True)
 
 
 async def entry(options):
