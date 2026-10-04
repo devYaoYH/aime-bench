@@ -1,0 +1,69 @@
+{
+  "problem_idx": 23,
+  "started_at_utc": "2026-10-04T18:28:54.736+00:00",
+  "finished_at_utc": "2026-10-04T18:33:55.080+00:00",
+  "end_to_end_latency_s": 300.3438336059917,
+  "status": "error",
+  "winner": null,
+  "error": "attempt interrupted",
+  "unique_candidates": 0,
+  "candidate_answers": [],
+  "candidate_keys": [],
+  "rejected_answers": [],
+  "pending_feedback": [],
+  "rollouts": [
+    {
+      "rollout": 1,
+      "round": 1,
+      "lane_id": 1,
+      "feedback_answers": [],
+      "started_at_utc": "2026-10-04T18:28:54.761+00:00",
+      "start_monotonic_s": 342782.824100545,
+      "ttft_s": 0.35759599396260455,
+      "last_token_s": 299.96726067195414,
+      "finish_reason": null,
+      "status": "cancelled",
+      "done_received": false,
+      "usage": {
+        "prompt_tokens": 403,
+        "total_tokens": 19176,
+        "completion_tokens": 18773,
+        "completion_tokens_details": null
+      },
+      "endpoint": "/v1/chat/completions",
+      "continuation_of_rollout": null,
+      "requested_max_tokens": 65133,
+      "budget_stage": 0,
+      "target_generated_tokens": 65536,
+      "context_budget_scope": "output clipped to 65536 total context including prompt and feedback",
+      "http_status": 200,
+      "headers_received_s": 0.1925950429867953,
+      "generation_finished_at_utc": "2026-10-04T18:33:54.893+00:00",
+      "generation_end_monotonic_s": 343082.955559198,
+      "generation_latency_s": 300.13145865296246,
+      "generation_censored": true,
+      "generated_token_ids_count": 18773,
+      "prompt_token_ids_count": 403,
+      "cached_prompt_tokens": null,
+      "prefix_cache_hit_fraction": null,
+      "overhead": {
+        "enabled": false,
+        "timings": {},
+        "counters": {},
+        "maxima": {}
+      },
+      "finished_at_utc": "2026-10-04T18:33:55.080+00:00",
+      "end_to_end_latency_s": 300.31914424698334,
+      "end_to_end_scope": "rollout start through question verification/cancellation settlement",
+      "gpu": null
+    }
+  ],
+  "round": 1,
+  "first_solved": null,
+  "overhead": {
+    "enabled": false,
+    "timings": {},
+    "counters": {},
+    "maxima": {}
+  }
+}

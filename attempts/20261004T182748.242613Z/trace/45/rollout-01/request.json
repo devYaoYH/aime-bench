@@ -1,0 +1,23 @@
+{
+  "model": "r0b0tlab/VibeThinker-3B-NVFP4",
+  "messages": [
+    {
+      "role": "system",
+      "content": "Solve the mathematics problem carefully. You must expose each prospective answer as soon as you derive an exact value or expression for the quantity requested in the original problem. Before any further rechecking, emit a separate line containing \\boxed{EXPRESSION}. Emit this line inside your reasoning immediately, even if the answer is tentative. Then continue checking your work. If you revise the prospective answer, immediately emit another boxed expression on its own line. Box only candidates for the original requested quantity, not subproblem values or examples. Preserve variables, signs, fractions, radicals, and other exact mathematical notation as required by the problem; do not round or restrict answers to three digits. Put only the answer expression inside the box, without prose or an equality assigning it to a variable. For a requested sum or difference, compute that quantity before boxing it. End with your final boxed answer.\n"
+    },
+    {
+      "role": "user",
+      "content": "Consider a $2025\\times 2025$ board where we identify the squares with pairs $(i,j)$ where $i$ and $j$ denote the row and column number of that square, respectively.\n\nCalvin picks two positive integers $a,b<2025$ and places a pawn at the bottom left corner (i.e. on $(1,1)$) and makes the following moves. In his $k$-th move, he moves the pawn from $(i,j)$ to either $(i+a,j)$ or $(i,j+a)$ if $k$ is odd and to either $(i+b,j)$ and $(i,j+b)$ if $k$ is even. Here all the numbers are taken modulo $2025$. Find the number of pairs $(a,b)$ that Calvin could have picked such that he can make moves so that the pawn covers all the squares on the board without being on any square twice."
+    }
+  ],
+  "temperature": 0.8,
+  "top_p": 0.95,
+  "max_tokens": 65152,
+  "seed": 20261192,
+  "stream": true,
+  "stream_options": {
+    "include_usage": true,
+    "continuous_usage_stats": true
+  },
+  "return_token_ids": true
+}

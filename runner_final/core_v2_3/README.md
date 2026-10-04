@@ -3,7 +3,9 @@
 V2.3 adopts v1.5's shared inference pool and retains v2.2's queue-aware wrong-answer
 feedback, v2.1's CPU syntax validation and expression deduplication, and the v2
 system prompt. Earlier cores and their manifests remain unchanged. This version
-has offline coverage; no scored GPU measurement establishes its performance yet.
+has offline coverage and [one benchmark trial per dataset](../../../runs/experiments/core-v2_3-benchmarks-20261004T182444Z/README.md):
+AIME reached 18 in 84.985s; Apex reached 3/47 at a 300s official cutoff. These
+measurements do not establish repeatability or a speed improvement.
 
 The global slot count equals the number of selected questions obtained from the
 grader: 30 for full AIME, 47 for full Apex, or the size of a selected subset.

@@ -202,4 +202,6 @@ continuations or fresh siblings without a barrier. Each fresh rollout gets one
 long request clipped to the 65,536 total context, including its prompt. It retains
 v2.2 feedback and the four-request cap. Use
 `python -m runner_final.run_frozen_v2_3 --benchmark`; provision its separate
-`vllm-v2_3-long64k.yaml` profile first. V2.3 has no scored GPU result yet.
+`vllm-v2_3-long64k.yaml` profile first. Its [first measured trials](runs/experiments/core-v2_3-benchmarks-20261004T182444Z/README.md)
+reached 18 AIME answers in 84.985s and 3/47 Apex answers at a 300s cutoff; no
+repeatability or speedup claim follows from these single trials.

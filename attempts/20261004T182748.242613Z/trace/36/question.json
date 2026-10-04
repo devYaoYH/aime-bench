@@ -1,0 +1,81 @@
+{
+  "problem_idx": 36,
+  "started_at_utc": "2026-10-04T18:28:54.738+00:00",
+  "finished_at_utc": "2026-10-04T18:33:55.083+00:00",
+  "end_to_end_latency_s": 300.34526615199866,
+  "status": "error",
+  "winner": null,
+  "error": "attempt interrupted",
+  "unique_candidates": 0,
+  "candidate_answers": [],
+  "candidate_keys": [],
+  "rejected_answers": [],
+  "pending_feedback": [],
+  "rollouts": [
+    {
+      "rollout": 1,
+      "round": 1,
+      "lane_id": 1,
+      "feedback_answers": [],
+      "started_at_utc": "2026-10-04T18:28:54.774+00:00",
+      "start_monotonic_s": 342782.837289085,
+      "ttft_s": 0.34271010401425883,
+      "last_token_s": 299.95292276801774,
+      "finish_reason": null,
+      "status": "cancelled",
+      "done_received": false,
+      "usage": {
+        "prompt_tokens": 259,
+        "total_tokens": 19032,
+        "completion_tokens": 18773,
+        "completion_tokens_details": null
+      },
+      "endpoint": "/v1/chat/completions",
+      "continuation_of_rollout": null,
+      "requested_max_tokens": 65277,
+      "budget_stage": 0,
+      "target_generated_tokens": 65536,
+      "context_budget_scope": "output clipped to 65536 total context including prompt and feedback",
+      "http_status": 200,
+      "headers_received_s": 0.16082949604606256,
+      "generation_finished_at_utc": "2026-10-04T18:33:54.984+00:00",
+      "generation_end_monotonic_s": 343083.046690057,
+      "generation_latency_s": 300.2094009720022,
+      "generation_censored": true,
+      "generated_token_ids_count": 18773,
+      "prompt_token_ids_count": 259,
+      "cached_prompt_tokens": null,
+      "prefix_cache_hit_fraction": null,
+      "overhead": {
+        "enabled": false,
+        "timings": {},
+        "counters": {},
+        "maxima": {}
+      },
+      "finished_at_utc": "2026-10-04T18:33:55.083+00:00",
+      "end_to_end_latency_s": 300.3086899620248,
+      "end_to_end_scope": "rollout start through question verification/cancellation settlement",
+      "gpu": null
+    }
+  ],
+  "round": 1,
+  "first_solved": null,
+  "overhead": {
+    "enabled": false,
+    "timings": {},
+    "counters": {},
+    "maxima": {}
+  },
+  "rounds": [
+    {
+      "round": 1,
+      "status": "error",
+      "started_at_utc": "2026-10-04T18:28:54.738+00:00",
+      "finished_at_utc": "2026-10-04T18:33:55.083+00:00",
+      "end_to_end_latency_s": 300.34526615199866,
+      "winner": null,
+      "error": "attempt interrupted"
+    }
+  ],
+  "question_start_monotonic_s": 342782.800712895
+}

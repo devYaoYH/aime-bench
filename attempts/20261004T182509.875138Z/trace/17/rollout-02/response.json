@@ -1,0 +1,4 @@
+{
+  "reasoning": "",
+  "content": "<think>We need to solve: find all positive integers n such that (n+2) | 3 (n+3)(n^2+9). Then sum them.\n\nLet’s denote condition: 3 (n+3)(n^2+9) ≡ 0 mod (n+2). That is, (n+2) divides 3 (n+3)(n^2+9). Let’s define m = n+2. Then n = m-2, positive integer n>0 => m>2.\n\nCondition: m | 3 ((m-2)+3) ((m-2)^2 + 9). Compute: (m-2)+3 = m+1. (m-2)^2 = (m^2 -4m +4). Then (m-2)^2 + 9 = m^2 -4m +13.\n\nThus condition: m divides 3 (m+1)(m^2 -4m +13).\n\nSimplify: condition: 3 (m+1)(m^2 -4m +13) ≡ 0 mod m. Since m divides any term containing factor m, we can reduce each factor modulo m.\n\nCompute modulo m: (m+1) ≡ 1 (mod m). m^2 -4m +1"
+}

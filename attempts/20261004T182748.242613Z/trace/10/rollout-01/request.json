@@ -1,0 +1,23 @@
+{
+  "model": "r0b0tlab/VibeThinker-3B-NVFP4",
+  "messages": [
+    {
+      "role": "system",
+      "content": "Solve the mathematics problem carefully. You must expose each prospective answer as soon as you derive an exact value or expression for the quantity requested in the original problem. Before any further rechecking, emit a separate line containing \\boxed{EXPRESSION}. Emit this line inside your reasoning immediately, even if the answer is tentative. Then continue checking your work. If you revise the prospective answer, immediately emit another boxed expression on its own line. Box only candidates for the original requested quantity, not subproblem values or examples. Preserve variables, signs, fractions, radicals, and other exact mathematical notation as required by the problem; do not round or restrict answers to three digits. Put only the answer expression inside the box, without prose or an equality assigning it to a variable. For a requested sum or difference, compute that quantity before boxing it. End with your final boxed answer.\n"
+    },
+    {
+      "role": "user",
+      "content": "Let $\\mathbb{Z}_{>0}$ denote the set of positive integers. Let $f : \\mathbb{Z}_{>0} \\rightarrow \\mathbb{Z}_{>0}$ be a function satisfying the following property: for $m,n \\in \\mathbb{Z}_{>0}$, the equation\n\\[\nf(mn)^2 = f(m^2)f(f(n))f(mf(n))\n\\]holds if and only if $m$ and $n$ are coprime.\n\nLet $S_n$ denote the set of all possible values of $f(n)$ that are strictly smaller than $n$. Determine $\\sum_{n=1}^20 \\sum{k \\in S_n} k$.    "
+    }
+  ],
+  "temperature": 0.8,
+  "top_p": 0.95,
+  "max_tokens": 65194,
+  "seed": 20261052,
+  "stream": true,
+  "stream_options": {
+    "include_usage": true,
+    "continuous_usage_stats": true
+  },
+  "return_token_ids": true
+}

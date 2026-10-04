@@ -1,0 +1,332 @@
+{
+  "source": "Default vLLM periodic service logs; benchmark optional profiles remain disabled.",
+  "scope": "Sampled cache/queue occupancy, not a physical VRAM peak or exact KV eviction counter. Logs include warmup.",
+  "trials": [
+    {
+      "attempt_id": "20261004T182509.875138Z",
+      "sample_count": 8,
+      "max_observed_kv_cache_percent": 9.7,
+      "max_observed_waiting_requests": 0,
+      "max_observed_running_requests": 30,
+      "preemption_warning_lines": 0,
+      "oom_error_lines": 0,
+      "samples": [
+        {
+          "server_log_clock": "10-04 18:26:25",
+          "generation_tokens_s": 4242.7,
+          "running_requests": 30,
+          "waiting_requests": 0,
+          "kv_cache_percent": 2.4,
+          "prefix_cache_hit_percent": 47.1
+        },
+        {
+          "server_log_clock": "10-04 18:26:35",
+          "generation_tokens_s": 4447.9,
+          "running_requests": 30,
+          "waiting_requests": 0,
+          "kv_cache_percent": 4.1,
+          "prefix_cache_hit_percent": 57.1
+        },
+        {
+          "server_log_clock": "10-04 18:26:45",
+          "generation_tokens_s": 4037.3,
+          "running_requests": 30,
+          "waiting_requests": 0,
+          "kv_cache_percent": 5,
+          "prefix_cache_hit_percent": 64.2
+        },
+        {
+          "server_log_clock": "10-04 18:26:55",
+          "generation_tokens_s": 3888.1,
+          "running_requests": 30,
+          "waiting_requests": 0,
+          "kv_cache_percent": 6,
+          "prefix_cache_hit_percent": 67.5
+        },
+        {
+          "server_log_clock": "10-04 18:27:05",
+          "generation_tokens_s": 3615.5,
+          "running_requests": 30,
+          "waiting_requests": 0,
+          "kv_cache_percent": 7,
+          "prefix_cache_hit_percent": 69.2
+        },
+        {
+          "server_log_clock": "10-04 18:27:15",
+          "generation_tokens_s": 3396.2,
+          "running_requests": 30,
+          "waiting_requests": 0,
+          "kv_cache_percent": 8,
+          "prefix_cache_hit_percent": 78.4
+        },
+        {
+          "server_log_clock": "10-04 18:27:25",
+          "generation_tokens_s": 3212.3,
+          "running_requests": 30,
+          "waiting_requests": 0,
+          "kv_cache_percent": 9.5,
+          "prefix_cache_hit_percent": 78.4
+        },
+        {
+          "server_log_clock": "10-04 18:27:35",
+          "generation_tokens_s": 3036.6,
+          "running_requests": 30,
+          "waiting_requests": 0,
+          "kv_cache_percent": 9.7,
+          "prefix_cache_hit_percent": 79.5
+        }
+      ]
+    },
+    {
+      "attempt_id": "20261004T182748.242613Z",
+      "sample_count": 30,
+      "max_observed_kv_cache_percent": 38.4,
+      "max_observed_waiting_requests": 0,
+      "max_observed_running_requests": 47,
+      "preemption_warning_lines": 0,
+      "oom_error_lines": 0,
+      "samples": [
+        {
+          "server_log_clock": "10-04 18:29:03",
+          "generation_tokens_s": 5450.3,
+          "running_requests": 47,
+          "waiting_requests": 0,
+          "kv_cache_percent": 3.1,
+          "prefix_cache_hit_percent": 51.7
+        },
+        {
+          "server_log_clock": "10-04 18:29:13",
+          "generation_tokens_s": 5845.6,
+          "running_requests": 47,
+          "waiting_requests": 0,
+          "kv_cache_percent": 5.9,
+          "prefix_cache_hit_percent": 51.7
+        },
+        {
+          "server_log_clock": "10-04 18:29:23",
+          "generation_tokens_s": 5055.4,
+          "running_requests": 47,
+          "waiting_requests": 0,
+          "kv_cache_percent": 8.3,
+          "prefix_cache_hit_percent": 51.7
+        },
+        {
+          "server_log_clock": "10-04 18:29:33",
+          "generation_tokens_s": 4529.3,
+          "running_requests": 47,
+          "waiting_requests": 0,
+          "kv_cache_percent": 10.5,
+          "prefix_cache_hit_percent": 51.7
+        },
+        {
+          "server_log_clock": "10-04 18:29:43",
+          "generation_tokens_s": 4134.7,
+          "running_requests": 47,
+          "waiting_requests": 0,
+          "kv_cache_percent": 12.4,
+          "prefix_cache_hit_percent": 51.7
+        },
+        {
+          "server_log_clock": "10-04 18:29:53",
+          "generation_tokens_s": 3838.7,
+          "running_requests": 47,
+          "waiting_requests": 0,
+          "kv_cache_percent": 14.3,
+          "prefix_cache_hit_percent": 51.7
+        },
+        {
+          "server_log_clock": "10-04 18:30:03",
+          "generation_tokens_s": 3586.1,
+          "running_requests": 47,
+          "waiting_requests": 0,
+          "kv_cache_percent": 16,
+          "prefix_cache_hit_percent": 51.7
+        },
+        {
+          "server_log_clock": "10-04 18:30:13",
+          "generation_tokens_s": 3373.9,
+          "running_requests": 47,
+          "waiting_requests": 0,
+          "kv_cache_percent": 17.6,
+          "prefix_cache_hit_percent": 51.7
+        },
+        {
+          "server_log_clock": "10-04 18:30:23",
+          "generation_tokens_s": 3200.4,
+          "running_requests": 47,
+          "waiting_requests": 0,
+          "kv_cache_percent": 19.1,
+          "prefix_cache_hit_percent": 51.7
+        },
+        {
+          "server_log_clock": "10-04 18:30:33",
+          "generation_tokens_s": 3054.1,
+          "running_requests": 47,
+          "waiting_requests": 0,
+          "kv_cache_percent": 20.6,
+          "prefix_cache_hit_percent": 51.7
+        },
+        {
+          "server_log_clock": "10-04 18:30:43",
+          "generation_tokens_s": 2922.4,
+          "running_requests": 47,
+          "waiting_requests": 0,
+          "kv_cache_percent": 22,
+          "prefix_cache_hit_percent": 51.7
+        },
+        {
+          "server_log_clock": "10-04 18:30:53",
+          "generation_tokens_s": 2805,
+          "running_requests": 47,
+          "waiting_requests": 0,
+          "kv_cache_percent": 23.3,
+          "prefix_cache_hit_percent": 51.7
+        },
+        {
+          "server_log_clock": "10-04 18:31:03",
+          "generation_tokens_s": 2701.5,
+          "running_requests": 47,
+          "waiting_requests": 0,
+          "kv_cache_percent": 24.6,
+          "prefix_cache_hit_percent": 51.7
+        },
+        {
+          "server_log_clock": "10-04 18:31:13",
+          "generation_tokens_s": 2607.9,
+          "running_requests": 47,
+          "waiting_requests": 0,
+          "kv_cache_percent": 25.9,
+          "prefix_cache_hit_percent": 51.7
+        },
+        {
+          "server_log_clock": "10-04 18:31:23",
+          "generation_tokens_s": 2528.5,
+          "running_requests": 47,
+          "waiting_requests": 0,
+          "kv_cache_percent": 27.1,
+          "prefix_cache_hit_percent": 51.7
+        },
+        {
+          "server_log_clock": "10-04 18:31:33",
+          "generation_tokens_s": 2447.8,
+          "running_requests": 47,
+          "waiting_requests": 0,
+          "kv_cache_percent": 28.2,
+          "prefix_cache_hit_percent": 51.7
+        },
+        {
+          "server_log_clock": "10-04 18:31:43",
+          "generation_tokens_s": 2405.4,
+          "running_requests": 47,
+          "waiting_requests": 0,
+          "kv_cache_percent": 28.8,
+          "prefix_cache_hit_percent": 55
+        },
+        {
+          "server_log_clock": "10-04 18:31:53",
+          "generation_tokens_s": 2367.7,
+          "running_requests": 47,
+          "waiting_requests": 0,
+          "kv_cache_percent": 29.3,
+          "prefix_cache_hit_percent": 55.7
+        },
+        {
+          "server_log_clock": "10-04 18:32:03",
+          "generation_tokens_s": 2306.7,
+          "running_requests": 47,
+          "waiting_requests": 0,
+          "kv_cache_percent": 30.4,
+          "prefix_cache_hit_percent": 81.2
+        },
+        {
+          "server_log_clock": "10-04 18:32:13",
+          "generation_tokens_s": 2255.3,
+          "running_requests": 47,
+          "waiting_requests": 0,
+          "kv_cache_percent": 31.5,
+          "prefix_cache_hit_percent": 81.2
+        },
+        {
+          "server_log_clock": "10-04 18:32:23",
+          "generation_tokens_s": 2194.9,
+          "running_requests": 47,
+          "waiting_requests": 0,
+          "kv_cache_percent": 32.5,
+          "prefix_cache_hit_percent": 81.2
+        },
+        {
+          "server_log_clock": "10-04 18:32:33",
+          "generation_tokens_s": 2151.8,
+          "running_requests": 47,
+          "waiting_requests": 0,
+          "kv_cache_percent": 33.6,
+          "prefix_cache_hit_percent": 81.2
+        },
+        {
+          "server_log_clock": "10-04 18:32:43",
+          "generation_tokens_s": 2100.7,
+          "running_requests": 47,
+          "waiting_requests": 0,
+          "kv_cache_percent": 34.6,
+          "prefix_cache_hit_percent": 81.2
+        },
+        {
+          "server_log_clock": "10-04 18:32:53",
+          "generation_tokens_s": 2062.6,
+          "running_requests": 47,
+          "waiting_requests": 0,
+          "kv_cache_percent": 35.6,
+          "prefix_cache_hit_percent": 81.2
+        },
+        {
+          "server_log_clock": "10-04 18:33:03",
+          "generation_tokens_s": 2020,
+          "running_requests": 47,
+          "waiting_requests": 0,
+          "kv_cache_percent": 36.4,
+          "prefix_cache_hit_percent": 85.5
+        },
+        {
+          "server_log_clock": "10-04 18:33:13",
+          "generation_tokens_s": 1987.9,
+          "running_requests": 47,
+          "waiting_requests": 0,
+          "kv_cache_percent": 37.3,
+          "prefix_cache_hit_percent": 85.5
+        },
+        {
+          "server_log_clock": "10-04 18:33:23",
+          "generation_tokens_s": 1954.1,
+          "running_requests": 47,
+          "waiting_requests": 0,
+          "kv_cache_percent": 38.3,
+          "prefix_cache_hit_percent": 88.6
+        },
+        {
+          "server_log_clock": "10-04 18:33:33",
+          "generation_tokens_s": 1930.1,
+          "running_requests": 47,
+          "waiting_requests": 0,
+          "kv_cache_percent": 38.3,
+          "prefix_cache_hit_percent": 90.6
+        },
+        {
+          "server_log_clock": "10-04 18:33:43",
+          "generation_tokens_s": 1944.5,
+          "running_requests": 47,
+          "waiting_requests": 0,
+          "kv_cache_percent": 37.5,
+          "prefix_cache_hit_percent": 90.5
+        },
+        {
+          "server_log_clock": "10-04 18:33:53",
+          "generation_tokens_s": 1926,
+          "running_requests": 47,
+          "waiting_requests": 0,
+          "kv_cache_percent": 38.4,
+          "prefix_cache_hit_percent": 92
+        }
+      ]
+    }
+  ]
+}

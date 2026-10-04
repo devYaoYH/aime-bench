@@ -1,0 +1,5 @@
+{
+  "path": "/home/azureuser/models/r0b0tlab/VibeThinker-3B-NVFP4/vllm-v2_3-long64k.yaml",
+  "yaml": "# Core v2.3 long requests; original context, memory and backend retained.\n# NVFP4 weights through Marlin, BF16 activations and KV, A100 SM80.\nmodel: /home/azureuser/models/r0b0tlab/VibeThinker-3B-NVFP4\nserved-model-name: r0b0tlab/VibeThinker-3B-NVFP4\nhost: \"127.0.0.1\"\nport: 8000\ndtype: bfloat16\nquantization: modelopt_fp4\nlinear-backend: marlin\nkv-cache-dtype: auto\ntensor-parallel-size: 1\nmax-model-len: 65536\ngpu-memory-utilization: 0.95\noverride-generation-config: '{\"max_new_tokens\": 65536}'\nenable-prefix-caching: true\nenable-prompt-tokens-details: true\nattention-backend: FLASHINFER\n",
+  "sha256": "fdbdb1b85309e36f83c1585ea9bdab3ccf648744d06082997169a6229689e36f"
+}

@@ -236,5 +236,7 @@ four-request cap. The parser and system prompt are unchanged.
 Use `python -m runner_final.run_frozen_v2_3 --benchmark` or the
 `runner_final/presets/apex_core_v2_3.json` preset after provisioning the new 95%
 memory `vllm-v2_3-long64k.yaml` profile from the checked-out repo. Saved
-`allocation.json` records all admissions and peak concurrency. No v2.3 GPU timing
-or KV-pressure result is established yet; earlier cores remain matched controls.
+`allocation.json` records all admissions and peak concurrency. Its [first measured
+trials](../runs/experiments/core-v2_3-benchmarks-20261004T182444Z/README.md) reached 18
+AIME answers in 84.985s and 3/47 Apex answers at a 300s cutoff. One trial per dataset
+does not establish repeatability; earlier cores remain available as controls.

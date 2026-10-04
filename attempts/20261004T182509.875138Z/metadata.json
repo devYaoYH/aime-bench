@@ -1,0 +1,152 @@
+{
+  "$schema": "../../runner_final/core_v2_3/metadata.schema.json",
+  "schema_version": 1,
+  "attempt_id": "20261004T182509.875138Z",
+  "label": "r0b0tlab/VibeThinker-3B-NVFP4",
+  "intervention": {
+    "label": "V2.3 input-sized pool, long rollouts and runtime correction",
+    "reference_attempt_id": "20261004T162322.975624Z",
+    "changed_variables": [
+      "runner.version",
+      "controls.hyperparameters.schedule",
+      "controls.hyperparameters.first_pass_max_tokens",
+      "controls.hyperparameters.max_tokens",
+      "controls.hyperparameters.runtime_feedback_policy"
+    ],
+    "comparison_note": "Historical same-seed v2.1 control; model, prompt, 95% GPU envelope and four-request cap retained. Scheduling, generation ceiling and feedback change together. One trial, not an isolated effect or repeatability estimate."
+  },
+  "runner": {
+    "module": "runner_final.run_frozen_v2_3",
+    "version": "runner_final_core_v2_3",
+    "git_commit": "b459e763962f74fe788603d99a07a32459b7ecb8",
+    "git_dirty": false
+  },
+  "model": {
+    "id": "r0b0tlab/VibeThinker-3B-NVFP4",
+    "revision": null,
+    "quantization": "modelopt_fp4",
+    "quantization_source": "launch_profile",
+    "activation_dtype": "bfloat16",
+    "kv_cache_dtype": "auto",
+    "linear_backend": "marlin"
+  },
+  "gpu": {
+    "device": null,
+    "device_count": 1,
+    "total_vram_mib": null,
+    "memory_utilization": 0.95,
+    "configured_envelope_mib": null
+  },
+  "controls": {
+    "dataset": "AIME 2025",
+    "question_indices": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19,
+      20,
+      21,
+      22,
+      23,
+      24,
+      25,
+      26,
+      27,
+      28,
+      29,
+      30
+    ],
+    "target_correct": 18,
+    "grader_cost_s": 3.0,
+    "grader_serial": true,
+    "max_context_tokens": 65536,
+    "max_num_seqs": null,
+    "prefix_caching": true,
+    "reasoning_parser": null,
+    "hyperparameters": {
+      "parallelism": 30,
+      "rollouts": 1,
+      "temperature": 0.8,
+      "top_p": 0.95,
+      "seed": 20261011,
+      "disable_thinking": false,
+      "question_timeout": 1800,
+      "schedule": "eager_pool",
+      "no_overhead_profile": true,
+      "overhead_interval": 0.05,
+      "engine_metrics_interval": 1.0,
+      "benchmark": true,
+      "buffer_traces": true,
+      "no_gpu_telemetry": true,
+      "max_concurrent_requests": 30,
+      "skip_benchmark_prewarm": true,
+      "prewarm_max_tokens": 8192,
+      "answer_validation_policy": {
+        "id": "latex_syntax_expression_keys_v2_1",
+        "backend": "SymPy 1.14.0 ANTLR grammar; antlr4-python3-runtime 4.11.0",
+        "device": "cpu",
+        "syntax_timeout_s": 1.0,
+        "canonical_timeout_s": 0.25,
+        "max_chars": 4096,
+        "max_tokens": 1024,
+        "max_delimiter_depth": 64,
+        "placeholder_filter": "EXPRESSION, ANSWER, YOUR_ANSWER, ellipsis, question mark",
+        "equivalence": "SymPy simplify key plus original symbolic-denominator constraints; tuples ordered, finite sets unordered",
+        "fallback": "After syntax success, normalization errors/timeouts retain a raw-string key. Syntax errors/timeouts reject with evidence."
+      },
+      "runtime_feedback_policy": {
+        "id": "wrong-verdict-queued-batch-v2.3",
+        "trigger": "actual boolean false grader verdict",
+        "defer": "queued unique candidates and detected candidates awaiting validation",
+        "prefix": "exact prompt/output token IDs plus server-tokenized feedback, no BOS",
+        "budget": "correction continuations count toward four generation requests",
+        "scope": "unsolved question only; retain prompt/parser; corrections share input-sized slot pool"
+      },
+      "strategy": "coverage",
+      "max_tokens": 65536,
+      "first_pass_max_tokens": 65536,
+      "max_attempts_per_question": 4,
+      "max_rounds": 1,
+      "continuation_enabled": true,
+      "answer_extraction": "streaming balanced mathematical boxes and complete Answer lines",
+      "system_prompt_sha256": "6499890af0d686e8c0ad76e58ec86c2ab7d117625554509a005e0bef528b6e9e"
+    }
+  },
+  "provenance": {
+    "dataset": {
+      "id": "aime_2025",
+      "year": 2025,
+      "role": "development",
+      "source": "https://huggingface.co/datasets/MathArena/aime_2025",
+      "revision": "c94da77eb22bbd6439e62a323bec18493a421302",
+      "split": "train",
+      "rows": 30,
+      "prompt_path": "questions.json",
+      "prompt_sha256": "ff21b01011146b708324537f23a3c087e5b3575490214263329e1d96e361683c",
+      "grader_path": "grader/data/aime_2025.jsonl",
+      "grader_sha256": "d5bcac5904290630fe98e3c3d1c2773260ebf59b57955382735e9ce8c0142b41",
+      "inferred_from_legacy_runner": false
+    },
+    "config": "config.json",
+    "profile": "model_profile.json",
+    "profile_sha256": "fdbdb1b85309e36f83c1585ea9bdab3ccf648744d06082997169a6229689e36f",
+    "notes": [
+      "Normalized from saved config/profile and GPU samples. Null means unrecorded."
+    ]
+  }
+}
