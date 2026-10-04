@@ -1,0 +1,931 @@
+{
+  "scope": "Nine purposively selected winning trajectories from five paired v1.6 seeds",
+  "extractor_sha256": "4e611524d163ad2e9779280a249ba5fd03ef62b58286de2df02a7c022a95e909",
+  "tokenizer_sha256": "296e081e2f5ecf9d87814aa9b0f4b12d670ed2b2e2be6c84e01a9466c953afb7",
+  "timing": "Official-clock SSE UTC timestamps; exact IDs count generated output only",
+  "selection_limit": "Not an all-question census or counterfactual policy replay",
+  "cases": [
+    {
+      "label": "AWQ12",
+      "attempt_id": "20261004T232909.168373Z",
+      "question_index": 29,
+      "winning_rollout_chain": [
+        1
+      ],
+      "landmarks": {
+        "target_quantity_conclusion": {
+          "character_end": 15270,
+          "quote": "Thus area = 104 \u221a3.",
+          "interpretation": "Manual reading of the target quantity; not a submitted candidate",
+          "generated_tokens_through_character_end": 7039,
+          "observed_event": {
+            "timestamp_utc": "2026-10-04T23:29:56.569+00:00",
+            "official_elapsed_s": 46.525,
+            "rollout": 1,
+            "chunk_generated_tokens": 7039
+          },
+          "gap_to_recognized_s": 0.4209999999999994
+        },
+        "recognized_candidate": {
+          "character_end": 15427,
+          "quote": "Thus answer is 104.",
+          "kind": "literal_prose",
+          "interpretation": "Actual candidate whose saved grader verdict is True",
+          "generated_tokens_through_character_end": 7095,
+          "observed_event": {
+            "timestamp_utc": "2026-10-04T23:29:56.990+00:00",
+            "official_elapsed_s": 46.946,
+            "rollout": 1,
+            "chunk_generated_tokens": 7096
+          },
+          "gap_to_recognized_s": 0.0
+        }
+      },
+      "recognized_to_verdict_s": 6.295999999999999,
+      "correct_verdict_official_elapsed_s": 53.242,
+      "candidate_queue_wait_s": 0.0001036840258166194,
+      "request_boundaries": [
+        {
+          "rollout": 1,
+          "finish_reason": "stop",
+          "last_received_event": {
+            "timestamp_utc": "2026-10-04T23:30:02.601+00:00",
+            "official_elapsed_s": 52.557,
+            "rollout": 1,
+            "chunk_generated_tokens": 7899
+          },
+          "generation_finished_at_utc": "2026-10-04T23:30:02.601+00:00",
+          "started_at_utc": "2026-10-04T23:29:10.067+00:00"
+        }
+      ],
+      "sources": [
+        {
+          "path": "attempts/20261004T232909.168373Z/trace/29/rollout-01/response.json",
+          "sha256": "56d611f6c62b23bb00488d3e45a32cbaf5159e49a7f0a1dcff7c3a7a126fd246"
+        },
+        {
+          "path": "attempts/20261004T232909.168373Z/trace/29/rollout-01/tokens.json",
+          "sha256": "fb34070f221032adcd1194593ae1030907a84857b46e25818dbf67ed675c5dfb"
+        },
+        {
+          "path": "attempts/20261004T232909.168373Z/trace/29/rollout-01/request.json",
+          "sha256": "6e211082b660ab8b491e71863c2aeaaab5cb7d267fc08ca6dd1db95361215233"
+        },
+        {
+          "path": "20261004T232909.168373Z/trace/29/rollout-01/stream.jsonl",
+          "storage": "ignored raw SSE cache",
+          "sha256": "8da6b98ade64fdd1082526627faf0b1f754c9de6fb98913b0bef7c43f970ea7f"
+        },
+        {
+          "path": "attempts/20261004T232909.168373Z/trace/29/question.json",
+          "sha256": "878780ed83e9b0c94f1d53107536eb43af45671d64f4b9b810ef6d727cd0da59"
+        },
+        {
+          "path": "attempts/20261004T232909.168373Z/summary.json",
+          "sha256": "ab972ffbc6c5e0254bad6e71721dad1e645949c9aacf34cf750a9db61a14cb8a"
+        }
+      ]
+    },
+    {
+      "label": "AWQ11",
+      "attempt_id": "20261004T232342.669339Z",
+      "question_index": 29,
+      "winning_rollout_chain": [
+        1,
+        2
+      ],
+      "landmarks": {
+        "target_quantity_conclusion": {
+          "character_end": 19379,
+          "quote": "So area of quadrilateral BKLC = 104 sqrt(3).",
+          "interpretation": "Manual reading of the target quantity; not a submitted candidate",
+          "generated_tokens_through_character_end": 9279,
+          "observed_event": {
+            "timestamp_utc": "2026-10-04T23:24:54.036+00:00",
+            "official_elapsed_s": 66.997,
+            "rollout": 2,
+            "chunk_generated_tokens": 9279
+          },
+          "gap_to_recognized_s": 30.159999999999997
+        },
+        "recognized_candidate": {
+          "character_end": 26177,
+          "quote": "Thus answer n = 104. So answer is 104.",
+          "kind": "literal_prose",
+          "interpretation": "Actual candidate whose saved grader verdict is True",
+          "generated_tokens_through_character_end": 12576,
+          "observed_event": {
+            "timestamp_utc": "2026-10-04T23:25:24.196+00:00",
+            "official_elapsed_s": 97.157,
+            "rollout": 2,
+            "chunk_generated_tokens": 12577
+          },
+          "gap_to_recognized_s": 0.0
+        }
+      },
+      "recognized_to_verdict_s": 3.0060000000000002,
+      "correct_verdict_official_elapsed_s": 100.163,
+      "candidate_queue_wait_s": 0.00044834002619609237,
+      "request_boundaries": [
+        {
+          "rollout": 1,
+          "finish_reason": "length",
+          "last_received_event": {
+            "timestamp_utc": "2026-10-04T23:24:44.988+00:00",
+            "official_elapsed_s": 57.949,
+            "rollout": 1,
+            "chunk_generated_tokens": 8192
+          },
+          "generation_finished_at_utc": "2026-10-04T23:24:45.074+00:00",
+          "started_at_utc": "2026-10-04T23:23:47.062+00:00"
+        },
+        {
+          "rollout": 2,
+          "finish_reason": null,
+          "last_received_event": {
+            "timestamp_utc": "2026-10-04T23:25:27.198+00:00",
+            "official_elapsed_s": 100.159,
+            "rollout": 2,
+            "chunk_generated_tokens": 12872
+          },
+          "generation_finished_at_utc": "2026-10-04T23:25:27.203+00:00",
+          "started_at_utc": "2026-10-04T23:24:45.208+00:00"
+        }
+      ],
+      "sources": [
+        {
+          "path": "attempts/20261004T232342.669339Z/trace/29/rollout-01/response.json",
+          "sha256": "7c3fef3afdb6b1276067fadf29336c388a559f5d108494affd0962f7a07e806f"
+        },
+        {
+          "path": "attempts/20261004T232342.669339Z/trace/29/rollout-01/tokens.json",
+          "sha256": "71d21f1b9f0bbd1612edc5e99cb9f08c1b30443e8294382d56c6267be50ddfa5"
+        },
+        {
+          "path": "attempts/20261004T232342.669339Z/trace/29/rollout-01/request.json",
+          "sha256": "32576127d8e80ec493edba634f76e6701e054a50a091aee7de7dd655fdd446ae"
+        },
+        {
+          "path": "20261004T232342.669339Z/trace/29/rollout-01/stream.jsonl",
+          "storage": "ignored raw SSE cache",
+          "sha256": "7d33ef3c4613144e8d49e63e57fcf7dc68ed1b4047bf05ad883bc987df1728d9"
+        },
+        {
+          "path": "attempts/20261004T232342.669339Z/trace/29/rollout-02/response.json",
+          "sha256": "34d4c25c47159ca9049459f9d642ef80ed9e714dbdff22f2a9adeabec79c24e3"
+        },
+        {
+          "path": "attempts/20261004T232342.669339Z/trace/29/rollout-02/tokens.json",
+          "sha256": "1d8656671ed6bf4584f4c438bb238df30b1f7a10cab54119860bb98a21907adc"
+        },
+        {
+          "path": "attempts/20261004T232342.669339Z/trace/29/rollout-02/request.json",
+          "sha256": "63aee0514c07378281507758cf34252d747f80069f31d0ca2733be0e574ccbad"
+        },
+        {
+          "path": "20261004T232342.669339Z/trace/29/rollout-02/stream.jsonl",
+          "storage": "ignored raw SSE cache",
+          "sha256": "eb8d03ce93fd4426c5467dacc780fdc8474df2339583f349cd9517a09d84922f"
+        },
+        {
+          "path": "attempts/20261004T232342.669339Z/trace/29/question.json",
+          "sha256": "a551fe3b56316dede96c270a8a478ece9c9b74f7cd874f5fe90c9b28b798ed40"
+        },
+        {
+          "path": "attempts/20261004T232342.669339Z/summary.json",
+          "sha256": "bfd2032a835b55589b31ab938ee3adf8b9c0b38e318e3bd9445072835b22b206"
+        }
+      ]
+    },
+    {
+      "label": "NV12",
+      "attempt_id": "20261004T225113.454134Z",
+      "question_index": 29,
+      "winning_rollout_chain": [
+        1,
+        2
+      ],
+      "landmarks": {
+        "target_quantity_conclusion": {
+          "character_end": 23756,
+          "quote": "Thus area = 104 sqrt(3). So n = 104.",
+          "interpretation": "Manual reading of the target quantity; not a submitted candidate",
+          "generated_tokens_through_character_end": 10053,
+          "observed_event": {
+            "timestamp_utc": "2026-10-04T22:52:28.208+00:00",
+            "official_elapsed_s": 73.898,
+            "rollout": 2,
+            "chunk_generated_tokens": 10053
+          },
+          "gap_to_recognized_s": 0.6090000000000089
+        },
+        "recognized_candidate": {
+          "character_end": 23965,
+          "quote": "Check if this matches expectation. The problem asks for area expressed as n sqrt(3). So n = 104. So answer is 104.",
+          "kind": "literal_prose",
+          "interpretation": "Actual candidate whose saved grader verdict is True",
+          "generated_tokens_through_character_end": 10120,
+          "observed_event": {
+            "timestamp_utc": "2026-10-04T22:52:28.817+00:00",
+            "official_elapsed_s": 74.507,
+            "rollout": 2,
+            "chunk_generated_tokens": 10121
+          },
+          "gap_to_recognized_s": 0.0
+        }
+      },
+      "recognized_to_verdict_s": 3.0049999999999955,
+      "correct_verdict_official_elapsed_s": 77.512,
+      "candidate_queue_wait_s": 0.0008077429956756532,
+      "request_boundaries": [
+        {
+          "rollout": 1,
+          "finish_reason": "length",
+          "last_received_event": {
+            "timestamp_utc": "2026-10-04T22:52:11.898+00:00",
+            "official_elapsed_s": 57.588,
+            "rollout": 1,
+            "chunk_generated_tokens": 8192
+          },
+          "generation_finished_at_utc": "2026-10-04T22:52:11.933+00:00",
+          "started_at_utc": "2026-10-04T22:51:14.333+00:00"
+        },
+        {
+          "rollout": 2,
+          "finish_reason": null,
+          "last_received_event": {
+            "timestamp_utc": "2026-10-04T22:52:31.815+00:00",
+            "official_elapsed_s": 77.505,
+            "rollout": 2,
+            "chunk_generated_tokens": 10452
+          },
+          "generation_finished_at_utc": "2026-10-04T22:52:31.823+00:00",
+          "started_at_utc": "2026-10-04T22:52:12.274+00:00"
+        }
+      ],
+      "sources": [
+        {
+          "path": "attempts/20261004T225113.454134Z/trace/29/rollout-01/response.json",
+          "sha256": "dcdcf84a90195c1f47e3dd127cc9769dc2a5dc3cf21e0a1cd555db81cb544acf"
+        },
+        {
+          "path": "attempts/20261004T225113.454134Z/trace/29/rollout-01/tokens.json",
+          "sha256": "1f646c3f89d7fbf73273203917501ae26cc5dc9e8e66f5f63a3534ef096f33a2"
+        },
+        {
+          "path": "attempts/20261004T225113.454134Z/trace/29/rollout-01/request.json",
+          "sha256": "f9a20bd4263722d817cb3dbd5e7c6d9742def3ea14cfe6c66a974cbd0c0291fa"
+        },
+        {
+          "path": "20261004T225113.454134Z/trace/29/rollout-01/stream.jsonl",
+          "storage": "ignored raw SSE cache",
+          "sha256": "bc89e85b748658dd8ffc4b42058f59c0902a345fc8a0428caa8adee0329475ea"
+        },
+        {
+          "path": "attempts/20261004T225113.454134Z/trace/29/rollout-02/response.json",
+          "sha256": "0c19316bfe23732f678efe4da5deff9d8610e78ee8356e7bedea80b383bdee13"
+        },
+        {
+          "path": "attempts/20261004T225113.454134Z/trace/29/rollout-02/tokens.json",
+          "sha256": "7fa29c116e03625e5fd0ceb5b2e03f0774f534666463d23ede9297ab168539bc"
+        },
+        {
+          "path": "attempts/20261004T225113.454134Z/trace/29/rollout-02/request.json",
+          "sha256": "9a2c55b1ed44a371d34d40f0f58e47f8a05e9b517d28076af97eb6dfd047f5a8"
+        },
+        {
+          "path": "20261004T225113.454134Z/trace/29/rollout-02/stream.jsonl",
+          "storage": "ignored raw SSE cache",
+          "sha256": "28ac913cfcaf0d91bfceaa4ed493adb17a2c4081de8e8938cf615087d364d23d"
+        },
+        {
+          "path": "attempts/20261004T225113.454134Z/trace/29/question.json",
+          "sha256": "a188a09c85cb8c2b96edcee21ee52859a667063fa59b0e0a6d671910f581acd2"
+        },
+        {
+          "path": "attempts/20261004T225113.454134Z/summary.json",
+          "sha256": "9f840583afd42aca145f97a9c91d82477265a556f1feca501e49c36caee9340f"
+        }
+      ]
+    },
+    {
+      "label": "NV13",
+      "attempt_id": "20261004T225234.136076Z",
+      "question_index": 23,
+      "winning_rollout_chain": [
+        1
+      ],
+      "landmarks": {
+        "target_quantity_conclusion": {
+          "character_end": 20367,
+          "quote": "Now total successes = total numbers (1000) - failures (390) = 610.",
+          "interpretation": "Manual reading of the target quantity; not a submitted candidate",
+          "generated_tokens_through_character_end": 8029,
+          "observed_event": {
+            "timestamp_utc": "2026-10-04T22:53:30.187+00:00",
+            "official_elapsed_s": 55.11,
+            "rollout": 1,
+            "chunk_generated_tokens": 8029
+          },
+          "gap_to_recognized_s": 0.5679999999999978
+        },
+        "recognized_candidate": {
+          "character_end": 20569,
+          "quote": "Thus answer should be 610.",
+          "kind": "literal_prose",
+          "interpretation": "Actual candidate whose saved grader verdict is True",
+          "generated_tokens_through_character_end": 8107,
+          "observed_event": {
+            "timestamp_utc": "2026-10-04T22:53:30.755+00:00",
+            "official_elapsed_s": 55.678,
+            "rollout": 1,
+            "chunk_generated_tokens": 8108
+          },
+          "gap_to_recognized_s": 0.0
+        }
+      },
+      "recognized_to_verdict_s": 3.004000000000005,
+      "correct_verdict_official_elapsed_s": 58.682,
+      "candidate_queue_wait_s": 9.227305417880416e-05,
+      "request_boundaries": [
+        {
+          "rollout": 1,
+          "finish_reason": "length",
+          "last_received_event": {
+            "timestamp_utc": "2026-10-04T22:53:31.392+00:00",
+            "official_elapsed_s": 56.315,
+            "rollout": 1,
+            "chunk_generated_tokens": 8192
+          },
+          "generation_finished_at_utc": "2026-10-04T22:53:31.394+00:00",
+          "started_at_utc": "2026-10-04T22:52:35.096+00:00"
+        }
+      ],
+      "sources": [
+        {
+          "path": "attempts/20261004T225234.136076Z/trace/23/rollout-01/response.json",
+          "sha256": "24417d48fa929d61dbe4101f2829085f6ab4976209e399a43c0da96e11facc1d"
+        },
+        {
+          "path": "attempts/20261004T225234.136076Z/trace/23/rollout-01/tokens.json",
+          "sha256": "4f0f89de37ddd52c0289ec067df9ff2f9b85c7fa7e8e5e4b39e98a1424742030"
+        },
+        {
+          "path": "attempts/20261004T225234.136076Z/trace/23/rollout-01/request.json",
+          "sha256": "22fd06313fe67c118b685392541e251aaf2b9324c92fe6f305e9e3d343e42c87"
+        },
+        {
+          "path": "20261004T225234.136076Z/trace/23/rollout-01/stream.jsonl",
+          "storage": "ignored raw SSE cache",
+          "sha256": "7d734cae09b00dcb96b50ca7e159efbed570b525dcb9a93c3150211648bf27df"
+        },
+        {
+          "path": "attempts/20261004T225234.136076Z/trace/23/question.json",
+          "sha256": "a077b761d5655bb52ae0a8eb2a7b0bb3fe674aec4a0ae44522beb00103f0558d"
+        },
+        {
+          "path": "attempts/20261004T225234.136076Z/summary.json",
+          "sha256": "9686ad036e3bd075ed0c390354cb211b249322c8486be1035b6c48811ea3dee0"
+        }
+      ]
+    },
+    {
+      "label": "AWQ13",
+      "attempt_id": "20261004T233116.619910Z",
+      "question_index": 23,
+      "winning_rollout_chain": [
+        1,
+        2
+      ],
+      "landmarks": {
+        "target_quantity_conclusion": {
+          "character_end": 21394,
+          "quote": "Thus successes = total N (1..1000) = 1000 - 390 = 610.",
+          "interpretation": "Manual reading of the target quantity; not a submitted candidate",
+          "generated_tokens_through_character_end": 8991,
+          "observed_event": {
+            "timestamp_utc": "2026-10-04T23:32:19.608+00:00",
+            "official_elapsed_s": 62.111,
+            "rollout": 2,
+            "chunk_generated_tokens": 8991
+          },
+          "gap_to_recognized_s": 29.1
+        },
+        "earlier_explicit_matching_clause": {
+          "character_end": 27084,
+          "quote": "answer: 610.",
+          "interpretation": "Hindsight scalar match to the later True verdict; never graded here",
+          "generated_tokens_through_character_end": 11854,
+          "observed_event": {
+            "timestamp_utc": "2026-10-04T23:32:45.446+00:00",
+            "official_elapsed_s": 87.949,
+            "rollout": 2,
+            "chunk_generated_tokens": 11854
+          },
+          "gap_to_recognized_s": 3.2620000000000005
+        },
+        "recognized_candidate": {
+          "character_end": 28104,
+          "quote": "Thus answer is 610.",
+          "kind": "literal_prose",
+          "interpretation": "Actual candidate whose saved grader verdict is True",
+          "generated_tokens_through_character_end": 12179,
+          "observed_event": {
+            "timestamp_utc": "2026-10-04T23:32:48.708+00:00",
+            "official_elapsed_s": 91.211,
+            "rollout": 2,
+            "chunk_generated_tokens": 12180
+          },
+          "gap_to_recognized_s": 0.0
+        }
+      },
+      "recognized_to_verdict_s": 3.0060000000000002,
+      "correct_verdict_official_elapsed_s": 94.217,
+      "candidate_queue_wait_s": 0.0006102829938754439,
+      "request_boundaries": [
+        {
+          "rollout": 1,
+          "finish_reason": "length",
+          "last_received_event": {
+            "timestamp_utc": "2026-10-04T23:32:12.893+00:00",
+            "official_elapsed_s": 55.396,
+            "rollout": 1,
+            "chunk_generated_tokens": 8192
+          },
+          "generation_finished_at_utc": "2026-10-04T23:32:12.895+00:00",
+          "started_at_utc": "2026-10-04T23:31:17.516+00:00"
+        },
+        {
+          "rollout": 2,
+          "finish_reason": null,
+          "last_received_event": {
+            "timestamp_utc": "2026-10-04T23:32:51.705+00:00",
+            "official_elapsed_s": 94.208,
+            "rollout": 2,
+            "chunk_generated_tokens": 12474
+          },
+          "generation_finished_at_utc": "2026-10-04T23:32:51.716+00:00",
+          "started_at_utc": "2026-10-04T23:32:13.059+00:00"
+        }
+      ],
+      "sources": [
+        {
+          "path": "attempts/20261004T233116.619910Z/trace/23/rollout-01/response.json",
+          "sha256": "bace60fb2376974fa140168e9f787c745058e1bf78f38f2af9617827a5200e19"
+        },
+        {
+          "path": "attempts/20261004T233116.619910Z/trace/23/rollout-01/tokens.json",
+          "sha256": "cd76860ef96a2628e8bc1bcee54b78922013a49cdb03884fa4fe11b5ba9e1141"
+        },
+        {
+          "path": "attempts/20261004T233116.619910Z/trace/23/rollout-01/request.json",
+          "sha256": "2236222f4cf8335545dfc97caf8532743fed2d6699192fb9176fec1b8826990c"
+        },
+        {
+          "path": "20261004T233116.619910Z/trace/23/rollout-01/stream.jsonl",
+          "storage": "ignored raw SSE cache",
+          "sha256": "94e61b2f65500c9f77c5266f4648a371054261f8c20b9cc5b8f4811fb2bdd372"
+        },
+        {
+          "path": "attempts/20261004T233116.619910Z/trace/23/rollout-02/response.json",
+          "sha256": "905f0fb2c122cde93493a701ac6a39225ed97b3cc4431de0e0dfe319b49fc222"
+        },
+        {
+          "path": "attempts/20261004T233116.619910Z/trace/23/rollout-02/tokens.json",
+          "sha256": "a8c08aa83172dfd791f9b8653f80fc2b5f063137a490c02fb59af12b1b10aee6"
+        },
+        {
+          "path": "attempts/20261004T233116.619910Z/trace/23/rollout-02/request.json",
+          "sha256": "ab0aa18d3eabedbc874afd69ef86852c31ed91299a6a9b2013555b2996b57204"
+        },
+        {
+          "path": "20261004T233116.619910Z/trace/23/rollout-02/stream.jsonl",
+          "storage": "ignored raw SSE cache",
+          "sha256": "babc0050fe980f627ac02f100ac8928b981819c6dc643002d1b7038b9dca892b"
+        },
+        {
+          "path": "attempts/20261004T233116.619910Z/trace/23/question.json",
+          "sha256": "d7fb02c335f782abc50c7eccc99f86d125325ae857a9cdcc7cd87ed4be25d9c5"
+        },
+        {
+          "path": "attempts/20261004T233116.619910Z/summary.json",
+          "sha256": "dfec6e8f7c77b11bdc6fd2c80c025da9c1f5cae596a2e723a61d52cb03c5b346"
+        }
+      ]
+    },
+    {
+      "label": "NV15",
+      "attempt_id": "20261004T225526.955249Z",
+      "question_index": 2,
+      "winning_rollout_chain": [
+        1
+      ],
+      "landmarks": {
+        "target_quantity_conclusion": {
+          "character_end": 20225,
+          "quote": "heptagon area in actual = model heptagon area * (6/13) = 1274 * (6/13) = 588.",
+          "interpretation": "Manual reading of the target quantity; not a submitted candidate",
+          "generated_tokens_through_character_end": 6427,
+          "observed_event": {
+            "timestamp_utc": "2026-10-04T22:56:11.164+00:00",
+            "official_elapsed_s": 43.351,
+            "rollout": 1,
+            "chunk_generated_tokens": 6427
+          },
+          "gap_to_recognized_s": 0.9549999999999983
+        },
+        "recognized_candidate": {
+          "character_end": 20373,
+          "quote": "Thus the answer might be 588. But we must double-check that the heptagon area indeed equals the area of triangle ABC for any triangle, i.e., the shape includes the entire triangle. Could be that AFNBCEM covers the whole triangle ABC (maybe the polygon goes around the triangle but includes some extra region and excludes something else). But if the area of the heptagon equals the triangle area, then answer is 588.",
+          "kind": "literal_prose",
+          "interpretation": "Actual candidate whose saved grader verdict is True",
+          "generated_tokens_through_character_end": 6471,
+          "observed_event": {
+            "timestamp_utc": "2026-10-04T22:56:12.119+00:00",
+            "official_elapsed_s": 44.306,
+            "rollout": 1,
+            "chunk_generated_tokens": 6556
+          },
+          "gap_to_recognized_s": 0.0
+        }
+      },
+      "recognized_to_verdict_s": 8.157000000000004,
+      "correct_verdict_official_elapsed_s": 52.463,
+      "candidate_queue_wait_s": 7.122399983927608e-05,
+      "request_boundaries": [
+        {
+          "rollout": 1,
+          "finish_reason": null,
+          "last_received_event": {
+            "timestamp_utc": "2026-10-04T22:56:20.270+00:00",
+            "official_elapsed_s": 52.457,
+            "rollout": 1,
+            "chunk_generated_tokens": 7699
+          },
+          "generation_finished_at_utc": "2026-10-04T22:56:20.277+00:00",
+          "started_at_utc": "2026-10-04T22:55:27.818+00:00"
+        }
+      ],
+      "sources": [
+        {
+          "path": "attempts/20261004T225526.955249Z/trace/02/rollout-01/response.json",
+          "sha256": "bbe719cceb0c1c0bf366d61682edf1f4e7cc7ff908b62d16d4964eefb5ce5998"
+        },
+        {
+          "path": "attempts/20261004T225526.955249Z/trace/02/rollout-01/tokens.json",
+          "sha256": "50a5832ff12dabb96a279bdc4a4d557b8b3266072cfd6907b97e8ace747944ba"
+        },
+        {
+          "path": "attempts/20261004T225526.955249Z/trace/02/rollout-01/request.json",
+          "sha256": "aee7285ee8c03dfee826344bca3ccf6081ead014a9c9af45506876d6e7ac8bf2"
+        },
+        {
+          "path": "20261004T225526.955249Z/trace/02/rollout-01/stream.jsonl",
+          "storage": "ignored raw SSE cache",
+          "sha256": "185415f3bd0623105aff908f685949b92ad7c36a88cec0e9f7d4bf845a75fd85"
+        },
+        {
+          "path": "attempts/20261004T225526.955249Z/trace/02/question.json",
+          "sha256": "8ed05bd7085db68a75a5e653cb0dc94d148079239edeede814852fd8a6b3c0d1"
+        },
+        {
+          "path": "attempts/20261004T225526.955249Z/summary.json",
+          "sha256": "b9982f4c972ad752190c0c9e3c29071ac2512df06ee39a71d71b5281a9dd09bd"
+        }
+      ]
+    },
+    {
+      "label": "AWQ15",
+      "attempt_id": "20261004T233625.124298Z",
+      "question_index": 2,
+      "winning_rollout_chain": [
+        1,
+        2
+      ],
+      "landmarks": {
+        "target_quantity_conclusion": {
+          "character_end": 28895,
+          "quote": "Thus the area of the heptagon AFNBCEM equals 588",
+          "interpretation": "Manual reading of the target quantity; not a submitted candidate",
+          "generated_tokens_through_character_end": 10116,
+          "observed_event": {
+            "timestamp_utc": "2026-10-04T23:37:41.235+00:00",
+            "official_elapsed_s": 75.232,
+            "rollout": 2,
+            "chunk_generated_tokens": 10116
+          },
+          "gap_to_recognized_s": 10.599000000000004
+        },
+        "recognized_candidate": {
+          "character_end": 31409,
+          "quote": "Thus the answer is 588.",
+          "kind": "literal_prose",
+          "interpretation": "Actual candidate whose saved grader verdict is True",
+          "generated_tokens_through_character_end": 11275,
+          "observed_event": {
+            "timestamp_utc": "2026-10-04T23:37:51.834+00:00",
+            "official_elapsed_s": 85.831,
+            "rollout": 2,
+            "chunk_generated_tokens": 11276
+          },
+          "gap_to_recognized_s": 0.0
+        }
+      },
+      "recognized_to_verdict_s": 3.0049999999999955,
+      "correct_verdict_official_elapsed_s": 88.836,
+      "candidate_queue_wait_s": 0.0006256739725358784,
+      "request_boundaries": [
+        {
+          "rollout": 1,
+          "finish_reason": "length",
+          "last_received_event": {
+            "timestamp_utc": "2026-10-04T23:37:20.832+00:00",
+            "official_elapsed_s": 54.829,
+            "rollout": 1,
+            "chunk_generated_tokens": 8192
+          },
+          "generation_finished_at_utc": "2026-10-04T23:37:20.833+00:00",
+          "started_at_utc": "2026-10-04T23:36:26.008+00:00"
+        },
+        {
+          "rollout": 2,
+          "finish_reason": null,
+          "last_received_event": {
+            "timestamp_utc": "2026-10-04T23:37:54.835+00:00",
+            "official_elapsed_s": 88.832,
+            "rollout": 2,
+            "chunk_generated_tokens": 11587
+          },
+          "generation_finished_at_utc": "2026-10-04T23:37:54.840+00:00",
+          "started_at_utc": "2026-10-04T23:37:25.273+00:00"
+        }
+      ],
+      "sources": [
+        {
+          "path": "attempts/20261004T233625.124298Z/trace/02/rollout-01/response.json",
+          "sha256": "1c6a32006104afae730aca4cf3ee75f5ef7b30d9aed93eff289aa62f67b619e1"
+        },
+        {
+          "path": "attempts/20261004T233625.124298Z/trace/02/rollout-01/tokens.json",
+          "sha256": "a03a0dd07b296c2c800f0c46e3e7437f3d5649407f518cfb747b4ccd50c75852"
+        },
+        {
+          "path": "attempts/20261004T233625.124298Z/trace/02/rollout-01/request.json",
+          "sha256": "5a9850f2cdeef189ccefa2f55320d8963734d286a6bf11bb0a1b2483b44f0757"
+        },
+        {
+          "path": "20261004T233625.124298Z/trace/02/rollout-01/stream.jsonl",
+          "storage": "ignored raw SSE cache",
+          "sha256": "c747452fe1a7f558e0e83432522bc69f5d68c870643689dc54d3251fa42fc43a"
+        },
+        {
+          "path": "attempts/20261004T233625.124298Z/trace/02/rollout-02/response.json",
+          "sha256": "b4d8bb0528cb7bd35b69aba92759b578d31ee470f517eae9ceb1a852dd0898eb"
+        },
+        {
+          "path": "attempts/20261004T233625.124298Z/trace/02/rollout-02/tokens.json",
+          "sha256": "753e44c5bc8a91b389dfaaf955314636d9365adbdf14b8a9cab4db6ab28d84e0"
+        },
+        {
+          "path": "attempts/20261004T233625.124298Z/trace/02/rollout-02/request.json",
+          "sha256": "94591ae06c9528e73c8e7cea262cefc19d9dd98630bfe01f99af1b95ae6cd29c"
+        },
+        {
+          "path": "20261004T233625.124298Z/trace/02/rollout-02/stream.jsonl",
+          "storage": "ignored raw SSE cache",
+          "sha256": "e4f406d35022572b438bb67a75f9673fc1e9a568f670aece18719be49507dba0"
+        },
+        {
+          "path": "attempts/20261004T233625.124298Z/trace/02/question.json",
+          "sha256": "59f4346cbc080c11fb3bbcce2be4786d1d0690942ecb371bd67b40e6c9f6e76d"
+        },
+        {
+          "path": "attempts/20261004T233625.124298Z/summary.json",
+          "sha256": "68ba1f8675b72a8ca93102ff0b0258ca1c4ba667ffcfbd4c8ecb5516851f6b8b"
+        }
+      ]
+    },
+    {
+      "label": "NV14",
+      "attempt_id": "20261004T225342.150827Z",
+      "question_index": 7,
+      "winning_rollout_chain": [
+        1,
+        2
+      ],
+      "landmarks": {
+        "earlier_explicit_matching_clause": {
+          "character_end": 38278,
+          "quote": "answer: 821.",
+          "interpretation": "Hindsight scalar match to the later True verdict; never graded here",
+          "generated_tokens_through_character_end": 11119,
+          "observed_event": {
+            "timestamp_utc": "2026-10-04T22:55:05.737+00:00",
+            "official_elapsed_s": 82.73,
+            "rollout": 2,
+            "chunk_generated_tokens": 11119
+          },
+          "gap_to_recognized_s": 12.387
+        },
+        "recognized_candidate": {
+          "character_end": 41549,
+          "quote": "Thus answer is 821.",
+          "kind": "literal_prose",
+          "interpretation": "Actual candidate whose saved grader verdict is True",
+          "generated_tokens_through_character_end": 12321,
+          "observed_event": {
+            "timestamp_utc": "2026-10-04T22:55:18.124+00:00",
+            "official_elapsed_s": 95.117,
+            "rollout": 2,
+            "chunk_generated_tokens": 12322
+          },
+          "gap_to_recognized_s": 0.0
+        }
+      },
+      "recognized_to_verdict_s": 3.0060000000000002,
+      "correct_verdict_official_elapsed_s": 98.123,
+      "candidate_queue_wait_s": 0.001047683006618172,
+      "request_boundaries": [
+        {
+          "rollout": 1,
+          "finish_reason": "length",
+          "last_received_event": {
+            "timestamp_utc": "2026-10-04T22:54:39.497+00:00",
+            "official_elapsed_s": 56.49,
+            "rollout": 1,
+            "chunk_generated_tokens": 8192
+          },
+          "generation_finished_at_utc": "2026-10-04T22:54:39.498+00:00",
+          "started_at_utc": "2026-10-04T22:53:43.015+00:00"
+        },
+        {
+          "rollout": 2,
+          "finish_reason": null,
+          "last_received_event": {
+            "timestamp_utc": "2026-10-04T22:55:21.126+00:00",
+            "official_elapsed_s": 98.119,
+            "rollout": 2,
+            "chunk_generated_tokens": 12600
+          },
+          "generation_finished_at_utc": "2026-10-04T22:55:21.130+00:00",
+          "started_at_utc": "2026-10-04T22:54:39.578+00:00"
+        }
+      ],
+      "sources": [
+        {
+          "path": "attempts/20261004T225342.150827Z/trace/07/rollout-01/response.json",
+          "sha256": "cc1eaf5c03f9d34f069f78f2ae76bb6361bd06a41a52ca82644625d6d2d2e647"
+        },
+        {
+          "path": "attempts/20261004T225342.150827Z/trace/07/rollout-01/tokens.json",
+          "sha256": "823f15430edbf52c4788ce1ad5697ad5038b0f9e2908e6dfb776ac175fcef499"
+        },
+        {
+          "path": "attempts/20261004T225342.150827Z/trace/07/rollout-01/request.json",
+          "sha256": "6d02bdcdeaae0fb6fa2ad3726f5bf500cfb318c7f56b8bdc37c36ac8490a2f7d"
+        },
+        {
+          "path": "20261004T225342.150827Z/trace/07/rollout-01/stream.jsonl",
+          "storage": "ignored raw SSE cache",
+          "sha256": "927f83965835f37c524f16995d11a241195f3d1cfe0a76a5c13a3cbc8d5ae6d6"
+        },
+        {
+          "path": "attempts/20261004T225342.150827Z/trace/07/rollout-02/response.json",
+          "sha256": "98f938a8a742a693861eea696ed8f67ad4684ef49354afa7aac7a67c63b19d1b"
+        },
+        {
+          "path": "attempts/20261004T225342.150827Z/trace/07/rollout-02/tokens.json",
+          "sha256": "0f6a44b7f3506177abe1faac2a15c29b96ee8d9d538915ad32db9b8979267b1f"
+        },
+        {
+          "path": "attempts/20261004T225342.150827Z/trace/07/rollout-02/request.json",
+          "sha256": "76a467d632ac5ca9841be68014e58582a0649635420ec428008048bfe14913a0"
+        },
+        {
+          "path": "20261004T225342.150827Z/trace/07/rollout-02/stream.jsonl",
+          "storage": "ignored raw SSE cache",
+          "sha256": "d84f9ae8d7c497552a43d3bdee988ecc2bdfacf37063ba59aa341da23e4ae519"
+        },
+        {
+          "path": "attempts/20261004T225342.150827Z/trace/07/question.json",
+          "sha256": "da4239555641a43e08916575c504b1c4c785db8e99bdbe53dcbb02604066f2b0"
+        },
+        {
+          "path": "attempts/20261004T225342.150827Z/summary.json",
+          "sha256": "653ed9cbb7618650914de1e0d15bac1671cdf0c20615247817902e744b0d6570"
+        }
+      ]
+    },
+    {
+      "label": "AWQ14",
+      "attempt_id": "20261004T233357.876262Z",
+      "question_index": 7,
+      "winning_rollout_chain": [
+        1,
+        2
+      ],
+      "landmarks": {
+        "earlier_explicit_matching_clause": {
+          "character_end": 28793,
+          "quote": "answer: 821.",
+          "interpretation": "Hindsight scalar match to the later True verdict; never graded here",
+          "generated_tokens_through_character_end": 7834,
+          "observed_event": {
+            "timestamp_utc": "2026-10-04T23:34:51.396+00:00",
+            "official_elapsed_s": 52.643,
+            "rollout": 1,
+            "chunk_generated_tokens": 7834
+          },
+          "gap_to_recognized_s": 25.176000000000002
+        },
+        "recognized_candidate": {
+          "character_end": 39712,
+          "quote": "Thus answer is 821.",
+          "kind": "literal_prose",
+          "interpretation": "Actual candidate whose saved grader verdict is True",
+          "generated_tokens_through_character_end": 10554,
+          "observed_event": {
+            "timestamp_utc": "2026-10-04T23:35:16.572+00:00",
+            "official_elapsed_s": 77.819,
+            "rollout": 2,
+            "chunk_generated_tokens": 10555
+          },
+          "gap_to_recognized_s": 0.0
+        }
+      },
+      "recognized_to_verdict_s": 3.006999999999991,
+      "correct_verdict_official_elapsed_s": 80.826,
+      "candidate_queue_wait_s": 9.518797742202878e-05,
+      "request_boundaries": [
+        {
+          "rollout": 1,
+          "finish_reason": "length",
+          "last_received_event": {
+            "timestamp_utc": "2026-10-04T23:34:54.163+00:00",
+            "official_elapsed_s": 55.41,
+            "rollout": 1,
+            "chunk_generated_tokens": 8192
+          },
+          "generation_finished_at_utc": "2026-10-04T23:34:54.177+00:00",
+          "started_at_utc": "2026-10-04T23:33:58.762+00:00"
+        },
+        {
+          "rollout": 2,
+          "finish_reason": null,
+          "last_received_event": {
+            "timestamp_utc": "2026-10-04T23:35:19.575+00:00",
+            "official_elapsed_s": 80.822,
+            "rollout": 2,
+            "chunk_generated_tokens": 10893
+          },
+          "generation_finished_at_utc": "2026-10-04T23:35:19.580+00:00",
+          "started_at_utc": "2026-10-04T23:34:56.810+00:00"
+        }
+      ],
+      "sources": [
+        {
+          "path": "attempts/20261004T233357.876262Z/trace/07/rollout-01/response.json",
+          "sha256": "8a58c0197e6eabce9cc30e428c90fb80c7eb11cc97073daf45a732c502960f92"
+        },
+        {
+          "path": "attempts/20261004T233357.876262Z/trace/07/rollout-01/tokens.json",
+          "sha256": "abcef2073f996771e5e90e979700a7182ed2d951c26e5f40e3b4e1d3ee04b91f"
+        },
+        {
+          "path": "attempts/20261004T233357.876262Z/trace/07/rollout-01/request.json",
+          "sha256": "075b9caf8ed42e38a8a0697ce335f53c7439b06ce44ccbb02681aad98f206e71"
+        },
+        {
+          "path": "20261004T233357.876262Z/trace/07/rollout-01/stream.jsonl",
+          "storage": "ignored raw SSE cache",
+          "sha256": "46e974c79e82b34ffdfc9e5fe3873ff1942b0c73010d77d877cf637b7985b3d9"
+        },
+        {
+          "path": "attempts/20261004T233357.876262Z/trace/07/rollout-02/response.json",
+          "sha256": "f9932431f401d810cd0c04b5cb360321fd515a0131c239ad0f78b60e6a2c3fac"
+        },
+        {
+          "path": "attempts/20261004T233357.876262Z/trace/07/rollout-02/tokens.json",
+          "sha256": "ea74279e3bf75fadc60f3a90461daba69cc89f569db77e9e6071fa844b05df41"
+        },
+        {
+          "path": "attempts/20261004T233357.876262Z/trace/07/rollout-02/request.json",
+          "sha256": "6fb9f88ea14b38769ec57f9bc5e65fbd0dfa5d346601d7bf27dace71481a5ff0"
+        },
+        {
+          "path": "20261004T233357.876262Z/trace/07/rollout-02/stream.jsonl",
+          "storage": "ignored raw SSE cache",
+          "sha256": "3ad8c03a5673ddff8498dba2d8604d99b447e9fd624f8b2b418982bbf3df95c8"
+        },
+        {
+          "path": "attempts/20261004T233357.876262Z/trace/07/question.json",
+          "sha256": "94331d3179297755ffdc36b709570a1ddeffa7f156ba79f5afb5407a25afb6f1"
+        },
+        {
+          "path": "attempts/20261004T233357.876262Z/summary.json",
+          "sha256": "000a089dd94f2e9eba4d6b09ad632e694f1ccd7283fbc55f0da1043e0f79d366"
+        }
+      ]
+    }
+  ]
+}

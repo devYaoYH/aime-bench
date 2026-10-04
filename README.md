@@ -36,6 +36,11 @@ The [token and tail analysis](runs/analyses/core-v1-five-seeds-answer-tokens/REA
 shows exact per-question tokens and verification slots 17/18 for the selected
 five runs. An 8K cumulative cutoff would discard eight of their 90 recorded wins.
 
+The [v1.6 reasoning-text review](runs/analyses/v1_6-quantization-tail-reasoning/README.md)
+compares selected AWQ/NVFP4 solution routes and repeated checks. One trace emits
+a matching answer clause 25.176s before the frozen extractor recognizes it;
+this is a measured emission gap, not a replayed whole-attempt speedup.
+
 ## Start the runner
 
 On a prepared Linux GPU machine, run from the repository root using the inference
