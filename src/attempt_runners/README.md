@@ -246,3 +246,21 @@ verdict, before cancellation settlement; no new admissions occur after reaching
 requests and per-question usage. Required latency/verdict/token evidence remains
 RAM-buffered in benchmark mode. Optional engine/GPU polling is absent; service
 logs remain available to inspect KV pressure and OOM messages.
+
+## Core v1.5 eager 30-slot experiment
+
+`python -m src.attempt_runners.speedrun_v1_5 --seed 20261011` uses the frozen
+v1 adherence prompt and serving/sampling controls. It starts one 8K request per
+question, then fills free slots immediately: ready exact-ID continuations first,
+otherwise fresh starts on the least-active unsolved question, with rotated ties.
+The pool has a hard ceiling of 30 concurrent requests. Later fresh starts and
+continuations allow 16K additional output, clipped to remaining total context.
+All requests count toward four per question; generation continues while a verdict
+is pending. Correct verdicts cancel siblings and make slots available. The pool
+can fall below 30 when budgets or available work run out. No extra per-question
+concurrency cap is introduced. Its own frozen manifest pins this version and
+its dependencies; the original core v1 stays unchanged.
+
+The [single-trial protocol](../../configs/experiments/vibe-core-v1_5-eager30-single-v1.json)
+predeclares seed 20261011 and comparison to the historical 71.321s core v1 trial.
+This exploratory run does not replace the five-seed final-core headline.

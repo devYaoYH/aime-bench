@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "runner_id": "runner_final_core_v1_5",
+  "trials": 1,
+  "seed": 20261011,
+  "control_attempt": "20261004T005518.974361Z",
+  "control_time_to_target_s": 71.32121138199,
+  "preset": "runner_final/presets/prompt_adherence_v1_5.json",
+  "model": "r0b0tlab/VibeThinker-3B-NVFP4",
+  "model_profile": "vllm-flashinfer.yaml",
+  "intervention": "Replace barrier with eager fixed-30 request allocation; ready exact-ID continuations before least-active fresh starts. No pending-verdict suspension.",
+  "unchanged": "Prompt adherence_v1; temperature .8; top_p .95; seed stride4; initial8192; later16384 ADDITIONAL tokens; max4 total requests/question; 30x32 arithmetic warmup; benchmark storage; fresh grader3s; BF16 activation/KV, NVFP4 weights, FlashInfer,95%,64K context.",
+  "reporting": "Retain the single outcome including target unmet/errors. Historical same-seed control is context, not proof of causal improvement; no replacement of five-trial core v1 headline."
+}
