@@ -88,3 +88,16 @@ not guarantee that all live prefixes fit simultaneously in the KV cache.
 .venv/bin/python -m unittest test.test_frozen_core_v2_3 test.test_core_v2_3_plumbing -v
 .venv/bin/python -m runner_final.core_v2_3.metadata ATTEMPT_DIRECTORY
 ```
+
+For a sequential two-dataset benchmark with a 300-second Apex official cutoff,
+use a clean pinned remote worktree and the external batch harness:
+
+```sh
+~/.venvs/vllm/bin/python -m src.experiments.benchmark_core_v2_3 --execute \
+  --seed 20261011 --apex-deadline-s 300
+```
+
+The default AIME safety deadline is 900 seconds. Both stop immediately upon
+reaching 18 verified questions. Deadline cancellation preserves partial traces
+and unmet outcomes; setup, warmup, cleanup and trace flush are outside the cutoff.
+Omit `--execute` to inspect the plan without launching services.
