@@ -1,0 +1,25 @@
+{
+  "schema_version": 1,
+  "core_id": "runner_final_core_v2",
+  "prompt_file": "../prompts/math_core_v2.txt",
+  "argv": [
+    "--benchmark",
+    "--skip-benchmark-prewarm",
+    "--parallelism",
+    "30",
+    "--rollouts",
+    "1",
+    "--first-pass-max-tokens",
+    "8192",
+    "--max-tokens",
+    "16384",
+    "--max-attempts-per-question",
+    "4",
+    "--schedule",
+    "barrier",
+    "--target-correct",
+    "18",
+    "--dataset-manifest",
+    "data/source_apex_shortlist.json"
+  ]
+}

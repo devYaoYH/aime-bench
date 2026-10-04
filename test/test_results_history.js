@@ -120,3 +120,8 @@ assert.deepEqual(JSON.parse(JSON.stringify(vm.runInContext('benchmarkRows(mixedY
 
 context.warmupYears=[{id:'warmup',benchmark_year:2024},{id:'dev',benchmark_year:2025},{id:'test',benchmark_year:2026}];
 assert.deepEqual(JSON.parse(JSON.stringify(vm.runInContext('benchmarkRows(warmupYears, 2024)',context))).map(r=>r.id),['warmup']);
+
+// Generic datasets have an explicit null year and must never enter AIME charts.
+context.transferRows=[{id:'legacy'}, {id:'aime',benchmark_year:2025},
+  {id:'apex',benchmark_year:null,metadata:{provenance:{dataset:{id:'apex_shortlist',year:null}}}}];
+assert.deepEqual(JSON.parse(JSON.stringify(vm.runInContext("benchmarkRows(transferRows,2025).map(r=>r.id)",context))),['legacy','aime']);

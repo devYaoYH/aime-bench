@@ -108,3 +108,19 @@ support; report those limitations rather than modifying fixtures to hide them.
   to 16K/32K/64K via exact-ID continuations, clipping to total model context.
   Reallocate freed request slots to unsolved questions up to 60 active streams.
   Save admissions, expansion trigger, budgets and actual request counts.
+
+## Frozen mathematical core v2
+
+- Use `python -m runner_final.run_frozen_v2` for generalized exact mathematical
+  answers. Keep core v1 and its manifest unchanged. V2 obtains test questions from
+  the gold-free `GET /questions` endpoint in `grader/server_v2.py`, saves a
+  `questions.json` snapshot, and retains four requests per question including
+  continuations. Use `--reuse-grader` only with a fresh dedicated v2 service;
+  it leaves that service running. `--grader-config FILE` configures an owned service
+  without hardcoding a test dataset in the runner.
+- Validate core v2 attempt metadata with `python -m runner_final.core_v2.metadata
+  ATTEMPT_DIRECTORY` (or `--all` for a mixed corpus). The frozen v1 metadata CLI
+  cannot interpret generalized v2 dataset snapshots. Preserve the v2 manifest;
+  subsequent behavior changes require core v3. Apex #25/#26 overlap AIME 2025;
+  account for that before claiming unseen transfer. Offline tests establish
+  correctness of the runner plumbing, not a new GPU performance result.

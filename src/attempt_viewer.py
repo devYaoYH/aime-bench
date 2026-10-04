@@ -15,7 +15,14 @@ from src.benchmarks import recorded_dataset
 
 SAFE_ID = re.compile(r"^[A-Za-z0-9][A-Za-z0-9._-]*$")
 ROLLOUT_FILES = {"request.json", "response.json", "telemetry.json", "tokens.json", "stream.jsonl"}
-ATTEMPT_FILES = {"config.json", "summary.json", "metadata.json", "solved.jsonl", "gpu.jsonl"}
+ATTEMPT_FILES = {"config.json", "summary.json", "metadata.json", "solved.jsonl", "gpu.jsonl", "questions.json"}
+
+
+def dataset_record(config):
+    if config.get("runner_id") == "runner_final_core_v2":
+        from runner_final.core_v2.benchmarks import recorded_dataset as recorded_v2
+        return recorded_v2(config)
+    return recorded_dataset(config)
 
 
 def json_file(path, default=None):
@@ -71,8 +78,9 @@ class AttemptStore:
         if config.get("attempt_id") != name and summary.get("attempt_id") != name:
             raise ValueError("Not a canonical attempt")
         return {"id": name, "model": config.get("model"),
-                "benchmark_year": recorded_dataset(config)["year"],
-                "benchmark_role": recorded_dataset(config)["role"],
+                "benchmark_id": dataset_record(config)["id"],
+                "benchmark_year": dataset_record(config)["year"],
+                "benchmark_role": dataset_record(config)["role"],
                 "status": summary.get("status", "incomplete"),
                 "solved": summary.get("solved"),
                 "questions": len(config.get("question_indices") or config.get("questions") or []) or
@@ -120,15 +128,18 @@ class AttemptStore:
         summary = self.read(folder, "summary.json")
         year = metadata['benchmark_year']
         # The injected path remains the historical/default dataset for test fixtures.
-        dataset = self.dataset if year == 2025 else self.dataset.parent / f'aime_{year}_problems.jsonl'
+        grader_questions = config.get("runner_id") == "runner_final_core_v2"
+        dataset = folder / "questions.json" if grader_questions else (
+            self.dataset if year == 2025 else self.dataset.parent / f'aime_{year}_problems.jsonl')
         if not dataset.is_file():
-            raise ValueError(f'AIME {year} prompt file unavailable: {dataset}')
-        provenance = recorded_dataset(config)
+            raise ValueError(f'Attempt prompt file unavailable: {dataset}')
+        provenance = dataset_record(config)
         if provenance.get('prompt_sha256'):
             from src.benchmarks import sha256
             if sha256(dataset) != provenance['prompt_sha256']:
                 raise ValueError('Saved attempt prompt hash differs from the local dataset')
-        problems = {p["problem_idx"]: p["problem"] for p in json_lines(dataset)}
+        prompt_rows = json_file(dataset) if grader_questions else json_lines(dataset)
+        problems = {p["problem_idx"]: p["problem"] for p in prompt_rows}
         saved = {q["problem_idx"]: q for q in (summary or {}).get("questions", [])}
         indices = set(config.get("question_indices") or config.get("questions") or problems)
         indices.update(saved)

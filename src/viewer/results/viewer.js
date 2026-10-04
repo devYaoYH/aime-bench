@@ -33,7 +33,8 @@ const attemptLink = row => `/?attempt=${encodeURIComponent(row.id)}`;
 const separateBaselines = new Set(['20261003T202152.418590Z','20261003T203338.063138Z']);
 let results;
 function benchmarkRows(rows, year) {
-  return rows.filter(r => (r.benchmark_year ?? r.metadata?.provenance?.dataset?.year ?? 2025) === Number(year));
+  return rows.filter(r => (Object.hasOwn(r, 'benchmark_year') ? r.benchmark_year :
+    r.metadata?.provenance?.dataset?.year ?? 2025) === Number(year));
 }
 function clusterRows(rows, id) { return id==='all'?rows:rows.filter(r=>r.cluster?.family_id===id); }
 function selectedRows() { return clusterRows(benchmarkRows(results.attempts, $('#benchmark-year').value), $('#attempt-cluster').value); }

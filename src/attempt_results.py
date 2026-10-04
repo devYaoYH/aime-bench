@@ -12,7 +12,7 @@ from datetime import datetime
 import math
 
 from src.attempt_metadata import build_metadata, validate_metadata
-from src.benchmarks import recorded_dataset
+from src.attempt_viewer import dataset_record
 from src.attempt_clusters import assignment, summarize_clusters
 
 TARGET = 18
@@ -96,13 +96,19 @@ def build_results(store):
         try:
             overview = store.overview(attempt['id'])
             metadata = overview['experiment_metadata']
+            is_v2 = overview['config'].get('runner_id') == 'runner_final_core_v2'
+            if is_v2:
+                from runner_final.core_v2.metadata import build_metadata as build, validate_metadata as validate, dataset_label
+            else:
+                build, validate = build_metadata, validate_metadata
+                dataset_label = lambda d: f"AIME {d['year']}"
             missing = metadata is None
             if missing:
-                metadata = build_metadata(store.folder(attempt['id']), overview['config'])
+                metadata = build(store.folder(attempt['id']), overview['config'])
                 warnings.append(f"{attempt['id']}: metadata.json missing; settings derived from config, intervention unannotated.")
-            validate_metadata(metadata, attempt['id'])
-            dataset = metadata['provenance'].get('dataset') or recorded_dataset(overview['config'])
-            if metadata['controls']['dataset'] != f"AIME {dataset['year']}" or dataset['year'] != recorded_dataset(overview['config'])['year']:
+            validate(metadata, attempt['id'])
+            dataset = metadata['provenance'].get('dataset') or dataset_record(overview['config'])
+            if metadata['controls']['dataset'] != dataset_label(dataset) or dataset['id'] != dataset_record(overview['config'])['id']:
                 raise ValueError('Saved metadata dataset disagrees with recorded configuration')
             events = solve_events(overview)
             first_request = first_grader_request(store, attempt['id'], overview)
@@ -118,7 +124,7 @@ def build_results(store):
             floor = TARGET * cost if cost is not None and metadata['controls']['grader_serial'] else None
             if time is not None and floor is not None and time < floor - 0.01:
                 warnings.append(f"{attempt['id']}: recorded time is below its configured serial-grader floor; check timing evidence.")
-            rows.append({'id': attempt['id'], 'benchmark_year': dataset['year'],
+            rows.append({'id': attempt['id'], 'benchmark_id': dataset['id'], 'benchmark_year': dataset['year'],
                          'benchmark_role': dataset['role'], 'metadata': metadata, 'metadata_missing': missing,
                          'status': status, 'attempt_status': attempt['status'], 'solved': solved,
                          'error': summary.get('error'),
@@ -154,7 +160,7 @@ def build_results(store):
         matched = [key for key in sorted(current.keys() & control.keys())
                    if current[key] == control[key] and current[key] is not None]
         time, base = row['time_to_18_s'], ref['time_to_18_s']
-        same_benchmark = row['benchmark_year'] == ref['benchmark_year']
+        same_benchmark = row.get('benchmark_id') == ref.get('benchmark_id') and row['benchmark_year'] == ref['benchmark_year']
         if not same_benchmark:
             warnings.append(f"{row['id']}: reference uses a different AIME year; timing improvement not compared.")
         measurable = same_benchmark and time is not None and base is not None and base > 0

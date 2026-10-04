@@ -143,3 +143,66 @@ not the generation/grading policy. AIME 2024 warming remains opt-in.
 The lightweight AIME 2026 transfer protocol is [predeclared here](../configs/experiments/vibe-frozen-core-aime2026-lightweight-v1.json): one new seed, all 30 questions, target 18, the same improved-prompt preset and core.
 
 [The lightweight AIME 2026 transfer check](../runs/experiments/frozen-core-aime2026-lightweight-20261004T011005Z/README.md) reached 18 verified correct in **88.669s** with one wrong check, using the unchanged improved-prompt core. This is one predeclared seed, separate from the five-run 2025 headline statistics.
+
+## Frozen core v2: general mathematical answers and grader-fed questions
+
+Use `python -m runner_final.run_frozen_v2`. This is a separate immutable core;
+v1 sources, grader and manifest are unchanged. V2 retains 30×1 barrier scheduling,
+8K initial / 16K later requests, at most four requests per question including
+continuations, the serial grader toll, first-solved timing, and benchmark storage.
+No v2 GPU performance result has been measured yet.
+
+```sh
+# Start an owned v2 grader using the pinned Apex bundle (47 questions).
+~/.venvs/vllm/bin/python -m runner_final.run_frozen_v2 \
+  --preset runner_final/presets/apex_core_v2.json --seed 20261011
+
+# Let a fresh, already-running v2 grader choose the dataset.
+~/.venvs/vllm/bin/python -m runner_final.run_frozen_v2 \
+  --reuse-grader --grader-port 8077 --seed 20261011
+
+# Start an owned grader with any supported dataset specified in a YAML file.
+~/.venvs/vllm/bin/python -m runner_final.run_frozen_v2 \
+  --grader-config /absolute/path/to/grader.yaml --seed 20261011
+```
+
+The runner obtains question indices and statements from `GET /questions`, never
+reads a local answer key, validates the API/health fingerprints and saves a
+gold-free `questions.json` snapshot. `--questions 1 2` selects API-provided indices;
+the default selects every available question. `--reuse-grader` requires a fresh
+v2 service with zero completed queries and the configured toll (default 3s).
+It leaves that service running. `--reuse-server` independently attaches to an
+idle matching vLLM server. External grader audit logs stay with its owner;
+client verification and first-solved evidence are always saved.
+
+Start an external v2 grader with `GRADER_CONFIG=/path/to/grader.yaml
+python grader/server_v2.py`. Its dataset configuration supports `jsonl`, `csv`,
+`parquet` and `hf`, with `idx_field`, `problem_field` and `gold_field`. JSONL rows
+need an index, a nonempty statement and an exact answer. HF/parquet require their
+optional loader dependencies. The original grader has no `/questions` endpoint;
+use the v2 service for this entrypoint. The endpoint is ungraded and free; `/verify`
+uses the original FIFO worker and returns verdicts without gold answers.
+
+The [math prompt](prompts/math_core_v2.txt) requests prospective exact boxed
+expressions for the original requested quantity, including variables, signs,
+fractions and radicals. Extraction accepts a fully closed balanced `\boxed{...}`
+or `\fbox{...}`, including nested/escaped braces across chunks and exact-ID
+continuations, or a complete standalone `Answer:` line. It does not interpret
+unmarked prose or impose the AIME 0–999 restriction. Empty or over-4096-character
+candidates are ignored. Duplicates are suppressed per question using the trimmed
+expression string; algebraic equivalence remains the grader's job.
+
+[data/source_apex_shortlist.json](../data/source_apex_shortlist.json) pins the
+MathArena Apex revision and input hashes. Its prompt file excludes answers; its
+key is used only by the grader. Reproduce the bundle with
+`python scripts/import_apex_shortlist.py` (development dependencies: httpx,
+pyarrow). Apex #25 and #26 reuse AIME 2025 P14/P15, so this is not a fully unseen
+transfer set. Generalization claims must account for that overlap.
+
+[core_v2/manifest.json](core_v2/manifest.json) freezes the v2 runner, extraction,
+question API, service and runtime dependencies. Startup rejects drift. Prompt,
+preset, profile and dataset choices remain hashed configuration. Validate v2
+metadata with `python -m runner_final.core_v2.metadata ATTEMPT_DIRECTORY`; the
+legacy `src.attempt_metadata` CLI remains AIME-only. The attempt viewer uses the
+saved question snapshot for v2; the results API records the dataset identity,
+and Apex results are excluded from the AIME year charts.
