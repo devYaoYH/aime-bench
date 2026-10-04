@@ -4,6 +4,7 @@ import json, statistics, hashlib, collections, os
 os.environ.setdefault('MPLCONFIGDIR','/tmp/aime-validation-matplotlib')
 import matplotlib
 matplotlib.use('Agg')
+matplotlib.rcParams['svg.hashsalt']='frozen-core-prompt-five-seeds-20261004T005416Z'
 import matplotlib.pyplot as plt
 
 ROOT=Path(__file__).resolve().parents[3] if '/runs/experiments/' in str(Path(__file__).resolve()) else Path.cwd()
@@ -59,7 +60,7 @@ ax.set_title('Frozen core v1 · improved prompt · five declared seeds',loc='lef
 ax.spines[['top','right']].set_visible(False);ax.legend(loc='upper center',bbox_to_anchor=(0.5,-0.11),ncols=2,fontsize=8)
 ax.grid(axis='y',alpha=.16);ax.set_axisbelow(True)
 fig.subplots_adjust(left=0.10,right=0.985,top=0.9,bottom=0.24)
-for extension in ('png','svg'):fig.savefig(BATCH/f'five-seed-timing.{extension}',dpi=170)
+for extension in ('png','svg'):fig.savefig(BATCH/f'five-seed-timing.{extension}',dpi=170,metadata={'Date':None} if extension=='svg' else {})
 svg=BATCH/'five-seed-timing.svg'
 svg.write_text('\n'.join(line.rstrip() for line in svg.read_text().splitlines())+'\n')
 plt.close(fig)
