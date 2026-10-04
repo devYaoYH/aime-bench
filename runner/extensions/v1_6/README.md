@@ -131,3 +131,24 @@ and performs cheap arithmetic warmup before each trial, and starts a fresh grade
 All failures and unmet targets remain in the batch; there are no replacement
 seeds. Server startup and trace flush are outside solving latency.
 A 600-second per-trial wall safety timeout includes initialization.
+
+## BF16 with FlashInfer comparison
+
+For the unquantized `WeiboAI/VibeThinker-3B` weights on the prepared A100, use the
+separate committed `vllm-v1_6-bf16-flashinfer.yaml` profile. It retains 95% memory,
+64K context/output ceilings, BF16 KV and FlashInfer attention, while unquantized
+linear layers use automatic native dispatch with no Marlin override.
+
+```bash
+~/.venvs/vllm/bin/python -m runner.extensions.validation.bf16_v1_6 \
+  --seed 20261011 \
+  --grader-python /home/azureuser/aime-bench/grader/.venv/bin/python
+```
+
+This runs **one** attempt against the same-seed NVFP4 v1.6 control. It owns the
+server, resets prefix cache, runs the same cheap warmup, starts a fresh grader,
+and retains failures. It checks tokenizer/architecture/RoPE agreement and the
+unchanged v1.6 controls; inference math and native linear kernels differ. The
+quantization model card identifies the base model but does not pin its base
+revision, so this is a comparison of the downloaded deployments. One seed does
+not establish a repeatable quantization speedup.
