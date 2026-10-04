@@ -1,0 +1,26 @@
+{
+  "schema_version": 1,
+  "core_id": "runner_final_core_v1_1",
+  "prompt_file": "../prompts/adherence_v1.txt",
+  "argv": [
+    "--benchmark",
+    "--skip-benchmark-prewarm",
+    "--parallelism",
+    "30",
+    "--rollouts",
+    "1",
+    "--first-pass-max-tokens",
+    "65536",
+    "--max-tokens",
+    "65536",
+    "--max-attempts-per-question",
+    "4",
+    "--schedule",
+    "eager",
+    "--target-correct",
+    "18",
+    "--model-profile",
+    "vllm-v1_1-long64k.yaml",
+    "--no-continuation"
+  ]
+}
