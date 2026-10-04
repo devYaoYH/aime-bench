@@ -97,7 +97,7 @@ def analyze(batch):
     with (batch/'comparison.csv').open('w',newline='') as file:
         fields=['seed','core_v1_s','v1_5_s','difference_s','core_v1_requests','v1_5_requests',
                 'later_fresh_requests','continuation_requests','core_v1_wrong','v1_5_wrong']
-        writer=csv.DictWriter(file,fieldnames=fields);writer.writeheader()
+        writer=csv.DictWriter(file,fieldnames=fields,lineterminator='\n');writer.writeheader()
         for r in audited:
             writer.writerow(dict(zip(fields,[r['sampling_seed'],r['control']['time_to_target_s'],
                 r['recorded_time_to_target_s'],r['recorded_time_to_target_s']-r['control']['time_to_target_s'] if r['recorded_time_to_target_s'] is not None else None,
