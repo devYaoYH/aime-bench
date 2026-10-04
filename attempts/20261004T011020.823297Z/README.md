@@ -1,0 +1,7 @@
+# Frozen-core AIME 2026 transfer
+
+Produced by `python -m runner_final.run_frozen --preset runner_final/presets/prompt_adherence.json --benchmark-year 2026 --benchmark-role generalization --seed 20261021` in remote checkout `/home/azureuser/aime-bench-aime2026-6f253ba`, source commit `6f253ba25dd45903186da0932e359ae3c6b40510` (clean).
+
+Part of the [predeclared lightweight transfer experiment](../../runs/experiments/frozen-core-aime2026-lightweight-20261004T011005Z/config.json): one seed, all 30 questions, stopping at 18 distinct verified correct. The frozen core v1 and improved prompt retain the AIME 2025 batch's NVFP4/Marlin/FlashInfer profile, 30×1 barrier, 8K initial generation, 16K continuations, four-request cap, cheap warmup and benchmark mode. This run starts its own inference server. See [metadata.json](metadata.json) for controls, dataset hashes and comparison limitations.
+
+The completed [summary](summary.json) records 18 verified correct in **88.669s** (eighteenth distinct positive verdict), with settlement at 88.729s. Official timing starts at `2026-10-04T01:11:26.683+00:00` after warmup; initialization begins at `2026-10-04T01:10:20.823+00:00`. Saved requests, responses, exact token records and verification events are included; full SSE streams and service logs remain remote. This is one transfer check, not a replication series or a full 30-question accuracy measurement.

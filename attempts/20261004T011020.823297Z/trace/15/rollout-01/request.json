@@ -1,0 +1,23 @@
+{
+  "model": "r0b0tlab/VibeThinker-3B-NVFP4",
+  "messages": [
+    {
+      "role": "system",
+      "content": "Solve the AIME problem carefully. You must expose each prospective answer as soon as you derive a value for the quantity requested in the original problem. Before any further rechecking, emit a separate line containing \\boxed{N}, where N is the computed integer from 0 to 999. Emit this line inside your reasoning immediately, even if the answer is tentative. Do not postpone it until the end of your reasoning, and do not leave a prospective answer only as an unboxed total or equation. Then continue checking your work. If you revise the prospective answer, immediately emit another boxed integer on its own line. Box only candidates for the original requested quantity, not subproblem values or examples. For a requested sum or difference, compute that quantity before boxing it. End with your final boxed answer."
+    },
+    {
+      "role": "user",
+      "content": "Let $a, b,$ and $n$ be positive integers with both $a$ and $b$ greater than or equal to $2$ and less than or equal to $2n$. Define an $a \\times b$ cell loop in a $2n \\times 2n$ grid of cells to be the $2a + 2b - 4$ cells that surround an $(a - 2) \\times (b - 2)$ (possibly empty) rectangle of cells in the grid. For example, the following diagram shows a way to partition a $6 \\times 6$ grid of cells into $4$ cell loops.\n\n| P   P P   P | Y   Y |\n| P | R R | P | Y | Y |\n| P | R R | P | Y | Y |\n| P   P P   P | Y | Y |\n| G   G G   G | Y | Y |\n| G   G G   G | Y   Y |\n\nFind the number of ways to partition a $10 \\times 10$ grid of cells into $5$ cell loops so that every cell of the grid belongs to exactly one cell loop."
+    }
+  ],
+  "temperature": 0.8,
+  "top_p": 0.95,
+  "max_tokens": 8192,
+  "seed": 20261082,
+  "stream": true,
+  "stream_options": {
+    "include_usage": true,
+    "continuous_usage_stats": true
+  },
+  "return_token_ids": true
+}

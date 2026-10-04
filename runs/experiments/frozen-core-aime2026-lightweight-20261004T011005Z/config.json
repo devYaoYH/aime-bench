@@ -1,0 +1,36 @@
+{
+  "protocol": {
+    "schema_version": 1,
+    "runner": "runner_final.run_frozen",
+    "preset": "runner_final/presets/prompt_adherence.json",
+    "argv": [
+      "--benchmark-year",
+      "2026",
+      "--benchmark-role",
+      "generalization",
+      "--seed",
+      "20261021"
+    ],
+    "seed": 20261021,
+    "core_manifest_sha256": "35d6a06315a0e45441b3ac49bd468a2b94553fb172f378bfebc7ea8cc044070f",
+    "system_prompt_sha256": "26b591c39bcf55f4c94f5359dcc90d3c5626a524478eee1c5ce44b5038162364",
+    "dataset_provenance": {
+      "id": "aime_2026",
+      "year": 2026,
+      "role": "generalization",
+      "source": "https://huggingface.co/datasets/MathArena/aime_2026",
+      "revision": "d2de22f3c656b4f56cf8981212186377d1e23bc3",
+      "split": "train",
+      "rows": 30,
+      "prompt_path": "data/aime_2026_problems.jsonl",
+      "prompt_sha256": "1f8b925ff0faba7a14ed8bb8764f086a6368828b9b2722fa0db6115e59b56f40",
+      "grader_path": "grader/data/aime_2026.jsonl",
+      "grader_sha256": "ed46fd56f94095856364286da3139d051907c494bdea86476059f5067d225c21",
+      "inferred_from_legacy_runner": false
+    },
+    "scope": "One predeclared seed, all 30 AIME 2026 questions, stop at 18 distinct verified correct. Keep failures/unmet target. No retuning or replacement seed. Same frozen core/improved-prompt controls as the AIME 2025 five-seed batch. Cheap warmup only; benchmark mode; freshly started owned server. Lightweight transfer check, not repeated generalization validation or full 30-question accuracy."
+  },
+  "source_commit": "6f253ba25dd45903186da0932e359ae3c6b40510",
+  "worktree": "/home/azureuser/aime-bench-aime2026-6f253ba",
+  "launched_at_utc": "2026-10-04T01:10:16.003127+00:00"
+}

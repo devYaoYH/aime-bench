@@ -1,0 +1,164 @@
+{
+  "problem_idx": 19,
+  "started_at_utc": "2026-10-04T01:11:26.688+00:00",
+  "finished_at_utc": "2026-10-04T01:12:09.087+00:00",
+  "end_to_end_latency_s": 42.3995189180132,
+  "status": "solved",
+  "winner": {
+    "answer": 279,
+    "part": "content",
+    "kind": "literal_prose",
+    "end": 15439,
+    "line": "Thus for any B<10, B^2 - 100 <0 and B-10 <0. So the only solution for a,b digits is a=b=0. So no 2-digit numbers with B<10. For three-digit numbers, a must be 0, impossible. So indeed no solutions for numbers without a digit 9. So the answer is 279.",
+    "candidate": "279",
+    "rollout": 1,
+    "observed_at_utc": "2026-10-04T01:12:00.083+00:00",
+    "question_elapsed_s": 33.394860589993186,
+    "verification_started_at_utc": "2026-10-04T01:12:00.083+00:00",
+    "round": 1,
+    "candidate_queue_wait_s": 0.00030948000494390726,
+    "result": {
+      "dataset": {
+        "format": "jsonl",
+        "gold_field": "answer",
+        "id": "aime_2026",
+        "idx_field": "problem_idx",
+        "revision": "d2de22f3c656b4f56cf8981212186377d1e23bc3",
+        "source": "/home/azureuser/aime-bench-aime2026-6f253ba/grader/data/aime_2026.jsonl",
+        "year": 2026,
+        "sha256": "ed46fd56f94095856364286da3139d051907c494bdea86476059f5067d225c21"
+      },
+      "query_id": "20261004T011020.823297Z-q19-a279",
+      "seq": 12,
+      "agent_id": "20261004T011020.823297Z-q19-r1",
+      "index": 19,
+      "candidate": "279",
+      "verdict": true,
+      "queue_ahead_at_submit": 1,
+      "submitted_at": "2026-10-04T01:12:00.088500Z",
+      "picked_at": "2026-10-04T01:12:06.082610Z",
+      "answered_at": "2026-10-04T01:12:09.082736Z",
+      "queue_wait_s": 5.994,
+      "toll_s": 3.0,
+      "latency_s": 8.994
+    },
+    "verification_finished_at_utc": "2026-10-04T01:12:09.084+00:00",
+    "verification_latency_s": 9.000943607010413
+  },
+  "error": null,
+  "unique_candidates": 1,
+  "candidate_answers": [
+    "279"
+  ],
+  "rollouts": [
+    {
+      "rollout": 1,
+      "round": 1,
+      "started_at_utc": "2026-10-04T01:11:26.712+00:00",
+      "start_monotonic_s": 280534.775247865,
+      "ttft_s": 0.22219480300555006,
+      "last_token_s": 42.36724164901534,
+      "finish_reason": null,
+      "status": "cancelled",
+      "done_received": false,
+      "usage": {
+        "prompt_tokens": 301,
+        "total_tokens": 6566,
+        "completion_tokens": 6265,
+        "completion_tokens_details": null
+      },
+      "endpoint": "/v1/chat/completions",
+      "continuation_of_rollout": null,
+      "requested_max_tokens": 8192,
+      "http_status": 200,
+      "headers_received_s": 0.07561782101402059,
+      "generation_finished_at_utc": "2026-10-04T01:12:09.084+00:00",
+      "generation_end_monotonic_s": 280577.147373046,
+      "generation_latency_s": 42.37212518102024,
+      "generation_censored": true,
+      "generated_token_ids_count": 6265,
+      "prompt_token_ids_count": 301,
+      "cached_prompt_tokens": null,
+      "prefix_cache_hit_fraction": null,
+      "overhead": {
+        "enabled": false,
+        "timings": {},
+        "counters": {},
+        "maxima": {}
+      },
+      "finished_at_utc": "2026-10-04T01:12:09.087+00:00",
+      "end_to_end_latency_s": 42.37506008101627,
+      "end_to_end_scope": "rollout start through question verification/cancellation settlement",
+      "gpu": null
+    }
+  ],
+  "round": 1,
+  "first_solved": {
+    "problem_idx": 19,
+    "round": 1,
+    "rollout": 1,
+    "candidate": "279",
+    "first_solved_at_utc": "2026-10-04T01:12:09.084+00:00",
+    "first_solved_elapsed_s": 42.40049905498745,
+    "grader_answered_at_utc": "2026-10-04T01:12:09.082736Z",
+    "grader_query_id": "20261004T011020.823297Z-q19-a279"
+  },
+  "overhead": {
+    "enabled": false,
+    "timings": {},
+    "counters": {},
+    "maxima": {}
+  },
+  "rounds": [
+    {
+      "round": 1,
+      "status": "solved",
+      "started_at_utc": "2026-10-04T01:11:26.688+00:00",
+      "finished_at_utc": "2026-10-04T01:12:09.087+00:00",
+      "end_to_end_latency_s": 42.3995189180132,
+      "winner": {
+        "answer": 279,
+        "part": "content",
+        "kind": "literal_prose",
+        "end": 15439,
+        "line": "Thus for any B<10, B^2 - 100 <0 and B-10 <0. So the only solution for a,b digits is a=b=0. So no 2-digit numbers with B<10. For three-digit numbers, a must be 0, impossible. So indeed no solutions for numbers without a digit 9. So the answer is 279.",
+        "candidate": "279",
+        "rollout": 1,
+        "observed_at_utc": "2026-10-04T01:12:00.083+00:00",
+        "question_elapsed_s": 33.394860589993186,
+        "verification_started_at_utc": "2026-10-04T01:12:00.083+00:00",
+        "round": 1,
+        "candidate_queue_wait_s": 0.00030948000494390726,
+        "result": {
+          "dataset": {
+            "format": "jsonl",
+            "gold_field": "answer",
+            "id": "aime_2026",
+            "idx_field": "problem_idx",
+            "revision": "d2de22f3c656b4f56cf8981212186377d1e23bc3",
+            "source": "/home/azureuser/aime-bench-aime2026-6f253ba/grader/data/aime_2026.jsonl",
+            "year": 2026,
+            "sha256": "ed46fd56f94095856364286da3139d051907c494bdea86476059f5067d225c21"
+          },
+          "query_id": "20261004T011020.823297Z-q19-a279",
+          "seq": 12,
+          "agent_id": "20261004T011020.823297Z-q19-r1",
+          "index": 19,
+          "candidate": "279",
+          "verdict": true,
+          "queue_ahead_at_submit": 1,
+          "submitted_at": "2026-10-04T01:12:00.088500Z",
+          "picked_at": "2026-10-04T01:12:06.082610Z",
+          "answered_at": "2026-10-04T01:12:09.082736Z",
+          "queue_wait_s": 5.994,
+          "toll_s": 3.0,
+          "latency_s": 8.994
+        },
+        "verification_finished_at_utc": "2026-10-04T01:12:09.084+00:00",
+        "verification_latency_s": 9.000943607010413
+      },
+      "error": null
+    }
+  ],
+  "question_start_monotonic_s": 280534.750789028
+}
