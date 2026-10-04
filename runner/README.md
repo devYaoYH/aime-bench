@@ -49,6 +49,60 @@ groups are shut down on completion or graceful interruption. `--reuse-server`
 attaches to an existing matching server and leaves it running; use a dedicated,
 idle server for comparable benchmarks. Run long jobs in `tmux`.
 
+## Tuning knobs
+
+Explicit CLI flags override the selected preset. The default
+`runner/presets/prompt_adherence.json` selects AIME 2025, 30×1, an 8K first request,
+16K subsequent requests, a four-request ceiling per question, and target18.
+
+| Flag | Default | Controls |
+| --- | --- | --- |
+| `--parallelism` | 30 | Concurrent question groups |
+| `--rollouts` | 1 | Concurrent samples per question group |
+| `--first-pass-max-tokens` | 8192 | Output budget per initial request |
+| `--max-tokens` | 16384 | Additional output budget per subsequent request, clipped to remaining context |
+| `--max-attempts-per-question` | 4 | Total generation requests, including continuations; v1 permits at most four |
+| `--max-rounds` | 4 | Maximum number of coverage rounds |
+| `--schedule` | `barrier` | Wait for a round to finish, or use `eager` retries |
+| `--no-continuation` | Off | Start fresh samples instead of continuing capped trajectories |
+| `--temperature`, `--top-p` | 0.8, 0.95 | Sampling |
+| `--seed` | 20261003 | Base seed for recorded per-request seed assignment |
+| `--target-correct` | 18 | Stop after this many distinct correct verdicts |
+| `--questions` | All | Select question indices from the configured dataset |
+| `--system-prompt-file` | Improved v1 prompt | Replace the system prompt |
+| `--preset` | `runner/presets/prompt_adherence.json` | Load a reusable configuration; explicit flags take precedence |
+| `--model` | `r0b0tlab/VibeThinker-3B-NVFP4` | Requested served model ID |
+| `--models-dir`, `--model-profile` | `~/models`, `vllm-flashinfer.yaml` | Locate the model launch profile |
+| `--grader-cost` | 3.0 | Seconds charged per verification; keep fixed when comparing runs |
+| `--question-timeout` | 1800 | Timeout in seconds for each question group's generation and verification |
+| `--profile` | Off | Enable optional CPU, engine and GPU observations; retain buffered trace writes |
+| `--benchmark` | On through the preset | Disable optional profiling and buffer required traces until official timing ends |
+
+For example, configure two initial samples with 4K each:
+
+```bash
+python -m runner \
+  --parallelism 30 --rollouts 2 \
+  --first-pass-max-tokens 4096 --max-tokens 16384 \
+  --seed 20261011
+```
+
+This is a configuration example, not a measured speedup. Initial concurrency is
+approximately `parallelism × rollouts`. Every sample consumes the per-question
+request budget: **four initial rollouts leave no continuation budget**. With two
+initial rollouts and the four-request limit, at most two further requests remain.
+
+GPU memory utilization, total context length, and server-wide generation limits
+are configured in the **vLLM YAML profile**, not these CLI token flags. That profile
+is resolved at `MODELS_DIR/MODEL/MODEL_PROFILE`. Request budgets must fit its
+generation ceiling; exact continuations are also clipped to remaining total
+context. The reference profile uses 95% GPU memory and 64K total context.
+
+Use `--vllm-python`, `--vllm-binary`, and `--grader-python` for other Python/runtime
+locations; `--vllm-port` and `--grader-port` change service ports. Run
+`python -m runner --help` for all options, or `python -m runner --version v2.1
+--help` for that extension's flags. Extensions have their own defaults and presets.
+
 ## Policy and timing
 
 | Default | Behavior |
@@ -93,8 +147,12 @@ plus at most three further requests. Grader checks have a separate, uncapped bud
 
 First-solved timestamps are recorded immediately on a positive grader response,
 before stream cleanup. `time_to_target_s` is the target-th distinct first-solved
-time. Official latency also includes cancellation settlement. Service cleanup and
-the final buffered trace flush are outside official timing. A completed attempt
+time. Its monotonic start is after questions are loaded, services are ready,
+inference warmup has finished, and configuration is saved, immediately before
+scheduling solving requests. `--benchmark` changes profiling/storage, not dataset
+loading order or the timer boundary. Official latency also includes cancellation
+settlement. Service cleanup and the final buffered trace flush are outside official
+timing. A completed attempt
 can have `target_reached: false`; inspect both fields when comparing runs.
 
 ## Other datasets
@@ -104,8 +162,44 @@ Built-in datasets use `--benchmark-year 2024`, `2025` or `2026`; the default is
 in custom sets can be any unique positive integers; set the solve target to fit
 the selected count and set concurrency to fit the intended workload.
 
+```bash
+# Another built-in year, with the same policy.
+python -m runner --benchmark-year 2026 --seed 20261021
+
+# A small subset of the default AIME 2025 dataset.
+python -m runner --questions 1 2 3 --target-correct 2 --parallelism 3
+```
+
 For another integer-answer dataset, configure the grader rather than embedding
-keys in solver code. See the complete two-question example:
+keys in solver code. Create a JSONL file such as:
+
+```jsonl
+{"problem_idx":4,"problem":"What is 12 multiplied by 13?","answer":156}
+{"problem_idx":90,"problem":"Sum the integers from 1 through 10.","answer":55}
+```
+
+Then point a grader YAML at that file:
+
+```yaml
+dataset:
+  source: /absolute/path/questions.jsonl
+  format: jsonl
+  idx_field: problem_idx
+  problem_field: problem
+  gold_field: answer
+  id: my_dataset
+```
+
+Launch with a suitable integer-answer prompt and a target that fits the dataset:
+
+```bash
+python -m runner \
+  --grader-config /absolute/path/grader.yaml \
+  --system-prompt-file runner/examples/integer_prompt.txt \
+  --parallelism 2 --target-correct 2
+```
+
+The complete two-question example is also bundled in the repository:
 
 ```bash
 ~/.venvs/vllm/bin/python -m runner \
@@ -118,7 +212,9 @@ The grader YAML selects a JSONL file with `problem_idx`, `problem`, and `answer`
 fields. Its `source` path is relative to `runner/grader/`, or absolute; `idx_field`,
 `problem_field`, and `gold_field` can map other column names. JSONL needs only the
 bundled grader requirements. Optional CSV, Parquet, and Hugging Face inputs use
-the grader's documented loaders and additional dependencies.
+the grader's documented loaders; Parquet and Hugging Face require additional
+dependencies. The runner controls the owned grader's host, port, toll and audit
+destination through CLI configuration; the YAML selects the dataset.
 
 Canonical v1 reads custom question statements from the gold-free `GET /questions`
 endpoint and saves their fingerprint and snapshot. Owned grader configuration
@@ -130,10 +226,24 @@ repository-relative prompt/key paths and hashes; see [the dataset adapter](lib/d
 toll. It remains running afterward. Its audit log belongs to that external service;
 the client still saves verification timestamps in the attempt.
 
-**V1 extracts only integers from 0 through 999.** Use a v2 extension for fractions,
-symbolic expressions, sets, and other mathematical answers. Supply a suitable
+**V1 extracts only integers from 0 through 999 inclusive; 1000 is outside the
+range.** Use a v2 extension for fractions, symbolic expressions, sets, and other
+mathematical answers. Supply a suitable
 system prompt for custom datasets. Correctness always comes from the grader;
 built-in AIME answer fields are checked only during startup provenance validation.
+
+For broader mathematical answers, explicitly select an extension, such as v2.1
+with CPU syntax validation and expression-key deduplication:
+
+```bash
+python -m runner --version v2.1 \
+  --grader-config /absolute/path/grader.yaml \
+  --target-correct 18
+```
+
+That example assumes at least 18 selected questions. V2.1 and later need their
+pinned expression-parser requirements; see [version differences](extensions/README.md).
+V1.1 and v2.3 additionally use distinct long-context model profiles.
 
 ## Configuration, profiling, and evidence
 

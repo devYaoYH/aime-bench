@@ -32,104 +32,67 @@ The [token and tail analysis](runs/analyses/core-v1-five-seeds-answer-tokens/REA
 shows exact per-question tokens and verification slots 17/18 for the selected
 five runs. An 8K cumulative cutoff would discard eight of their 90 recorded wins.
 
-## Run the measured core v1
+## Start the runner
 
-On the provided `callosum` node, use a tested checkout, an available GPU and free
-ports 8000/8077. Run from the repository root in a durable session:
+On a prepared Linux GPU machine, run from the repository root using the inference
+Python environment. On the supplied `callosum` node:
 
 ```bash
 ssh callosum
 cd /home/azureuser/aime-bench
 git pull --ff-only
 nvidia-smi
-tmux new -s aime-speedrun
 ~/.venvs/vllm/bin/python -m runner --seed 20261011
 ```
 
-See [complete setup, custom datasets, package layout and promotion](runner/README.md).
-The historical frozen v1 remains available through the `runner_final` compatibility
-alias; the recorded GPU results retain their original source identity.
+The default selects canonical **v1**, the improved prompt, and AIME 2025. It starts
+vLLM and the grader, warms inference, and runs 30×1 with an 8K initial request,
+16K subsequent requests, at most four requests per question, and a target of
+18 correct. Results are saved under `attempts/<timestamp>/`; inspect
+`summary.json` for `target_reached` and `time_to_target_s`. An available GPU,
+model weights/profile, and runner/grader Python environments are prerequisites.
+See [installation and detailed usage](runner/README.md#install-and-launch).
 
-The node must already have vLLM in `~/.venvs/vllm`, the model weights and matching
-profile at `~/models/r0b0tlab/VibeThinker-3B-NVFP4/vllm-flashinfer.yaml`, and a grader
-Python environment. The [reference profile](runner/profiles/vllm-flashinfer.yaml)
-is versioned; provisioning details are in the node's `~/models/README.md`.
-Create the grader environment once if needed:
-
-```bash
-~/.venvs/vllm/bin/python -m pip install -r runner/requirements.txt
-python3 -m venv runner/grader/.venv
-runner/grader/.venv/bin/pip install -r runner/grader/requirements-local.txt
-```
-
-| Measured setting | Value |
-| --- | --- |
-| Model / inference | VibeThinker-3B NVFP4, Marlin weights, BF16 activations/KV, FlashInfer attention |
-| GPU allocation / total context | 95% / 65,536 tokens including the prompt |
-| First round | All 30 questions, one rollout each, at most 8,192 generated tokens |
-| Later rounds | One request per unsolved question; up to 16,384 additional output tokens |
-| Per-question budget | Four generation requests total, including the initial request and continuations |
-| Scheduling / concurrency | Round barrier; at most one active generation per question and 30 overall |
-| Sampling | Temperature 0.8, top-p 0.95, recorded per-request seeds |
-| Warmup | 30 requests for `Compute 1 + 1.`, each with 32 output tokens |
-| Verification / stopping | Global FIFO grader, 3s per check; stop at 18 distinct positive verdicts |
-
-### How an attempt executes
-
-```mermaid
-flowchart TD
-    A["Setup: launch vLLM and grader"] --> B["Warmup: 30 arithmetic requests"]
-    B --> C["Start clock: 30 x 1 rollouts, 8K output cap"]
-    C --> D["Generate and verify in parallel; wait for the round to finish"]
-    D -->|18 correct at any time| S["Stop clock; cancel remaining work; save evidence"]
-    D -->|Round finished below 18| E{"Unsolved questions with request budget?"}
-    E -->|Yes| R["Next round: one request per unsolved question; continue capped traces or start fresh"]
-    R --> D
-    E -->|No| U["Save evidence; report target unmet"]
-```
-
-During every round, the parser submits new prospective integer answers while
-generation continues. A wrong verdict leaves generation running; a correct
-verdict banks the question and cancels its generation. The round finishes when
-all its questions have finished generation and pending verification, unless the
-18th positive verdict ends the run early.
-
-In the next round, an unsolved trajectory that hit its output cap resumes from
-its exact prompt and output token IDs, subject to the remaining 64K context.
-A naturally completed trajectory or one with exhausted context starts a fresh
-rollout instead. Each question gets **one continuation or one fresh rollout** in
-that round. The measured preset keeps one active generation per question; it
-never expands to 60 streams. Four requests means four total generation requests,
-including continuations, rather than four retries after the first request.
-Grader checks have a separate budget: each distinct submitted candidate costs 3s.
-
-### Repeat, inspect, and transfer
+To select another built-in AIME year:
 
 ```bash
-# Repeat the five predeclared v1 seeds; retain every outcome.
-~/.venvs/vllm/bin/python -m runner_final.validate_frozen
-
-# AIME 2026 with the same v1 preset.
-~/.venvs/vllm/bin/python -m runner \
-  --preset runner/presets/prompt_adherence.json \
-  --benchmark-year 2026 --seed 20261021
+python -m runner --benchmark-year 2026 --seed 20261021
 ```
 
-Use `--help` to inspect arguments. `python -m runner` defaults to the improved
-`prompt_adherence` preset. The archived `runner_final.run_frozen` command still
-defaults to the original-prompt baseline control. `--reuse-server`
-attaches to an idle matching vLLM server and leaves it running; the default owns
-and cleans up its inference and grader services.
+For a custom JSONL dataset containing `problem_idx`, `problem`, and `answer`,
+point a grader YAML at your file:
 
-Each attempt saves settings and hashes in `config.json`, the result in
-`summary.json`, first-solved events in `solved.jsonl`, and per-question
-requests/responses, exact tokens and verification records under `trace/`.
-**`time_to_target_s`** ends at receipt of the eighteenth distinct positive verdict;
-`official_latency_s` additionally includes cancellation settlement. Setup,
-warmup, final trace writes and service cleanup are recorded separately.
-The measured preset buffers required traces until timing ends and disables
-optional profiling; GPU/engine telemetry is therefore unavailable in these runs.
-See the [runner contract](runner/README.md) for configuration and evidence.
+```yaml
+dataset:
+  source: /absolute/path/questions.jsonl
+  format: jsonl
+  idx_field: problem_idx
+  problem_field: problem
+  gold_field: answer
+  id: my_dataset
+```
+
+Then launch with a target that fits the selected question count. This example
+assumes two questions; indices can be any unique positive integers:
+
+```bash
+python -m runner \
+  --grader-config /absolute/path/grader.yaml \
+  --system-prompt-file runner/examples/integer_prompt.txt \
+  --parallelism 2 --target-correct 2
+```
+
+The grader loads the keys; the solver receives only question indices and
+statements. **Current canonical v1 extracts integer answers from 0 to 999
+inclusive; 1000, negative integers, fractions and symbolic expressions are outside
+its extraction contract.** For broader mathematical answers, explicitly select a
+[v2 extension](runner/extensions/README.md), for example `--version v2.1`.
+
+See [dataset configuration](runner/README.md#other-datasets),
+[tuning knobs](runner/README.md#tuning-knobs), and the
+[execution diagram and timing](runner/README.md#policy-and-timing) for the full
+runner guide. Recorded GPU results retain their original frozen source identities;
+the historical commands remain available through the `runner_final` alias.
 
 ## Browse the evidence locally
 
