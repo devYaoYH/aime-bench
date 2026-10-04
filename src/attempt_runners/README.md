@@ -21,6 +21,7 @@ The selected submission remains core v1.
 | Runner | Entry point | Behavior |
 | --- | --- | --- |
 | [Canonical](../attempt.py) | `python -m src.attempt` | Original streaming candidate extraction, fan-out, and coverage/continuation modes |
+| [Full naive pass@4 v1](naive_pass4_full_v1.py) | `python -m src.attempt_runners.naive_pass4_full_v1` | All 120 samples finish naturally or at their cap; final-only extraction; deduplicated grader verdicts score every sample; no target or sibling cancellation |
 | [Naive pass@4 v1](naive_pass4_v1.py) | `python -m src.attempt_runners.naive_pass4_v1` | One batch, 30 questions × four samples; naturally completed final boxes only; stop at 18 correct |
 
 The naive runner is isolated from the canonical module. Its service, warmup,
