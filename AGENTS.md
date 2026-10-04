@@ -17,7 +17,7 @@
   `/home/azureuser/models/<organization>/<model>/vllm.yaml`. Read that profile and
   `~/models/README.md` rather than inventing launch settings. vLLM uses
   `~/.venvs/vllm/bin/python` and `~/.venvs/vllm/bin/vllm`.
-- Use `python -m src.attempt --model <organization>/<model>` for canonical
+- Use `python -m runner --model <organization>/<model>` for canonical
   attempts. It manages warmup, vLLM, the vendored grader, traces, and telemetry.
   `--reuse-server` deliberately attaches to an idle matching server; it must not
   stop that server. The default starts its own server and rejects occupied ports.
@@ -51,9 +51,11 @@ support; report those limitations rather than modifying fixtures to hide them.
 
 ## Coverage experiments
 
-- Keep the canonical `src/attempt.py` policy unchanged when adding experimental
-  baselines. Put independently runnable, versioned policies and their tests in
-  `src/attempt_runners/` and update its README catalogue. Use the isolated
+- Keep historical `src/attempt.py` and frozen policies unchanged when adding experimental
+  baselines. Put new independently runnable, versioned policies in
+  `runner/extensions/<version>/`, reuse `runner/lib` where suitable, and update
+  its catalogue and focused tests. Existing `src/attempt_runners` policies are
+  historical. Use the isolated
   `src.attempt_runners.naive_pass4_v1` entry point for the naive final-only baseline.
 - Record the runner version in new experimental artifacts. Preserve the original
   source commit and command in historical attempt records after reorganizing code.
@@ -69,12 +71,20 @@ support; report those limitations rather than modifying fixtures to hide them.
 
 ## Speedrun sweeps and overhead
 
-- The selected final speedrun entrypoint is `python -m runner_final.run_frozen`.
+- The canonical v1 entrypoint is `python -m runner`; usage is in `runner/README.md`.
+  Its refactored source is pinned by `runner/manifest.json`. Versioned policies
+  live under `runner/extensions/`; `runner_final` aliases `runner/extensions/variants`
+  for historical commands/manifests. Keep archived bytes and identities unchanged.
+  New extensions reuse `runner/lib`; promotion requires an explicit decision,
+  matched validation/evidence, a canonical registry update and documentation.
+  The original measured v1 entrypoint remains `python -m runner_final.run_frozen`.
   `runner_final/core_v1/manifest.json` pins the core and repository-owned runtime
   dependencies; startup rejects hash drift. Do not modify v1 behavior or simply
   refresh its manifest. Create a new core version for behavior changes. Keep
-  prompts and hyperparameter presets under `runner_final/prompts/` and
-  `runner_final/presets/`; record resolved inputs and their hashes. The baseline
+  canonical prompts and hyperparameter presets under `runner/prompts/` and
+  `runner/presets/`; keep version-specific configuration under
+  `runner/extensions/<version>/`. Preserve the archived prompts/presets used by
+  existing measurements. Record resolved inputs and their hashes. The baseline
   is 30×1 barrier, initial 8K, four requests including continuations, cheap warmup
   and benchmark mode. The improved prompt has five scored trials: 5/5 reached 18, median
   77.277s, range 62.783–82.492s on one server. Use these batch statistics as the

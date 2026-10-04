@@ -2,7 +2,9 @@
 
 Solve AIME problems with a locally hosted open-source model and minimize time to
 **18 distinct grader-confirmed answers** on one A100 80GB. The final submission
-uses **frozen core v1 with `prompt_adherence.json`**.
+uses **core v1 with `prompt_adherence.json`**. The canonical package is
+[`runner/`](runner/README.md); versioned policies live under
+[`runner/extensions/`](runner/extensions/README.md).
 
 | Evaluation | Time to 18 | Evidence |
 | --- | --- | --- |
@@ -41,19 +43,23 @@ cd /home/azureuser/aime-bench
 git pull --ff-only
 nvidia-smi
 tmux new -s aime-speedrun
-~/.venvs/vllm/bin/python -m runner_final.run_frozen \
-  --preset runner_final/presets/prompt_adherence.json --seed 20261011
+~/.venvs/vllm/bin/python -m runner --seed 20261011
 ```
+
+See [complete setup, custom datasets, package layout and promotion](runner/README.md).
+The historical frozen v1 remains available through the `runner_final` compatibility
+alias; the recorded GPU results retain their original source identity.
 
 The node must already have vLLM in `~/.venvs/vllm`, the model weights and matching
 profile at `~/models/r0b0tlab/VibeThinker-3B-NVFP4/vllm-flashinfer.yaml`, and a grader
-Python environment. The [reference profile](runner_final/vllm-flashinfer.yaml)
+Python environment. The [reference profile](runner/profiles/vllm-flashinfer.yaml)
 is versioned; provisioning details are in the node's `~/models/README.md`.
 Create the grader environment once if needed:
 
 ```bash
-python3 -m venv grader/.venv
-grader/.venv/bin/pip install -r grader/requirements-local.txt
+~/.venvs/vllm/bin/python -m pip install -r runner/requirements.txt
+python3 -m venv runner/grader/.venv
+runner/grader/.venv/bin/pip install -r runner/grader/requirements-local.txt
 ```
 
 | Measured setting | Value |
@@ -104,13 +110,14 @@ Grader checks have a separate budget: each distinct submitted candidate costs 3s
 ~/.venvs/vllm/bin/python -m runner_final.validate_frozen
 
 # AIME 2026 with the same v1 preset.
-~/.venvs/vllm/bin/python -m runner_final.run_frozen \
-  --preset runner_final/presets/prompt_adherence.json \
+~/.venvs/vllm/bin/python -m runner \
+  --preset runner/presets/prompt_adherence.json \
   --benchmark-year 2026 --seed 20261021
 ```
 
-Use `--help` to inspect arguments. The explicit preset matters: `run_frozen`
-without `--preset` selects the original-prompt baseline control. `--reuse-server`
+Use `--help` to inspect arguments. `python -m runner` defaults to the improved
+`prompt_adherence` preset. The archived `runner_final.run_frozen` command still
+defaults to the original-prompt baseline control. `--reuse-server`
 attaches to an idle matching vLLM server and leaves it running; the default owns
 and cleans up its inference and grader services.
 
@@ -122,7 +129,7 @@ requests/responses, exact tokens and verification records under `trace/`.
 warmup, final trace writes and service cleanup are recorded separately.
 The measured preset buffers required traces until timing ends and disables
 optional profiling; GPU/engine telemetry is therefore unavailable in these runs.
-See the [runner contract](runner_final/README.md) for configuration and evidence.
+See the [runner contract](runner/README.md) for configuration and evidence.
 
 ## Browse the evidence locally
 
@@ -143,7 +150,7 @@ OpenRouter is used for archived exploration, and is unnecessary for the final ru
 
 ## General-answer extension and experiment archive
 
-[Core v2.1](runner_final/core_v2_1/README.md) adds CPU syntax validation and
+[Core v2.1](runner/extensions/v2_1/README.md) adds CPU syntax validation and
 expression-key deduplication to v2, preserving its prompt and scheduling.
 Its offline replay retained all 90 previously correct candidates and rejected
 56/62 wrong submissions. One [benchmark-mode trial on each dataset](runs/experiments/core-v2_1-benchmarks-20261004T161700Z/README.md)
@@ -154,7 +161,7 @@ These are single-trial measurements, not repeatability statistics.
 Core v2 adds arbitrary mathematical expressions and grader-provided question
 statements. It reached 18 in all five AIME 2025 trials but was slower in every
 same-seed comparison. Its broader parser admitted prompt placeholders, causing
-54 of 62 wrong checks. The [v2 contract and commands](runner_final/README.md#frozen-core-v2-general-mathematical-answers-and-grader-fed-questions)
+54 of 62 wrong checks. The [v2 contract and commands](runner/extensions/variants/README.md#frozen-core-v2-general-mathematical-answers-and-grader-fed-questions)
 cover custom datasets and the Apex shortlist. Both frozen cores retain their
 recorded behavior; the extension is separate from the measured v1 submission.
 
@@ -173,7 +180,8 @@ submission remains core v1.
 
 | Location | Contents |
 | --- | --- |
-| [runner_final/](runner_final/README.md) | Frozen policies, prompts, presets and validation commands |
+| [runner/](runner/README.md) | Canonical v1 package, shared libraries, datasets, grader and launch configuration |
+| [runner/extensions/](runner/extensions/README.md) | Versioned policies and archived validation commands |
 | [attempts/](attempts/) | Canonical run evidence and verdict timing |
 | [runs/](runs/README.md) | Experiment reports, summaries and plots |
 | [docs/](docs/README.md) | Report index, experiment guide and historical workflows |
@@ -191,17 +199,17 @@ GPU experiments; see [AGENTS.md](AGENTS.md). To run the offline suite:
 Some legacy checks require ignored raw traces or macOS sandbox support. Frozen
 core manifests reject source drift; preserve them when adding a new policy.
 
-The independently frozen [v2.2 correction runner](runner_final/core_v2_2/README.md)
+The independently frozen [v2.2 correction runner](runner/extensions/v2_2/README.md)
 adds batched wrong-verdict feedback after queued self-corrections have been checked:
-`python -m runner_final.run_frozen_v2_2 --benchmark`. It preserves the v2.1 parser,
+`python -m runner --version v2.2 --benchmark`. It preserves the v2.1 parser,
 prompt and four-request budget; see that contract for branching and usage details.
 
-[Core v2.3](runner_final/core_v2_3/README.md) adds v1.5-style shared slots sized to
+[Core v2.3](runner/extensions/v2_3/README.md) adds v1.5-style shared slots sized to
 the selected question count (30 for AIME, 47 for Apex), with freed slots admitting
 continuations or fresh siblings without a barrier. Each fresh rollout gets one
 long request clipped to the 65,536 total context, including its prompt. It retains
 v2.2 feedback and the four-request cap. Use
-`python -m runner_final.run_frozen_v2_3 --benchmark`; provision its separate
+`python -m runner --version v2.3 --benchmark`; provision its separate
 `vllm-v2_3-long64k.yaml` profile first. Its [first measured trials](runs/experiments/core-v2_3-benchmarks-20261004T182444Z/README.md)
 reached 18 AIME answers in 84.985s and 3/47 Apex answers at a 300s cutoff; no
 repeatability or speedup claim follows from these single trials.
