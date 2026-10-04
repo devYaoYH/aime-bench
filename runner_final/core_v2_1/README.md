@@ -95,7 +95,11 @@ and parser package versions. Required logs stay buffered with benchmark mode.
 [Offline historical replay](../../runs/analyses/core-v2_1-candidate-validation/README.md)
 retained 90/90 recorded positive candidates and rejected 56/62 recorded wrong
 submissions. This uses existing client verdicts and cannot predict a changed
-run's latency. No new GPU performance claim is made for v2.1.
+run's latency. The [subsequent benchmark-mode measurements](../../runs/experiments/core-v2_1-benchmarks-20261004T161700Z/README.md)
+record one seed on each dataset: AIME reached 18 in 82.445s with two wrong
+checks; Apex reached 13/47 at its 900s official deadline. Worker validation
+CPU work totaled 0.166s/0.809s. Optional profiling was disabled; these
+single trials do not establish repeatability.
 
 ```sh
 .venv/bin/python -m unittest test.test_frozen_core_v2_1 \

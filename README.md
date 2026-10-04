@@ -146,7 +146,10 @@ OpenRouter is used for archived exploration, and is unnecessary for the final ru
 [Core v2.1](runner_final/core_v2_1/README.md) adds CPU syntax validation and
 expression-key deduplication to v2, preserving its prompt and scheduling.
 Its offline replay retained all 90 previously correct candidates and rejected
-56/62 wrong submissions; GPU performance is not yet measured.
+56/62 wrong submissions. One [benchmark-mode trial on each dataset](runs/experiments/core-v2_1-benchmarks-20261004T161700Z/README.md)
+reached 18 on AIME 2025 in 82.445s, with two wrong checks; Apex reached 13/47
+at the 900s deadline. Recorded validation CPU work was 0.166s/0.809s.
+These are single-trial measurements, not repeatability statistics.
 
 Core v2 adds arbitrary mathematical expressions and grader-provided question
 statements. It reached 18 in all five AIME 2025 trials but was slower in every

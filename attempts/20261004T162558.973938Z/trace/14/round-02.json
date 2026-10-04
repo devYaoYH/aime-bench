@@ -1,0 +1,68 @@
+{
+  "problem_idx": 14,
+  "started_at_utc": "2026-10-04T16:29:04.013+00:00",
+  "finished_at_utc": "2026-10-04T16:33:26.101+00:00",
+  "end_to_end_latency_s": 262.08831627003383,
+  "status": "unsolved",
+  "winner": null,
+  "error": null,
+  "unique_candidates": 1,
+  "candidate_answers": [
+    "n^2"
+  ],
+  "candidate_keys": [
+    "expr:e860fa52811789eb8298fb95e1b753ec09f9d10e0ca65f888a89782134d26184"
+  ],
+  "rollouts": [
+    {
+      "rollout": 2,
+      "round": 2,
+      "started_at_utc": "2026-10-04T16:29:04.123+00:00",
+      "start_monotonic_s": 335592.185729693,
+      "ttft_s": 0.3758623100002296,
+      "last_token_s": 261.9457854159991,
+      "finish_reason": "stop",
+      "status": "completed",
+      "done_received": true,
+      "usage": {
+        "prompt_tokens": 8525,
+        "total_tokens": 24862,
+        "completion_tokens": 16337,
+        "prompt_tokens_details": {
+          "cached_tokens": 8512
+        }
+      },
+      "endpoint": "/v1/completions",
+      "continuation_of_rollout": 1,
+      "requested_max_tokens": 16384,
+      "http_status": 200,
+      "headers_received_s": 0.21140726702287793,
+      "generation_finished_at_utc": "2026-10-04T16:33:26.092+00:00",
+      "generation_end_monotonic_s": 335854.154814646,
+      "generation_latency_s": 261.96908495301614,
+      "generation_censored": false,
+      "generated_token_ids_count": 16337,
+      "prompt_token_ids_count": 8525,
+      "cached_prompt_tokens": 8512,
+      "prefix_cache_hit_fraction": 0.998475073313783,
+      "overhead": {
+        "enabled": false,
+        "timings": {},
+        "counters": {},
+        "maxima": {}
+      },
+      "finished_at_utc": "2026-10-04T16:33:26.101+00:00",
+      "end_to_end_latency_s": 261.97817430103896,
+      "end_to_end_scope": "rollout start through question verification/cancellation settlement",
+      "gpu": null
+    }
+  ],
+  "round": 2,
+  "first_solved": null,
+  "overhead": {
+    "enabled": false,
+    "timings": {},
+    "counters": {},
+    "maxima": {}
+  }
+}

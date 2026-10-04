@@ -1,0 +1,137 @@
+{
+  "source_commit": "e56419306728913cb883486576d0c9cb20f65d5c",
+  "core_manifest_sha256": "7ca23622428105d4d1de78fdd4df0250e07aab3a28c0a842657919903c117948",
+  "started_at_utc": "2026-10-04T16:23:22.966+00:00",
+  "seed": 20261011,
+  "official_deadline_s": 900,
+  "jobs": [
+    {
+      "dataset": "AIME 2025",
+      "argv": [
+        "--preset",
+        "/home/azureuser/aime-bench-v2_1-e5641930/runner_final/presets/math_core_v2_1.json",
+        "--seed",
+        "20261011",
+        "--benchmark"
+      ]
+    },
+    {
+      "dataset": "Apex shortlist",
+      "argv": [
+        "--preset",
+        "/home/azureuser/aime-bench-v2_1-e5641930/runner_final/presets/apex_core_v2_1.json",
+        "--seed",
+        "20261011",
+        "--benchmark"
+      ]
+    }
+  ],
+  "trials": [
+    {
+      "dataset": "AIME 2025",
+      "started_at_utc": "2026-10-04T16:23:22.967+00:00",
+      "compute_mode": "unattended sequential benchmark",
+      "deadline_reached": false,
+      "attempt_id": "20261004T162322.975624Z",
+      "deadline_armed_at_utc": "2026-10-04T16:24:30.583+00:00",
+      "finished_at_utc": "2026-10-04T16:25:58.956+00:00",
+      "measurement": {
+        "attempt_id": "20261004T162322.975624Z",
+        "status": "completed",
+        "identity_valid": true,
+        "target_reached": true,
+        "solved": 18,
+        "time_to_18_s": 82.44482043600874,
+        "official_latency_s": 82.4965343339718,
+        "initialization_and_attempt_latency_s": 150.05270298599498,
+        "performance": {
+          "generation_requests": 45,
+          "fresh_ttft": {
+            "count": 30,
+            "median_s": 0.19692235300317407,
+            "p95_s": 0.2986748160328716
+          },
+          "continuation_ttft": {
+            "count": 15,
+            "median_s": 0.17385550501057878,
+            "p95_s": 0.19156156003009528
+          },
+          "official_gpu": null,
+          "initialization_gpu": null
+        },
+        "queries_completed": 20,
+        "wrong_checks": 2,
+        "candidate_outcomes": {
+          "enqueued": 21,
+          "rejected": 157,
+          "duplicate_expression": 113
+        },
+        "rejection_reasons": {
+          "placeholder": 157
+        },
+        "normalization_fallbacks": {},
+        "validation_cpu_s": 0.16605524299999885,
+        "validation_wall_median_ms": 0.004909001290798187,
+        "validation_wall_max_ms": 32.537462015170604,
+        "validation_queue_s_sum": 0.003819584148004651,
+        "scope": "Required CPU/queue/timing traces in benchmark mode; optional GPU/engine/host profiling disabled. Overlapping async waits are not additive latency."
+      }
+    },
+    {
+      "dataset": "Apex shortlist",
+      "started_at_utc": "2026-10-04T16:25:58.967+00:00",
+      "compute_mode": "unattended sequential benchmark",
+      "deadline_reached": true,
+      "attempt_id": "20261004T162558.973938Z",
+      "deadline_armed_at_utc": "2026-10-04T16:27:05.342+00:00",
+      "deadline_fired_at_utc": "2026-10-04T16:42:05.315+00:00",
+      "finished_at_utc": "2026-10-04T16:42:21.490+00:00",
+      "measurement": {
+        "attempt_id": "20261004T162558.973938Z",
+        "status": "interrupted",
+        "identity_valid": true,
+        "target_reached": false,
+        "solved": 13,
+        "time_to_18_s": null,
+        "official_latency_s": 900.0575309600099,
+        "initialization_and_attempt_latency_s": 966.3993117940263,
+        "performance": {
+          "generation_requests": 132,
+          "fresh_ttft": {
+            "count": 52,
+            "median_s": 0.17631398397497833,
+            "p95_s": 0.8858891489799134
+          },
+          "continuation_ttft": {
+            "count": 80,
+            "median_s": 0.33312056597787887,
+            "p95_s": 0.846865514991805
+          },
+          "official_gpu": null,
+          "initialization_gpu": null
+        },
+        "queries_completed": 35,
+        "wrong_checks": 22,
+        "candidate_outcomes": {
+          "enqueued": 36,
+          "rejected": 148,
+          "duplicate_expression": 133
+        },
+        "rejection_reasons": {
+          "placeholder": 141,
+          "invalid_latex": 7
+        },
+        "normalization_fallbacks": {
+          "LaTeXParsingError": 7
+        },
+        "validation_cpu_s": 0.8090295740000046,
+        "validation_wall_median_ms": 0.007844006177037954,
+        "validation_wall_max_ms": 264.1670070006512,
+        "validation_queue_s_sum": 0.015896152472123504,
+        "scope": "Required CPU/queue/timing traces in benchmark mode; optional GPU/engine/host profiling disabled. Overlapping async waits are not additive latency."
+      }
+    }
+  ],
+  "status": "complete",
+  "finished_at_utc": "2026-10-04T16:42:21.506+00:00"
+}

@@ -1,0 +1,68 @@
+{
+  "problem_idx": 37,
+  "started_at_utc": "2026-10-04T16:36:04.361+00:00",
+  "finished_at_utc": "2026-10-04T16:38:04.025+00:00",
+  "end_to_end_latency_s": 119.6636274770135,
+  "status": "unsolved",
+  "winner": null,
+  "error": null,
+  "unique_candidates": 1,
+  "candidate_answers": [
+    "\\binom{2024}{989} / 22"
+  ],
+  "candidate_keys": [
+    "expr:c77fd8a109dc0026589a22af73966aeeb75eaed6386794e4329e7152350e681b"
+  ],
+  "rollouts": [
+    {
+      "rollout": 3,
+      "round": 3,
+      "started_at_utc": "2026-10-04T16:36:04.368+00:00",
+      "start_monotonic_s": 336012.430553051,
+      "ttft_s": 0.08505986299132928,
+      "last_token_s": 119.62330360600026,
+      "finish_reason": "stop",
+      "status": "completed",
+      "done_received": true,
+      "usage": {
+        "prompt_tokens": 24963,
+        "total_tokens": 30523,
+        "completion_tokens": 5560,
+        "prompt_tokens_details": {
+          "cached_tokens": 24960
+        }
+      },
+      "endpoint": "/v1/completions",
+      "continuation_of_rollout": 2,
+      "requested_max_tokens": 16384,
+      "http_status": 200,
+      "headers_received_s": 0.019252420985139906,
+      "generation_finished_at_utc": "2026-10-04T16:38:04.017+00:00",
+      "generation_end_monotonic_s": 336132.079759309,
+      "generation_latency_s": 119.64920625800733,
+      "generation_censored": false,
+      "generated_token_ids_count": 5560,
+      "prompt_token_ids_count": 24963,
+      "cached_prompt_tokens": 24960,
+      "prefix_cache_hit_fraction": 0.9998798221367624,
+      "overhead": {
+        "enabled": false,
+        "timings": {},
+        "counters": {},
+        "maxima": {}
+      },
+      "finished_at_utc": "2026-10-04T16:38:04.025+00:00",
+      "end_to_end_latency_s": 119.65723709401209,
+      "end_to_end_scope": "rollout start through question verification/cancellation settlement",
+      "gpu": null
+    }
+  ],
+  "round": 3,
+  "first_solved": null,
+  "overhead": {
+    "enabled": false,
+    "timings": {},
+    "counters": {},
+    "maxima": {}
+  }
+}

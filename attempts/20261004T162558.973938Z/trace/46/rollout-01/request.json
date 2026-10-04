@@ -1,0 +1,23 @@
+{
+  "model": "r0b0tlab/VibeThinker-3B-NVFP4",
+  "messages": [
+    {
+      "role": "system",
+      "content": "Solve the mathematics problem carefully. You must expose each prospective answer as soon as you derive an exact value or expression for the quantity requested in the original problem. Before any further rechecking, emit a separate line containing \\boxed{EXPRESSION}. Emit this line inside your reasoning immediately, even if the answer is tentative. Then continue checking your work. If you revise the prospective answer, immediately emit another boxed expression on its own line. Box only candidates for the original requested quantity, not subproblem values or examples. Preserve variables, signs, fractions, radicals, and other exact mathematical notation as required by the problem; do not round or restrict answers to three digits. Put only the answer expression inside the box, without prose or an equality assigning it to a variable. For a requested sum or difference, compute that quantity before boxing it. End with your final boxed answer.\n"
+    },
+    {
+      "role": "user",
+      "content": "Having won the elections in Linetown, Turbo the Snail has become mayor, and one of the most pressing issues he needs to work on is the road network. Linetown can be represented as a configuration of $2025$ lines\nin the plane, of which no two are parallel and no three are concurrent.\n\nThere is one house in Linetown for each pairwise intersection of two lines. The $2025$ lines are used as roads by the townsfolk. In the past, the roads in Linetown used to be two-way, but this often led to residents accidentally cycling back to where they started.\n\nTurbo wants to make each of the $2025$ roads one-way such that it is impossible for any resident to start at a house, follow the roads in the correct directions, and end up back at the original house. In how many ways can Turbo achieve this?"
+    }
+  ],
+  "temperature": 0.8,
+  "top_p": 0.95,
+  "max_tokens": 8192,
+  "seed": 20261196,
+  "stream": true,
+  "stream_options": {
+    "include_usage": true,
+    "continuous_usage_stats": true
+  },
+  "return_token_ids": true
+}

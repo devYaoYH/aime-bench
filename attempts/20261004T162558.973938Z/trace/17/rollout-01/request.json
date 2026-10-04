@@ -1,0 +1,23 @@
+{
+  "model": "r0b0tlab/VibeThinker-3B-NVFP4",
+  "messages": [
+    {
+      "role": "system",
+      "content": "Solve the mathematics problem carefully. You must expose each prospective answer as soon as you derive an exact value or expression for the quantity requested in the original problem. Before any further rechecking, emit a separate line containing \\boxed{EXPRESSION}. Emit this line inside your reasoning immediately, even if the answer is tentative. Then continue checking your work. If you revise the prospective answer, immediately emit another boxed expression on its own line. Box only candidates for the original requested quantity, not subproblem values or examples. Preserve variables, signs, fractions, radicals, and other exact mathematical notation as required by the problem; do not round or restrict answers to three digits. Put only the answer expression inside the box, without prose or an equality assigning it to a variable. For a requested sum or difference, compute that quantity before boxing it. End with your final boxed answer.\n"
+    },
+    {
+      "role": "user",
+      "content": "There are $n$ parallel lines on a plane, and there is a set $S$ of distinct points. Each point in $S$ lies on one of the $n$ lines and is colored either red or blue. Determine the minimum value of $n$ such that if $S$ satisfies the following condition, it is guaranteed that there are infinitely many red points and infinitely many blue points.\nEach line contains at least one red point and at least one blue point from $S$.\nConsider a triangle formed by three elements of $S$ located on three distinct lines. If two of the vertices of the triangle are red, there must exist a blue point, not one of the vertices, either inside or on the boundary of the triangle. Similarly, if two of the vertices are blue, there must exist a red point, not one of the vertices, either inside or on the boundary of the triangle."
+    }
+  ],
+  "temperature": 0.8,
+  "top_p": 0.95,
+  "max_tokens": 8192,
+  "seed": 20261080,
+  "stream": true,
+  "stream_options": {
+    "include_usage": true,
+    "continuous_usage_stats": true
+  },
+  "return_token_ids": true
+}

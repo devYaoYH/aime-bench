@@ -1,0 +1,183 @@
+{
+  "problem_idx": 35,
+  "started_at_utc": "2026-10-04T16:28:11.712+00:00",
+  "finished_at_utc": "2026-10-04T16:35:59.480+00:00",
+  "end_to_end_latency_s": 467.76804661605274,
+  "status": "unsolved",
+  "winner": null,
+  "error": null,
+  "unique_candidates": 1,
+  "candidate_answers": [
+    "36"
+  ],
+  "candidate_keys": [
+    "expr:190c11248894c3f056c556995640aab085aa4c2b69c2877f832f20a920070c80"
+  ],
+  "rollouts": [
+    {
+      "rollout": 1,
+      "round": 1,
+      "started_at_utc": "2026-10-04T16:28:11.781+00:00",
+      "start_monotonic_s": 335539.844367197,
+      "ttft_s": 0.15449019498191774,
+      "last_token_s": 52.13873554999009,
+      "finish_reason": "length",
+      "status": "completed",
+      "done_received": true,
+      "usage": {
+        "prompt_tokens": 433,
+        "total_tokens": 8625,
+        "completion_tokens": 8192,
+        "prompt_tokens_details": {
+          "cached_tokens": 176,
+          "created_cache_tokens": 256
+        }
+      },
+      "endpoint": "/v1/chat/completions",
+      "continuation_of_rollout": null,
+      "requested_max_tokens": 8192,
+      "http_status": 200,
+      "headers_received_s": 0.05209302599541843,
+      "generation_finished_at_utc": "2026-10-04T16:29:03.927+00:00",
+      "generation_end_monotonic_s": 335591.989551088,
+      "generation_latency_s": 52.14518389099976,
+      "generation_censored": true,
+      "generated_token_ids_count": 8192,
+      "prompt_token_ids_count": 433,
+      "cached_prompt_tokens": 176,
+      "prefix_cache_hit_fraction": 0.4064665127020785,
+      "overhead": {
+        "enabled": false,
+        "timings": {},
+        "counters": {},
+        "maxima": {}
+      },
+      "finished_at_utc": "2026-10-04T16:29:03.959+00:00",
+      "end_to_end_latency_s": 52.177382998983376,
+      "end_to_end_scope": "rollout start through question verification/cancellation settlement",
+      "gpu": null
+    },
+    {
+      "rollout": 2,
+      "round": 2,
+      "started_at_utc": "2026-10-04T16:31:58.209+00:00",
+      "start_monotonic_s": 335766.272255418,
+      "ttft_s": 0.0663788589881733,
+      "last_token_s": 193.97095126501517,
+      "finish_reason": "length",
+      "status": "completed",
+      "done_received": true,
+      "usage": {
+        "prompt_tokens": 8625,
+        "total_tokens": 25009,
+        "completion_tokens": 16384,
+        "prompt_tokens_details": {
+          "cached_tokens": 8624
+        }
+      },
+      "endpoint": "/v1/completions",
+      "continuation_of_rollout": 1,
+      "requested_max_tokens": 16384,
+      "http_status": 200,
+      "headers_received_s": 0.010185102000832558,
+      "generation_finished_at_utc": "2026-10-04T16:35:12.181+00:00",
+      "generation_end_monotonic_s": 335960.243777734,
+      "generation_latency_s": 193.9715223159874,
+      "generation_censored": true,
+      "generated_token_ids_count": 16384,
+      "prompt_token_ids_count": 8625,
+      "cached_prompt_tokens": 8624,
+      "prefix_cache_hit_fraction": 0.9998840579710145,
+      "overhead": {
+        "enabled": false,
+        "timings": {},
+        "counters": {},
+        "maxima": {}
+      },
+      "finished_at_utc": "2026-10-04T16:35:12.192+00:00",
+      "end_to_end_latency_s": 193.98233119497309,
+      "end_to_end_scope": "rollout start through question verification/cancellation settlement",
+      "gpu": null
+    },
+    {
+      "rollout": 3,
+      "round": 3,
+      "started_at_utc": "2026-10-04T16:35:45.694+00:00",
+      "start_monotonic_s": 335993.756530702,
+      "ttft_s": 0.6589210809906945,
+      "last_token_s": 13.758616904029623,
+      "finish_reason": "stop",
+      "status": "completed",
+      "done_received": true,
+      "usage": {
+        "prompt_tokens": 25009,
+        "total_tokens": 25697,
+        "completion_tokens": 688,
+        "prompt_tokens_details": {
+          "cached_tokens": 25008
+        }
+      },
+      "endpoint": "/v1/completions",
+      "continuation_of_rollout": 2,
+      "requested_max_tokens": 16384,
+      "http_status": 200,
+      "headers_received_s": 0.1738815950229764,
+      "generation_finished_at_utc": "2026-10-04T16:35:59.474+00:00",
+      "generation_end_monotonic_s": 336007.537230695,
+      "generation_latency_s": 13.780699993018061,
+      "generation_censored": false,
+      "generated_token_ids_count": 688,
+      "prompt_token_ids_count": 25009,
+      "cached_prompt_tokens": 25008,
+      "prefix_cache_hit_fraction": 0.9999600143948179,
+      "overhead": {
+        "enabled": false,
+        "timings": {},
+        "counters": {},
+        "maxima": {}
+      },
+      "finished_at_utc": "2026-10-04T16:35:59.480+00:00",
+      "end_to_end_latency_s": 13.786967586027458,
+      "end_to_end_scope": "rollout start through question verification/cancellation settlement",
+      "gpu": null
+    }
+  ],
+  "round": 3,
+  "first_solved": null,
+  "overhead": {
+    "enabled": false,
+    "timings": {},
+    "counters": {},
+    "maxima": {}
+  },
+  "rounds": [
+    {
+      "round": 1,
+      "status": "unsolved",
+      "started_at_utc": "2026-10-04T16:28:11.712+00:00",
+      "finished_at_utc": "2026-10-04T16:29:03.959+00:00",
+      "end_to_end_latency_s": 52.246298524027225,
+      "winner": null,
+      "error": null
+    },
+    {
+      "round": 2,
+      "status": "unsolved",
+      "started_at_utc": "2026-10-04T16:31:58.207+00:00",
+      "finished_at_utc": "2026-10-04T16:35:12.192+00:00",
+      "end_to_end_latency_s": 193.9847110940027,
+      "winner": null,
+      "error": null
+    },
+    {
+      "round": 3,
+      "status": "unsolved",
+      "started_at_utc": "2026-10-04T16:35:45.391+00:00",
+      "finished_at_utc": "2026-10-04T16:35:59.480+00:00",
+      "end_to_end_latency_s": 14.089364206010941,
+      "winner": null,
+      "error": null
+    }
+  ],
+  "question_start_monotonic_s": 335539.775451672
+}

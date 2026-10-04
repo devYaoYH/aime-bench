@@ -1,0 +1,319 @@
+{
+  "source_commit": "e56419306728913cb883486576d0c9cb20f65d5c",
+  "seed": 20261011,
+  "official_deadline_s": 900,
+  "core_manifest_sha256": "7ca23622428105d4d1de78fdd4df0250e07aab3a28c0a842657919903c117948",
+  "trials": [
+    {
+      "attempt_id": "20261004T162322.975624Z",
+      "status": "completed",
+      "identity_valid": true,
+      "target_reached": true,
+      "solved": 18,
+      "time_to_18_s": 82.44482043600874,
+      "official_latency_s": 82.4965343339718,
+      "initialization_and_attempt_latency_s": 150.05270298599498,
+      "performance": {
+        "generation_requests": 45,
+        "fresh_ttft": {
+          "count": 30,
+          "median_s": 0.19692235300317407,
+          "p95_s": 0.2986748160328716
+        },
+        "continuation_ttft": {
+          "count": 15,
+          "median_s": 0.17385550501057878,
+          "p95_s": 0.19156156003009528
+        },
+        "official_gpu": null,
+        "initialization_gpu": null
+      },
+      "queries_completed": 20,
+      "wrong_checks": 2,
+      "candidate_outcomes": {
+        "enqueued": 21,
+        "duplicate_expression": 113,
+        "rejected": 157
+      },
+      "rejection_reasons": {
+        "placeholder": 157
+      },
+      "normalization_fallbacks": {},
+      "validation_cpu_s": 0.16605524299999885,
+      "validation_wall_median_ms": 0.004909001290798187,
+      "validation_wall_max_ms": 32.537462015170604,
+      "validation_queue_s_sum": 0.003819584148004651,
+      "scope": "Required CPU/queue/timing traces in benchmark mode; optional GPU/engine/host profiling disabled. Overlapping async waits are not additive latency.",
+      "exact_prefix_records": 45,
+      "exact_prefix_complete": 45,
+      "generation_statuses": {
+        "cancelled": 24,
+        "completed": 21
+      },
+      "generation_censored": 41,
+      "observed_generation_latency": {
+        "count": 45,
+        "median_ms": 27982.03789902618,
+        "max_ms": 57340.754742966965
+      },
+      "observed_end_to_end_latency": {
+        "count": 45,
+        "median_ms": 31211.382073001005,
+        "max_ms": 61684.55643899506
+      },
+      "completion_token_ids": 230625,
+      "cached": {
+        "count": 265,
+        "median_ms": 0.004789035301655531,
+        "max_ms": 3.0793900368735194
+      },
+      "uncached": {
+        "count": 26,
+        "median_ms": 6.370120478095487,
+        "max_ms": 32.537462015170604
+      },
+      "cache_hits": 265,
+      "cache_misses": 26,
+      "grader_timeline": {
+        "completed_queries": 20,
+        "audit_errors": [],
+        "correct": 18,
+        "wrong": 2,
+        "target_service_floor_s": 54.0,
+        "actual_service_s": 60.00200867652893,
+        "idle_between_queries_s": 21.22092843055725,
+        "first_pick_elapsed_s": 1.2204630374908447,
+        "scope": "completed oracle jobs; queued/cancelled client jobs may still incur service"
+      },
+      "solve_events": [
+        {
+          "problem_idx": 1,
+          "elapsed_s": 10.227532788005192
+        },
+        {
+          "problem_idx": 17,
+          "elapsed_s": 13.227523338980973
+        },
+        {
+          "problem_idx": 3,
+          "elapsed_s": 16.229023904015776
+        },
+        {
+          "problem_idx": 25,
+          "elapsed_s": 19.229507485986687
+        },
+        {
+          "problem_idx": 16,
+          "elapsed_s": 22.230001111980528
+        },
+        {
+          "problem_idx": 8,
+          "elapsed_s": 25.22896628198214
+        },
+        {
+          "problem_idx": 21,
+          "elapsed_s": 28.230910715996288
+        },
+        {
+          "problem_idx": 22,
+          "elapsed_s": 31.229436699009966
+        },
+        {
+          "problem_idx": 6,
+          "elapsed_s": 34.22963149001589
+        },
+        {
+          "problem_idx": 19,
+          "elapsed_s": 37.231067635002546
+        },
+        {
+          "problem_idx": 4,
+          "elapsed_s": 40.23028576996876
+        },
+        {
+          "problem_idx": 5,
+          "elapsed_s": 43.230505129962694
+        },
+        {
+          "problem_idx": 27,
+          "elapsed_s": 46.23109930299688
+        },
+        {
+          "problem_idx": 26,
+          "elapsed_s": 58.70621521596331
+        },
+        {
+          "problem_idx": 24,
+          "elapsed_s": 61.706174371996894
+        },
+        {
+          "problem_idx": 11,
+          "elapsed_s": 69.78908111999044
+        },
+        {
+          "problem_idx": 9,
+          "elapsed_s": 78.28669791098218
+        },
+        {
+          "problem_idx": 18,
+          "elapsed_s": 82.44482043600874
+        }
+      ],
+      "dataset": "AIME 2025",
+      "deadline_reached": false
+    },
+    {
+      "attempt_id": "20261004T162558.973938Z",
+      "status": "interrupted",
+      "identity_valid": true,
+      "target_reached": false,
+      "solved": 13,
+      "time_to_18_s": null,
+      "official_latency_s": 900.0575309600099,
+      "initialization_and_attempt_latency_s": 966.3993117940263,
+      "performance": {
+        "generation_requests": 132,
+        "fresh_ttft": {
+          "count": 52,
+          "median_s": 0.17631398397497833,
+          "p95_s": 0.8858891489799134
+        },
+        "continuation_ttft": {
+          "count": 80,
+          "median_s": 0.33312056597787887,
+          "p95_s": 0.846865514991805
+        },
+        "official_gpu": null,
+        "initialization_gpu": null
+      },
+      "queries_completed": 35,
+      "wrong_checks": 22,
+      "candidate_outcomes": {
+        "enqueued": 36,
+        "duplicate_expression": 133,
+        "rejected": 148
+      },
+      "rejection_reasons": {
+        "placeholder": 141,
+        "invalid_latex": 7
+      },
+      "normalization_fallbacks": {
+        "LaTeXParsingError": 7
+      },
+      "validation_cpu_s": 0.8090295740000046,
+      "validation_wall_median_ms": 0.007844006177037954,
+      "validation_wall_max_ms": 264.1670070006512,
+      "validation_queue_s_sum": 0.015896152472123504,
+      "scope": "Required CPU/queue/timing traces in benchmark mode; optional GPU/engine/host profiling disabled. Overlapping async waits are not additive latency.",
+      "exact_prefix_records": 132,
+      "exact_prefix_complete": 132,
+      "generation_statuses": {
+        "completed": 114,
+        "cancelled": 18
+      },
+      "generation_censored": 116,
+      "observed_generation_latency": {
+        "count": 132,
+        "median_ms": 142693.8419555081,
+        "max_ms": 368824.21675900696
+      },
+      "observed_end_to_end_latency": {
+        "count": 132,
+        "median_ms": 142714.13535097963,
+        "max_ms": 368868.637520005
+      },
+      "completion_token_ids": 1511488,
+      "cached": {
+        "count": 273,
+        "median_ms": 0.007473980076611042,
+        "max_ms": 14.537937997374684
+      },
+      "uncached": {
+        "count": 44,
+        "median_ms": 7.382100506220013,
+        "max_ms": 264.1670070006512
+      },
+      "cache_hits": 273,
+      "cache_misses": 44,
+      "grader_timeline": {
+        "completed_queries": 35,
+        "audit_errors": [],
+        "correct": 13,
+        "wrong": 22,
+        "target_service_floor_s": 54.0,
+        "actual_service_s": 105.00412058830261,
+        "idle_between_queries_s": 674.834121465683,
+        "first_pick_elapsed_s": 82.48079490661621,
+        "scope": "completed oracle jobs; queued/cancelled client jobs may still incur service"
+      },
+      "solve_events": [
+        {
+          "problem_idx": 40,
+          "elapsed_s": 107.91591450199485
+        },
+        {
+          "problem_idx": 19,
+          "elapsed_s": 240.597603222006
+        },
+        {
+          "problem_idx": 33,
+          "elapsed_s": 292.88426047196845
+        },
+        {
+          "problem_idx": 4,
+          "elapsed_s": 296.16714060097
+        },
+        {
+          "problem_idx": 5,
+          "elapsed_s": 299.1689386710059
+        },
+        {
+          "problem_idx": 18,
+          "elapsed_s": 367.3886274169781
+        },
+        {
+          "problem_idx": 42,
+          "elapsed_s": 390.03587623802014
+        },
+        {
+          "problem_idx": 41,
+          "elapsed_s": 439.1818952559843
+        },
+        {
+          "problem_idx": 12,
+          "elapsed_s": 572.1939590779948
+        },
+        {
+          "problem_idx": 38,
+          "elapsed_s": 575.8392125800019
+        },
+        {
+          "problem_idx": 10,
+          "elapsed_s": 686.0557750769658
+        },
+        {
+          "problem_idx": 16,
+          "elapsed_s": 718.0941280139959
+        },
+        {
+          "problem_idx": 45,
+          "elapsed_s": 746.596646646969
+        }
+      ],
+      "dataset": "Apex shortlist",
+      "deadline_reached": true
+    }
+  ],
+  "historical_same_seed_v2_aime_control": {
+    "attempt_id": "20261004T013249.730690Z",
+    "time_to_18_s": 136.24086610402446,
+    "completed_checks": 37,
+    "wrong_checks": 19
+  },
+  "limitations": [
+    "One new trial per dataset; no repeatability estimate.",
+    "Benchmark mode omits optional host/GPU/engine profiles; no measured VRAM peak or KV eviction trace.",
+    "Apex has 47 questions, including two overlapping AIME 2025 questions; target remains 18.",
+    "Validation wall includes queue/IPC/cache work; overlapping async waits cannot be added to official latency."
+  ]
+}

@@ -1,0 +1,70 @@
+{
+  "problem_idx": 22,
+  "started_at_utc": "2026-10-04T16:29:04.038+00:00",
+  "finished_at_utc": "2026-10-04T16:33:27.254+00:00",
+  "end_to_end_latency_s": 263.2165055809892,
+  "status": "unsolved",
+  "winner": null,
+  "error": null,
+  "unique_candidates": 2,
+  "candidate_answers": [
+    "3",
+    "\\infty"
+  ],
+  "candidate_keys": [
+    "expr:1e15ac82e24188e93fe3261f4b706314b5e939b0b3c3eeb5ac7ee331c375d8a7",
+    "expr:b6444c5ee0022b6bc7f15a7ce2ed8e707b3ea710e54fdbb0f30a41995143c61f"
+  ],
+  "rollouts": [
+    {
+      "rollout": 2,
+      "round": 2,
+      "started_at_utc": "2026-10-04T16:29:04.157+00:00",
+      "start_monotonic_s": 335592.219950779,
+      "ttft_s": 0.3296217850293033,
+      "last_token_s": 262.90479492302984,
+      "finish_reason": "length",
+      "status": "completed",
+      "done_received": true,
+      "usage": {
+        "prompt_tokens": 8491,
+        "total_tokens": 24875,
+        "completion_tokens": 16384,
+        "prompt_tokens_details": {
+          "cached_tokens": 8480
+        }
+      },
+      "endpoint": "/v1/completions",
+      "continuation_of_rollout": 1,
+      "requested_max_tokens": 16384,
+      "http_status": 200,
+      "headers_received_s": 0.17369528103154153,
+      "generation_finished_at_utc": "2026-10-04T16:33:27.124+00:00",
+      "generation_end_monotonic_s": 335855.187477934,
+      "generation_latency_s": 262.9675271550077,
+      "generation_censored": true,
+      "generated_token_ids_count": 16384,
+      "prompt_token_ids_count": 8491,
+      "cached_prompt_tokens": 8480,
+      "prefix_cache_hit_fraction": 0.9987045106583441,
+      "overhead": {
+        "enabled": false,
+        "timings": {},
+        "counters": {},
+        "maxima": {}
+      },
+      "finished_at_utc": "2026-10-04T16:33:27.254+00:00",
+      "end_to_end_latency_s": 263.09729624399915,
+      "end_to_end_scope": "rollout start through question verification/cancellation settlement",
+      "gpu": null
+    }
+  ],
+  "round": 2,
+  "first_solved": null,
+  "overhead": {
+    "enabled": false,
+    "timings": {},
+    "counters": {},
+    "maxima": {}
+  }
+}

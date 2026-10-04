@@ -198,7 +198,10 @@ restrictions are preserved, with raw-key fallback after normalization timeouts.
 Run `python -m runner_final.run_frozen_v2_1 --seed 20261011` after installing
 `core_v2_1/requirements-syntax.txt` in the runner environment. The immutable v1
 and v2 remain available. Offline replay retains all 90 previously correct v2
-candidates and rejects 56/62 wrong checks; v2.1 has no GPU timing result yet.
+candidates and rejects 56/62 wrong checks. The [two-dataset benchmark report](../runs/experiments/core-v2_1-benchmarks-20261004T161700Z/README.md)
+records one seed: AIME reached 18 in 82.445s (two wrong checks), while Apex
+reached 13/47 at the 900s deadline. Required validation CPU work was
+0.166s/0.809s; optional profiling was disabled. No repeatability estimate is implied.
 
 ## Historical policies
 

@@ -1,0 +1,23 @@
+{
+  "model": "r0b0tlab/VibeThinker-3B-NVFP4",
+  "messages": [
+    {
+      "role": "system",
+      "content": "Solve the mathematics problem carefully. You must expose each prospective answer as soon as you derive an exact value or expression for the quantity requested in the original problem. Before any further rechecking, emit a separate line containing \\boxed{EXPRESSION}. Emit this line inside your reasoning immediately, even if the answer is tentative. Then continue checking your work. If you revise the prospective answer, immediately emit another boxed expression on its own line. Box only candidates for the original requested quantity, not subproblem values or examples. Preserve variables, signs, fractions, radicals, and other exact mathematical notation as required by the problem; do not round or restrict answers to three digits. Put only the answer expression inside the box, without prose or an equality assigning it to a variable. For a requested sum or difference, compute that quantity before boxing it. End with your final boxed answer.\n"
+    },
+    {
+      "role": "user",
+      "content": "Let \\( X_0, X_1, \\dots, X_{n-1} \\) be \\( n \\geq 2 \\) given points in the plane, and let \\( r > 0 \\) be a real number. Alice and Bob play the following game. Firstly, Alice constructs a connected graph with vertices at the points \\( X_0, X_1, \\dots, X_{n-1} \\), i.e., she connects some of the points with edges so that from any point you can reach any other point by moving along the edges.Then, Alice assigns to each vertex \\( X_i \\) a non-negative real number \\( r_i \\), for \\( i = 0, 1, \\dots, n-1 \\), such that $\\sum_{i=0}^{n-1} r_i = 1$. Bob then selects a sequence of distinct vertices \\( X_{i_0} = X_0, X_{i_1}, \\dots, X_{i_k} \\) such that \\( X_{i_j} \\) and \\( X_{i_{j+1}} \\) are connected by an edge for every \\( j = 0, 1, \\dots, k-1 \\). (Note that the length $k \\geq 0$ is not fixed and the first selected vertex always has to be $X_0$.) Bob wins if\n\\[\n\\frac{1}{k+1} \\sum_{j=0}^{k} r_{i_j} \\geq r;\n\\]\n\notherwise, Alice wins. Let $R(n)$ denote \\( n \\) the largest possible value of \\( r \\) for which Bob has a winning strategy. Find \\( \\sum_{n=11}^{14} R(n) \\)."
+    }
+  ],
+  "temperature": 0.8,
+  "top_p": 0.95,
+  "max_tokens": 8192,
+  "seed": 20261176,
+  "stream": true,
+  "stream_options": {
+    "include_usage": true,
+    "continuous_usage_stats": true
+  },
+  "return_token_ids": true
+}

@@ -1,0 +1,73 @@
+{
+  "problem_idx": 8,
+  "started_at_utc": "2026-10-04T16:35:45.225+00:00",
+  "finished_at_utc": "2026-10-04T16:41:54.285+00:00",
+  "end_to_end_latency_s": 369.0608903649845,
+  "status": "unsolved",
+  "winner": null,
+  "error": null,
+  "unique_candidates": 3,
+  "candidate_answers": [
+    "\\left\\lceil\\frac{-3 + \\sqrt{16n+1}}{2}\\right\\rceil",
+    "\\left\\lceil\\frac{-3+\\sqrt{16n+1}}{2}\\right\\rceil",
+    "k = \\left\\lceil\\frac{-3 + \\sqrt{16n+1}}{2}\\right\\rceil"
+  ],
+  "candidate_keys": [
+    "expr:2ce0a4170cc2d75ef4aba6225127d6b9b502f25bc23bea2065ee447582f58787",
+    "raw:41915dfbb406c09bd8381b7bf6df938a909697708d1288e5f259dbf778780ff8",
+    "raw:a750ed9d79180ad29429961a1f64748a1030ac33aa2b13e4aded26814fa2dfa6"
+  ],
+  "rollouts": [
+    {
+      "rollout": 3,
+      "round": 3,
+      "started_at_utc": "2026-10-04T16:35:45.442+00:00",
+      "start_monotonic_s": 335993.505471746,
+      "ttft_s": 0.9251711680553854,
+      "last_token_s": 368.6642214700114,
+      "finish_reason": "length",
+      "status": "completed",
+      "done_received": true,
+      "usage": {
+        "prompt_tokens": 388,
+        "total_tokens": 16772,
+        "completion_tokens": 16384,
+        "prompt_tokens_details": {
+          "cached_tokens": 384,
+          "created_cache_tokens": 0
+        }
+      },
+      "endpoint": "/v1/chat/completions",
+      "continuation_of_rollout": null,
+      "requested_max_tokens": 16384,
+      "http_status": 200,
+      "headers_received_s": 0.43856605305336416,
+      "generation_finished_at_utc": "2026-10-04T16:41:54.259+00:00",
+      "generation_end_monotonic_s": 336362.322429057,
+      "generation_latency_s": 368.81695731100626,
+      "generation_censored": true,
+      "generated_token_ids_count": 16384,
+      "prompt_token_ids_count": 388,
+      "cached_prompt_tokens": 384,
+      "prefix_cache_hit_fraction": 0.9896907216494846,
+      "overhead": {
+        "enabled": false,
+        "timings": {},
+        "counters": {},
+        "maxima": {}
+      },
+      "finished_at_utc": "2026-10-04T16:41:54.285+00:00",
+      "end_to_end_latency_s": 368.84297811600845,
+      "end_to_end_scope": "rollout start through question verification/cancellation settlement",
+      "gpu": null
+    }
+  ],
+  "round": 3,
+  "first_solved": null,
+  "overhead": {
+    "enabled": false,
+    "timings": {},
+    "counters": {},
+    "maxima": {}
+  }
+}

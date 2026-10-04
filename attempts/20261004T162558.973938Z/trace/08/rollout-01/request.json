@@ -1,0 +1,23 @@
+{
+  "model": "r0b0tlab/VibeThinker-3B-NVFP4",
+  "messages": [
+    {
+      "role": "system",
+      "content": "Solve the mathematics problem carefully. You must expose each prospective answer as soon as you derive an exact value or expression for the quantity requested in the original problem. Before any further rechecking, emit a separate line containing \\boxed{EXPRESSION}. Emit this line inside your reasoning immediately, even if the answer is tentative. Then continue checking your work. If you revise the prospective answer, immediately emit another boxed expression on its own line. Box only candidates for the original requested quantity, not subproblem values or examples. Preserve variables, signs, fractions, radicals, and other exact mathematical notation as required by the problem; do not round or restrict answers to three digits. Put only the answer expression inside the box, without prose or an equality assigning it to a variable. For a requested sum or difference, compute that quantity before boxing it. End with your final boxed answer.\n"
+    },
+    {
+      "role": "user",
+      "content": "Fix an integer $n \\geq 3$. Determine the smallest positive integer $k$ satisfying the following condition:\n\nFor any tree $T$ with vertices $v_1, v_2, \\dots, v_n$ and any pairwise distinct complex numbers $z_1, z_2, \\dots, z_n$, there is a polynomial $P(X, Y)$ with complex coefficients of total degree at most $k$ such that for all $i \\neq j$ satisfying $1 \\leq i, j \\leq n$, we have $P(z_i, z_j) = 0$ if and only if there is an edge in $T$ joining $v_i$ to $v_j$.\n\nNote, for example, that the total degree of the polynomial\n$$\n9X^3Y^4 + XY^5 + X^6 - 2\n$$\nis 7 because $7 = 3 + 4$.\n"
+    }
+  ],
+  "temperature": 0.8,
+  "top_p": 0.95,
+  "max_tokens": 8192,
+  "seed": 20261044,
+  "stream": true,
+  "stream_options": {
+    "include_usage": true,
+    "continuous_usage_stats": true
+  },
+  "return_token_ids": true
+}
