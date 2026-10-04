@@ -1,0 +1,2014 @@
+{
+  "batch": "canonical-v1-refactor-five-seeds-20261004T215632Z",
+  "practical_screen": {
+    "valid_trials": 5,
+    "all_five_valid": true,
+    "median_time_to_target_s": 73.56776215898572,
+    "min_time_to_target_s": 62.118150707974564,
+    "max_time_to_target_s": 128.74419849499827,
+    "reference_median_s": 77.27695375698386,
+    "median_relative_change": -0.04799867771266708,
+    "paired_mean_delta_s": 7.384511057415511,
+    "within_practical_10pct_median_band": true,
+    "interpretation": "Five paired historical seeds; a 10% median band is a practical screen, not statistical equivalence. Keep failures/unmet targets and stochastic output differences."
+  },
+  "reference_mean_s": 74.99490408217534,
+  "new_mean_s": 82.37941513959086,
+  "mean_relative_change": 0.0984668378177267,
+  "reference_median_fresh_trial_ttft_s": 0.2402891109813936,
+  "new_median_fresh_trial_ttft_s": 0.24055560398846865,
+  "verified_initial_payloads": 150,
+  "verified_continuations": 69,
+  "trials": [
+    {
+      "seed": 20261011,
+      "audit": {
+        "sampling_seed": 20261011,
+        "attempt_id": "20261004T215912.542295Z",
+        "valid": true,
+        "status": "completed",
+        "target_reached": true,
+        "time_to_target_s": 70.88087013998302,
+        "reference_attempt_id": "20261004T005518.974361Z",
+        "reference_time_to_target_s": 71.32121138199,
+        "delta_s": -0.4403412420069799,
+        "solved": 18,
+        "solved_indices": [
+          1,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          16,
+          17,
+          18,
+          19,
+          21,
+          22,
+          23,
+          24,
+          25,
+          26,
+          27
+        ],
+        "generation_requests": 44,
+        "continuation_requests": 14,
+        "initial_payload_mismatches": [],
+        "continuation_errors": [],
+        "request_cap_valid": true,
+        "first_solved_target_valid": true,
+        "completed_checks": 20,
+        "wrong_checks": 2,
+        "candidate_formats": {
+          "boxed": 5,
+          "literal_prose": 15
+        },
+        "performance": {
+          "generation_requests": 44,
+          "fresh_ttft": {
+            "count": 30,
+            "median_s": 0.2468234770349227,
+            "p95_s": 0.297646266000811
+          },
+          "continuation_ttft": {
+            "count": 14,
+            "median_s": 0.17022843402810395,
+            "p95_s": 0.19029845704790205
+          },
+          "official_gpu": null,
+          "initialization_gpu": null
+        },
+        "grader_timeline": {
+          "completed_queries": 20,
+          "audit_errors": [],
+          "correct": 18,
+          "wrong": 2,
+          "target_service_floor_s": 54.0,
+          "actual_service_s": 60.00243067741394,
+          "idle_between_queries_s": 9.78803038597107,
+          "first_pick_elapsed_s": 1.0894808769226074,
+          "scope": "completed oracle jobs; queued/cancelled client jobs may still incur service"
+        },
+        "official_latency_s": 70.92666333098896,
+        "trace_storage": {
+          "buffered": true,
+          "files_written": 325,
+          "jsonl_rows": 215668,
+          "payload_characters": 76707749,
+          "latency_s": 1.721513046999462,
+          "scope": "Client trace flush after official timing; excluded from time to target and official latency"
+        }
+      },
+      "reference_performance": {
+        "generation_requests": 45,
+        "fresh_ttft": {
+          "count": 30,
+          "median_s": 0.24649341095937416,
+          "p95_s": 0.2977955980459228
+        },
+        "continuation_ttft": {
+          "count": 15,
+          "median_s": 0.17505261802580208,
+          "p95_s": 0.19322894397191703
+        },
+        "official_gpu": null,
+        "initialization_gpu": null
+      },
+      "reference_grader_timeline": {
+        "completed_queries": 22,
+        "audit_errors": [],
+        "correct": 18,
+        "wrong": 4,
+        "target_service_floor_s": 54.0,
+        "actual_service_s": 66.00242400169373,
+        "idle_between_queries_s": 4.2164130210876465,
+        "first_pick_elapsed_s": 1.1020050048828125,
+        "scope": "completed oracle jobs; queued/cancelled client jobs may still incur service"
+      },
+      "reference_continuations": 15,
+      "solved_overlap_count": 17,
+      "reference_only_solved": [
+        12
+      ],
+      "new_only_solved": [
+        23
+      ],
+      "initial_token_overlap": [
+        {
+          "problem_idx": 1,
+          "reference_retained_tokens": 5076,
+          "new_retained_tokens": 5549,
+          "matching_prefix_tokens": 3518,
+          "retained_overlap_equal": false
+        },
+        {
+          "problem_idx": 2,
+          "reference_retained_tokens": 8192,
+          "new_retained_tokens": 8192,
+          "matching_prefix_tokens": 3576,
+          "retained_overlap_equal": false
+        },
+        {
+          "problem_idx": 3,
+          "reference_retained_tokens": 2200,
+          "new_retained_tokens": 2201,
+          "matching_prefix_tokens": 2200,
+          "retained_overlap_equal": true
+        },
+        {
+          "problem_idx": 4,
+          "reference_retained_tokens": 3065,
+          "new_retained_tokens": 3066,
+          "matching_prefix_tokens": 3065,
+          "retained_overlap_equal": true
+        },
+        {
+          "problem_idx": 5,
+          "reference_retained_tokens": 7961,
+          "new_retained_tokens": 7566,
+          "matching_prefix_tokens": 3692,
+          "retained_overlap_equal": false
+        },
+        {
+          "problem_idx": 6,
+          "reference_retained_tokens": 4763,
+          "new_retained_tokens": 4755,
+          "matching_prefix_tokens": 3517,
+          "retained_overlap_equal": false
+        },
+        {
+          "problem_idx": 7,
+          "reference_retained_tokens": 8192,
+          "new_retained_tokens": 8192,
+          "matching_prefix_tokens": 3725,
+          "retained_overlap_equal": false
+        },
+        {
+          "problem_idx": 8,
+          "reference_retained_tokens": 3496,
+          "new_retained_tokens": 3496,
+          "matching_prefix_tokens": 3496,
+          "retained_overlap_equal": true
+        },
+        {
+          "problem_idx": 9,
+          "reference_retained_tokens": 8192,
+          "new_retained_tokens": 8192,
+          "matching_prefix_tokens": 3814,
+          "retained_overlap_equal": false
+        },
+        {
+          "problem_idx": 10,
+          "reference_retained_tokens": 8192,
+          "new_retained_tokens": 8192,
+          "matching_prefix_tokens": 3586,
+          "retained_overlap_equal": false
+        },
+        {
+          "problem_idx": 11,
+          "reference_retained_tokens": 8192,
+          "new_retained_tokens": 8192,
+          "matching_prefix_tokens": 3642,
+          "retained_overlap_equal": false
+        },
+        {
+          "problem_idx": 12,
+          "reference_retained_tokens": 8192,
+          "new_retained_tokens": 8192,
+          "matching_prefix_tokens": 3749,
+          "retained_overlap_equal": false
+        },
+        {
+          "problem_idx": 13,
+          "reference_retained_tokens": 8192,
+          "new_retained_tokens": 8192,
+          "matching_prefix_tokens": 3607,
+          "retained_overlap_equal": false
+        },
+        {
+          "problem_idx": 14,
+          "reference_retained_tokens": 8192,
+          "new_retained_tokens": 8192,
+          "matching_prefix_tokens": 3654,
+          "retained_overlap_equal": false
+        },
+        {
+          "problem_idx": 15,
+          "reference_retained_tokens": 8192,
+          "new_retained_tokens": 8192,
+          "matching_prefix_tokens": 3582,
+          "retained_overlap_equal": false
+        },
+        {
+          "problem_idx": 16,
+          "reference_retained_tokens": 4120,
+          "new_retained_tokens": 4053,
+          "matching_prefix_tokens": 3551,
+          "retained_overlap_equal": false
+        },
+        {
+          "problem_idx": 17,
+          "reference_retained_tokens": 1746,
+          "new_retained_tokens": 1746,
+          "matching_prefix_tokens": 1746,
+          "retained_overlap_equal": true
+        },
+        {
+          "problem_idx": 18,
+          "reference_retained_tokens": 8192,
+          "new_retained_tokens": 8192,
+          "matching_prefix_tokens": 3635,
+          "retained_overlap_equal": false
+        },
+        {
+          "problem_idx": 19,
+          "reference_retained_tokens": 3075,
+          "new_retained_tokens": 3075,
+          "matching_prefix_tokens": 3075,
+          "retained_overlap_equal": true
+        },
+        {
+          "problem_idx": 20,
+          "reference_retained_tokens": 8192,
+          "new_retained_tokens": 8192,
+          "matching_prefix_tokens": 4308,
+          "retained_overlap_equal": false
+        },
+        {
+          "problem_idx": 21,
+          "reference_retained_tokens": 3605,
+          "new_retained_tokens": 4118,
+          "matching_prefix_tokens": 3579,
+          "retained_overlap_equal": false
+        },
+        {
+          "problem_idx": 22,
+          "reference_retained_tokens": 4135,
+          "new_retained_tokens": 4135,
+          "matching_prefix_tokens": 4135,
+          "retained_overlap_equal": true
+        },
+        {
+          "problem_idx": 23,
+          "reference_retained_tokens": 8192,
+          "new_retained_tokens": 8192,
+          "matching_prefix_tokens": 3856,
+          "retained_overlap_equal": false
+        },
+        {
+          "problem_idx": 24,
+          "reference_retained_tokens": 6772,
+          "new_retained_tokens": 6782,
+          "matching_prefix_tokens": 3619,
+          "retained_overlap_equal": false
+        },
+        {
+          "problem_idx": 25,
+          "reference_retained_tokens": 5987,
+          "new_retained_tokens": 5981,
+          "matching_prefix_tokens": 3514,
+          "retained_overlap_equal": false
+        },
+        {
+          "problem_idx": 26,
+          "reference_retained_tokens": 7547,
+          "new_retained_tokens": 7975,
+          "matching_prefix_tokens": 3579,
+          "retained_overlap_equal": false
+        },
+        {
+          "problem_idx": 27,
+          "reference_retained_tokens": 7053,
+          "new_retained_tokens": 5347,
+          "matching_prefix_tokens": 4121,
+          "retained_overlap_equal": false
+        },
+        {
+          "problem_idx": 28,
+          "reference_retained_tokens": 8192,
+          "new_retained_tokens": 8192,
+          "matching_prefix_tokens": 3521,
+          "retained_overlap_equal": false
+        },
+        {
+          "problem_idx": 29,
+          "reference_retained_tokens": 8192,
+          "new_retained_tokens": 8192,
+          "matching_prefix_tokens": 3855,
+          "retained_overlap_equal": false
+        },
+        {
+          "problem_idx": 30,
+          "reference_retained_tokens": 8192,
+          "new_retained_tokens": 8192,
+          "matching_prefix_tokens": 3627,
+          "retained_overlap_equal": false
+        }
+      ],
+      "reference_late_solves": [
+        {
+          "problem_idx": 7,
+          "round": 2,
+          "rollout": 2,
+          "candidate": "821",
+          "first_solved_at_utc": "2026-10-04T00:56:22.115+00:00",
+          "first_solved_elapsed_s": 62.32035900396295,
+          "grader_answered_at_utc": "2026-10-04T00:56:22.113892Z",
+          "grader_query_id": "20261004T005518.974361Z-q7-a821"
+        },
+        {
+          "problem_idx": 18,
+          "round": 2,
+          "rollout": 2,
+          "candidate": "82",
+          "first_solved_at_utc": "2026-10-04T00:56:25.116+00:00",
+          "first_solved_elapsed_s": 65.32165786297992,
+          "grader_answered_at_utc": "2026-10-04T00:56:25.114199Z",
+          "grader_query_id": "20261004T005518.974361Z-q18-a82"
+        },
+        {
+          "problem_idx": 12,
+          "round": 2,
+          "rollout": 2,
+          "candidate": "510",
+          "first_solved_at_utc": "2026-10-04T00:56:31.116+00:00",
+          "first_solved_elapsed_s": 71.32121138199,
+          "grader_answered_at_utc": "2026-10-04T00:56:31.114842Z",
+          "grader_query_id": "20261004T005518.974361Z-q12-a510"
+        }
+      ],
+      "new_late_solves": [
+        {
+          "problem_idx": 7,
+          "round": 1,
+          "rollout": 1,
+          "candidate": "821",
+          "first_solved_at_utc": "2026-10-04T22:00:11.990+00:00",
+          "first_solved_elapsed_s": 58.625807371980045,
+          "grader_answered_at_utc": "2026-10-04T22:00:11.989515Z",
+          "grader_query_id": "20261004T215912.542295Z-q7-a821"
+        },
+        {
+          "problem_idx": 18,
+          "round": 2,
+          "rollout": 2,
+          "candidate": "82",
+          "first_solved_at_utc": "2026-10-04T22:00:21.245+00:00",
+          "first_solved_elapsed_s": 67.88027554296423,
+          "grader_answered_at_utc": "2026-10-04T22:00:21.243580Z",
+          "grader_query_id": "20261004T215912.542295Z-q18-a82"
+        },
+        {
+          "problem_idx": 23,
+          "round": 2,
+          "rollout": 2,
+          "candidate": "610",
+          "first_solved_at_utc": "2026-10-04T22:00:24.245+00:00",
+          "first_solved_elapsed_s": 70.88087013998302,
+          "grader_answered_at_utc": "2026-10-04T22:00:24.243942Z",
+          "grader_query_id": "20261004T215912.542295Z-q23-a610"
+        }
+      ]
+    },
+    {
+      "seed": 20261012,
+      "audit": {
+        "sampling_seed": 20261012,
+        "attempt_id": "20261004T220026.173068Z",
+        "valid": true,
+        "status": "completed",
+        "target_reached": true,
+        "time_to_target_s": 76.58609419601271,
+        "reference_attempt_id": "20261004T005632.979246Z",
+        "reference_time_to_target_s": 77.27695375698386,
+        "delta_s": -0.6908595609711483,
+        "solved": 18,
+        "solved_indices": [
+          1,
+          3,
+          4,
+          5,
+          6,
+          8,
+          11,
+          12,
+          16,
+          17,
+          18,
+          19,
+          21,
+          22,
+          25,
+          26,
+          27,
+          29
+        ],
+        "generation_requests": 43,
+        "continuation_requests": 13,
+        "initial_payload_mismatches": [],
+        "continuation_errors": [],
+        "request_cap_valid": true,
+        "first_solved_target_valid": true,
+        "completed_checks": 21,
+        "wrong_checks": 3,
+        "candidate_formats": {
+          "literal_prose": 15,
+          "boxed": 6
+        },
+        "performance": {
+          "generation_requests": 43,
+          "fresh_ttft": {
+            "count": 30,
+            "median_s": 0.23756259604124352,
+            "p95_s": 0.29026606399565935
+          },
+          "continuation_ttft": {
+            "count": 13,
+            "median_s": 0.1486095289583318,
+            "p95_s": 0.16866208496503532
+          },
+          "official_gpu": null,
+          "initialization_gpu": null
+        },
+        "grader_timeline": {
+          "completed_queries": 21,
+          "audit_errors": [],
+          "correct": 18,
+          "wrong": 3,
+          "target_service_floor_s": 54.0,
+          "actual_service_s": 63.00270318984985,
+          "idle_between_queries_s": 9.691827774047852,
+          "first_pick_elapsed_s": 3.891335964202881,
+          "scope": "completed oracle jobs; queued/cancelled client jobs may still incur service"
+        },
+        "official_latency_s": 76.63482578098774,
+        "trace_storage": {
+          "buffered": true,
+          "files_written": 319,
+          "jsonl_rows": 218510,
+          "payload_characters": 77693591,
+          "latency_s": 1.7399187600240111,
+          "scope": "Client trace flush after official timing; excluded from time to target and official latency"
+        }
+      },
+      "reference_performance": {
+        "generation_requests": 43,
+        "fresh_ttft": {
+          "count": 30,
+          "median_s": 0.2385137529927306,
+          "p95_s": 0.2909424799727276
+        },
+        "continuation_ttft": {
+          "count": 13,
+          "median_s": 0.1515777039458044,
+          "p95_s": 0.16795463202288374
+        },
+        "official_gpu": null,
+        "initialization_gpu": null
+      },
+      "reference_grader_timeline": {
+        "completed_queries": 20,
+        "audit_errors": [],
+        "correct": 18,
+        "wrong": 2,
+        "target_service_floor_s": 54.0,
+        "actual_service_s": 60.00298595428467,
+        "idle_between_queries_s": 13.377408027648926,
+        "first_pick_elapsed_s": 3.895724058151245,
+        "scope": "completed oracle jobs; queued/cancelled client jobs may still incur service"
+      },
+      "reference_continuations": 13,
+      "solved_overlap_count": 16,
+      "reference_only_solved": [
+        23,
+        24
+      ],
+      "new_only_solved": [
+        11,
+        29
+      ],
+      "initial_token_overlap": [
+        {
+          "problem_idx": 1,
+          "reference_retained_tokens": 2540,
+          "new_retained_tokens": 2538,
+          "matching_prefix_tokens": 2538,
+          "retained_overlap_equal": true
+        },
+        {
+          "problem_idx": 2,
+          "reference_retained_tokens": 8192,
+          "new_retained_tokens": 8192,
+          "matching_prefix_tokens": 3070,
+          "retained_overlap_equal": false
+        },
+        {
+          "problem_idx": 3,
+          "reference_retained_tokens": 2810,
+          "new_retained_tokens": 2810,
+          "matching_prefix_tokens": 2810,
+          "retained_overlap_equal": true
+        },
+        {
+          "problem_idx": 4,
+          "reference_retained_tokens": 2973,
+          "new_retained_tokens": 2970,
+          "matching_prefix_tokens": 2970,
+          "retained_overlap_equal": true
+        },
+        {
+          "problem_idx": 5,
+          "reference_retained_tokens": 8192,
+          "new_retained_tokens": 7437,
+          "matching_prefix_tokens": 2993,
+          "retained_overlap_equal": false
+        },
+        {
+          "problem_idx": 6,
+          "reference_retained_tokens": 4235,
+          "new_retained_tokens": 4230,
+          "matching_prefix_tokens": 3120,
+          "retained_overlap_equal": false
+        },
+        {
+          "problem_idx": 7,
+          "reference_retained_tokens": 8192,
+          "new_retained_tokens": 8192,
+          "matching_prefix_tokens": 3179,
+          "retained_overlap_equal": false
+        },
+        {
+          "problem_idx": 8,
+          "reference_retained_tokens": 3825,
+          "new_retained_tokens": 3822,
+          "matching_prefix_tokens": 2986,
+          "retained_overlap_equal": false
+        },
+        {
+          "problem_idx": 9,
+          "reference_retained_tokens": 8192,
+          "new_retained_tokens": 8192,
+          "matching_prefix_tokens": 2985,
+          "retained_overlap_equal": false
+        },
+        {
+          "problem_idx": 10,
+          "reference_retained_tokens": 8192,
+          "new_retained_tokens": 8192,
+          "matching_prefix_tokens": 3019,
+          "retained_overlap_equal": false
+        },
+        {
+          "problem_idx": 11,
+          "reference_retained_tokens": 8192,
+          "new_retained_tokens": 8192,
+          "matching_prefix_tokens": 3104,
+          "retained_overlap_equal": false
+        },
+        {
+          "problem_idx": 12,
+          "reference_retained_tokens": 8192,
+          "new_retained_tokens": 8192,
+          "matching_prefix_tokens": 3276,
+          "retained_overlap_equal": false
+        },
+        {
+          "problem_idx": 13,
+          "reference_retained_tokens": 8192,
+          "new_retained_tokens": 8192,
+          "matching_prefix_tokens": 2973,
+          "retained_overlap_equal": false
+        },
+        {
+          "problem_idx": 14,
+          "reference_retained_tokens": 8192,
+          "new_retained_tokens": 8192,
+          "matching_prefix_tokens": 3027,
+          "retained_overlap_equal": false
+        },
+        {
+          "problem_idx": 15,
+          "reference_retained_tokens": 8192,
+          "new_retained_tokens": 8192,
+          "matching_prefix_tokens": 3073,
+          "retained_overlap_equal": false
+        },
+        {
+          "problem_idx": 16,
+          "reference_retained_tokens": 4205,
+          "new_retained_tokens": 4543,
+          "matching_prefix_tokens": 3076,
+          "retained_overlap_equal": false
+        },
+        {
+          "problem_idx": 17,
+          "reference_retained_tokens": 1637,
+          "new_retained_tokens": 1637,
+          "matching_prefix_tokens": 1637,
+          "retained_overlap_equal": true
+        },
+        {
+          "problem_idx": 18,
+          "reference_retained_tokens": 7427,
+          "new_retained_tokens": 7818,
+          "matching_prefix_tokens": 3172,
+          "retained_overlap_equal": false
+        },
+        {
+          "problem_idx": 19,
+          "reference_retained_tokens": 5052,
+          "new_retained_tokens": 5047,
+          "matching_prefix_tokens": 3010,
+          "retained_overlap_equal": false
+        },
+        {
+          "problem_idx": 20,
+          "reference_retained_tokens": 8192,
+          "new_retained_tokens": 8192,
+          "matching_prefix_tokens": 3144,
+          "retained_overlap_equal": false
+        },
+        {
+          "problem_idx": 21,
+          "reference_retained_tokens": 5853,
+          "new_retained_tokens": 5212,
+          "matching_prefix_tokens": 3019,
+          "retained_overlap_equal": false
+        },
+        {
+          "problem_idx": 22,
+          "reference_retained_tokens": 5676,
+          "new_retained_tokens": 4856,
+          "matching_prefix_tokens": 2991,
+          "retained_overlap_equal": false
+        },
+        {
+          "problem_idx": 23,
+          "reference_retained_tokens": 8192,
+          "new_retained_tokens": 8192,
+          "matching_prefix_tokens": 3029,
+          "retained_overlap_equal": false
+        },
+        {
+          "problem_idx": 24,
+          "reference_retained_tokens": 7840,
+          "new_retained_tokens": 8192,
+          "matching_prefix_tokens": 3040,
+          "retained_overlap_equal": false
+        },
+        {
+          "problem_idx": 25,
+          "reference_retained_tokens": 4648,
+          "new_retained_tokens": 4639,
+          "matching_prefix_tokens": 3350,
+          "retained_overlap_equal": false
+        },
+        {
+          "problem_idx": 26,
+          "reference_retained_tokens": 6644,
+          "new_retained_tokens": 8192,
+          "matching_prefix_tokens": 3035,
+          "retained_overlap_equal": false
+        },
+        {
+          "problem_idx": 27,
+          "reference_retained_tokens": 7033,
+          "new_retained_tokens": 6662,
+          "matching_prefix_tokens": 3092,
+          "retained_overlap_equal": false
+        },
+        {
+          "problem_idx": 28,
+          "reference_retained_tokens": 8192,
+          "new_retained_tokens": 8192,
+          "matching_prefix_tokens": 3043,
+          "retained_overlap_equal": false
+        },
+        {
+          "problem_idx": 29,
+          "reference_retained_tokens": 8192,
+          "new_retained_tokens": 8192,
+          "matching_prefix_tokens": 3631,
+          "retained_overlap_equal": false
+        },
+        {
+          "problem_idx": 30,
+          "reference_retained_tokens": 8192,
+          "new_retained_tokens": 8192,
+          "matching_prefix_tokens": 3046,
+          "retained_overlap_equal": false
+        }
+      ],
+      "reference_late_solves": [
+        {
+          "problem_idx": 5,
+          "round": 1,
+          "rollout": 1,
+          "candidate": "279",
+          "first_solved_at_utc": "2026-10-04T00:57:31.670+00:00",
+          "first_solved_elapsed_s": 57.90251659200294,
+          "grader_answered_at_utc": "2026-10-04T00:57:31.669004Z",
+          "grader_query_id": "20261004T005632.979246Z-q5-a279"
+        },
+        {
+          "problem_idx": 12,
+          "round": 1,
+          "rollout": 1,
+          "candidate": "510",
+          "first_solved_at_utc": "2026-10-04T00:57:34.670+00:00",
+          "first_solved_elapsed_s": 60.902270774007775,
+          "grader_answered_at_utc": "2026-10-04T00:57:34.669343Z",
+          "grader_query_id": "20261004T005632.979246Z-q12-a510"
+        },
+        {
+          "problem_idx": 23,
+          "round": 2,
+          "rollout": 2,
+          "candidate": "610",
+          "first_solved_at_utc": "2026-10-04T00:57:51.045+00:00",
+          "first_solved_elapsed_s": 77.27695375698386,
+          "grader_answered_at_utc": "2026-10-04T00:57:51.043118Z",
+          "grader_query_id": "20261004T005632.979246Z-q23-a610"
+        }
+      ],
+      "new_late_solves": [
+        {
+          "problem_idx": 26,
+          "round": 1,
+          "rollout": 1,
+          "candidate": "113",
+          "first_solved_at_utc": "2026-10-04T22:01:27.862+00:00",
+          "first_solved_elapsed_s": 60.89888038398931,
+          "grader_answered_at_utc": "2026-10-04T22:01:27.860982Z",
+          "grader_query_id": "20261004T220026.173068Z-q26-a113"
+        },
+        {
+          "problem_idx": 12,
+          "round": 1,
+          "rollout": 1,
+          "candidate": "510",
+          "first_solved_at_utc": "2026-10-04T22:01:30.862+00:00",
+          "first_solved_elapsed_s": 63.89888607501052,
+          "grader_answered_at_utc": "2026-10-04T22:01:30.861337Z",
+          "grader_query_id": "20261004T220026.173068Z-q12-a510"
+        },
+        {
+          "problem_idx": 29,
+          "round": 2,
+          "rollout": 2,
+          "candidate": "104",
+          "first_solved_at_utc": "2026-10-04T22:01:43.549+00:00",
+          "first_solved_elapsed_s": 76.58609419601271,
+          "grader_answered_at_utc": "2026-10-04T22:01:43.548867Z",
+          "grader_query_id": "20261004T220026.173068Z-q29-a104"
+        }
+      ]
+    },
+    {
+      "seed": 20261013,
+      "audit": {
+        "sampling_seed": 20261013,
+        "attempt_id": "20261004T220145.495588Z",
+        "valid": true,
+        "status": "completed",
+        "target_reached": true,
+        "time_to_target_s": 73.56776215898572,
+        "reference_attempt_id": "20261004T005752.973818Z",
+        "reference_time_to_target_s": 82.49167418194702,
+        "delta_s": -8.923912022961304,
+        "solved": 18,
+        "solved_indices": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          8,
+          12,
+          16,
+          17,
+          18,
+          19,
+          21,
+          22,
+          24,
+          25,
+          26,
+          27
+        ],
+        "generation_requests": 45,
+        "continuation_requests": 15,
+        "initial_payload_mismatches": [],
+        "continuation_errors": [],
+        "request_cap_valid": true,
+        "first_solved_target_valid": true,
+        "completed_checks": 18,
+        "wrong_checks": 0,
+        "candidate_formats": {
+          "boxed": 6,
+          "literal_prose": 12
+        },
+        "performance": {
+          "generation_requests": 45,
+          "fresh_ttft": {
+            "count": 30,
+            "median_s": 0.23953512503067032,
+            "p95_s": 0.292351097043138
+          },
+          "continuation_ttft": {
+            "count": 15,
+            "median_s": 0.1852039090008475,
+            "p95_s": 0.20800417801365256
+          },
+          "official_gpu": null,
+          "initialization_gpu": null
+        },
+        "grader_timeline": {
+          "completed_queries": 18,
+          "audit_errors": [],
+          "correct": 18,
+          "wrong": 0,
+          "target_service_floor_s": 54.0,
+          "actual_service_s": 54.00193214416504,
+          "idle_between_queries_s": 15.206055641174316,
+          "first_pick_elapsed_s": 4.359872102737427,
+          "scope": "completed oracle jobs; queued/cancelled client jobs may still incur service"
+        },
+        "official_latency_s": 73.61748993396759,
+        "trace_storage": {
+          "buffered": true,
+          "files_written": 331,
+          "jsonl_rows": 219719,
+          "payload_characters": 78090566,
+          "latency_s": 1.6915931020048447,
+          "scope": "Client trace flush after official timing; excluded from time to target and official latency"
+        }
+      },
+      "reference_performance": {
+        "generation_requests": 43,
+        "fresh_ttft": {
+          "count": 30,
+          "median_s": 0.2402891109813936,
+          "p95_s": 0.29273102997103706
+        },
+        "continuation_ttft": {
+          "count": 13,
+          "median_s": 0.15981018403545022,
+          "p95_s": 0.17854986200109124
+        },
+        "official_gpu": null,
+        "initialization_gpu": null
+      },
+      "reference_grader_timeline": {
+        "completed_queries": 18,
+        "audit_errors": [],
+        "correct": 18,
+        "wrong": 0,
+        "target_service_floor_s": 54.0,
+        "actual_service_s": 54.00220251083374,
+        "idle_between_queries_s": 24.127625465393066,
+        "first_pick_elapsed_s": 4.360960960388184,
+        "scope": "completed oracle jobs; queued/cancelled client jobs may still incur service"
+      },
+      "reference_continuations": 13,
+      "solved_overlap_count": 16,
+      "reference_only_solved": [
+        23,
+        29
+      ],
+      "new_only_solved": [
+        2,
+        18
+      ],
+      "initial_token_overlap": [
+        {
+          "problem_idx": 1,
+          "reference_retained_tokens": 1711,
+          "new_retained_tokens": 1712,
+          "matching_prefix_tokens": 1711,
+          "retained_overlap_equal": true
+        },
+        {
+          "problem_idx": 2,
+          "reference_retained_tokens": 8192,
+          "new_retained_tokens": 8192,
+          "matching_prefix_tokens": 5016,
+          "retained_overlap_equal": false
+        },
+        {
+          "problem_idx": 3,
+          "reference_retained_tokens": 2168,
+          "new_retained_tokens": 2168,
+          "matching_prefix_tokens": 2168,
+          "retained_overlap_equal": true
+        },
+        {
+          "problem_idx": 4,
+          "reference_retained_tokens": 3512,
+          "new_retained_tokens": 3513,
+          "matching_prefix_tokens": 3512,
+          "retained_overlap_equal": true
+        },
+        {
+          "problem_idx": 5,
+          "reference_retained_tokens": 6816,
+          "new_retained_tokens": 7242,
+          "matching_prefix_tokens": 4983,
+          "retained_overlap_equal": false
+        },
+        {
+          "problem_idx": 6,
+          "reference_retained_tokens": 2626,
+          "new_retained_tokens": 2627,
+          "matching_prefix_tokens": 2626,
+          "retained_overlap_equal": true
+        },
+        {
+          "problem_idx": 7,
+          "reference_retained_tokens": 8192,
+          "new_retained_tokens": 8192,
+          "matching_prefix_tokens": 4810,
+          "retained_overlap_equal": false
+        },
+        {
+          "problem_idx": 8,
+          "reference_retained_tokens": 3074,
+          "new_retained_tokens": 3075,
+          "matching_prefix_tokens": 3074,
+          "retained_overlap_equal": true
+        },
+        {
+          "problem_idx": 9,
+          "reference_retained_tokens": 8192,
+          "new_retained_tokens": 8192,
+          "matching_prefix_tokens": 5358,
+          "retained_overlap_equal": false
+        },
+        {
+          "problem_idx": 10,
+          "reference_retained_tokens": 8192,
+          "new_retained_tokens": 8192,
+          "matching_prefix_tokens": 4807,
+          "retained_overlap_equal": false
+        },
+        {
+          "problem_idx": 11,
+          "reference_retained_tokens": 8192,
+          "new_retained_tokens": 8192,
+          "matching_prefix_tokens": 4893,
+          "retained_overlap_equal": false
+        },
+        {
+          "problem_idx": 12,
+          "reference_retained_tokens": 8192,
+          "new_retained_tokens": 8192,
+          "matching_prefix_tokens": 4898,
+          "retained_overlap_equal": false
+        },
+        {
+          "problem_idx": 13,
+          "reference_retained_tokens": 8192,
+          "new_retained_tokens": 8192,
+          "matching_prefix_tokens": 4905,
+          "retained_overlap_equal": false
+        },
+        {
+          "problem_idx": 14,
+          "reference_retained_tokens": 8192,
+          "new_retained_tokens": 8192,
+          "matching_prefix_tokens": 4822,
+          "retained_overlap_equal": false
+        },
+        {
+          "problem_idx": 15,
+          "reference_retained_tokens": 8192,
+          "new_retained_tokens": 8192,
+          "matching_prefix_tokens": 4804,
+          "retained_overlap_equal": false
+        },
+        {
+          "problem_idx": 16,
+          "reference_retained_tokens": 5184,
+          "new_retained_tokens": 5184,
+          "matching_prefix_tokens": 5184,
+          "retained_overlap_equal": true
+        },
+        {
+          "problem_idx": 17,
+          "reference_retained_tokens": 1232,
+          "new_retained_tokens": 1232,
+          "matching_prefix_tokens": 1232,
+          "retained_overlap_equal": true
+        },
+        {
+          "problem_idx": 18,
+          "reference_retained_tokens": 8192,
+          "new_retained_tokens": 8192,
+          "matching_prefix_tokens": 6460,
+          "retained_overlap_equal": false
+        },
+        {
+          "problem_idx": 19,
+          "reference_retained_tokens": 3411,
+          "new_retained_tokens": 3411,
+          "matching_prefix_tokens": 3411,
+          "retained_overlap_equal": true
+        },
+        {
+          "problem_idx": 20,
+          "reference_retained_tokens": 8192,
+          "new_retained_tokens": 8192,
+          "matching_prefix_tokens": 4971,
+          "retained_overlap_equal": false
+        },
+        {
+          "problem_idx": 21,
+          "reference_retained_tokens": 5599,
+          "new_retained_tokens": 5599,
+          "matching_prefix_tokens": 5317,
+          "retained_overlap_equal": false
+        },
+        {
+          "problem_idx": 22,
+          "reference_retained_tokens": 4783,
+          "new_retained_tokens": 4783,
+          "matching_prefix_tokens": 4783,
+          "retained_overlap_equal": true
+        },
+        {
+          "problem_idx": 23,
+          "reference_retained_tokens": 7241,
+          "new_retained_tokens": 8192,
+          "matching_prefix_tokens": 4797,
+          "retained_overlap_equal": false
+        },
+        {
+          "problem_idx": 24,
+          "reference_retained_tokens": 6411,
+          "new_retained_tokens": 6411,
+          "matching_prefix_tokens": 4790,
+          "retained_overlap_equal": false
+        },
+        {
+          "problem_idx": 25,
+          "reference_retained_tokens": 4369,
+          "new_retained_tokens": 4369,
+          "matching_prefix_tokens": 4369,
+          "retained_overlap_equal": true
+        },
+        {
+          "problem_idx": 26,
+          "reference_retained_tokens": 7669,
+          "new_retained_tokens": 6813,
+          "matching_prefix_tokens": 4801,
+          "retained_overlap_equal": false
+        },
+        {
+          "problem_idx": 27,
+          "reference_retained_tokens": 6005,
+          "new_retained_tokens": 6005,
+          "matching_prefix_tokens": 4869,
+          "retained_overlap_equal": false
+        },
+        {
+          "problem_idx": 28,
+          "reference_retained_tokens": 8192,
+          "new_retained_tokens": 8192,
+          "matching_prefix_tokens": 5243,
+          "retained_overlap_equal": false
+        },
+        {
+          "problem_idx": 29,
+          "reference_retained_tokens": 8192,
+          "new_retained_tokens": 8192,
+          "matching_prefix_tokens": 4792,
+          "retained_overlap_equal": false
+        },
+        {
+          "problem_idx": 30,
+          "reference_retained_tokens": 8192,
+          "new_retained_tokens": 8192,
+          "matching_prefix_tokens": 4843,
+          "retained_overlap_equal": false
+        }
+      ],
+      "reference_late_solves": [
+        {
+          "problem_idx": 26,
+          "round": 1,
+          "rollout": 1,
+          "candidate": "113",
+          "first_solved_at_utc": "2026-10-04T00:58:46.129+00:00",
+          "first_solved_elapsed_s": 52.36660705099348,
+          "grader_answered_at_utc": "2026-10-04T00:58:46.127827Z",
+          "grader_query_id": "20261004T005752.973818Z-q26-a113"
+        },
+        {
+          "problem_idx": 12,
+          "round": 1,
+          "rollout": 1,
+          "candidate": "510",
+          "first_solved_at_utc": "2026-10-04T00:58:50.006+00:00",
+          "first_solved_elapsed_s": 56.24362092994852,
+          "grader_answered_at_utc": "2026-10-04T00:58:50.005069Z",
+          "grader_query_id": "20261004T005752.973818Z-q12-a510"
+        },
+        {
+          "problem_idx": 29,
+          "round": 2,
+          "rollout": 2,
+          "candidate": "104",
+          "first_solved_at_utc": "2026-10-04T00:59:16.254+00:00",
+          "first_solved_elapsed_s": 82.49167418194702,
+          "grader_answered_at_utc": "2026-10-04T00:59:16.252789Z",
+          "grader_query_id": "20261004T005752.973818Z-q29-a104"
+        }
+      ],
+      "new_late_solves": [
+        {
+          "problem_idx": 12,
+          "round": 2,
+          "rollout": 2,
+          "candidate": "510",
+          "first_solved_at_utc": "2026-10-04T22:02:46.650+00:00",
+          "first_solved_elapsed_s": 60.362898555991706,
+          "grader_answered_at_utc": "2026-10-04T22:02:46.648906Z",
+          "grader_query_id": "20261004T220145.495588Z-q12-a510"
+        },
+        {
+          "problem_idx": 18,
+          "round": 2,
+          "rollout": 2,
+          "candidate": "82",
+          "first_solved_at_utc": "2026-10-04T22:02:56.855+00:00",
+          "first_solved_elapsed_s": 70.5678664210136,
+          "grader_answered_at_utc": "2026-10-04T22:02:56.853530Z",
+          "grader_query_id": "20261004T220145.495588Z-q18-a82"
+        },
+        {
+          "problem_idx": 2,
+          "round": 2,
+          "rollout": 2,
+          "candidate": "588",
+          "first_solved_at_utc": "2026-10-04T22:02:59.854+00:00",
+          "first_solved_elapsed_s": 73.56776215898572,
+          "grader_answered_at_utc": "2026-10-04T22:02:59.853860Z",
+          "grader_query_id": "20261004T220145.495588Z-q2-a588"
+        }
+      ]
+    },
+    {
+      "seed": 20261014,
+      "audit": {
+        "sampling_seed": 20261014,
+        "attempt_id": "20261004T220301.755951Z",
+        "valid": true,
+        "status": "completed",
+        "target_reached": true,
+        "time_to_target_s": 128.74419849499827,
+        "reference_attempt_id": "20261004T005918.176012Z",
+        "reference_time_to_target_s": 81.10196408699267,
+        "delta_s": 47.642234408005606,
+        "solved": 18,
+        "solved_indices": [
+          1,
+          3,
+          4,
+          5,
+          6,
+          8,
+          9,
+          12,
+          16,
+          17,
+          19,
+          21,
+          22,
+          24,
+          25,
+          26,
+          27,
+          29
+        ],
+        "generation_requests": 44,
+        "continuation_requests": 14,
+        "initial_payload_mismatches": [],
+        "continuation_errors": [],
+        "request_cap_valid": true,
+        "first_solved_target_valid": true,
+        "completed_checks": 18,
+        "wrong_checks": 0,
+        "candidate_formats": {
+          "boxed": 7,
+          "literal_prose": 11
+        },
+        "performance": {
+          "generation_requests": 44,
+          "fresh_ttft": {
+            "count": 30,
+            "median_s": 0.24055560398846865,
+            "p95_s": 0.2934737899922766
+          },
+          "continuation_ttft": {
+            "count": 14,
+            "median_s": 0.1658897700253874,
+            "p95_s": 0.18121038499521092
+          },
+          "official_gpu": null,
+          "initialization_gpu": null
+        },
+        "grader_timeline": {
+          "completed_queries": 18,
+          "audit_errors": [],
+          "correct": 18,
+          "wrong": 0,
+          "target_service_floor_s": 54.0,
+          "actual_service_s": 54.00209093093872,
+          "idle_between_queries_s": 68.71082520484924,
+          "first_pick_elapsed_s": 6.030545949935913,
+          "scope": "completed oracle jobs; queued/cancelled client jobs may still incur service"
+        },
+        "official_latency_s": 128.8247962880414,
+        "trace_storage": {
+          "buffered": true,
+          "files_written": 325,
+          "jsonl_rows": 309913,
+          "payload_characters": 109100645,
+          "latency_s": 2.476366744027473,
+          "scope": "Client trace flush after official timing; excluded from time to target and official latency"
+        }
+      },
+      "reference_performance": {
+        "generation_requests": 45,
+        "fresh_ttft": {
+          "count": 30,
+          "median_s": 0.2402747700107284,
+          "p95_s": 0.2934171740198508
+        },
+        "continuation_ttft": {
+          "count": 15,
+          "median_s": 0.17676304798806086,
+          "p95_s": 0.1997408259776421
+        },
+        "official_gpu": null,
+        "initialization_gpu": null
+      },
+      "reference_grader_timeline": {
+        "completed_queries": 19,
+        "audit_errors": [],
+        "correct": 18,
+        "wrong": 1,
+        "target_service_floor_s": 54.0,
+        "actual_service_s": 57.002217292785645,
+        "idle_between_queries_s": 18.065403699874878,
+        "first_pick_elapsed_s": 6.034121036529541,
+        "scope": "completed oracle jobs; queued/cancelled client jobs may still incur service"
+      },
+      "reference_continuations": 15,
+      "solved_overlap_count": 17,
+      "reference_only_solved": [
+        7
+      ],
+      "new_only_solved": [
+        29
+      ],
+      "initial_token_overlap": [
+        {
+          "problem_idx": 1,
+          "reference_retained_tokens": 1503,
+          "new_retained_tokens": 1503,
+          "matching_prefix_tokens": 1503,
+          "retained_overlap_equal": true
+        },
+        {
+          "problem_idx": 2,
+          "reference_retained_tokens": 8192,
+          "new_retained_tokens": 8192,
+          "matching_prefix_tokens": 3520,
+          "retained_overlap_equal": false
+        },
+        {
+          "problem_idx": 3,
+          "reference_retained_tokens": 2416,
+          "new_retained_tokens": 2414,
+          "matching_prefix_tokens": 2414,
+          "retained_overlap_equal": true
+        },
+        {
+          "problem_idx": 4,
+          "reference_retained_tokens": 4155,
+          "new_retained_tokens": 4151,
+          "matching_prefix_tokens": 3412,
+          "retained_overlap_equal": false
+        },
+        {
+          "problem_idx": 5,
+          "reference_retained_tokens": 6988,
+          "new_retained_tokens": 7408,
+          "matching_prefix_tokens": 3343,
+          "retained_overlap_equal": false
+        },
+        {
+          "problem_idx": 6,
+          "reference_retained_tokens": 1966,
+          "new_retained_tokens": 1965,
+          "matching_prefix_tokens": 1965,
+          "retained_overlap_equal": true
+        },
+        {
+          "problem_idx": 7,
+          "reference_retained_tokens": 8192,
+          "new_retained_tokens": 8192,
+          "matching_prefix_tokens": 3303,
+          "retained_overlap_equal": false
+        },
+        {
+          "problem_idx": 8,
+          "reference_retained_tokens": 4979,
+          "new_retained_tokens": 4975,
+          "matching_prefix_tokens": 3350,
+          "retained_overlap_equal": false
+        },
+        {
+          "problem_idx": 9,
+          "reference_retained_tokens": 8192,
+          "new_retained_tokens": 8192,
+          "matching_prefix_tokens": 3463,
+          "retained_overlap_equal": false
+        },
+        {
+          "problem_idx": 10,
+          "reference_retained_tokens": 8192,
+          "new_retained_tokens": 8192,
+          "matching_prefix_tokens": 3412,
+          "retained_overlap_equal": false
+        },
+        {
+          "problem_idx": 11,
+          "reference_retained_tokens": 8192,
+          "new_retained_tokens": 8192,
+          "matching_prefix_tokens": 4367,
+          "retained_overlap_equal": false
+        },
+        {
+          "problem_idx": 12,
+          "reference_retained_tokens": 8192,
+          "new_retained_tokens": 6981,
+          "matching_prefix_tokens": 3455,
+          "retained_overlap_equal": false
+        },
+        {
+          "problem_idx": 13,
+          "reference_retained_tokens": 8192,
+          "new_retained_tokens": 8192,
+          "matching_prefix_tokens": 3303,
+          "retained_overlap_equal": false
+        },
+        {
+          "problem_idx": 14,
+          "reference_retained_tokens": 8192,
+          "new_retained_tokens": 8192,
+          "matching_prefix_tokens": 3344,
+          "retained_overlap_equal": false
+        },
+        {
+          "problem_idx": 15,
+          "reference_retained_tokens": 8192,
+          "new_retained_tokens": 8192,
+          "matching_prefix_tokens": 3335,
+          "retained_overlap_equal": false
+        },
+        {
+          "problem_idx": 16,
+          "reference_retained_tokens": 2865,
+          "new_retained_tokens": 2863,
+          "matching_prefix_tokens": 2863,
+          "retained_overlap_equal": true
+        },
+        {
+          "problem_idx": 17,
+          "reference_retained_tokens": 3303,
+          "new_retained_tokens": 3300,
+          "matching_prefix_tokens": 3300,
+          "retained_overlap_equal": true
+        },
+        {
+          "problem_idx": 18,
+          "reference_retained_tokens": 8192,
+          "new_retained_tokens": 8192,
+          "matching_prefix_tokens": 3519,
+          "retained_overlap_equal": false
+        },
+        {
+          "problem_idx": 19,
+          "reference_retained_tokens": 3729,
+          "new_retained_tokens": 3726,
+          "matching_prefix_tokens": 3303,
+          "retained_overlap_equal": false
+        },
+        {
+          "problem_idx": 20,
+          "reference_retained_tokens": 8192,
+          "new_retained_tokens": 8192,
+          "matching_prefix_tokens": 3333,
+          "retained_overlap_equal": false
+        },
+        {
+          "problem_idx": 21,
+          "reference_retained_tokens": 5784,
+          "new_retained_tokens": 5780,
+          "matching_prefix_tokens": 3512,
+          "retained_overlap_equal": false
+        },
+        {
+          "problem_idx": 22,
+          "reference_retained_tokens": 4568,
+          "new_retained_tokens": 4564,
+          "matching_prefix_tokens": 3382,
+          "retained_overlap_equal": false
+        },
+        {
+          "problem_idx": 23,
+          "reference_retained_tokens": 8192,
+          "new_retained_tokens": 8192,
+          "matching_prefix_tokens": 3658,
+          "retained_overlap_equal": false
+        },
+        {
+          "problem_idx": 24,
+          "reference_retained_tokens": 7412,
+          "new_retained_tokens": 6583,
+          "matching_prefix_tokens": 3401,
+          "retained_overlap_equal": false
+        },
+        {
+          "problem_idx": 25,
+          "reference_retained_tokens": 5383,
+          "new_retained_tokens": 5379,
+          "matching_prefix_tokens": 3483,
+          "retained_overlap_equal": false
+        },
+        {
+          "problem_idx": 26,
+          "reference_retained_tokens": 6586,
+          "new_retained_tokens": 7830,
+          "matching_prefix_tokens": 3626,
+          "retained_overlap_equal": false
+        },
+        {
+          "problem_idx": 27,
+          "reference_retained_tokens": 6185,
+          "new_retained_tokens": 6182,
+          "matching_prefix_tokens": 3742,
+          "retained_overlap_equal": false
+        },
+        {
+          "problem_idx": 28,
+          "reference_retained_tokens": 8192,
+          "new_retained_tokens": 8192,
+          "matching_prefix_tokens": 4074,
+          "retained_overlap_equal": false
+        },
+        {
+          "problem_idx": 29,
+          "reference_retained_tokens": 8192,
+          "new_retained_tokens": 8192,
+          "matching_prefix_tokens": 3447,
+          "retained_overlap_equal": false
+        },
+        {
+          "problem_idx": 30,
+          "reference_retained_tokens": 8192,
+          "new_retained_tokens": 8192,
+          "matching_prefix_tokens": 3304,
+          "retained_overlap_equal": false
+        }
+      ],
+      "reference_late_solves": [
+        {
+          "problem_idx": 7,
+          "round": 2,
+          "rollout": 2,
+          "candidate": "821",
+          "first_solved_at_utc": "2026-10-04T01:00:29.569+00:00",
+          "first_solved_elapsed_s": 70.60687755601248,
+          "grader_answered_at_utc": "2026-10-04T01:00:29.567104Z",
+          "grader_query_id": "20261004T005918.176012Z-q7-a821"
+        },
+        {
+          "problem_idx": 12,
+          "round": 2,
+          "rollout": 2,
+          "candidate": "510",
+          "first_solved_at_utc": "2026-10-04T01:00:32.568+00:00",
+          "first_solved_elapsed_s": 73.6059047760209,
+          "grader_answered_at_utc": "2026-10-04T01:00:32.567442Z",
+          "grader_query_id": "20261004T005918.176012Z-q12-a510"
+        },
+        {
+          "problem_idx": 9,
+          "round": 2,
+          "rollout": 2,
+          "candidate": "62",
+          "first_solved_at_utc": "2026-10-04T01:00:40.064+00:00",
+          "first_solved_elapsed_s": 81.10196408699267,
+          "grader_answered_at_utc": "2026-10-04T01:00:40.063742Z",
+          "grader_query_id": "20261004T005918.176012Z-q9-a62"
+        }
+      ],
+      "new_late_solves": [
+        {
+          "problem_idx": 26,
+          "round": 1,
+          "rollout": 1,
+          "candidate": "113",
+          "first_solved_at_utc": "2026-10-04T22:03:56.583+00:00",
+          "first_solved_elapsed_s": 54.035918950045016,
+          "grader_answered_at_utc": "2026-10-04T22:03:56.582716Z",
+          "grader_query_id": "20261004T220301.755951Z-q26-a113"
+        },
+        {
+          "problem_idx": 29,
+          "round": 2,
+          "rollout": 2,
+          "candidate": "104",
+          "first_solved_at_utc": "2026-10-04T22:05:01.992+00:00",
+          "first_solved_elapsed_s": 119.44456673203968,
+          "grader_answered_at_utc": "2026-10-04T22:05:01.991320Z",
+          "grader_query_id": "20261004T220301.755951Z-q29-a104"
+        },
+        {
+          "problem_idx": 9,
+          "round": 2,
+          "rollout": 2,
+          "candidate": "62",
+          "first_solved_at_utc": "2026-10-04T22:05:11.292+00:00",
+          "first_solved_elapsed_s": 128.74419849499827,
+          "grader_answered_at_utc": "2026-10-04T22:05:11.290462Z",
+          "grader_query_id": "20261004T220301.755951Z-q9-a62"
+        }
+      ]
+    },
+    {
+      "seed": 20261015,
+      "audit": {
+        "sampling_seed": 20261015,
+        "attempt_id": "20261004T220514.018752Z",
+        "valid": true,
+        "status": "completed",
+        "target_reached": true,
+        "time_to_target_s": 62.118150707974564,
+        "reference_attempt_id": "20261004T010042.153214Z",
+        "reference_time_to_target_s": 62.78271700296318,
+        "delta_s": -0.6645662949886173,
+        "solved": 18,
+        "solved_indices": [
+          1,
+          3,
+          4,
+          5,
+          6,
+          8,
+          11,
+          12,
+          16,
+          17,
+          18,
+          19,
+          21,
+          22,
+          24,
+          25,
+          26,
+          27
+        ],
+        "generation_requests": 43,
+        "continuation_requests": 13,
+        "initial_payload_mismatches": [],
+        "continuation_errors": [],
+        "request_cap_valid": true,
+        "first_solved_target_valid": true,
+        "completed_checks": 18,
+        "wrong_checks": 0,
+        "candidate_formats": {
+          "literal_prose": 14,
+          "boxed": 4
+        },
+        "performance": {
+          "generation_requests": 43,
+          "fresh_ttft": {
+            "count": 30,
+            "median_s": 0.24083674896974117,
+            "p95_s": 0.29315670201322064
+          },
+          "continuation_ttft": {
+            "count": 13,
+            "median_s": 0.15335295198019594,
+            "p95_s": 0.17342094099149108
+          },
+          "official_gpu": null,
+          "initialization_gpu": null
+        },
+        "grader_timeline": {
+          "completed_queries": 18,
+          "audit_errors": [],
+          "correct": 18,
+          "wrong": 0,
+          "target_service_floor_s": 54.0,
+          "actual_service_s": 54.001790285110474,
+          "idle_between_queries_s": 3.659724712371826,
+          "first_pick_elapsed_s": 4.456147909164429,
+          "scope": "completed oracle jobs; queued/cancelled client jobs may still incur service"
+        },
+        "official_latency_s": 62.163762643001974,
+        "trace_storage": {
+          "buffered": true,
+          "files_written": 319,
+          "jsonl_rows": 192546,
+          "payload_characters": 68682012,
+          "latency_s": 1.5597029560012743,
+          "scope": "Client trace flush after official timing; excluded from time to target and official latency"
+        }
+      },
+      "reference_performance": {
+        "generation_requests": 30,
+        "fresh_ttft": {
+          "count": 30,
+          "median_s": 0.24035127804381773,
+          "p95_s": 0.2927271960070357
+        },
+        "continuation_ttft": {
+          "count": 0,
+          "median_s": null,
+          "p95_s": null
+        },
+        "official_gpu": null,
+        "initialization_gpu": null
+      },
+      "reference_grader_timeline": {
+        "completed_queries": 18,
+        "audit_errors": [],
+        "correct": 18,
+        "wrong": 0,
+        "target_service_floor_s": 54.0,
+        "actual_service_s": 54.002132177352905,
+        "idle_between_queries_s": 4.322654962539673,
+        "first_pick_elapsed_s": 4.4566168785095215,
+        "scope": "completed oracle jobs; queued/cancelled client jobs may still incur service"
+      },
+      "reference_continuations": 0,
+      "solved_overlap_count": 17,
+      "reference_only_solved": [
+        23
+      ],
+      "new_only_solved": [
+        12
+      ],
+      "initial_token_overlap": [
+        {
+          "problem_idx": 1,
+          "reference_retained_tokens": 1250,
+          "new_retained_tokens": 1250,
+          "matching_prefix_tokens": 1250,
+          "retained_overlap_equal": true
+        },
+        {
+          "problem_idx": 2,
+          "reference_retained_tokens": 8192,
+          "new_retained_tokens": 8192,
+          "matching_prefix_tokens": 3125,
+          "retained_overlap_equal": false
+        },
+        {
+          "problem_idx": 3,
+          "reference_retained_tokens": 2184,
+          "new_retained_tokens": 2184,
+          "matching_prefix_tokens": 2184,
+          "retained_overlap_equal": true
+        },
+        {
+          "problem_idx": 4,
+          "reference_retained_tokens": 5224,
+          "new_retained_tokens": 4323,
+          "matching_prefix_tokens": 3097,
+          "retained_overlap_equal": false
+        },
+        {
+          "problem_idx": 5,
+          "reference_retained_tokens": 6044,
+          "new_retained_tokens": 6860,
+          "matching_prefix_tokens": 3132,
+          "retained_overlap_equal": false
+        },
+        {
+          "problem_idx": 6,
+          "reference_retained_tokens": 2642,
+          "new_retained_tokens": 2641,
+          "matching_prefix_tokens": 2641,
+          "retained_overlap_equal": true
+        },
+        {
+          "problem_idx": 7,
+          "reference_retained_tokens": 8192,
+          "new_retained_tokens": 8192,
+          "matching_prefix_tokens": 3157,
+          "retained_overlap_equal": false
+        },
+        {
+          "problem_idx": 8,
+          "reference_retained_tokens": 4805,
+          "new_retained_tokens": 4810,
+          "matching_prefix_tokens": 3105,
+          "retained_overlap_equal": false
+        },
+        {
+          "problem_idx": 9,
+          "reference_retained_tokens": 8192,
+          "new_retained_tokens": 8192,
+          "matching_prefix_tokens": 3265,
+          "retained_overlap_equal": false
+        },
+        {
+          "problem_idx": 10,
+          "reference_retained_tokens": 8192,
+          "new_retained_tokens": 8192,
+          "matching_prefix_tokens": 3210,
+          "retained_overlap_equal": false
+        },
+        {
+          "problem_idx": 11,
+          "reference_retained_tokens": 8192,
+          "new_retained_tokens": 8142,
+          "matching_prefix_tokens": 3124,
+          "retained_overlap_equal": false
+        },
+        {
+          "problem_idx": 12,
+          "reference_retained_tokens": 8192,
+          "new_retained_tokens": 8192,
+          "matching_prefix_tokens": 3403,
+          "retained_overlap_equal": false
+        },
+        {
+          "problem_idx": 13,
+          "reference_retained_tokens": 8192,
+          "new_retained_tokens": 8192,
+          "matching_prefix_tokens": 3165,
+          "retained_overlap_equal": false
+        },
+        {
+          "problem_idx": 14,
+          "reference_retained_tokens": 8192,
+          "new_retained_tokens": 8192,
+          "matching_prefix_tokens": 3101,
+          "retained_overlap_equal": false
+        },
+        {
+          "problem_idx": 15,
+          "reference_retained_tokens": 8192,
+          "new_retained_tokens": 8192,
+          "matching_prefix_tokens": 3215,
+          "retained_overlap_equal": false
+        },
+        {
+          "problem_idx": 16,
+          "reference_retained_tokens": 4226,
+          "new_retained_tokens": 4380,
+          "matching_prefix_tokens": 3189,
+          "retained_overlap_equal": false
+        },
+        {
+          "problem_idx": 17,
+          "reference_retained_tokens": 1725,
+          "new_retained_tokens": 1726,
+          "matching_prefix_tokens": 1725,
+          "retained_overlap_equal": true
+        },
+        {
+          "problem_idx": 18,
+          "reference_retained_tokens": 7838,
+          "new_retained_tokens": 7721,
+          "matching_prefix_tokens": 3116,
+          "retained_overlap_equal": false
+        },
+        {
+          "problem_idx": 19,
+          "reference_retained_tokens": 4379,
+          "new_retained_tokens": 4376,
+          "matching_prefix_tokens": 3186,
+          "retained_overlap_equal": false
+        },
+        {
+          "problem_idx": 20,
+          "reference_retained_tokens": 8192,
+          "new_retained_tokens": 8192,
+          "matching_prefix_tokens": 3189,
+          "retained_overlap_equal": false
+        },
+        {
+          "problem_idx": 21,
+          "reference_retained_tokens": 3087,
+          "new_retained_tokens": 3086,
+          "matching_prefix_tokens": 3086,
+          "retained_overlap_equal": true
+        },
+        {
+          "problem_idx": 22,
+          "reference_retained_tokens": 3955,
+          "new_retained_tokens": 3954,
+          "matching_prefix_tokens": 3248,
+          "retained_overlap_equal": false
+        },
+        {
+          "problem_idx": 23,
+          "reference_retained_tokens": 8192,
+          "new_retained_tokens": 8192,
+          "matching_prefix_tokens": 3121,
+          "retained_overlap_equal": false
+        },
+        {
+          "problem_idx": 24,
+          "reference_retained_tokens": 7186,
+          "new_retained_tokens": 6456,
+          "matching_prefix_tokens": 3151,
+          "retained_overlap_equal": false
+        },
+        {
+          "problem_idx": 25,
+          "reference_retained_tokens": 3526,
+          "new_retained_tokens": 3525,
+          "matching_prefix_tokens": 3297,
+          "retained_overlap_equal": false
+        },
+        {
+          "problem_idx": 26,
+          "reference_retained_tokens": 6790,
+          "new_retained_tokens": 6052,
+          "matching_prefix_tokens": 3377,
+          "retained_overlap_equal": false
+        },
+        {
+          "problem_idx": 27,
+          "reference_retained_tokens": 8192,
+          "new_retained_tokens": 8192,
+          "matching_prefix_tokens": 3372,
+          "retained_overlap_equal": false
+        },
+        {
+          "problem_idx": 28,
+          "reference_retained_tokens": 8192,
+          "new_retained_tokens": 8192,
+          "matching_prefix_tokens": 3275,
+          "retained_overlap_equal": false
+        },
+        {
+          "problem_idx": 29,
+          "reference_retained_tokens": 8192,
+          "new_retained_tokens": 8192,
+          "matching_prefix_tokens": 3320,
+          "retained_overlap_equal": false
+        },
+        {
+          "problem_idx": 30,
+          "reference_retained_tokens": 8192,
+          "new_retained_tokens": 8192,
+          "matching_prefix_tokens": 3095,
+          "retained_overlap_equal": false
+        }
+      ],
+      "reference_late_solves": [
+        {
+          "problem_idx": 23,
+          "round": 1,
+          "rollout": 1,
+          "candidate": "610",
+          "first_solved_at_utc": "2026-10-04T01:01:39.722+00:00",
+          "first_solved_elapsed_s": 56.781997056968976,
+          "grader_answered_at_utc": "2026-10-04T01:01:39.720760Z",
+          "grader_query_id": "20261004T010042.153214Z-q23-a610"
+        },
+        {
+          "problem_idx": 11,
+          "round": 1,
+          "rollout": 1,
+          "candidate": "259",
+          "first_solved_at_utc": "2026-10-04T01:01:42.722+00:00",
+          "first_solved_elapsed_s": 59.782532588986214,
+          "grader_answered_at_utc": "2026-10-04T01:01:42.721080Z",
+          "grader_query_id": "20261004T010042.153214Z-q11-a259"
+        },
+        {
+          "problem_idx": 27,
+          "round": 1,
+          "rollout": 1,
+          "candidate": "19",
+          "first_solved_at_utc": "2026-10-04T01:01:45.723+00:00",
+          "first_solved_elapsed_s": 62.78271700296318,
+          "grader_answered_at_utc": "2026-10-04T01:01:45.721404Z",
+          "grader_query_id": "20261004T010042.153214Z-q27-a19"
+        }
+      ],
+      "new_late_solves": [
+        {
+          "problem_idx": 11,
+          "round": 1,
+          "rollout": 1,
+          "candidate": "259",
+          "first_solved_at_utc": "2026-10-04T22:06:10.412+00:00",
+          "first_solved_elapsed_s": 55.60739304096205,
+          "grader_answered_at_utc": "2026-10-04T22:06:10.410583Z",
+          "grader_query_id": "20261004T220514.018752Z-q11-a259"
+        },
+        {
+          "problem_idx": 27,
+          "round": 1,
+          "rollout": 1,
+          "candidate": "19",
+          "first_solved_at_utc": "2026-10-04T22:06:13.412+00:00",
+          "first_solved_elapsed_s": 58.60662629496073,
+          "grader_answered_at_utc": "2026-10-04T22:06:13.410916Z",
+          "grader_query_id": "20261004T220514.018752Z-q27-a19"
+        },
+        {
+          "problem_idx": 12,
+          "round": 2,
+          "rollout": 2,
+          "candidate": "510",
+          "first_solved_at_utc": "2026-10-04T22:06:16.923+00:00",
+          "first_solved_elapsed_s": 62.118150707974564,
+          "grader_answered_at_utc": "2026-10-04T22:06:16.922663Z",
+          "grader_query_id": "20261004T220514.018752Z-q12-a510"
+        }
+      ]
+    }
+  ],
+  "slow_seed": 20261014,
+  "slow_seed_q9_reference": {
+    "first_solved_elapsed_s": 81.10196408699267,
+    "first_segment_latency_s": 56.58732221397804,
+    "first_segment_retained_tokens": 8192,
+    "winning_segment_latency_s": 24.414715477032587,
+    "winning_segment_retained_tokens": 3208,
+    "candidate_observed_at_utc": "2026-10-04T01:00:37.060+00:00",
+    "candidate_seconds_from_continuation_round_start": 21.453752128989436,
+    "candidate_queue_wait_s": 9.273400064557791e-05,
+    "verification_latency_s": 3.0043877820135094,
+    "retained_token_scope": "All received segment tokens, including tokens received while grading; not an extraction-token threshold."
+  },
+  "slow_seed_q9_new": {
+    "first_solved_elapsed_s": 128.74419849499827,
+    "first_segment_latency_s": 56.57514886994613,
+    "first_segment_retained_tokens": 8192,
+    "winning_segment_latency_s": 72.07767733803485,
+    "winning_segment_retained_tokens": 8615,
+    "candidate_observed_at_utc": "2026-10-04T22:05:08.287+00:00",
+    "candidate_seconds_from_continuation_round_start": 69.11127435794333,
+    "candidate_queue_wait_s": 0.00040243397234007716,
+    "verification_latency_s": 3.0045106490142643,
+    "retained_token_scope": "All received segment tokens, including tokens received while grading; not an extraction-token threshold."
+  },
+  "interpretation": "Median screening passes, but tail worsens and decodes differ. This historical comparison does not establish identical stochastic behavior, statistical equivalence, or causal attribution of the outlier to or away from refactoring."
+}

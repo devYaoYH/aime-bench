@@ -1,0 +1,53 @@
+{
+  "driver": "runner.extensions.validation.refactor_v1",
+  "runner_module": "runner",
+  "source_commit": "f30d9dfe0f8bf9c87e3b744e4dc5f282a1606c9c",
+  "core_manifest_sha256": "165d659a47e0f3e789c9a1cfd4ec9fc4184081af91cbda35d719fe41c339d688",
+  "started_at_utc": "2026-10-04T21:58:15.877+00:00",
+  "seed_sequence": [
+    20261011,
+    20261012,
+    20261013,
+    20261014,
+    20261015
+  ],
+  "reference_batch": "frozen-core-prompt-five-seeds-20261004T005416Z",
+  "reference_source_commit": "7c40f7af5586bc698b444c6b7934013baf99e5cd",
+  "profile_path": "/home/azureuser/models/r0b0tlab/VibeThinker-3B-NVFP4/vllm-flashinfer.yaml",
+  "profile_sha256": "aa2f451c99233d1e3ba15f9931f550cf5c46273f1ddb837a5802d521cdcf9753",
+  "system_prompt_sha256": "26b591c39bcf55f4c94f5359dcc90d3c5626a524478eee1c5ce44b5038162364",
+  "runtime_package_versions": {
+    "vllm": "0.30.1rc1.dev623+g4ac0d0eac",
+    "torch": "2.13.0+cu132",
+    "httpx": "0.28.1",
+    "PyYAML": "6.0.3",
+    "nvidia-ml-py": "13.615.71",
+    "jsonschema": "4.26.0"
+  },
+  "grader_semantic_hashes": {
+    "grade.py": "4c82d62f12fa415c7cc248e98ee2622d6c09a642540a25a3ee401ba588001d83",
+    "parser.py": "2ce450c7a6d6ef977eb428577cb14c41b2db634f885f913e0e5cf9eac974773d",
+    "parse_manual.py": "1b87d51c2b47ea806a21936ec4a1ce539bf32439a923be57c1694d4749a73260"
+  },
+  "shared_server": true,
+  "fresh_grader_each_trial": true,
+  "prefix_cache_reset_each_trial": true,
+  "trial_wall_timeout_s": 600,
+  "practical_median_band": 0.1,
+  "scoring": "Score all five original seeds including first; retain failures, timeouts and unmet targets; no replacement seeds or settling trial.",
+  "scope": "AIME 2025 development data, matched historical hardware/runtime/profile/prompt/sampling; optional profiling disabled.",
+  "server_command": [
+    "/home/azureuser/.venvs/vllm/bin/vllm",
+    "serve",
+    "--config",
+    "/home/azureuser/models/r0b0tlab/VibeThinker-3B-NVFP4/vllm-flashinfer.yaml",
+    "--host",
+    "127.0.0.1",
+    "--port",
+    "8000",
+    "--enable-prompt-tokens-details"
+  ],
+  "server_env_override": {
+    "VLLM_SERVER_DEV_MODE": "1"
+  }
+}

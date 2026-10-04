@@ -9,6 +9,7 @@ uses **core v1 with `prompt_adherence.json`**. The canonical package is
 | Evaluation | Time to 18 | Evidence |
 | --- | --- | --- |
 | AIME 2025, five declared seeds | **5/5 reached 18; median 77.277s; range 62.783–82.492s** | [Validation and traces](runs/experiments/frozen-core-prompt-five-seeds-20261004T005416Z/README.md) |
+| Packaged canonical v1, same five AIME 2025 seeds | 5/5 reached 18; median 73.568s; range 62.118–128.744s; behavior audits passed, tail latency unresolved | [Refactor validation](runs/experiments/canonical-v1-refactor-five-seeds-20261004T215632Z/README.md) |
 | AIME 2025, five post-freeze extended seeds | 5/5 reached 18; median 78.305s; range 63.908–135.071s; 26–27 correct at exhaustion | [Extended curve and full baseline](results/post_freeze/measurements-v1-20261004T104200Z/README.md) |
 | AIME 2026, unchanged v1 policy | **88.669s**, one wrong check | [Single transfer run](runs/experiments/frozen-core-aime2026-lightweight-20261004T011005Z/README.md) |
 | Core v1.1 long rollouts, AIME 2025 | 5/5 reached 18; median 77.652s; range 60.906–92.096s | [Five-seed long-context experiment](runs/experiments/core-v1_1-five-seeds-20261004T083800Z/README.md) |
