@@ -1,0 +1,112 @@
+{
+  "problem_idx": 29,
+  "started_at_utc": "2026-10-04T11:09:46.795+00:00",
+  "finished_at_utc": "2026-10-04T11:11:33.235+00:00",
+  "end_to_end_latency_s": 106.43953494000016,
+  "status": "solved",
+  "winner": {
+    "answer": 104,
+    "part": "content",
+    "kind": "literal_prose",
+    "end": 103864,
+    "line": "Thus answer is 104, not 153. But we need to double-check the area of triangle ABK and ALC. Did we compute those correctly? Let's compute exactly.",
+    "candidate": "104",
+    "rollout": 3,
+    "observed_at_utc": "2026-10-04T11:11:30.221+00:00",
+    "question_elapsed_s": 103.42562721099239,
+    "verification_started_at_utc": "2026-10-04T11:11:30.221+00:00",
+    "round": 3,
+    "candidate_queue_wait_s": 0.0002723800134845078,
+    "result": {
+      "dataset": {
+        "format": "jsonl",
+        "gold_field": "answer",
+        "id": "aime_2025",
+        "idx_field": "problem_idx",
+        "revision": "c94da77eb22bbd6439e62a323bec18493a421302",
+        "source": "/home/azureuser/aime-bench-post-freeze-9258e987/grader/data/aime_2025.jsonl",
+        "year": 2025,
+        "sha256": "d5bcac5904290630fe98e3c3d1c2773260ebf59b57955382735e9ce8c0142b41"
+      },
+      "query_id": "20261004T110628.207691Z-q29-a104",
+      "seq": 28,
+      "agent_id": "20261004T110628.207691Z-q29-r3",
+      "index": 29,
+      "candidate": "104",
+      "verdict": true,
+      "queue_ahead_at_submit": 0,
+      "submitted_at": "2026-10-04T11:11:30.223283Z",
+      "picked_at": "2026-10-04T11:11:30.223385Z",
+      "answered_at": "2026-10-04T11:11:33.223505Z",
+      "queue_wait_s": 0.0,
+      "toll_s": 3.0,
+      "latency_s": 3.0
+    },
+    "verification_finished_at_utc": "2026-10-04T11:11:33.224+00:00",
+    "verification_latency_s": 3.0030178599990904
+  },
+  "error": null,
+  "unique_candidates": 2,
+  "candidate_answers": [
+    "104",
+    "153"
+  ],
+  "rollouts": [
+    {
+      "rollout": 3,
+      "round": 3,
+      "started_at_utc": "2026-10-04T11:09:46.884+00:00",
+      "start_monotonic_s": 316434.94734196,
+      "ttft_s": 0.20701090001966804,
+      "last_token_s": 106.33855374000268,
+      "finish_reason": null,
+      "status": "cancelled",
+      "done_received": false,
+      "usage": {
+        "prompt_tokens": 24844,
+        "total_tokens": 37223,
+        "completion_tokens": 12379
+      },
+      "endpoint": "/v1/completions",
+      "continuation_of_rollout": 2,
+      "requested_max_tokens": 16384,
+      "http_status": 200,
+      "headers_received_s": 0.06159324501641095,
+      "generation_finished_at_utc": "2026-10-04T11:11:33.225+00:00",
+      "generation_end_monotonic_s": 316541.287588251,
+      "generation_latency_s": 106.34024629101623,
+      "generation_censored": true,
+      "generated_token_ids_count": 12379,
+      "prompt_token_ids_count": 24844,
+      "cached_prompt_tokens": null,
+      "prefix_cache_hit_fraction": null,
+      "overhead": {
+        "enabled": false,
+        "timings": {},
+        "counters": {},
+        "maxima": {}
+      },
+      "finished_at_utc": "2026-10-04T11:11:33.235+00:00",
+      "end_to_end_latency_s": 106.35049751400948,
+      "end_to_end_scope": "rollout start through question verification/cancellation settlement",
+      "gpu": null
+    }
+  ],
+  "round": 3,
+  "first_solved": {
+    "problem_idx": 29,
+    "round": 3,
+    "rollout": 3,
+    "candidate": "104",
+    "first_solved_at_utc": "2026-10-04T11:11:33.224+00:00",
+    "first_solved_elapsed_s": 304.2316624959931,
+    "grader_answered_at_utc": "2026-10-04T11:11:33.223505Z",
+    "grader_query_id": "20261004T110628.207691Z-q29-a104"
+  },
+  "overhead": {
+    "enabled": false,
+    "timings": {},
+    "counters": {},
+    "maxima": {}
+  }
+}

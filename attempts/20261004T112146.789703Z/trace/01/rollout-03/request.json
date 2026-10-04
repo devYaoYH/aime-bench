@@ -1,0 +1,23 @@
+{
+  "model": "WeiboAI/VibeThinker-3B",
+  "messages": [
+    {
+      "role": "system",
+      "content": "You are a helpful assistant. Solve the math problem carefully and put your final answer in \\boxed{} notation."
+    },
+    {
+      "role": "user",
+      "content": "Find the sum of all integer bases $b>9$ for which $17_b$ is a divisor of $97_b.$"
+    }
+  ],
+  "temperature": 0.8,
+  "top_p": 0.95,
+  "max_tokens": 16321,
+  "seed": 20261010,
+  "stream": true,
+  "stream_options": {
+    "include_usage": true,
+    "continuous_usage_stats": true
+  },
+  "return_token_ids": false
+}

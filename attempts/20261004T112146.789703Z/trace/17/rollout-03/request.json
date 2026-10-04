@@ -1,0 +1,23 @@
+{
+  "model": "WeiboAI/VibeThinker-3B",
+  "messages": [
+    {
+      "role": "system",
+      "content": "You are a helpful assistant. Solve the math problem carefully and put your final answer in \\boxed{} notation."
+    },
+    {
+      "role": "user",
+      "content": "Find the sum of all positive integers $n$ such that $n+2$ divides the product $3(n+3)(n^2+9)$."
+    }
+  ],
+  "temperature": 0.8,
+  "top_p": 0.95,
+  "max_tokens": 16316,
+  "seed": 20261074,
+  "stream": true,
+  "stream_options": {
+    "include_usage": true,
+    "continuous_usage_stats": true
+  },
+  "return_token_ids": false
+}

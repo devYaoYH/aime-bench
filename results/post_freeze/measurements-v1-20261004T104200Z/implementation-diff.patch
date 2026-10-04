@@ -1,0 +1,1572 @@
+diff --git a/configs/experiments/post-freeze-measurements-v1.json b/configs/experiments/post-freeze-measurements-v1.json
+new file mode 100644
+index 00000000..51239660
+--- /dev/null
++++ b/configs/experiments/post-freeze-measurements-v1.json
+@@ -0,0 +1,89 @@
++{
++  "schema_version": 1,
++  "task_a": {
++    "runner": "runner_final.run_frozen",
++    "preset": "runner_final/presets/prompt_adherence.json",
++    "argv": [
++      "--benchmark-year",
++      "2025",
++      "--benchmark-role",
++      "development",
++      "--benchmark",
++      "--skip-benchmark-prewarm",
++      "--target-correct",
++      "30"
++    ],
++    "seeds": [
++      20261011,
++      20261012,
++      20261013,
++      20261014,
++      20261015
++    ],
++    "core_manifest_sha256": "35d6a06315a0e45441b3ac49bd468a2b94553fb172f378bfebc7ea8cc044070f",
++    "system_prompt_sha256": "26b591c39bcf55f4c94f5359dcc90d3c5626a524478eee1c5ce44b5038162364",
++    "official_deadline_s": 900,
++    "reference_attempts": {
++      "20261011": "20261004T005518.974361Z",
++      "20261012": "20261004T005632.979246Z",
++      "20261013": "20261004T005752.973818Z",
++      "20261014": "20261004T005918.176012Z",
++      "20261015": "20261004T010042.153214Z"
++    },
++    "historical_e8_medians_s": {
++      "1": 9.035,
++      "2": 12.037,
++      "4": 18.038,
++      "6": 24.037,
++      "8": 30.04,
++      "10": 36.038,
++      "12": 42.039,
++      "14": 49.086,
++      "16": 57.903,
++      "18": 77.277
++    }
++  },
++  "task_b": {
++    "runner": "src.attempt_runners.naive_pass4_full_v1",
++    "seed": 20261003,
++    "argv": [
++      "--model",
++      "WeiboAI/VibeThinker-3B",
++      "--benchmark-year",
++      "2025",
++      "--model-profile",
++      "vllm-baseline-16k.yaml",
++      "--parallelism",
++      "30",
++      "--rollouts",
++      "4",
++      "--max-tokens",
++      "16384",
++      "--temperature",
++      "0.8",
++      "--top-p",
++      "0.95",
++      "--seed",
++      "20261003"
++    ],
++    "context_tokens": 16384,
++    "gpu_memory_utilization": 0.95,
++    "historical_reference": "20261003T202152.418590Z",
++    "changed_controls": [
++      "GPU allocation 80% to 95%",
++      "no sibling cancellation",
++      "no global target stop"
++    ],
++    "vote_rule": "Unique plurality of extracted integers; missing answers abstain; ties/no votes count incorrect"
++  },
++  "controls": {
++    "grader_cost_s": 3,
++    "grader_serial": true,
++    "source_edits": "New controller and separate full-accuracy baseline; frozen cores, original baseline and grader unchanged",
++    "startup_validation_exception": "Human approved retaining existing answer-field provenance validation at startup only. No answers in model inputs or analysis; correctness only from grader verdicts.",
++    "all_outcomes_retained": true,
++    "replacement_trials": false,
++    "sequence": "A seeds 11\u201315, then B seed 20261003; no concurrent GPU jobs",
++    "artifact_layout": "Canonical traces in attempts/; manifests, outcome records, analyses, figures and time logs in results/post_freeze/<batch>/."
++  }
++}
+diff --git a/src/attempt_runners/naive_pass4_full_v1.py b/src/attempt_runners/naive_pass4_full_v1.py
+new file mode 100644
+index 00000000..946c58a1
+--- /dev/null
++++ b/src/attempt_runners/naive_pass4_full_v1.py
+@@ -0,0 +1,894 @@
++"""Full final-answer pass@4 accuracy baseline, version 1.
++
++Run: python -m src.attempt_runners.naive_pass4_full_v1 --model WeiboAI/VibeThinker-3B
++Copied from naive_pass4_v1 without changing its prompt, sampling or extractor.
++Correct verdicts do not cancel siblings or stop the full batch. All distinct
++question/answer pairs are graded once; verdicts are mapped to all four samples.
++The original baseline and canonical/frozen cores remain unchanged.
++"""
++
++from __future__ import annotations
++
++import argparse
++import asyncio
++from datetime import datetime, timezone
++import hashlib
++import json
++import os
++from pathlib import Path
++import re
++import signal
++import subprocess
++import sys
++import time
++
++import httpx
++import yaml
++
++from src.common import ROOT, atomic_json, utc_now
++from src.benchmarks import add_dataset_args, benchmark_paths, dataset_provenance, default_benchmark_role
++from src.attempt_metadata import build_metadata
++from src.attempt_runners._runtime_v1 import (
++    GPUSampler,
++    Services,
++    append_json,
++    attempt_lock,
++    load_questions,
++    ready,
++    sse_payloads,
++    warm_inference,
++)
++
++from src.attempt_runners._ports_v1 import ensure_free
++from src.experiments.post_freeze_analysis import baseline_accuracy
++
++RUNNER_ID = "naive_pass4_full_v1"
++RUNNER_MODULE = "src.attempt_runners.naive_pass4_full_v1"
++PROMPT = "You are a helpful assistant. Solve the math problem carefully and put your final answer in \\boxed{} notation."
++
++
++def final_answer(text):
++    """Read only the last box in the final content of a naturally ended response."""
++    if "</think>" in text:
++        text = text.rsplit("</think>", 1)[1]
++    elif "<think>" in text:
++        return None
++    boxes = list(re.finditer("\\\\boxed\\s*\\{", text))
++    match = (
++        re.match("\\\\boxed\\s*\\{\\s*(\\d{1,3})\\s*\\}", text[boxes[-1].start() :])
++        if boxes
++        else None
++    )
++    if match is None:
++        return None
++    return {
++        "answer": int(match[1]),
++        "part": "content",
++        "kind": "final_box",
++        "extraction_stage": "completed_final_response",
++    }
++
++
++async def run_question(
++    problem,
++    args,
++    client,
++    output,
++    sampler,
++    *,
++    round_no=1,
++    rollout_offset=0,
++    attempt_start=None,
++    on_solved=None,
++    target_event=None,
++):
++    index = problem["problem_idx"]
++    folder = output / "trace" / f"{index:02d}"
++    folder.mkdir(parents=True, exist_ok=True)
++    previous = (
++        json.loads((folder / "question.json").read_text())
++        if (folder / "question.json").exists()
++        else None
++    )
++    if previous and previous["status"] == "solved":
++        raise ValueError("Solved questions must not be retried")
++    if (
++        previous
++        and len(previous["rollouts"]) + args.rollouts > args.max_attempts_per_question
++    ):
++        raise ValueError("Per-question generation attempt limit exceeded")
++    start, started = (time.perf_counter(), utc_now())
++    candidates = asyncio.Queue()
++    seen = set(previous.get("candidate_answers", [])) if previous else set()
++    records = []
++    winner = None
++    question_error = None
++    solved_event = None
++    stopped_for_target = False
++
++    def propose(event, rollout):
++        candidate = str(event["answer"])
++        if candidate not in seen:
++            seen.add(candidate)
++            candidates.put_nowait(
++                {
++                    **event,
++                    "candidate": candidate,
++                    "rollout": rollout,
++                    "observed_at_utc": utc_now(),
++                    "question_elapsed_s": time.perf_counter() - start,
++                }
++            )
++
++    async def generate(rollout):
++        path = folder / f"rollout-{rollout:02d}"
++        path.mkdir()
++        request = {
++            "model": args.model,
++            "messages": [
++                {"role": "system", "content": PROMPT},
++                {"role": "user", "content": problem["problem"]},
++            ],
++            "temperature": args.temperature,
++            "top_p": args.top_p,
++            "max_tokens": args.max_tokens,
++            "seed": args.seed + index * args.rollouts + rollout,
++            "stream": True,
++            "stream_options": {"include_usage": True, "continuous_usage_stats": True},
++            "return_token_ids": False,
++        }
++        request["max_tokens"] = min(
++            args.max_tokens, args.max_context_tokens - problem["prompt_tokens"]
++        )
++        if request["max_tokens"] <= 0:
++            raise ValueError("Baseline prompt fills the model context")
++        if args.disable_thinking:
++            request["chat_template_kwargs"] = {"enable_thinking": False}
++        endpoint = "/v1/chat/completions"
++        atomic_json(path / "request.json", request)
++        began = time.perf_counter()
++        record = {
++            "rollout": rollout,
++            "round": round_no,
++            "started_at_utc": utc_now(),
++            "start_monotonic_s": began,
++            "ttft_s": None,
++            "last_token_s": None,
++            "finish_reason": None,
++            "status": "streaming",
++            "done_received": False,
++            "usage": None,
++            "endpoint": endpoint,
++            "continuation_of_rollout": None,
++            "requested_max_tokens": request["max_tokens"],
++            "grading_mode": "completed_final_only",
++            "extracted_candidate": None,
++        }
++        parts = {"reasoning": [], "content": []}
++        prompt_token_ids = None
++        output_token_ids = []
++        final_event = None
++        records.append((path, record, parts))
++        try:
++            with (path / "stream.jsonl").open("w") as stream_file:
++                async with client.stream(
++                    "POST",
++                    args.vllm_url + endpoint,
++                    json=request,
++                    headers={"X-Request-Id": f"{output.name}-q{index}-r{rollout}"},
++                ) as response:
++                    record["http_status"] = response.status_code
++                    record["headers_received_s"] = time.perf_counter() - began
++                    response.raise_for_status()
++                    async for payload in sse_payloads(response.aiter_lines()):
++                        elapsed = time.perf_counter() - began
++                        append_json(
++                            stream_file,
++                            {
++                                "elapsed_s": elapsed,
++                                "timestamp_utc": utc_now(),
++                                "data": payload,
++                            },
++                        )
++                        if payload == "[DONE]":
++                            record["done_received"] = True
++                            break
++                        body = json.loads(payload)
++                        if body.get("error"):
++                            raise RuntimeError(f"vLLM stream error: {body['error']}")
++                        if body.get("prompt_token_ids") is not None:
++                            prompt_token_ids = body["prompt_token_ids"]
++                        if body.get("usage"):
++                            record["usage"] = body["usage"]
++                        for choice in body.get("choices", []):
++                            if choice.get("index", 0) != 0:
++                                continue
++                            if choice.get("prompt_token_ids") is not None:
++                                prompt_token_ids = choice["prompt_token_ids"]
++                            if choice.get("token_ids"):
++                                output_token_ids.extend(choice["token_ids"])
++                            delta = choice.get("delta") or {}
++                            for part, value in [
++                                (
++                                    "reasoning",
++                                    delta.get("reasoning_content")
++                                    or delta.get("reasoning"),
++                                ),
++                                ("content", delta.get("content")),
++                            ]:
++                                if isinstance(value, str) and value:
++                                    if record["ttft_s"] is None:
++                                        record["ttft_s"] = elapsed
++                                    record["last_token_s"] = elapsed
++                                    parts[part].append(value)
++                            if choice.get("finish_reason"):
++                                record["finish_reason"] = choice["finish_reason"]
++                    if record["finish_reason"] in ("error", "abort"):
++                        raise RuntimeError(
++                            f"vLLM terminated with {record['finish_reason']}"
++                        )
++                    if record["done_received"] or record["finish_reason"] in (
++                        "stop",
++                        "length",
++                    ):
++                        record["status"] = "completed"
++                        final_event = (
++                            final_answer("".join(parts["content"]))
++                            if record["finish_reason"] == "stop"
++                            else None
++                        )
++                        record["final_answer_extracted"] = final_event is not None
++                        record["extracted_candidate"] = str(final_event["answer"]) if final_event else None
++                    else:
++                        raise RuntimeError(
++                            "Stream ended without DONE or a terminal finish reason"
++                        )
++            if final_event:
++                propose(final_event, rollout)
++        except asyncio.CancelledError:
++            record["status"] = "cancelled"
++            raise
++        except Exception as exc:
++            record.update(status="error", error=f"{type(exc).__name__}: {exc}")
++        finally:
++            ended = time.perf_counter()
++            record.update(
++                generation_finished_at_utc=utc_now(),
++                generation_end_monotonic_s=ended,
++                generation_latency_s=ended - began,
++                generation_censored=record["status"] != "completed"
++                or record["finish_reason"] == "length",
++            )
++            usage = record["usage"] or {}
++            cached = (usage.get("prompt_tokens_details") or {}).get("cached_tokens")
++            record.update(
++                generated_token_ids_count=len(output_token_ids),
++                prompt_token_ids_count=(
++                    len(prompt_token_ids) if prompt_token_ids else None
++                ),
++                cached_prompt_tokens=cached,
++                prefix_cache_hit_fraction=(
++                    cached / len(prompt_token_ids)
++                    if cached is not None and prompt_token_ids
++                    else None
++                ),
++            )
++            atomic_json(
++                path / "response.json",
++                {part: "".join(text) for part, text in parts.items()},
++            )
++            atomic_json(path / "telemetry.json", record)
++
++    streams = [
++        asyncio.create_task(generate(rollout_offset + r))
++        for r in range(1, args.rollouts + 1)
++    ]
++
++    async def drained():
++        try:
++            await asyncio.gather(*streams)
++        finally:
++            candidates.put_nowait(None)
++
++    producer = asyncio.create_task(drained())
++    try:
++        async with asyncio.timeout(args.question_timeout):
++            with (folder / "verification.jsonl").open("a") as file:
++                while True:
++                    event = await candidates.get()
++                    if event is None:
++                        break
++                    event.update(verification_started_at_utc=utc_now(), round=round_no)
++                    verify_start = time.perf_counter()
++                    try:
++                        response = await client.post(
++                            args.grader_url + "/verify",
++                            json={
++                                "index": index,
++                                "candidate": event["candidate"],
++                                "agent_id": f"{output.name}-q{index}-r{event['rollout']}",
++                                "query_id": f"{output.name}-q{index}-a{event['candidate']}",
++                            },
++                        )
++                        response.raise_for_status()
++                        verdict = response.json()
++                        if type(verdict.get("verdict")) is not bool:
++                            raise RuntimeError(
++                                "Grader response lacks a boolean verdict"
++                            )
++                        event["result"] = verdict
++                    except Exception as exc:
++                        event["error"] = f"{type(exc).__name__}: {exc}"
++                        raise
++                    finally:
++                        event.update(
++                            verification_finished_at_utc=utc_now(),
++                            verification_latency_s=time.perf_counter() - verify_start,
++                        )
++                        append_json(file, event)
++                    if verdict["verdict"] and winner is None:
++                        winner = event
++                        solved_event = {
++                            "problem_idx": index,
++                            "round": round_no,
++                            "rollout": event["rollout"],
++                            "candidate": event["candidate"],
++                            "first_solved_at_utc": utc_now(),
++                            "first_solved_elapsed_s": time.perf_counter()
++                            - (attempt_start if attempt_start is not None else start),
++                            "grader_answered_at_utc": verdict.get("answered_at"),
++                            "grader_query_id": verdict.get("query_id"),
++                        }
++                        with (output / "solved.jsonl").open("a") as solved_file:
++                            append_json(solved_file, solved_event)
++                        if on_solved:
++                            on_solved(solved_event)
++    except asyncio.CancelledError:
++        stopped_for_target = target_event is not None and target_event.is_set()
++        question_error = None if stopped_for_target else "attempt interrupted"
++        raise
++    except Exception as exc:
++        question_error = f"{type(exc).__name__}: {exc}"
++    finally:
++        for task in streams:
++            if not task.done() and (not task.cancelling()):
++                task.cancel()
++        await asyncio.gather(*streams, return_exceptions=True)
++        await asyncio.gather(producer, return_exceptions=True)
++        ended, ended_at = (time.perf_counter(), utc_now())
++        for path, record, _ in records:
++            record.update(
++                finished_at_utc=ended_at,
++                end_to_end_latency_s=ended - record["start_monotonic_s"],
++                end_to_end_scope="rollout start through question verification/cancellation settlement",
++                gpu=sampler.window(
++                    record["start_monotonic_s"], record["generation_end_monotonic_s"]
++                ),
++            )
++            atomic_json(path / "telemetry.json", record)
++        result = {
++            "problem_idx": index,
++            "started_at_utc": started,
++            "finished_at_utc": ended_at,
++            "end_to_end_latency_s": ended - start,
++            "status": (
++                "error"
++                if question_error
++                else (
++                    "solved"
++                    if winner
++                    else "stopped" if stopped_for_target else "unsolved"
++                )
++            ),
++            "winner": winner,
++            "error": question_error,
++            "unique_candidates": len(seen),
++            "candidate_answers": sorted(seen),
++            "rollouts": [
++                record
++                for _, record, _ in sorted(records, key=lambda r: r[1]["rollout"])
++            ],
++        }
++        if any((r["status"] == "error" for r in result["rollouts"])):
++            result["status"] = "error"
++        result.update(round=round_no, first_solved=solved_event)
++        atomic_json(folder / f"round-{round_no:02d}.json", result)
++        rounds = (previous.get("rounds", []) if previous else []) + [
++            {
++                k: result[k]
++                for k in (
++                    "round",
++                    "status",
++                    "started_at_utc",
++                    "finished_at_utc",
++                    "end_to_end_latency_s",
++                    "winner",
++                    "error",
++                )
++            }
++        ]
++        if previous:
++            result["rollouts"] = previous["rollouts"] + result["rollouts"]
++            result["started_at_utc"] = previous["started_at_utc"]
++            result["first_solved"] = previous.get("first_solved") or solved_event
++        result["rounds"] = rounds
++        result["question_start_monotonic_s"] = (
++            previous.get("question_start_monotonic_s", start) if previous else start
++        )
++        result["end_to_end_latency_s"] = ended - result["question_start_monotonic_s"]
++        atomic_json(folder / "question.json", result)
++        print(
++            f"Q{index:02d} round {round_no}: {result['status']}, {ended - start:.2f}s",
++            flush=True,
++        )
++    return result
++
++
++async def run_questions(
++    problems,
++    args,
++    client,
++    output,
++    sampler,
++    *,
++    round_no=1,
++    rollout_offset=0,
++    attempt_start=None,
++    on_solved=None,
++    target_event=None,
++):
++    queue = asyncio.Queue()
++    for problem in problems:
++        queue.put_nowait(problem)
++    results = []
++
++    async def worker():
++        while not queue.empty() and (
++            not (target_event is not None and target_event.is_set())
++        ):
++            problem = queue.get_nowait()
++            results.append(
++                await run_question(
++                    problem,
++                    args,
++                    client,
++                    output,
++                    sampler,
++                    round_no=round_no,
++                    rollout_offset=rollout_offset,
++                    attempt_start=attempt_start,
++                    on_solved=on_solved,
++                    target_event=target_event,
++                )
++            )
++
++    tasks = [
++        asyncio.create_task(worker())
++        for _ in range(min(args.parallelism, len(problems)))
++    ]
++    try:
++        await asyncio.gather(*tasks)
++    finally:
++        for task in tasks:
++            if not task.done() and (not task.cancelling()):
++                task.cancel()
++        await asyncio.gather(*tasks, return_exceptions=True)
++    return sorted(results, key=lambda row: row["problem_idx"])
++
++
++async def prepare_baseline_prompts(problems, args, client):
++    """Count the actual served chat template before the official solving timer."""
++
++    async def one(problem):
++        request = {
++            "model": args.model,
++            "messages": [
++                {"role": "system", "content": PROMPT},
++                {"role": "user", "content": problem["problem"]},
++            ],
++            "add_generation_prompt": True,
++        }
++        if args.disable_thinking:
++            request["chat_template_kwargs"] = {"enable_thinking": False}
++        response = await client.post(args.vllm_url + "/tokenize", json=request)
++        response.raise_for_status()
++        count = response.json()["count"]
++        if type(count) is not int or not 0 < count < args.max_context_tokens:
++            raise ValueError("Invalid baseline prompt token count")
++        return {**problem, "prompt_tokens": count}
++
++    return await asyncio.gather(*(one(p) for p in problems))
++
++
++async def run_baseline(problems, args, client, output, sampler, attempt_start):
++    """Finish every sample and candidate check, even after a correct verdict."""
++    solved = set()
++
++    def on_solved(event):
++        solved.add(event["problem_idx"])
++        print(f"Full baseline first-correct: {len(solved)}/{len(problems)}", flush=True)
++
++    return await run_questions(
++        problems, args, client, output, sampler, attempt_start=attempt_start,
++        on_solved=on_solved, target_event=None,
++    )
++
++
++async def run(args):
++    services = Services()
++    sampler = None
++    began = time.perf_counter()
++    output = (
++        ROOT / "attempts" / datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%S.%fZ")
++    )
++    output.mkdir(parents=True)
++    print(f"Attempt artifacts: {output}", flush=True)
++    status, results, error = ("initializing", [], None)
++    official_start = None
++    config = {
++        **vars(args),
++        "runner_id": RUNNER_ID,
++        "runner_module": RUNNER_MODULE,
++        "runtime_version": "v1",
++        "attempt_id": output.name,
++        "initialization_started_at_utc": utc_now(),
++        "git_commit": subprocess.check_output(
++            ["git", "rev-parse", "HEAD"], cwd=ROOT, text=True
++        ).strip(),
++        "git_dirty": bool(
++            subprocess.check_output(
++                ["git", "status", "--porcelain", "--untracked-files=no"],
++                cwd=ROOT,
++                text=True,
++            )
++        ),
++        "system_prompt": PROMPT,
++        "system_prompt_sha256": hashlib.sha256(PROMPT.encode()).hexdigest(),
++        "stop_at_target": False,
++        "cancel_siblings_on_correct": False,
++        "accuracy_mode": "all samples; unique question/answer checks; ties abstain",
++        "grading": "single vendored grader; no local answer-key comparisons",
++        "answer_extraction": "completed final box only; capped outputs ungraded",
++        "gpu_scope": "device-level NVML; vLLM preallocates VRAM",
++        "python": sys.version,
++    }
++    atomic_json(output / "config.json", config)
++    try:
++        config['dataset_provenance'] = dataset_provenance(args.benchmark_year, args.benchmark_role)
++        problems = load_questions(args.questions, args.benchmark_year)
++        config["question_indices"] = [p["problem_idx"] for p in problems]
++        if args.target_correct > len(problems):
++            raise ValueError("Target correct exceeds the number of selected questions")
++        profile_path = (
++            Path(args.models_dir).expanduser() / args.model / args.model_profile
++        )
++        profile_text = profile_path.read_text()
++        profile = yaml.safe_load(profile_text)
++        overrides = profile.get("override-generation-config", {})
++        if isinstance(overrides, str):
++            overrides = json.loads(overrides)
++        cap = overrides.get("max_new_tokens")
++        if cap is not None and args.max_tokens > cap:
++            raise ValueError(
++                f"Requested max_tokens exceeds model profile ceiling ({cap})"
++            )
++        atomic_json(
++            output / "model_profile.json",
++            {
++                "path": str(profile_path),
++                "yaml": profile_text,
++                "sha256": hashlib.sha256(profile_text.encode()).hexdigest(),
++            },
++        )
++        ensure_free(args.grader_port)
++        if not args.reuse_server:
++            ensure_free(args.vllm_port)
++        sampler = GPUSampler(output / "gpu.jsonl", args.gpu_interval, args.gpu_device)
++        await sampler.start()
++        limits = httpx.Limits(
++            max_connections=args.parallelism * (args.rollouts + 1) + 8,
++            max_keepalive_connections=args.parallelism * (args.rollouts + 1) + 8,
++        )
++        timeout = httpx.Timeout(
++            connect=10, read=args.question_timeout, write=30, pool=30
++        )
++        async with httpx.AsyncClient(
++            timeout=timeout, limits=limits, trust_env=False
++        ) as client:
++            if not args.reuse_server:
++                gpu_warmup = services.launch(
++                    [
++                        args.vllm_python,
++                        "-c",
++                        "import torch,time; torch.cuda.set_device("
++                        + str(args.gpu_device)
++                        + '); x=torch.randn((1024,1024),device="cuda",dtype=torch.bfloat16); end=time.monotonic()+2; \nwhile time.monotonic()<end: y=x@x; torch.cuda.synchronize()',
++                    ],
++                    output / "gpu_warmup.log",
++                )
++                await asyncio.wait_for(asyncio.to_thread(gpu_warmup.wait), timeout=120)
++                if gpu_warmup.returncode:
++                    raise RuntimeError("CUDA warmup failed; inspect gpu_warmup.log")
++                command = [
++                    args.vllm_binary,
++                    "serve",
++                    "--config",
++                    str(profile_path),
++                    "--host",
++                    "127.0.0.1",
++                    "--port",
++                    str(args.vllm_port),
++                    "--enable-prompt-tokens-details",
++                ]
++                config["vllm_command"] = command
++                server = services.launch(command, output / "vllm.log")
++            else:
++                server = None
++            models = await ready(
++                client, args.vllm_url + "/v1/models", args.startup_timeout, server
++            )
++            if args.model not in [m["id"] for m in models.get("data", [])]:
++                raise RuntimeError(
++                    "Inference server does not serve the requested model"
++                )
++            atomic_json(output / "server_models.json", models)
++            served = next((m for m in models["data"] if m["id"] == args.model))
++            args.max_context_tokens = int(
++                served.get("max_model_len") or profile["max-model-len"]
++            )
++            config["max_context_tokens"] = args.max_context_tokens
++            grader_config = {
++                "dataset": {
++                    "source": str(benchmark_paths(args.benchmark_year)[1]),
++                    "format": "jsonl",
++                    "idx_field": "problem_idx",
++                    "gold_field": "answer",
++                },
++                "cost_c": args.grader_cost,
++                "host": "127.0.0.1",
++                "port": args.grader_port,
++                "audit_log": str(output / "grader_audit.jsonl"),
++            }
++            grader_config['dataset'].update(id=config['dataset_provenance']['id'], year=args.benchmark_year, revision=config['dataset_provenance']['revision'])
++            (output / "grader_config.yaml").write_text(yaml.safe_dump(grader_config))
++            grader = services.launch(
++                [args.grader_python, str(ROOT / "grader/server.py")],
++                output / "grader.log",
++                {**os.environ, "GRADER_CONFIG": str(output / "grader_config.yaml")},
++            )
++            health = await ready(client, args.grader_url + "/health", 60, grader)
++            if (
++                health.get("queries_so_far") != 0
++                or health.get("cost_c") != args.grader_cost
++            ):
++                raise RuntimeError(
++                    "Grader did not start with a fresh queue and requested toll"
++                )
++            if health.get('dataset', {}).get('sha256') != config['dataset_provenance']['grader_sha256']:
++                raise RuntimeError('Grader loaded a different benchmark answer key')
++            config["grader_health"] = health
++            problems = await prepare_baseline_prompts(problems, args, client)
++            config["prompt_tokens_by_question"] = {
++                str(p["problem_idx"]): p["prompt_tokens"] for p in problems
++            }
++            warmup = await warm_inference(args, client, len(problems))
++            atomic_json(output / "inference_warmup.json", warmup)
++            config["inference_warmup"] = {
++                k: warmup[k] for k in ("latency_s", "batch_size", "tokens_per_request")
++            }
++            config.update(
++                model_profile_sha256=hashlib.sha256(profile_text.encode()).hexdigest(),
++                launch_profile=profile,
++                official_started_at_utc=utc_now(),
++            )
++            atomic_json(output / "config.json", config)
++            official_start = time.perf_counter()
++            status = "running"
++            print("Official solving phase started", flush=True)
++            results = await run_baseline(
++                problems, args, client, output, sampler, official_start
++            )
++            status = (
++                "completed"
++                if all((r["status"] != "error" for r in results))
++                else "failed"
++            )
++            if sampler.error:
++                raise RuntimeError(f"GPU telemetry failed: {sampler.error}")
++    except asyncio.CancelledError:
++        status, error = ("interrupted", "Attempt interrupted by signal")
++        raise
++    except Exception as exc:
++        status, error = ("failed", f"{type(exc).__name__}: {exc}")
++        raise
++    finally:
++        if sampler:
++            sampler.stop()
++        official_end = time.perf_counter()
++        try:
++            results = [
++                json.loads(p.read_text())
++                for p in sorted(output.glob("trace/*/question.json"))
++            ]
++            summary = {
++                "runner_id": RUNNER_ID,
++                "runner_module": RUNNER_MODULE,
++                "attempt_id": output.name,
++                "status": status,
++                "error": error,
++                "official_started_at_utc": config.get("official_started_at_utc"),
++                "official_finished_at_utc": utc_now(),
++                "official_latency_s": (
++                    official_end - official_start if official_start else None
++                ),
++                "initialization_and_attempt_latency_s": official_end - began,
++                "strategy": "baseline",
++                "solved": sum((r["status"] == "solved" for r in results)),
++                "questions_completed": sum((r["status"] != "stopped" for r in results)),
++                "questions_attempted": len(results),
++                "target_correct": args.target_correct,
++                "target_reached": sum((r["status"] == "solved" for r in results))
++                >= args.target_correct,
++                "rounds_executed": max((r["round"] for r in results), default=0),
++                "questions": [
++                    {
++                        **{
++                            k: r[k]
++                            for k in (
++                                "problem_idx",
++                                "status",
++                                "end_to_end_latency_s",
++                                "unique_candidates",
++                            )
++                        },
++                        "verified_answer": (
++                            r["winner"]["candidate"] if r["winner"] else None
++                        ),
++                        "winning_rollout": r["winner"]["rollout"] if r["winner"] else None,
++                        "first_solved": r.get("first_solved"),
++                    }
++                    for r in results
++                ],
++            }
++            accuracy = baseline_accuracy(output, len(config.get("question_indices", [])) * args.rollouts,
++                                         args.rollouts)
++            summary["accuracy"] = accuracy
++            times = sorted(q["first_solved"]["first_solved_elapsed_s"] for q in results if q.get("first_solved"))
++            summary["time_to_18_s"] = times[17] if len(times) >= 18 else None
++            ends = [r["generation_end_monotonic_s"] for q in results for r in q["rollouts"]]
++            summary["generation_completed_latency_s"] = max(ends) - official_start if ends and official_start else None
++            summary["generation_time_scope"] = "Official start to last observed generation end; complete only if accuracy.valid"
++            if status == "completed" and not accuracy["valid"]:
++                status = summary["status"] = "failed"
++                summary["error"] = "Full accuracy evidence is incomplete"
++            atomic_json(output / "summary.json", summary)
++            atomic_json(output / "config.json", config)
++            atomic_json(output / "metadata.json", build_metadata(output, config))
++            print(json.dumps(summary, indent=2), flush=True)
++        finally:
++            await services.close()
++    if status == "failed":
++        raise RuntimeError("One or more questions failed; inspect trace telemetry")
++    return output
++
++
++def parse_args(argv=None):
++    parser = argparse.ArgumentParser(description=__doc__)
++    add_dataset_args(parser)
++    parser.add_argument(
++        "--model", required=True, help="Model ID with ~/models/<ID>/vllm.yaml"
++    )
++    parser.add_argument("--models-dir", default="~/models")
++    parser.add_argument(
++        "--model-profile",
++        default="vllm-baseline-16k.yaml",
++        help="YAML filename within the model directory",
++    )
++    parser.add_argument(
++        "--vllm-python", default=str(Path("~/.venvs/vllm/bin/python").expanduser())
++    )
++    parser.add_argument(
++        "--vllm-binary", default=str(Path("~/.venvs/vllm/bin/vllm").expanduser())
++    )
++    parser.add_argument(
++        "--grader-python", default=str(ROOT / "grader/.venv/bin/python")
++    )
++    parser.add_argument("--reuse-server", action="store_true")
++    parser.add_argument("--vllm-port", type=int, default=8000)
++    parser.add_argument("--grader-port", type=int, default=8077)
++    parser.add_argument("--grader-cost", type=float, default=3.0)
++    parser.set_defaults(strategy="baseline")
++    parser.add_argument(
++        "--parallelism", type=int, help="Concurrent questions (default 30)"
++    )
++    parser.add_argument(
++        "--rollouts", type=int, help="Independent samples per question (default 4)"
++    )
++    parser.add_argument("--target-correct", type=int, default=30, help="Reporting target only; never stops generation")
++    parser.add_argument(
++        "--max-attempts-per-question",
++        type=int,
++        default=4,
++        help="Hard sample budget per question",
++    )
++    parser.add_argument(
++        "--questions", type=int, nargs="+", help="Smoke subset; default all 30"
++    )
++    parser.add_argument("--max-tokens", type=int, default=16384)
++    parser.add_argument("--temperature", type=float, default=0.8)
++    parser.add_argument("--top-p", type=float, default=0.95)
++    parser.add_argument("--seed", type=int, default=20261003)
++    parser.add_argument("--disable-thinking", action="store_true")
++    parser.add_argument("--startup-timeout", type=float, default=600)
++    parser.add_argument("--question-timeout", type=float, default=1800)
++    parser.add_argument("--gpu-interval", type=float, default=0.2)
++    parser.add_argument("--gpu-device", type=int, default=0)
++    args = parser.parse_args(argv)
++    args.benchmark_role = args.benchmark_role or default_benchmark_role(args.benchmark_year)
++    if args.parallelism is None:
++        args.parallelism = 30
++    if args.rollouts is None:
++        args.rollouts = 4
++    if args.rollouts > args.max_attempts_per_question:
++        parser.error("Rollouts exceed the per-question attempt limit")
++    if any(
++        (
++            getattr(args, key) <= 0
++            for key in (
++                "parallelism",
++                "rollouts",
++                "max_tokens",
++                "startup_timeout",
++                "question_timeout",
++                "gpu_interval",
++                "target_correct",
++                "max_attempts_per_question",
++            )
++        )
++    ):
++        parser.error(
++            "Concurrency, token budgets, timeouts, and sampling interval must be positive"
++        )
++    if (
++        args.grader_cost < 0
++        or args.gpu_device < 0
++        or (not 0 < args.top_p <= 1)
++        or (args.temperature < 0)
++    ):
++        parser.error("Invalid grader cost, GPU device, or sampling settings")
++    if (
++        "/" not in args.model
++        or any((part in ("", ".", "..") for part in args.model.split("/")))
++        or args.model.startswith("/")
++    ):
++        parser.error("Use a relative organization/model ID")
++    if Path(
++        args.model_profile
++    ).name != args.model_profile or not args.model_profile.endswith(".yaml"):
++        parser.error("Model profile must be a YAML filename within the model directory")
++    if (
++        not all((1 <= port <= 65535 for port in (args.vllm_port, args.grader_port)))
++        or args.vllm_port == args.grader_port
++    ):
++        parser.error("Service ports must be valid and distinct")
++    args.max_context_tokens = 16384  # Replaced by served model metadata before solving.
++    args.vllm_url = f"http://127.0.0.1:{args.vllm_port}"
++    args.grader_url = f"http://127.0.0.1:{args.grader_port}"
++    return args
++
++
++def main():
++    args = parse_args()
++    with attempt_lock():
++
++        async def entry():
++            loop = asyncio.get_running_loop()
++            task = asyncio.current_task()
++            loop.add_signal_handler(signal.SIGTERM, task.cancel)
++            await run(args)
++
++        asyncio.run(entry())
++
++
++if __name__ == "__main__":
++    main()
+diff --git a/src/experiments/post_freeze.py b/src/experiments/post_freeze.py
+new file mode 100644
+index 00000000..e30530d4
+--- /dev/null
++++ b/src/experiments/post_freeze.py
+@@ -0,0 +1,271 @@
++"""Sequential post-freeze milestone and complete-baseline measurements.
++
++Plan by default. Execute only from clean tested source on the idle remote GPU.
++Frozen cores, the historical naive runner and the grader are never modified.
++"""
++import argparse
++import asyncio
++from datetime import datetime, timezone
++import hashlib
++import json
++import os
++from pathlib import Path
++import signal
++import subprocess
++import time
++
++import httpx
++import yaml
++
++from src.common import ROOT, utc_now
++from runner_final.integrity import verify_core
++from runner_final.run_frozen import parse_args as frozen_args
++from runner_final.core_v1 import runner as frozen
++from runner_final.core_v1._runtime import Services, attempt_lock, ready
++from runner_final.core_v1._ports import ensure_free
++from runner_final.core_v1.prewarm import reset_cache
++from src.attempt_runners import naive_pass4_full_v1 as full
++from src.experiments.post_freeze_analysis import marginal_trial, aggregate_milestones, read_json
++
++PROTOCOL = ROOT / "configs/experiments/post-freeze-measurements-v1.json"
++
++
++def save(path, data):
++    path = Path(path)
++    temporary = path.with_suffix(".tmp")
++    temporary.write_text(json.dumps(data, indent=2) + "\n")
++    temporary.replace(path)
++
++
++def plan():
++    protocol = read_json(PROTOCOL)
++    return {**protocol, "protocol_sha256": hashlib.sha256(PROTOCOL.read_bytes()).hexdigest(),
++            "commands": ["~/.venvs/vllm/bin/python -m src.experiments.post_freeze --execute"],
++            "task_a_cli": ["python", "-m", "runner_final.run_frozen", "--preset", protocol["task_a"]["preset"],
++                           *protocol["task_a"]["argv"], "--reuse-server", "--seed", "<declared-seed>"],
++            "task_b_cli": ["python", "-m", "src.attempt_runners.naive_pass4_full_v1", *protocol["task_b"]["argv"]],
++            "expected_runtime": "Task A at most 900 official seconds per seed (75 minutes total), plus setup; Task B provisionally 10–20 minutes including generation and grading."}
++
++
++async def with_official_deadline(run, args, attempts, seconds, state=None):
++    """Cancel gracefully at the official deadline, excluding initialization/warmup.
++
++    The core persists its official UTC timestamp immediately before starting its
++    monotonic timer. The watcher polls only during initialization, then sleeps
++    once to the deadline; it adds no recurring poll to the solving window.
++    """
++    before = set(attempts.iterdir())
++    task = asyncio.create_task(run(args))
++    state = state if state is not None else {}
++    state.update(deadline_reached=False, attempt_id=None)
++
++    async def watch():
++        while not task.done():
++            created = set(attempts.iterdir()) - before
++            if len(created) == 1:
++                folder = created.pop()
++                state["attempt_id"] = folder.name
++                path = folder / "config.json"
++                if path.exists():
++                    timestamp = read_json(path).get("official_started_at_utc")
++                    if timestamp:
++                        elapsed = (datetime.now(timezone.utc) - datetime.fromisoformat(timestamp.replace("Z", "+00:00"))).total_seconds()
++                        state["deadline_armed_at_utc"] = utc_now()
++                        await asyncio.sleep(max(0, seconds - elapsed))
++                        if not task.done():
++                            state["deadline_reached"] = True
++                            state["deadline_fired_at_utc"] = utc_now()
++                            task.cancel()
++                        return
++            await asyncio.sleep(.05)
++
++    watcher = asyncio.create_task(watch())
++    try:
++        output = await task
++        state["attempt_id"] = output.name
++    except asyncio.CancelledError:
++        if not state["deadline_reached"]:
++            raise
++    except Exception as error:
++        state["error"] = f"{type(error).__name__}: {error}"
++    finally:
++        watcher.cancel()
++        if not task.done():
++            task.cancel()
++        await asyncio.gather(task, watcher, return_exceptions=True)
++        created = set(attempts.iterdir()) - before
++        if state["attempt_id"] is None and len(created) == 1:
++            state["attempt_id"] = created.pop().name
++    return state
++
++
++def matched_initial_payloads(folder, reference):
++    different, observed = [], 0
++    for index in range(1, 31):
++        relative = Path("trace") / f"{index:02d}" / "rollout-01/request.json"
++        path = folder / relative
++        if not path.exists():
++            different.append(index)
++            continue
++        observed += 1
++        if read_json(path) != read_json(ROOT / "attempts" / reference / relative):
++            different.append(index)
++    return {"observed": observed, "different_question_indices": different,
++            "reference_attempt_id": reference}
++
++
++async def task_a(batch, protocol):
++    declared = protocol["task_a"]
++    args = frozen_args(["--preset", declared["preset"], *declared["argv"], "--reuse-server"])
++    profile = Path(args.models_dir).expanduser() / args.model / args.model_profile
++    if yaml.safe_load(profile.read_text()) != yaml.safe_load((ROOT / "runner_final/vllm-flashinfer.yaml").read_text()):
++        raise RuntimeError("Task A profile differs from the measured frozen profile")
++    services = Services()
++    job = {"task": "A", "status": "initializing", "started_at_utc": utc_now(),
++           "compute_mode": "unattended background compute", "trials": []}
++    save(batch / "task_a.json", job)
++    command = [args.vllm_binary, "serve", "--config", str(profile), "--host", "127.0.0.1",
++               "--port", str(args.vllm_port), "--enable-prompt-tokens-details"]
++    save(batch / "task_a_server.json", {"command": command, "profile_sha256": hashlib.sha256(profile.read_bytes()).hexdigest(),
++                                       "server_env": {"VLLM_SERVER_DEV_MODE": "1"}})
++    try:
++        ensure_free(args.vllm_port)
++        ensure_free(args.grader_port)
++        frozen.assert_gpu_idle(args.gpu_device)
++        server = services.launch(command, batch / "task_a_vllm.log", env=dict(os.environ, VLLM_SERVER_DEV_MODE="1"))
++        async with httpx.AsyncClient(trust_env=False) as client:
++            await ready(client, args.vllm_url + "/v1/models", args.startup_timeout, server)
++            job.update(status="running", server_ready_at_utc=utc_now(),
++                       server_startup_latency_s=(datetime.now(timezone.utc)-datetime.fromisoformat(job["started_at_utc"].replace("Z","+00:00"))).total_seconds())
++            for number, seed in enumerate(declared["seeds"], 1):
++                row = {"trial": number, "seed": seed, "started_at_utc": utc_now(),
++                       "compute_mode": "unattended background compute"}
++                job["trials"].append(row)
++                save(batch / "task_a.json", job)
++                print(f"POST-FREEZE A {number}/5 seed={seed}", flush=True)
++                try:
++                    row["cache_reset"] = await reset_cache(client, args.vllm_url)
++                    parsed = frozen_args(["--preset", declared["preset"], *declared["argv"],
++                                          "--reuse-server", "--seed", str(seed)])
++                    state = await with_official_deadline(frozen.run, parsed, ROOT / "attempts", declared["official_deadline_s"], state=row)
++                    row.update(state)
++                    if state["attempt_id"]:
++                        folder = ROOT / "attempts" / state["attempt_id"]
++                        if (folder / "summary.json").exists():
++                            row["measurement"] = marginal_trial(folder)
++                            config = read_json(folder / "config.json")
++                            row["initial_payload_check"] = matched_initial_payloads(folder, declared["reference_attempts"][str(seed)])
++                            row["identity_valid"] = (config["core_manifest_sha256"] == verify_core(ROOT)
++                                                     and config["system_prompt_sha256"] == declared["system_prompt_sha256"]
++                                                     and not config["git_dirty"]
++                                                     and config["git_commit"] == subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=ROOT, text=True).strip()
++                                                     and all(n <= 4 for n in row["measurement"]["requests_per_question"].values())
++                                                     and not row["initial_payload_check"]["different_question_indices"])
++                            row["end_condition"] = ("official_900s_deadline" if state["deadline_reached"] else
++                                                    "failed" if state.get("error") or row["measurement"]["status"] == "failed" else
++                                                    "all_30_solved" if row["measurement"]["solved"] == 30 else
++                                                    "request_budget_exhausted_and_checks_drained")
++                except asyncio.CancelledError:
++                    row.update(end_condition="interrupted", error="External cancellation; partial attempt retained in attempts/")
++                    raise
++                except Exception as error:
++                    row.update(error=f"{type(error).__name__}: {error}", end_condition="failed")
++                finally:
++                    row.setdefault("end_condition", "failed")
++                    row["finished_at_utc"] = utc_now()
++                    save(batch / "task_a.json", job)
++                print("POST-FREEZE A RESULT " + json.dumps(row), flush=True)
++            job.update(status="complete", milestones=aggregate_milestones(job["trials"]))
++    except BaseException as error:
++        job.update(status="interrupted" if isinstance(error, asyncio.CancelledError) else "failed", error=f"{type(error).__name__}: {error}")
++        raise
++    finally:
++        await services.close()
++        job["finished_at_utc"] = utc_now()
++        save(batch / "task_a.json", job)
++    return job
++
++
++async def task_b(batch, protocol):
++    job = {"task": "B", "status": "initializing", "seed": protocol["task_b"]["seed"],
++           "started_at_utc": utc_now(), "compute_mode": "unattended background compute"}
++    save(batch / "task_b.json", job)
++    before = set((ROOT / "attempts").iterdir())
++    try:
++        args = full.parse_args(protocol["task_b"]["argv"])
++        profile = Path(args.models_dir).expanduser() / args.model / args.model_profile
++        if yaml.safe_load(profile.read_text()) != yaml.safe_load((ROOT / "configs/vllm/WeiboAI/VibeThinker-3B/vllm-baseline-16k.yaml").read_text()):
++            raise RuntimeError("Task B requires the declared 16K BF16 95% baseline profile")
++        frozen.assert_gpu_idle(args.gpu_device)
++        output = await full.run(args)
++        job.update(attempt_id=output.name, status="complete", summary=read_json(output / "summary.json"))
++        save(batch / "baseline_accuracy.json", job["summary"]["accuracy"])
++    except BaseException as error:
++        job.update(status="interrupted" if isinstance(error, asyncio.CancelledError) else "failed", error=f"{type(error).__name__}: {error}")
++        raise
++    finally:
++        created = set((ROOT / "attempts").iterdir()) - before
++        if len(created) == 1:
++            output = created.pop()
++            job["attempt_id"] = output.name
++            if (output / "summary.json").exists():
++                job["summary"] = read_json(output / "summary.json")
++                if job["summary"].get("accuracy"):
++                    save(batch / "baseline_accuracy.json", job["summary"]["accuracy"])
++        job["finished_at_utc"] = utc_now()
++        save(batch / "task_b.json", job)
++        print("POST-FREEZE B RESULT " + json.dumps({k: v for k, v in job.items() if k != "summary"}), flush=True)
++    return job
++
++
++async def execute(options):
++    declared = plan()
++    if verify_core(ROOT) != declared["task_a"]["core_manifest_sha256"]:
++        raise RuntimeError("Frozen core differs from the declared measured core")
++    if subprocess.check_output(["git", "status", "--porcelain", "--untracked-files=no"], cwd=ROOT, text=True).strip():
++        raise RuntimeError("Experiments require clean tracked source")
++    batch = ROOT / "results/post_freeze" / options.batch
++    batch.mkdir(parents=True, exist_ok=False)
++    config = {"protocol": declared, "source_commit": subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=ROOT, text=True).strip(),
++              "started_at_utc": utc_now(), "compute_mode": "unattended background compute",
++              "driver": "src.experiments.post_freeze",
++              "source_sha256": {path: hashlib.sha256((ROOT/path).read_bytes()).hexdigest() for path in
++                                  ("src/experiments/post_freeze.py", "src/experiments/post_freeze_analysis.py", "src/attempt_runners/naive_pass4_full_v1.py")}}
++    save(batch / "config.json", config)
++    summary = {"status": "running", "tasks": {}}
++    save(batch / "summary.json", summary)
++    try:
++        summary["tasks"]["A"] = await task_a(batch, declared)
++        save(batch / "summary.json", summary)
++        summary["tasks"]["B"] = await task_b(batch, declared)
++        summary["status"] = "complete"
++    except BaseException as error:
++        summary.update(status="interrupted" if isinstance(error, asyncio.CancelledError) else "failed", error=f"{type(error).__name__}: {error}")
++        raise
++    finally:
++        summary["finished_at_utc"] = utc_now()
++        save(batch / "summary.json", summary)
++        print("POST-FREEZE BATCH " + str(batch), flush=True)
++    return batch
++
++
++def main():
++    parser = argparse.ArgumentParser(description=__doc__)
++    parser.add_argument("--execute", action="store_true")
++    parser.add_argument("--batch", default="measurements-v1-" + datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ"))
++    options = parser.parse_args()
++    if Path(options.batch).name != options.batch or options.batch in (".", ".."):
++        parser.error("Use a plain batch directory name")
++    if not options.execute:
++        print(json.dumps(plan(), indent=2))
++        return
++    with attempt_lock():
++        async def entry():
++            task = asyncio.current_task()
++            asyncio.get_running_loop().add_signal_handler(signal.SIGTERM, task.cancel)
++            await execute(options)
++        asyncio.run(entry())
++
++
++if __name__ == "__main__":
++    main()
+diff --git a/src/experiments/post_freeze_analysis.py b/src/experiments/post_freeze_analysis.py
+new file mode 100644
+index 00000000..0dfbf84d
+--- /dev/null
++++ b/src/experiments/post_freeze_analysis.py
+@@ -0,0 +1,123 @@
++"""Post-freeze measurements from client records and grader verdicts only.
++
++This module never opens dataset files or imports a local answer-key grader.
++"""
++from collections import Counter
++from datetime import datetime
++import json
++from pathlib import Path
++import statistics
++
++MILESTONES = (1, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24, 26, 28, 30)
++
++
++def read_json(path):
++    return json.loads(Path(path).read_text())
++
++
++def events(path):
++    path = Path(path)
++    return [json.loads(line) for line in path.read_text().splitlines() if line.strip()] if path.exists() else []
++
++
++def baseline_accuracy(folder, expected_samples=120, rollouts=4):
++    """Map each unique oracle verdict to every sample; missing evidence stays unknown."""
++    folder = Path(folder)
++    samples, questions, pairs = [], [], set()
++    valid = True
++    for path in sorted(folder.glob("trace/*/question.json")):
++        question = read_json(path)
++        index = question["problem_idx"]
++        verdicts = {}
++        for event in events(path.parent / "verification.jsonl"):
++            verdict = event.get("result", {}).get("verdict")
++            if type(verdict) is bool:
++                candidate = event["candidate"]
++                if candidate in verdicts:
++                    raise ValueError("Repeated grading of a question/answer pair")
++                verdicts[candidate] = verdict
++                pairs.add((index, candidate))
++        counts = Counter()
++        correct = capped = no_answer = 0
++        for record in question["rollouts"]:
++            candidate = record.get("extracted_candidate")
++            terminal = record["status"] == "completed" and record.get("finish_reason") in ("stop", "length")
++            if record.get("finish_reason") != "stop" and candidate is not None:
++                raise ValueError("A capped/failed sample was extracted or graded")
++            verdict = verdicts.get(candidate) if candidate is not None else None
++            valid &= terminal and (candidate is None or type(verdict) is bool)
++            if candidate is not None:
++                counts[candidate] += 1
++            correct += verdict is True
++            capped += record.get("finish_reason") == "length"
++            no_answer += candidate is None
++            samples.append({"problem_idx": index, "rollout": record["rollout"],
++                            "candidate": candidate, "verdict": verdict, "status": record["status"],
++                            "finish_reason": record.get("finish_reason"),
++                            "no_answer": candidate is None, "token_capped": record.get("finish_reason") == "length",
++                            "generation_latency_s": record.get("generation_latency_s"),
++                            "completion_tokens": (record.get("usage") or {}).get("completion_tokens")})
++        leaders = [answer for answer, count in counts.items() if count == max(counts.values())] if counts else []
++        vote = leaders[0] if len(leaders) == 1 else None
++        vote_correct = vote is not None and verdicts.get(vote) is True
++        valid &= len(question["rollouts"]) == rollouts
++        questions.append({"problem_idx": index, "correct_out_of_4": correct,
++                          "samples": len(question["rollouts"]), "pass4": correct > 0,
++                          "vote_answer": vote, "vote_correct": vote_correct,
++                          "vote_tied": len(leaders) > 1, "no_answer": no_answer,
++                          "token_capped": capped, "answer_counts": dict(counts)})
++    valid = bool(valid and len(samples) == expected_samples and len(questions) * rollouts == expected_samples and expected_samples > 0)
++    return {"valid": valid, "expected_samples": expected_samples, "observed_samples": len(samples),
++            "questions": len(questions), "unique_grader_checks": len(pairs),
++            "correct_samples": sum(s["verdict"] is True for s in samples),
++            "pass1": sum(s["verdict"] is True for s in samples) / expected_samples if valid else None,
++            "pass4_correct_questions": sum(q["pass4"] for q in questions) if valid else None,
++            "majority_vote_correct_questions": sum(q["vote_correct"] for q in questions) if valid else None,
++            "vote_rule": "Unique most frequent extracted integer among four samples; missing answers abstain; ties or no votes count incorrect",
++            "token_capped_count": sum(s["token_capped"] for s in samples),
++            "token_capped_rate": sum(s["token_capped"] for s in samples) / expected_samples if valid else None,
++            "no_answer_count": sum(s["no_answer"] for s in samples),
++            "no_answer_rate": sum(s["no_answer"] for s in samples) / expected_samples if valid else None,
++            "per_question": questions, "samples": samples,
++            "scope": "Accuracy comes only from oracle verdicts, not an answer key. Failed/incomplete batches retain evidence without a scored accuracy."}
++
++
++def marginal_trial(folder):
++    """Distinct first-correct milestones, verified against saved oracle responses."""
++    folder = Path(folder)
++    summary = read_json(folder / "summary.json")
++    config = read_json(folder / "config.json")
++    records = [read_json(path) for path in sorted(folder.glob("trace/*/question.json"))]
++    solved = sorted((q for q in records if q.get("first_solved")),
++                    key=lambda q: q["first_solved"]["first_solved_elapsed_s"])
++    seen = set()
++    first = []
++    for question in solved:
++        event, result = question["first_solved"], question["winner"]["result"]
++        assert result["verdict"] is True and question["problem_idx"] not in seen
++        assert event["grader_query_id"] == result["query_id"]
++        seen.add(question["problem_idx"])
++        first.append({"rank": len(first) + 1, **event})
++    checks = [event for path in folder.glob("trace/*/verification.jsonl") for event in events(path)]
++    completed = [e for e in checks if type(e.get("result", {}).get("verdict")) is bool]
++    return {"attempt_id": folder.name, "status": summary["status"],
++            "solved": len(seen), "first_correct": first,
++            "milestones_s": {str(n): first[n-1]["first_solved_elapsed_s"] if len(first) >= n else None for n in MILESTONES},
++            "total_client_checks": len(checks), "completed_client_checks": len(completed),
++            "wrong_client_checks": sum(e["result"]["verdict"] is False for e in completed),
++            "grader_timeline": summary.get("grader_timeline"),
++            "requests_per_question": {str(q["problem_idx"]): len(q["rollouts"]) for q in records},
++            "questions_never_solved": [i for i in config.get("question_indices", list(range(1, 31))) if i not in seen],
++            "official_latency_s": summary.get("official_latency_s"),
++            "initialization_and_attempt_latency_s": summary.get("initialization_and_attempt_latency_s")}
++
++
++def aggregate_milestones(rows):
++    result = []
++    for n in MILESTONES:
++        values = [r["measurement"]["milestones_s"][str(n)] for r in rows
++                  if r.get("identity_valid", True) and r.get("measurement") and r["measurement"]["milestones_s"][str(n)] is not None]
++        result.append({"milestone": n, "reached": len(values), "declared_trials": len(rows), "identity_invalid_trials": sum(r.get("identity_valid") is False for r in rows),
++                       "median_s": statistics.median(values) if values else None,
++                       "min_s": min(values) if values else None, "max_s": max(values) if values else None})
++    return result
+diff --git a/test/test_post_freeze.py b/test/test_post_freeze.py
+new file mode 100644
+index 00000000..9f2b1d84
+--- /dev/null
++++ b/test/test_post_freeze.py
+@@ -0,0 +1,165 @@
++"""Full-batch completion, oracle-only accuracy and official deadline safeguards."""
++import ast
++import asyncio
++import json
++from pathlib import Path
++import tempfile
++import unittest
++
++import httpx
++
++from src.attempt_runners import naive_pass4_full_v1 as full, naive_pass4_v1 as original
++from src.experiments.post_freeze import with_official_deadline, plan
++from src.experiments.post_freeze_analysis import baseline_accuracy, aggregate_milestones
++from src.common import atomic_json, utc_now
++from runner_final.integrity import verify_core
++from src.common import ROOT
++from test.test_naive_pass4_v1 import FakeGPU, Stream, chunk
++
++
++class FullBaselineTests(unittest.IsolatedAsyncioTestCase):
++    async def test_correct_verdict_leaves_siblings_running_and_deduplicates(self):
++        submitted, callbacks, streams = [], [], []
++        outputs = [(r"\boxed{70}", "stop", .001),
++                   (r"\boxed{69}", "stop", .01),
++                   (r"\boxed{070}", "stop", .02),
++                   (r"\boxed{70}", "length", .03)]
++        async def handler(request):
++            if request.url.path == "/verify":
++                candidate = json.loads(request.content)["candidate"]
++                submitted.append(candidate)
++                return httpx.Response(200, json={"verdict": candidate == "70", "query_id": candidate})
++            text, finish, delay = outputs[len(streams)]
++            stream = Stream([chunk(text, finish=finish), b"data: [DONE]\n\n"], delay=delay)
++            streams.append(stream)
++            return httpx.Response(200, stream=stream)
++        args = full.parse_args(["--model", "WeiboAI/VibeThinker-3B"])
++        def solved(event):
++            callbacks.append(event)
++            self.assertFalse(all(stream.closed for stream in streams))
++        with tempfile.TemporaryDirectory() as tmp:
++            async with httpx.AsyncClient(transport=httpx.MockTransport(handler)) as client:
++                row = await full.run_question({"problem_idx":1,"problem":"Compute.","prompt_tokens":20},
++                                              args,client,Path(tmp),FakeGPU(),on_solved=solved)
++            accuracy = baseline_accuracy(tmp,4,4)
++        self.assertEqual(submitted,["70","69"])
++        self.assertEqual(len(callbacks),1)
++        self.assertTrue(all(r["status"]=="completed" for r in row["rollouts"]))
++        self.assertTrue(accuracy["valid"])
++        self.assertEqual((accuracy["correct_samples"],accuracy["unique_grader_checks"]),(2,2))
++        self.assertEqual((accuracy["pass1"],accuracy["no_answer_rate"],accuracy["token_capped_rate"]),(.5,.25,.25))
++
++    async def test_all_120_samples_complete_beyond_18_solved(self):
++        streams, checks = [], []
++        async def handler(request):
++            if request.url.path == "/verify":
++                checks.append(json.loads(request.content))
++                return httpx.Response(200,json={"verdict":True})
++            stream=Stream([chunk(r"\boxed{70}",finish="stop"),b"data: [DONE]\n\n"],delay=.003)
++            streams.append(stream)
++            return httpx.Response(200,stream=stream)
++        args=full.parse_args(["--model","WeiboAI/VibeThinker-3B","--target-correct","18"])
++        problems=[{"problem_idx":i,"problem":f"q{i}","prompt_tokens":20} for i in range(1,31)]
++        with tempfile.TemporaryDirectory() as tmp:
++            async with httpx.AsyncClient(transport=httpx.MockTransport(handler)) as client:
++                rows=await full.run_baseline(problems,args,client,Path(tmp),FakeGPU(),0)
++            accuracy=baseline_accuracy(tmp)
++        self.assertEqual((len(streams),len(checks),len(rows)),(120,30,30))
++        self.assertTrue(all(s.closed for s in streams))
++        self.assertTrue(all(r["status"]=="completed" for q in rows for r in q["rollouts"]))
++        self.assertEqual((accuracy["pass1"],accuracy["pass4_correct_questions"]),(1,30))
++
++
++class DeadlineTests(unittest.IsolatedAsyncioTestCase):
++    async def test_deadline_excludes_initialization_and_flushes_partial_run(self):
++        with tempfile.TemporaryDirectory() as tmp:
++            attempts=Path(tmp)
++            async def run(args):
++                output=attempts/"trial";output.mkdir()
++                await asyncio.sleep(.05)
++                atomic_json(output/"config.json",{"official_started_at_utc":utc_now()})
++                try:
++                    await asyncio.Event().wait()
++                finally:
++                    atomic_json(output/"summary.json",{"status":"interrupted"})
++            state=await with_official_deadline(run,None,attempts,.03)
++            self.assertTrue(state["deadline_reached"])
++            self.assertEqual(state["attempt_id"],"trial")
++            self.assertEqual(json.loads((attempts/"trial/summary.json").read_text())["status"],"interrupted")
++
++    async def test_external_interruption_retains_attempt_identity(self):
++        with tempfile.TemporaryDirectory() as tmp:
++            attempts = Path(tmp)
++            state = {}
++            async def run(args):
++                output = attempts / "interrupted"; output.mkdir()
++                try:
++                    await asyncio.Event().wait()
++                finally:
++                    atomic_json(output / "summary.json", {"status": "interrupted"})
++            task = asyncio.create_task(with_official_deadline(run, None, attempts, 900, state=state))
++            await asyncio.sleep(.01)
++            task.cancel()
++            with self.assertRaises(asyncio.CancelledError):
++                await task
++            self.assertEqual(state["attempt_id"], "interrupted")
++            self.assertFalse(state["deadline_reached"])
++
++    async def test_natural_completion_and_failure_are_retained(self):
++        with tempfile.TemporaryDirectory() as tmp:
++            attempts=Path(tmp)
++            async def run(args):
++                output=attempts/"done";output.mkdir();return output
++            state=await with_official_deadline(run,None,attempts,900)
++            self.assertFalse(state["deadline_reached"])
++            self.assertEqual(state["attempt_id"],"done")
++            async def failed(args):
++                (attempts/"failed").mkdir()
++                raise RuntimeError("test failure")
++            state=await with_official_deadline(failed,None,attempts,900)
++            self.assertEqual(state["attempt_id"],"failed")
++            self.assertIn("test failure",state["error"])
++
++
++class EvidenceTests(unittest.TestCase):
++    def test_original_extractor_and_prompt_are_preserved(self):
++        def definition(module,name):
++            return ast.dump(next(n for n in ast.parse(Path(module.__file__).read_text()).body if getattr(n,"name",None)==name),include_attributes=False)
++        self.assertEqual(full.PROMPT,original.PROMPT)
++        self.assertEqual(definition(full,"final_answer"),definition(original,"final_answer"))
++        self.assertEqual(plan()["task_a"]["core_manifest_sha256"],verify_core(ROOT))
++        self.assertEqual(plan()["task_b"]["gpu_memory_utilization"],.95)
++
++    def test_unreached_milestones_are_missing_and_reach_counts_are_explicit(self):
++        rows=[{"measurement":{"milestones_s":{str(n):n*3 if n<=18 else None for n in range(1,31)}}},
++              {"measurement":{"milestones_s":{str(n):n*4 if n<=20 else None for n in range(1,31)}}},
++              {"error":"failed trial"}]
++        summary={r["milestone"]:r for r in aggregate_milestones(rows)}
++        self.assertEqual((summary[18]["reached"],summary[18]["median_s"]),(2,63))
++        self.assertEqual((summary[20]["reached"],summary[20]["median_s"]),(1,80))
++        self.assertIsNone(summary[22]["median_s"])
++        self.assertEqual(summary[22]["declared_trials"],3)
++
++    def test_invalid_identity_is_retained_without_scored_milestones(self):
++        row = {"identity_valid": False, "measurement": {"milestones_s": {str(n): n*3 for n in range(1,31)}}}
++        result = aggregate_milestones([row])
++        self.assertTrue(all(r["reached"] == 0 for r in result))
++        self.assertTrue(all(r["identity_invalid_trials"] == 1 for r in result))
++
++    def test_vote_ties_abstain_and_missing_verdicts_are_not_scored(self):
++        with tempfile.TemporaryDirectory() as tmp:
++            folder=Path(tmp)/"trace/01";folder.mkdir(parents=True)
++            row={"problem_idx":1,"rollouts":[{"rollout":i,"status":"completed","finish_reason":"stop","extracted_candidate":"70" if i<=2 else "69"} for i in range(1,5)]}
++            atomic_json(folder/"question.json",row)
++            (folder/"verification.jsonl").write_text('\n'.join(json.dumps({"candidate":candidate,"result":{"verdict":verdict}}) for candidate,verdict in (("70",True),("69",False)))+'\n')
++            accuracy=baseline_accuracy(tmp,4)
++            self.assertTrue(accuracy["valid"])
++            self.assertEqual(accuracy["majority_vote_correct_questions"],0)
++            self.assertTrue(accuracy["per_question"][0]["vote_tied"])
++            (folder/"verification.jsonl").write_text('')
++            accuracy=baseline_accuracy(tmp,4)
++            self.assertFalse(accuracy["valid"])
++            self.assertIsNone(accuracy["pass1"])
++
++
++if __name__=="__main__":unittest.main()

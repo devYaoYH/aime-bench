@@ -7,6 +7,7 @@ uses **frozen core v1 with `prompt_adherence.json`**.
 | Evaluation | Time to 18 | Evidence |
 | --- | --- | --- |
 | AIME 2025, five declared seeds | **5/5 reached 18; median 77.277s; range 62.783–82.492s** | [Validation and traces](runs/experiments/frozen-core-prompt-five-seeds-20261004T005416Z/README.md) |
+| AIME 2025, five post-freeze extended seeds | 5/5 reached 18; median 78.305s; range 63.908–135.071s; 26–27 correct at exhaustion | [Extended curve and full baseline](results/post_freeze/measurements-v1-20261004T104200Z/README.md) |
 | AIME 2026, unchanged v1 policy | **88.669s**, one wrong check | [Single transfer run](runs/experiments/frozen-core-aime2026-lightweight-20261004T011005Z/README.md) |
 | Core v1.1 long rollouts, AIME 2025 | 5/5 reached 18; median 77.652s; range 60.906–92.096s | [Five-seed long-context experiment](runs/experiments/core-v1_1-five-seeds-20261004T083800Z/README.md) |
 | Core v1.5 eager30, AIME 2025 | 5/5 reached 18; median 77.352s; range 65.015–85.464s | [Five-seed scheduling experiment](runs/experiments/core-v1_5-five-seeds-20261004T074500Z/README.md) |
@@ -15,7 +16,8 @@ uses **frozen core v1 with `prompt_adherence.json`**.
 **Read the [three-page report](docs/reports/final/output/pdf/callosum-speedrun-report.pdf)
 and [evidence packet](docs/reports/final/output/pdf/callosum-evidence-packet.pdf).**
 The packet includes the final five-seed marginal curve (E8) and the 54-attempt
-history with frontier captions (E9). The historical fastest draw was 59.316s;
+history with frontier captions (E9), a new curve through 26 correct (E10/E11),
+and complete BF16 baseline accuracy at 95% memory (E12). The historical fastest draw was 59.316s;
 the final performance claim is core v1's five-run median above. Those v1 2025
 trials share one inference-server lifetime; 2026 is a single fresh-server transfer check.
 

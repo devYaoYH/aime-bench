@@ -1,6 +1,6 @@
 # VibeThinker evidence packet
 
-**Callosum interview reference | 3 October 2026**
+**Callosum interview reference | 4 October 2026**
 
 <a id="e0"></a>
 
@@ -19,7 +19,7 @@ This packet supports the three-page report with **local VibeThinker-3B BF16 and 
 | What happened with Qwen, CPU salvage, tools, and voting? | [Appendix A: additional experiments](#a1) | 8 |
 | Did quantization improve decoding, TTFT, and first submission? | [E7: run-level latency analysis](#e7) | 9 |
 | How quickly does the final core v1 bank answers? | [E8: five-seed marginal timing](#e8) | 10 |
-| How did best-observed timing progress across all 54 successful attempts? | [E9: full experiment history](#e9) | 11 |
+| How did best-observed timing progress in the 54-attempt snapshot? | [E9: historical experiment snapshot](#e9) | 11 |
 
 ### The strongest observed strategy comparison
 
@@ -273,7 +273,7 @@ Replicate the answer-arrival and Python findings on the scored GPU/model before 
 
 <a id="e9"></a>
 
-## E9. Full history: 54 successful AIME 2025 attempts
+## E9. Historical snapshot: 54 successful AIME 2025 attempts
 
 ![Figure 7. Time to 18 across all 54 target-reaching AIME 2025 attempts; only best-so-far frontier points are labeled](evidence-assets/aime2025-history-54.png)
 
@@ -289,6 +289,122 @@ Replicate the answer-arrival and Python findings on the scored GPU/model before 
 
 **G - 59.316s: fastest observed validation trial.** The three scored FlashInfer times were 87.356/59.316/86.574s; the predeclared repeatability gate failed. This single-run best is separate from the final v1 headline: **5/5, median 77.277s**.
 
-**Scope and reading.** Colors identify model/configuration groups; the dotted step tracks historical bests, not isolated causal effects. The axis break omits 165-300s. Both retrospective baselines are included among the 54 dots but excluded from the frontier, matching the viewer's frontier convention. Six AIME 2025 attempts without a measured time to 18 and the separate AIME 2026 transfer run are outside this figure. The x-axis is initialization time; the y-axis excludes setup and warmup and ends at the eighteenth distinct positive verdict.
+**Scope and reading.** This fixed source snapshot excludes later post-freeze measurements. Colors identify model/configuration groups; the dotted step tracks historical bests, not isolated causal effects. The axis break omits 165-300s. Both retrospective baselines are included among the 54 dots but excluded from the frontier, matching the viewer's frontier convention. Six AIME 2025 attempts without a measured time to 18 and the separate AIME 2026 transfer run are outside this figure. The x-axis is initialization time; the y-axis excludes setup and warmup and ends at the eighteenth distinct positive verdict.
 
 **Sources:** [54-point data and frontier labels](analysis/reporting-figures/aime2025-history-54.csv), [fixed source snapshot](analysis/reporting-figures/source-snapshot.json), [canonical aggregation logic](../../../src/attempt_results.py), [viewer frontier convention](../../../src/viewer/results/viewer.js). The five core v2 extension results are included as a separate color; they do not replace the final core v1 measurements.
+
+<!-- pagebreak -->
+
+<a id="e10"></a>
+
+## E10. Extended core v1: five declared seeds
+
+All five declared seeds are retained, with no replacement trials. Only the global solve target changes from 18 to 30; per-question cancellation, four requests, improved prompt, 8K initial and 16K additional continuations remain frozen. The external 900-second deadline starts at official solving, after initialization and cheap warmup.
+
+![Figure 8. Extended five-seed milestone medians and observed ranges; later labels give reach counts](../../../results/post_freeze/measurements-v1-20261004T104200Z/extended-milestones.png)
+
+| Seed | 14 | 16 | 18 | 20 | 22 | 24 | 26 | 28 | 30 |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| 20261011 | 57.110 | 63.111 | 78.305 | 93.449 | 138.130 | 232.523 | 450.780 | n/r | n/r |
+| 20261012 | 51.907 | 57.908 | 63.908 | 93.129 | 187.541 | 267.565 | 322.685 | n/r | n/r |
+| 20261013 | 49.369 | 58.370 | 87.065 | 93.774 | 135.464 | 254.057 | 348.623 | n/r | n/r |
+| 20261014 | 48.037 | 54.037 | 135.071 | 158.116 | 193.590 | 252.871 | 333.859 | n/r | n/r |
+| 20261015 | 46.559 | 58.637 | 67.483 | 82.655 | 110.306 | 196.309 | 253.388 | n/r | n/r |
+| Median | 49.369 | 58.370 | 78.305 | 93.449 | 138.130 | 252.871 | 333.859 | n/r | n/r |
+| Minimum | 46.559 | 54.037 | 63.908 | 82.655 | 110.306 | 196.309 | 253.388 | n/r | n/r |
+| Maximum | 57.110 | 63.111 | 135.071 | 158.116 | 193.590 | 267.565 | 450.780 | n/r | n/r |
+| Reached | 5/5 | 5/5 | 5/5 | 5/5 | 5/5 | 5/5 | 5/5 | 0/5 | 0/5 |
+
+Times are seconds; n/r means unreached. Medians/minima/maxima use reached identity-valid trials. Shading is an observed range, not a confidence interval. The orange reference is the historical stop-at-18 batch, not an earlier segment spliced into the extended curve.
+
+**Cold boundary.** The first server-start phase through 18 took **135.249s**, including launch and cheap warmup. Its official time to 18 was 78.305s. This is one first-after-launch observation; official solving still excludes initialization.
+
+**Sources:** [declared commands and hashes](../../../results/post_freeze/measurements-v1-20261004T104200Z/config.json), [per-seed CSV](../../../results/post_freeze/measurements-v1-20261004T104200Z/milestones-per-seed.csv), [all first-correct ranks/query IDs](../../../results/post_freeze/measurements-v1-20261004T104200Z/first-correct-ranks.csv), [aggregate comparison](../../../results/post_freeze/measurements-v1-20261004T104200Z/milestone-summary.csv), [offline audit](../../../results/post_freeze/measurements-v1-20261004T104200Z/analysis.json).
+<!-- pagebreak -->
+
+<a id="e11"></a>
+
+## E11. Extended-run diagnostic and control audit
+
+| Milestone | Historical E8 median (s) | New median (s) | Difference (s) |
+| --- | ---: | ---: | ---: |
+| 1 | 9.035 | 9.033 | -0.003 |
+| 2 | 12.037 | 12.035 | -0.002 |
+| 4 | 18.038 | 18.035 | -0.003 |
+| 6 | 24.037 | 24.036 | -0.001 |
+| 8 | 30.040 | 30.037 | -0.003 |
+| 10 | 36.038 | 36.036 | -0.002 |
+| 12 | 42.039 | 42.037 | -0.002 |
+| 14 | 49.086 | 49.369 | 0.283 |
+| 16 | 57.903 | 58.370 | 0.467 |
+| 18 | 77.277 | 78.305 | 1.028 |
+
+The early curve and the eighteenth-verdict endpoint are measured again, not tuned to match E8. The frozen core, prompt, serving profile, runtime versions and all 150 initial payloads match their historical same-seed controls. Every required continuation prefix is checked against saved parent IDs. Five seeds reuse one owned inference server with prefix-cache resets, fresh graders and cheap warmup.
+
+| Seed | Time to 18 (s) | First pickup (s) | Total service (s) | Wrong service (s) | Later idle (s) |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| 20261011 | 78.305 | 6.105 | 63.003 | 9.000 | 9.198 |
+| 20261012 | 63.908 | 3.901 | 60.002 | 6.000 | 0.004 |
+| 20261013 | 87.065 | 4.364 | 60.003 | 6.000 | 22.698 |
+| 20261014 | 135.071 | 6.032 | 54.002 | 0.000 | 75.037 |
+| 20261015 | 67.483 | 4.554 | 54.002 | 0.000 | 8.927 |
+
+Total service already contains wrong service. First pickup + total service + later idle reconstructs the eighteenth grader response, with a small additional HTTP receipt delay for the client first-solved timestamp.
+
+**The 135.071s outlier had no wrong checks.** Its first 16 positives arrived by 54.037s, Q23 was verified at 84.075s, and Q07 at 135.071s. Q07's candidate had zero grader queue wait and needed 8,192 initial tokens plus 9,462 received continuation tokens by cancellation. The 75.037s idle gap is candidate-production time, rather than added incorrect-check service.
+
+**Full outcomes.** All five ended by request-budget exhaustion with checks drained, solving 26/27/26/27/26. No 900-second timeout or replacement trial occurred.
+
+Each trial's never-solved questions, total checks, wrong checks, full service/idle, request counts and start/end timestamps are in [Task A records](../../../results/post_freeze/measurements-v1-20261004T104200Z/task_a.json). [Readable results](../../../results/post_freeze/measurements-v1-20261004T104200Z/summary.md) retain unreached milestones without assigning 900s or removing outcomes.
+<!-- pagebreak -->
+
+<a id="e12"></a>
+
+## E12. Full naive baseline accuracy at 95% memory
+
+The separate full-accuracy runner uses BF16 VibeThinker-3B, 16K total context, 30 questions x four independent samples, temperature 0.8, top-p 0.95 and seed 20261003. The original helpful-assistant/final-box prompt and final_answer function are unchanged. Correct verdicts do not cancel siblings and 18 correct does not stop the batch.
+
+| Metric | Result | Scoring rule |
+| --- | --- | --- |
+| Completed samples | 120/120 | All terminal stop/length records validated |
+| Mean pass@1 | 57/120 (47.50%) | Average correct fraction across 30 questions |
+| pass@4 | 18/30 | At least one correct sample |
+| Unique-plurality vote | 18/30 | Ties/no votes incorrect; missing abstain |
+| Strict three-of-four vote | 13/30 | At least three identical correct final votes |
+| Token capped | 63/120 (52.50%) | Capped responses never extracted or graded |
+| No answer | 63/120 (52.50%) | Cap or no eligible final integer |
+| Unique checks | 18 | Deduplicate each question/answer pair |
+| All generation complete | 385.848s | Official start to last generation end |
+| Generation and grading complete | 385.857s | Drain every distinct final candidate |
+| Eighteenth distinct positive | 366.706s | Measured within the uncancelled full run |
+
+All 57 naturally completed samples were correct; all 63 missing answers were capped. Strict three-of-four voting covers 13/30, separate from the predeclared unique-plurality metric. Naturally completed responses contribute only their last integer box. Each unique grader verdict is mapped back to every sample with that integer. Capped and absent-answer samples are incorrect for pass@1. Voting is a unique plurality over extracted integers, rather than requiring three of four votes: two equal answers and two missing answers can form a winning vote. An equal top-count tie, or no votes, is incorrect.
+
+**Control difference.** The user explicitly chose 95% allocation. The historical 336.497s timing baseline used 80% and stopped/cancelled on correctness; this full batch preserves all samples, including work after correct verdicts. It is one complete accuracy seed, not an isolated memory or cancellation comparison.
+
+**Memory audit.** Peak device-wide sampled use was 76.719GiB; periodic KV occupancy peaked at 49.5%, with zero observed waiting requests and no OOM/preemption messages. No eviction counter was collected. [Full-log metrics and hashes](../../../results/post_freeze/measurements-v1-20261004T104200Z/service-metrics.json).
+
+**Evidence:** [all 120 samples/verdict mappings](../../../results/post_freeze/measurements-v1-20261004T104200Z/baseline-samples.csv), [per-question correct counts out of four and votes](../../../results/post_freeze/measurements-v1-20261004T104200Z/baseline-questions.csv), [accuracy JSON](../../../results/post_freeze/measurements-v1-20261004T104200Z/baseline_accuracy.json), [run/timing record](../../../results/post_freeze/measurements-v1-20261004T104200Z/task_b.json), [exact baseline policy diff](../../../results/post_freeze/measurements-v1-20261004T104200Z/baseline-policy-diff.patch).
+<!-- pagebreak -->
+
+<a id="e13"></a>
+
+## E13. Scheduling, tail patterns and handoff provenance
+
+| Five-trial policy | Median / range (s) | Requests |
+| --- | --- | --- |
+| Selected core v1, improved prompt | 77.277 / 62.783-82.492 | 206 |
+| Eager refill, fixed 30 slots (v1.5) | 77.352 / 65.015-85.464 | 354 |
+| Long uninterrupted initial requests (v1.1) | 77.652 / 60.906-92.096 | 150 |
+
+**Refill was exercised and did not improve the median.** V1.5 had five outcomes, all reaching 18. Only one beat its historical same-seed control; the median paired difference was +2.435s. Requests increased 71.8%, observed output IDs 32.4%, and both batches completed seven wrong checks. V1.5 used a fresh server for each trial while historical v1 reused one; this is a scheduling comparison with that lifecycle difference. [All five refill outcomes](../../../runs/experiments/core-v1_5-five-seeds-20261004T074500Z/README.md).
+
+**Long initial requests are a different intervention.** V1.1 reached 18 in all five trials, but its median did not improve. It changed the first 8K cap to 64K total context and removed continuations/barriers. Every scored run used only its 30 initial requests, so no fresh retry was exercised. Two wrong checks in total, versus seven for v1, did not consistently reduce time. [V1.1 records](../../../runs/experiments/core-v1_1-five-seeds-20261004T083800Z/README.md).
+
+**Selected-core tail.** Exact SSE replay places the 90 subsequently verified candidates at median 2,699.5 output tokens, p90 7,818.4 and maximum 11,385. Q12 supplied four of the ten slots 17/18; six tail winners used continuations. A 4K retrospective cutoff retained only 60/90 winners (11-13 per seed), so token savings alone cannot predict faster first-18 time. [Exact-token replay and all rows](../../../runs/analyses/core-v1-five-seeds-answer-tokens/README.md).
+
+**Semantic rechecking has separate provenance.** The 6-27s post-result rechecking examples came from the earlier AIME 2024-warmed batch, whose 78.601s median was superseded. They are not a measured current-prompt delay estimate. First result appearance, recognized emission, submission, queueing and verdict must be measured separately before testing forced answer probes. [Earlier semantic audit](../../../runs/experiments/runner-final-five-seeds-20261004T000926Z/TAIL_REASONING.md).
+
+**Timing and answer-field exception.** The 136.048s settling trial belongs to the earlier FlashInfer validation, not the improved-prompt final five seeds or these extended trials. The user approved existing startup answer-field provenance validation only; no reference answer is passed to the model or used by the new analysis. Correctness is exclusively a grader verdict. Raw grader audits and full SSE remain remote.
+
+**Time allocation and reproduction.** [The time log](../../../results/post_freeze/measurements-v1-20261004T104200Z/time-allocation.md) separates actual activity intervals from unattended compute and does not invent unrecorded human focused hours. [Implementation diff](../../../results/post_freeze/measurements-v1-20261004T104200Z/implementation-diff.patch), [protocol](../../../results/post_freeze/measurements-v1-20261004T104200Z/config.json) and [gold-free analysis](../../../scripts/analyze_post_freeze.py) reproduce the measurements and figure. Preserve every outcome, version controls, and compare the eighteenth positive verdict independently of settlement or flush.

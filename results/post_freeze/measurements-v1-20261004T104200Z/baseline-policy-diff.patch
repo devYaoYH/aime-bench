@@ -1,0 +1,282 @@
+diff --git a/src/attempt_runners/naive_pass4_v1.py b/src/attempt_runners/naive_pass4_full_v1.py
+index bc5fd93f..946c58a1 100644
+--- a/src/attempt_runners/naive_pass4_v1.py
++++ b/src/attempt_runners/naive_pass4_full_v1.py
+@@ -1,8 +1,10 @@
+-"""Naive final-answer pass@4 baseline, version 1.
++"""Full final-answer pass@4 accuracy baseline, version 1.
+ 
+-Run: python -m src.attempt_runners.naive_pass4_v1 --model WeiboAI/VibeThinker-3B
+-Based on the completed baseline policy at commit 0834cfe. The canonical runner
+-is separate and is never imported or patched by this module.
++Run: python -m src.attempt_runners.naive_pass4_full_v1 --model WeiboAI/VibeThinker-3B
++Copied from naive_pass4_v1 without changing its prompt, sampling or extractor.
++Correct verdicts do not cancel siblings or stop the full batch. All distinct
++question/answer pairs are graded once; verdicts are mapped to all four samples.
++The original baseline and canonical/frozen cores remain unchanged.
+ """
+ 
+ from __future__ import annotations
+@@ -31,15 +33,17 @@ from src.attempt_runners._runtime_v1 import (
+     Services,
+     append_json,
+     attempt_lock,
+-    ensure_free,
+     load_questions,
+     ready,
+     sse_payloads,
+     warm_inference,
+ )
+ 
+-RUNNER_ID = "naive_pass4_v1"
+-RUNNER_MODULE = "src.attempt_runners.naive_pass4_v1"
++from src.attempt_runners._ports_v1 import ensure_free
++from src.experiments.post_freeze_analysis import baseline_accuracy
++
++RUNNER_ID = "naive_pass4_full_v1"
++RUNNER_MODULE = "src.attempt_runners.naive_pass4_full_v1"
+ PROMPT = "You are a helpful assistant. Solve the math problem carefully and put your final answer in \\boxed{} notation."
+ 
+ 
+@@ -158,6 +162,7 @@ async def run_question(
+             "continuation_of_rollout": None,
+             "requested_max_tokens": request["max_tokens"],
+             "grading_mode": "completed_final_only",
++            "extracted_candidate": None,
+         }
+         parts = {"reasoning": [], "content": []}
+         prompt_token_ids = None
+@@ -233,6 +238,7 @@ async def run_question(
+                             else None
+                         )
+                         record["final_answer_extracted"] = final_event is not None
++                        record["extracted_candidate"] = str(final_event["answer"]) if final_event else None
+                     else:
+                         raise RuntimeError(
+                             "Stream ended without DONE or a terminal finish reason"
+@@ -320,7 +326,7 @@ async def run_question(
+                             verification_latency_s=time.perf_counter() - verify_start,
+                         )
+                         append_json(file, event)
+-                    if verdict["verdict"]:
++                    if verdict["verdict"] and winner is None:
+                         winner = event
+                         solved_event = {
+                             "problem_idx": index,
+@@ -335,7 +341,8 @@ async def run_question(
+                         }
+                         with (output / "solved.jsonl").open("a") as solved_file:
+                             append_json(solved_file, solved_event)
+-                        break
++                        if on_solved:
++                            on_solved(solved_event)
+     except asyncio.CancelledError:
+         stopped_for_target = target_event is not None and target_event.is_set()
+         question_error = None if stopped_for_target else "attempt interrupted"
+@@ -382,7 +389,7 @@ async def run_question(
+                 for _, record, _ in sorted(records, key=lambda r: r[1]["rollout"])
+             ],
+         }
+-        if any((r["status"] == "error" for r in result["rollouts"])) and (not winner):
++        if any((r["status"] == "error" for r in result["rollouts"])):
+             result["status"] = "error"
+         result.update(round=round_no, first_solved=solved_event)
+         atomic_json(folder / f"round-{round_no:02d}.json", result)
+@@ -410,8 +417,6 @@ async def run_question(
+         )
+         result["end_to_end_latency_s"] = ended - result["question_start_monotonic_s"]
+         atomic_json(folder / "question.json", result)
+-        if solved_event and on_solved:
+-            on_solved(solved_event)
+         print(
+             f"Q{index:02d} round {round_no}: {result['status']}, {ended - start:.2f}s",
+             flush=True,
+@@ -496,44 +501,17 @@ async def prepare_baseline_prompts(problems, args, client):
+ 
+ 
+ async def run_baseline(problems, args, client, output, sampler, attempt_start):
+-    """One pass@4 batch, final responses only, with the same solve-target stop."""
++    """Finish every sample and candidate check, even after a correct verdict."""
+     solved = set()
+-    target_event = asyncio.Event()
+ 
+     def on_solved(event):
+         solved.add(event["problem_idx"])
+-        print(f"Solved baseline: {len(solved)}/{args.target_correct}", flush=True)
+-        if len(solved) >= args.target_correct:
+-            target_event.set()
+-
+-    batch = asyncio.create_task(
+-        run_questions(
+-            problems,
+-            args,
+-            client,
+-            output,
+-            sampler,
+-            attempt_start=attempt_start,
+-            on_solved=on_solved,
+-            target_event=target_event,
+-        )
++        print(f"Full baseline first-correct: {len(solved)}/{len(problems)}", flush=True)
++
++    return await run_questions(
++        problems, args, client, output, sampler, attempt_start=attempt_start,
++        on_solved=on_solved, target_event=None,
+     )
+-    target_wait = asyncio.create_task(target_event.wait())
+-    try:
+-        await asyncio.wait([batch, target_wait], return_when=asyncio.FIRST_COMPLETED)
+-        if target_event.is_set():
+-            batch.cancel()
+-            await asyncio.gather(batch, return_exceptions=True)
+-        else:
+-            await batch
+-    finally:
+-        target_wait.cancel()
+-        if not batch.done() and (not batch.cancelling()):
+-            batch.cancel()
+-        await asyncio.gather(batch, target_wait, return_exceptions=True)
+-    return [
+-        json.loads(p.read_text()) for p in sorted(output.glob("trace/*/question.json"))
+-    ]
+ 
+ 
+ async def run(args):
+@@ -565,6 +543,10 @@ async def run(args):
+             )
+         ),
+         "system_prompt": PROMPT,
++        "system_prompt_sha256": hashlib.sha256(PROMPT.encode()).hexdigest(),
++        "stop_at_target": False,
++        "cancel_siblings_on_correct": False,
++        "accuracy_mode": "all samples; unique question/answer checks; ties abstain",
+         "grading": "single vendored grader; no local answer-key comparisons",
+         "answer_extraction": "completed final box only; capped outputs ungraded",
+         "gpu_scope": "device-level NVML; vLLM preallocates VRAM",
+@@ -723,55 +705,68 @@ async def run(args):
+         if sampler:
+             sampler.stop()
+         official_end = time.perf_counter()
+-        results = [
+-            json.loads(p.read_text())
+-            for p in sorted(output.glob("trace/*/question.json"))
+-        ]
+-        summary = {
+-            "runner_id": RUNNER_ID,
+-            "runner_module": RUNNER_MODULE,
+-            "attempt_id": output.name,
+-            "status": status,
+-            "error": error,
+-            "official_started_at_utc": config.get("official_started_at_utc"),
+-            "official_finished_at_utc": utc_now(),
+-            "official_latency_s": (
+-                official_end - official_start if official_start else None
+-            ),
+-            "initialization_and_attempt_latency_s": official_end - began,
+-            "strategy": "baseline",
+-            "solved": sum((r["status"] == "solved" for r in results)),
+-            "questions_completed": sum((r["status"] != "stopped" for r in results)),
+-            "questions_attempted": len(results),
+-            "target_correct": args.target_correct,
+-            "target_reached": sum((r["status"] == "solved" for r in results))
+-            >= args.target_correct,
+-            "rounds_executed": max((r["round"] for r in results), default=0),
+-            "questions": [
+-                {
+-                    **{
+-                        k: r[k]
+-                        for k in (
+-                            "problem_idx",
+-                            "status",
+-                            "end_to_end_latency_s",
+-                            "unique_candidates",
+-                        )
+-                    },
+-                    "verified_answer": (
+-                        r["winner"]["candidate"] if r["winner"] else None
+-                    ),
+-                    "winning_rollout": r["winner"]["rollout"] if r["winner"] else None,
+-                    "first_solved": r.get("first_solved"),
+-                }
+-                for r in results
+-            ],
+-        }
+-        atomic_json(output / "summary.json", summary)
+-        atomic_json(output / "config.json", config)
+-        atomic_json(output / "metadata.json", build_metadata(output, config))
+-        await services.close()
+-        print(json.dumps(summary, indent=2), flush=True)
++        try:
++            results = [
++                json.loads(p.read_text())
++                for p in sorted(output.glob("trace/*/question.json"))
++            ]
++            summary = {
++                "runner_id": RUNNER_ID,
++                "runner_module": RUNNER_MODULE,
++                "attempt_id": output.name,
++                "status": status,
++                "error": error,
++                "official_started_at_utc": config.get("official_started_at_utc"),
++                "official_finished_at_utc": utc_now(),
++                "official_latency_s": (
++                    official_end - official_start if official_start else None
++                ),
++                "initialization_and_attempt_latency_s": official_end - began,
++                "strategy": "baseline",
++                "solved": sum((r["status"] == "solved" for r in results)),
++                "questions_completed": sum((r["status"] != "stopped" for r in results)),
++                "questions_attempted": len(results),
++                "target_correct": args.target_correct,
++                "target_reached": sum((r["status"] == "solved" for r in results))
++                >= args.target_correct,
++                "rounds_executed": max((r["round"] for r in results), default=0),
++                "questions": [
++                    {
++                        **{
++                            k: r[k]
++                            for k in (
++                                "problem_idx",
++                                "status",
++                                "end_to_end_latency_s",
++                                "unique_candidates",
++                            )
++                        },
++                        "verified_answer": (
++                            r["winner"]["candidate"] if r["winner"] else None
++                        ),
++                        "winning_rollout": r["winner"]["rollout"] if r["winner"] else None,
++                        "first_solved": r.get("first_solved"),
++                    }
++                    for r in results
++                ],
++            }
++            accuracy = baseline_accuracy(output, len(config.get("question_indices", [])) * args.rollouts,
++                                         args.rollouts)
++            summary["accuracy"] = accuracy
++            times = sorted(q["first_solved"]["first_solved_elapsed_s"] for q in results if q.get("first_solved"))
++            summary["time_to_18_s"] = times[17] if len(times) >= 18 else None
++            ends = [r["generation_end_monotonic_s"] for q in results for r in q["rollouts"]]
++            summary["generation_completed_latency_s"] = max(ends) - official_start if ends and official_start else None
++            summary["generation_time_scope"] = "Official start to last observed generation end; complete only if accuracy.valid"
++            if status == "completed" and not accuracy["valid"]:
++                status = summary["status"] = "failed"
++                summary["error"] = "Full accuracy evidence is incomplete"
++            atomic_json(output / "summary.json", summary)
++            atomic_json(output / "config.json", config)
++            atomic_json(output / "metadata.json", build_metadata(output, config))
++            print(json.dumps(summary, indent=2), flush=True)
++        finally:
++            await services.close()
+     if status == "failed":
+         raise RuntimeError("One or more questions failed; inspect trace telemetry")
+     return output
+@@ -809,7 +804,7 @@ def parse_args(argv=None):
+     parser.add_argument(
+         "--rollouts", type=int, help="Independent samples per question (default 4)"
+     )
+-    parser.add_argument("--target-correct", type=int, default=18)
++    parser.add_argument("--target-correct", type=int, default=30, help="Reporting target only; never stops generation")
+     parser.add_argument(
+         "--max-attempts-per-question",
+         type=int,

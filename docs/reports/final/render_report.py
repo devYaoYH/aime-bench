@@ -11,7 +11,7 @@ from reportlab.lib.enums import TA_LEFT
 from reportlab.lib.pagesizes import letter
 from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFont
-from pypdf import PdfReader
+from pypdf import PdfReader, PdfWriter
 from PIL import Image as PILImage
 
 ROOT = Path(__file__).resolve().parent
@@ -67,10 +67,11 @@ def inline(text):
         if match.group(1) is not None:
             dest = match.group(2)
             if not re.match(r"https?://|#", dest):
-                path = (ROOT / dest).resolve()
+                filename, separator, fragment = dest.partition("#")
+                path = (ROOT / filename).resolve()
                 if not path.exists():
                     raise FileNotFoundError(path)
-                dest = path.as_uri()
+                dest = path.as_uri() + (separator + fragment if separator else "")
             result.append(f'<link href="{html.escape(dest, quote=True)}" color="#245f73">'
                           f'{html.escape(match.group(1))}</link>')
         elif match.group(3) is not None:
@@ -93,7 +94,7 @@ def story_from_markdown(source):
         if not line:
             i += 1
             continue
-        if re.fullmatch(r'<a id="(?:e|a)\d"></a>', line):
+        if re.fullmatch(r'<a id="(?:e|a)\d+"></a>', line):
             # The following section heading supplies the equivalent PDF destination.
             i += 1
             continue
@@ -107,7 +108,7 @@ def story_from_markdown(source):
             heading = line[3:]
             docket = heading.startswith("E6.")
             references = False
-            key_match = re.match(r"(E\d|A\d)\.", heading)
+            key_match = re.match(r"(E\d+|A\d+)\.", heading)
             key = key_match.group(1).lower() if key_match else None
             label = (f'<a name="{key}"/>' if key else '') + inline(heading)
             p = Paragraph(label, H2)
@@ -144,7 +145,12 @@ def story_from_markdown(source):
                 "Matched NVFP4 30 x 1 / 16K comparison": [260, 126, 126],
                 "Completed comparison": [237, 188, 87],
                 "Metric": [153, 67, 67, 225],
-            }.get(table_head, [217, 90, 205])
+                "Five-trial policy": [230, 210, 72],
+            }.get(table_head)
+            if col_widths is None or len(col_widths) != len(rows[0]):
+                col_widths = [217, 90, 205] if len(rows[0]) == 3 else [512 / len(rows[0])] * len(rows[0])
+            if table_head == "Seed":
+                col_widths = [65] + [(512-65)/(len(rows[0])-1)] * (len(rows[0])-1)
             table = Table(rows, colWidths=col_widths, repeatRows=1, hAlign="LEFT")
             table.setStyle(TableStyle([
                 ("BACKGROUND", (0, 0), (-1, 0), ACCENT),
@@ -186,7 +192,7 @@ def footer(c, doc):
     c.line(44, 33, 568, 33)
     c.setFont("ReportSans", 7.4)
     c.setFillColor(MUTED)
-    c.drawString(44, 21, "3 October 2026  |  Measured runs and separately labeled replays")
+    c.drawString(44, 21, "4 October 2026  |  Measured runs and separately labeled replays")
     c.drawRightString(568, 21, str(doc.page))
     c.restoreState()
 
@@ -213,6 +219,18 @@ def main():
     doc.evidence = args.evidence
     doc.build(story_from_markdown(source.read_text()), onFirstPage=footer, onLaterPages=footer)
     reader = PdfReader(output)
+    if args.evidence:
+        # ReportLab resolves internal bookmarks but does not export a PDF name
+        # tree. External report links use #nameddest, so publish those names.
+        writer = PdfWriter(clone_from=reader)
+        for entry in reader.outline:
+            key = re.match(r"(E\d+|A\d+)\.", entry.title)
+            if key:
+                writer.add_named_destination(key.group(1).lower(), reader.get_destination_page_number(entry))
+        temporary = output.with_suffix('.tmp.pdf')
+        writer.write(temporary)
+        temporary.replace(output)
+        reader = PdfReader(output)
     print(f"Rendered {output}: {len(reader.pages)} pages")
     for num, page in enumerate(reader.pages, 1):
         text = page.extract_text()

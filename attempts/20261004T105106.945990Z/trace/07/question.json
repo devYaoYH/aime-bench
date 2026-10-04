@@ -1,0 +1,215 @@
+{
+  "problem_idx": 7,
+  "started_at_utc": "2026-10-04T10:51:07.825+00:00",
+  "finished_at_utc": "2026-10-04T10:53:03.637+00:00",
+  "end_to_end_latency_s": 115.81135498499498,
+  "status": "solved",
+  "winner": {
+    "answer": 821,
+    "part": "content",
+    "kind": "literal_prose",
+    "end": 56366,
+    "line": "Thus answer is 821. But we must be careful: Did we miss any other scenarios? Did we correctly count all matchings where H,I,J,K,L are paired with ≤ G? Are there any matchings where H,I,J,K are paired with ≤ G but L is paired with a > G? Wait, L is the largest element; it cannot be paired with a larger element. So L cannot be paired with a larger element; but L can be paired with any smaller element. If L is paired with a smaller element ≤ G, that's allowed. If L is paired with a smaller element > G (i.e., H,I,J,K), that would make that smaller element > G and in S, violating condition. So indeed L must be paired with ≤ G. So our condition that L must be paired with ≤ G is correct.",
+    "candidate": "821",
+    "rollout": 2,
+    "observed_at_utc": "2026-10-04T10:53:00.627+00:00",
+    "question_elapsed_s": 48.88577424100367,
+    "verification_started_at_utc": "2026-10-04T10:53:00.627+00:00",
+    "round": 2,
+    "candidate_queue_wait_s": 9.311496978625655e-05,
+    "result": {
+      "dataset": {
+        "format": "jsonl",
+        "gold_field": "answer",
+        "id": "aime_2025",
+        "idx_field": "problem_idx",
+        "revision": "c94da77eb22bbd6439e62a323bec18493a421302",
+        "source": "/home/azureuser/aime-bench-post-freeze-9258e987/grader/data/aime_2025.jsonl",
+        "year": 2025,
+        "sha256": "d5bcac5904290630fe98e3c3d1c2773260ebf59b57955382735e9ce8c0142b41"
+      },
+      "query_id": "20261004T105106.945990Z-q7-a821",
+      "seq": 23,
+      "agent_id": "20261004T105106.945990Z-q7-r2",
+      "index": 7,
+      "candidate": "821",
+      "verdict": true,
+      "queue_ahead_at_submit": 0,
+      "submitted_at": "2026-10-04T10:53:00.630601Z",
+      "picked_at": "2026-10-04T10:53:00.630690Z",
+      "answered_at": "2026-10-04T10:53:03.630801Z",
+      "queue_wait_s": 0.0,
+      "toll_s": 3.0,
+      "latency_s": 3.0
+    },
+    "verification_finished_at_utc": "2026-10-04T10:53:03.631+00:00",
+    "verification_latency_s": 3.0040141379577108
+  },
+  "error": null,
+  "unique_candidates": 1,
+  "candidate_answers": [
+    "821"
+  ],
+  "rollouts": [
+    {
+      "rollout": 1,
+      "round": 1,
+      "started_at_utc": "2026-10-04T10:51:07.833+00:00",
+      "start_monotonic_s": 315315.89611871,
+      "ttft_s": 0.1666775830090046,
+      "last_token_s": 57.556313923036214,
+      "finish_reason": "length",
+      "status": "completed",
+      "done_received": true,
+      "usage": {
+        "prompt_tokens": 318,
+        "total_tokens": 8510,
+        "completion_tokens": 8192,
+        "prompt_tokens_details": {
+          "cached_tokens": 160,
+          "created_cache_tokens": 144
+        }
+      },
+      "endpoint": "/v1/chat/completions",
+      "continuation_of_rollout": null,
+      "requested_max_tokens": 8192,
+      "http_status": 200,
+      "headers_received_s": 0.040419922035653144,
+      "generation_finished_at_utc": "2026-10-04T10:52:05.395+00:00",
+      "generation_end_monotonic_s": 315373.458093005,
+      "generation_latency_s": 57.56197429500753,
+      "generation_censored": true,
+      "generated_token_ids_count": 8192,
+      "prompt_token_ids_count": 318,
+      "cached_prompt_tokens": 160,
+      "prefix_cache_hit_fraction": 0.5031446540880503,
+      "overhead": {
+        "enabled": false,
+        "timings": {},
+        "counters": {},
+        "maxima": {}
+      },
+      "finished_at_utc": "2026-10-04T10:52:05.411+00:00",
+      "end_to_end_latency_s": 57.578026001981925,
+      "end_to_end_scope": "rollout start through question verification/cancellation settlement",
+      "gpu": null
+    },
+    {
+      "rollout": 2,
+      "round": 2,
+      "started_at_utc": "2026-10-04T10:52:11.778+00:00",
+      "start_monotonic_s": 315379.841170045,
+      "ttft_s": 0.16964414896210656,
+      "last_token_s": 51.85072061297251,
+      "finish_reason": null,
+      "status": "cancelled",
+      "done_received": false,
+      "usage": {
+        "prompt_tokens": 8510,
+        "total_tokens": 15747,
+        "completion_tokens": 7237
+      },
+      "endpoint": "/v1/completions",
+      "continuation_of_rollout": 1,
+      "requested_max_tokens": 16384,
+      "http_status": 200,
+      "headers_received_s": 0.07837324595311657,
+      "generation_finished_at_utc": "2026-10-04T10:53:03.632+00:00",
+      "generation_end_monotonic_s": 315431.694714057,
+      "generation_latency_s": 51.85354401200311,
+      "generation_censored": true,
+      "generated_token_ids_count": 7237,
+      "prompt_token_ids_count": 8510,
+      "cached_prompt_tokens": null,
+      "prefix_cache_hit_fraction": null,
+      "overhead": {
+        "enabled": false,
+        "timings": {},
+        "counters": {},
+        "maxima": {}
+      },
+      "finished_at_utc": "2026-10-04T10:53:03.637+00:00",
+      "end_to_end_latency_s": 51.85850837198086,
+      "end_to_end_scope": "rollout start through question verification/cancellation settlement",
+      "gpu": null
+    }
+  ],
+  "round": 2,
+  "first_solved": {
+    "problem_idx": 7,
+    "round": 2,
+    "rollout": 2,
+    "candidate": "821",
+    "first_solved_at_utc": "2026-10-04T10:53:03.631+00:00",
+    "first_solved_elapsed_s": 115.80815213295864,
+    "grader_answered_at_utc": "2026-10-04T10:53:03.630801Z",
+    "grader_query_id": "20261004T105106.945990Z-q7-a821"
+  },
+  "overhead": {
+    "enabled": false,
+    "timings": {},
+    "counters": {},
+    "maxima": {}
+  },
+  "rounds": [
+    {
+      "round": 1,
+      "status": "unsolved",
+      "started_at_utc": "2026-10-04T10:51:07.825+00:00",
+      "finished_at_utc": "2026-10-04T10:52:05.411+00:00",
+      "end_to_end_latency_s": 57.585821279964875,
+      "winner": null,
+      "error": null
+    },
+    {
+      "round": 2,
+      "status": "solved",
+      "started_at_utc": "2026-10-04T10:52:11.741+00:00",
+      "finished_at_utc": "2026-10-04T10:53:03.637+00:00",
+      "end_to_end_latency_s": 51.89520690002246,
+      "winner": {
+        "answer": 821,
+        "part": "content",
+        "kind": "literal_prose",
+        "end": 56366,
+        "line": "Thus answer is 821. But we must be careful: Did we miss any other scenarios? Did we correctly count all matchings where H,I,J,K,L are paired with ≤ G? Are there any matchings where H,I,J,K are paired with ≤ G but L is paired with a > G? Wait, L is the largest element; it cannot be paired with a larger element. So L cannot be paired with a larger element; but L can be paired with any smaller element. If L is paired with a smaller element ≤ G, that's allowed. If L is paired with a smaller element > G (i.e., H,I,J,K), that would make that smaller element > G and in S, violating condition. So indeed L must be paired with ≤ G. So our condition that L must be paired with ≤ G is correct.",
+        "candidate": "821",
+        "rollout": 2,
+        "observed_at_utc": "2026-10-04T10:53:00.627+00:00",
+        "question_elapsed_s": 48.88577424100367,
+        "verification_started_at_utc": "2026-10-04T10:53:00.627+00:00",
+        "round": 2,
+        "candidate_queue_wait_s": 9.311496978625655e-05,
+        "result": {
+          "dataset": {
+            "format": "jsonl",
+            "gold_field": "answer",
+            "id": "aime_2025",
+            "idx_field": "problem_idx",
+            "revision": "c94da77eb22bbd6439e62a323bec18493a421302",
+            "source": "/home/azureuser/aime-bench-post-freeze-9258e987/grader/data/aime_2025.jsonl",
+            "year": 2025,
+            "sha256": "d5bcac5904290630fe98e3c3d1c2773260ebf59b57955382735e9ce8c0142b41"
+          },
+          "query_id": "20261004T105106.945990Z-q7-a821",
+          "seq": 23,
+          "agent_id": "20261004T105106.945990Z-q7-r2",
+          "index": 7,
+          "candidate": "821",
+          "verdict": true,
+          "queue_ahead_at_submit": 0,
+          "submitted_at": "2026-10-04T10:53:00.630601Z",
+          "picked_at": "2026-10-04T10:53:00.630690Z",
+          "answered_at": "2026-10-04T10:53:03.630801Z",
+          "queue_wait_s": 0.0,
+          "toll_s": 3.0,
+          "latency_s": 3.0
+        },
+        "verification_finished_at_utc": "2026-10-04T10:53:03.631+00:00",
+        "verification_latency_s": 3.0040141379577108
+      },
+      "error": null
+    }
+  ],
+  "question_start_monotonic_s": 315315.888323432
+}

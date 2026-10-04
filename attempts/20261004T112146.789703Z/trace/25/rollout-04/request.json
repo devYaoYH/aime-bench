@@ -1,0 +1,23 @@
+{
+  "model": "WeiboAI/VibeThinker-3B",
+  "messages": [
+    {
+      "role": "system",
+      "content": "You are a helpful assistant. Solve the math problem carefully and put your final answer in \\boxed{} notation."
+    },
+    {
+      "role": "user",
+      "content": "Sixteen chairs are arranged in a row. Eight people each select a chair in which to sit so that no person sits next to two other people. Let $N$ be the number of subsets of the 16 chairs that could be selected. Find the remainder when $N$ is divided by $1000$."
+    }
+  ],
+  "temperature": 0.8,
+  "top_p": 0.95,
+  "max_tokens": 16283,
+  "seed": 20261107,
+  "stream": true,
+  "stream_options": {
+    "include_usage": true,
+    "continuous_usage_stats": true
+  },
+  "return_token_ids": false
+}

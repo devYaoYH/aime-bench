@@ -1,0 +1,111 @@
+{
+  "problem_idx": 2,
+  "started_at_utc": "2026-10-04T11:07:25.610+00:00",
+  "finished_at_utc": "2026-10-04T11:09:42.591+00:00",
+  "end_to_end_latency_s": 136.98143998603337,
+  "status": "solved",
+  "winner": {
+    "answer": 588,
+    "part": "content",
+    "kind": "literal_prose",
+    "end": 63955,
+    "line": "Thus the answer is 588? Wait, note that area of triangle ABC we found earlier is also 588. So the heptagon area equals area of triangle ABC? Indeed area(ABC) = 588, and we also got total area of heptagon = 588. That suggests the heptagon region exactly covers the triangle ABC (i.e., the external shapes plus the small triangle add up to the same area). But is that plausible? Let's check: The heptagon includes triangle ABC plus extra external shapes? But the sum of external shapes 288 + 288 + 12 = 588, which equals the area of triangle ABC. That implies that perhaps the heptagon is exactly covering the triangle ABC but not including any external region? Or maybe the external shapes are outside the triangle but the triangle A-F-M is inside, and they combine to exactly fill the triangle ABC? Let's consider: Actually the union of the three shapes (two quadrilaterals and triangle) equals the triangle ABC? Let's check if quadrilateral N-E-M-F and N-E-C-B cover the region of triangle ABC plus some external area, but the triangle A-F-M covers some external area as well. But overall they sum to area of triangle ABC, but some external region may be canceled? Wait, area of triangle ABC is 588. The heptagon area also computed as sum of these three shapes is 588. So maybe the heptagon is exactly the same region as triangle ABC? But that can't be because heptagon includes points outside triangle (N and M). However perhaps the external pieces are outside but triangle ABC is missing some region (like quadrilateral DEGF?), and the external pieces fill that missing region, leading to total area equal to triangle ABC. Let's examine region coverage.",
+    "candidate": "588",
+    "rollout": 2,
+    "observed_at_utc": "2026-10-04T11:09:39.580+00:00",
+    "question_elapsed_s": 133.9701107320143,
+    "verification_started_at_utc": "2026-10-04T11:09:39.580+00:00",
+    "round": 2,
+    "candidate_queue_wait_s": 0.0002344090025871992,
+    "result": {
+      "dataset": {
+        "format": "jsonl",
+        "gold_field": "answer",
+        "id": "aime_2025",
+        "idx_field": "problem_idx",
+        "revision": "c94da77eb22bbd6439e62a323bec18493a421302",
+        "source": "/home/azureuser/aime-bench-post-freeze-9258e987/grader/data/aime_2025.jsonl",
+        "year": 2025,
+        "sha256": "d5bcac5904290630fe98e3c3d1c2773260ebf59b57955382735e9ce8c0142b41"
+      },
+      "query_id": "20261004T110628.207691Z-q2-a588",
+      "seq": 24,
+      "agent_id": "20261004T110628.207691Z-q2-r2",
+      "index": 2,
+      "candidate": "588",
+      "verdict": true,
+      "queue_ahead_at_submit": 0,
+      "submitted_at": "2026-10-04T11:09:39.582039Z",
+      "picked_at": "2026-10-04T11:09:39.582142Z",
+      "answered_at": "2026-10-04T11:09:42.582239Z",
+      "queue_wait_s": 0.0,
+      "toll_s": 3.0,
+      "latency_s": 3.0
+    },
+    "verification_finished_at_utc": "2026-10-04T11:09:42.583+00:00",
+    "verification_latency_s": 3.0026537619996816
+  },
+  "error": null,
+  "unique_candidates": 1,
+  "candidate_answers": [
+    "588"
+  ],
+  "rollouts": [
+    {
+      "rollout": 2,
+      "round": 2,
+      "started_at_utc": "2026-10-04T11:07:25.649+00:00",
+      "start_monotonic_s": 316293.711580685,
+      "ttft_s": 0.2105827929917723,
+      "last_token_s": 136.9267038209946,
+      "finish_reason": null,
+      "status": "cancelled",
+      "done_received": false,
+      "usage": {
+        "prompt_tokens": 9006,
+        "total_tokens": 24904,
+        "completion_tokens": 15898
+      },
+      "endpoint": "/v1/completions",
+      "continuation_of_rollout": 1,
+      "requested_max_tokens": 16384,
+      "http_status": 200,
+      "headers_received_s": 0.10802928602788597,
+      "generation_finished_at_utc": "2026-10-04T11:09:42.583+00:00",
+      "generation_end_monotonic_s": 316430.646367707,
+      "generation_latency_s": 136.9347870220081,
+      "generation_censored": true,
+      "generated_token_ids_count": 15898,
+      "prompt_token_ids_count": 9006,
+      "cached_prompt_tokens": null,
+      "prefix_cache_hit_fraction": null,
+      "overhead": {
+        "enabled": false,
+        "timings": {},
+        "counters": {},
+        "maxima": {}
+      },
+      "finished_at_utc": "2026-10-04T11:09:42.591+00:00",
+      "end_to_end_latency_s": 136.94273696403252,
+      "end_to_end_scope": "rollout start through question verification/cancellation settlement",
+      "gpu": null
+    }
+  ],
+  "round": 2,
+  "first_solved": {
+    "problem_idx": 2,
+    "round": 2,
+    "rollout": 2,
+    "candidate": "588",
+    "first_solved_at_utc": "2026-10-04T11:09:42.583+00:00",
+    "first_solved_elapsed_s": 193.5903233899735,
+    "grader_answered_at_utc": "2026-10-04T11:09:42.582239Z",
+    "grader_query_id": "20261004T110628.207691Z-q2-a588"
+  },
+  "overhead": {
+    "enabled": false,
+    "timings": {},
+    "counters": {},
+    "maxima": {}
+  }
+}

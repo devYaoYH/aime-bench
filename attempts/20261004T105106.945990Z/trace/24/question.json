@@ -1,0 +1,167 @@
+{
+  "problem_idx": 24,
+  "started_at_utc": "2026-10-04T10:51:07.828+00:00",
+  "finished_at_utc": "2026-10-04T10:52:11.731+00:00",
+  "end_to_end_latency_s": 63.9033127950388,
+  "status": "solved",
+  "winner": {
+    "answer": 149,
+    "part": "content",
+    "kind": "literal_prose",
+    "end": 20130,
+    "line": "But is that the final answer? No, the problem asks for n + t. So n = 139, t = 10, n + t = 149. So answer is 149.",
+    "candidate": "149",
+    "rollout": 1,
+    "observed_at_utc": "2026-10-04T10:52:04.284+00:00",
+    "question_elapsed_s": 56.45639664400369,
+    "verification_started_at_utc": "2026-10-04T10:52:04.285+00:00",
+    "round": 1,
+    "candidate_queue_wait_s": 0.0003311400068923831,
+    "result": {
+      "dataset": {
+        "format": "jsonl",
+        "gold_field": "answer",
+        "id": "aime_2025",
+        "idx_field": "problem_idx",
+        "revision": "c94da77eb22bbd6439e62a323bec18493a421302",
+        "source": "/home/azureuser/aime-bench-post-freeze-9258e987/grader/data/aime_2025.jsonl",
+        "year": 2025,
+        "sha256": "d5bcac5904290630fe98e3c3d1c2773260ebf59b57955382735e9ce8c0142b41"
+      },
+      "query_id": "20261004T105106.945990Z-q24-a149",
+      "seq": 20,
+      "agent_id": "20261004T105106.945990Z-q24-r1",
+      "index": 24,
+      "candidate": "149",
+      "verdict": true,
+      "queue_ahead_at_submit": 1,
+      "submitted_at": "2026-10-04T10:52:04.287668Z",
+      "picked_at": "2026-10-04T10:52:08.730265Z",
+      "answered_at": "2026-10-04T10:52:11.730383Z",
+      "queue_wait_s": 4.443,
+      "toll_s": 3.0,
+      "latency_s": 7.443
+    },
+    "verification_finished_at_utc": "2026-10-04T10:52:11.731+00:00",
+    "verification_latency_s": 7.446404451970011
+  },
+  "error": null,
+  "unique_candidates": 1,
+  "candidate_answers": [
+    "149"
+  ],
+  "rollouts": [
+    {
+      "rollout": 1,
+      "round": 1,
+      "started_at_utc": "2026-10-04T10:51:07.844+00:00",
+      "start_monotonic_s": 315315.90728454,
+      "ttft_s": 0.156921733985655,
+      "last_token_s": 57.545527843991295,
+      "finish_reason": "length",
+      "status": "completed",
+      "done_received": true,
+      "usage": {
+        "prompt_tokens": 266,
+        "total_tokens": 8458,
+        "completion_tokens": 8192,
+        "prompt_tokens_details": {
+          "cached_tokens": 160,
+          "created_cache_tokens": 96
+        }
+      },
+      "endpoint": "/v1/chat/completions",
+      "continuation_of_rollout": null,
+      "requested_max_tokens": 8192,
+      "http_status": 200,
+      "headers_received_s": 0.04711018601665273,
+      "generation_finished_at_utc": "2026-10-04T10:52:05.402+00:00",
+      "generation_end_monotonic_s": 315373.464910535,
+      "generation_latency_s": 57.55762599501759,
+      "generation_censored": true,
+      "generated_token_ids_count": 8192,
+      "prompt_token_ids_count": 266,
+      "cached_prompt_tokens": 160,
+      "prefix_cache_hit_fraction": 0.6015037593984962,
+      "overhead": {
+        "enabled": false,
+        "timings": {},
+        "counters": {},
+        "maxima": {}
+      },
+      "finished_at_utc": "2026-10-04T10:52:11.731+00:00",
+      "end_to_end_latency_s": 63.887020024005324,
+      "end_to_end_scope": "rollout start through question verification/cancellation settlement",
+      "gpu": null
+    }
+  ],
+  "round": 1,
+  "first_solved": {
+    "problem_idx": 24,
+    "round": 1,
+    "rollout": 1,
+    "candidate": "149",
+    "first_solved_at_utc": "2026-10-04T10:52:11.731+00:00",
+    "first_solved_elapsed_s": 63.90793759498047,
+    "grader_answered_at_utc": "2026-10-04T10:52:11.730383Z",
+    "grader_query_id": "20261004T105106.945990Z-q24-a149"
+  },
+  "overhead": {
+    "enabled": false,
+    "timings": {},
+    "counters": {},
+    "maxima": {}
+  },
+  "rounds": [
+    {
+      "round": 1,
+      "status": "solved",
+      "started_at_utc": "2026-10-04T10:51:07.828+00:00",
+      "finished_at_utc": "2026-10-04T10:52:11.731+00:00",
+      "end_to_end_latency_s": 63.9033127950388,
+      "winner": {
+        "answer": 149,
+        "part": "content",
+        "kind": "literal_prose",
+        "end": 20130,
+        "line": "But is that the final answer? No, the problem asks for n + t. So n = 139, t = 10, n + t = 149. So answer is 149.",
+        "candidate": "149",
+        "rollout": 1,
+        "observed_at_utc": "2026-10-04T10:52:04.284+00:00",
+        "question_elapsed_s": 56.45639664400369,
+        "verification_started_at_utc": "2026-10-04T10:52:04.285+00:00",
+        "round": 1,
+        "candidate_queue_wait_s": 0.0003311400068923831,
+        "result": {
+          "dataset": {
+            "format": "jsonl",
+            "gold_field": "answer",
+            "id": "aime_2025",
+            "idx_field": "problem_idx",
+            "revision": "c94da77eb22bbd6439e62a323bec18493a421302",
+            "source": "/home/azureuser/aime-bench-post-freeze-9258e987/grader/data/aime_2025.jsonl",
+            "year": 2025,
+            "sha256": "d5bcac5904290630fe98e3c3d1c2773260ebf59b57955382735e9ce8c0142b41"
+          },
+          "query_id": "20261004T105106.945990Z-q24-a149",
+          "seq": 20,
+          "agent_id": "20261004T105106.945990Z-q24-r1",
+          "index": 24,
+          "candidate": "149",
+          "verdict": true,
+          "queue_ahead_at_submit": 1,
+          "submitted_at": "2026-10-04T10:52:04.287668Z",
+          "picked_at": "2026-10-04T10:52:08.730265Z",
+          "answered_at": "2026-10-04T10:52:11.730383Z",
+          "queue_wait_s": 4.443,
+          "toll_s": 3.0,
+          "latency_s": 7.443
+        },
+        "verification_finished_at_utc": "2026-10-04T10:52:11.731+00:00",
+        "verification_latency_s": 7.446404451970011
+      },
+      "error": null
+    }
+  ],
+  "question_start_monotonic_s": 315315.890991769
+}

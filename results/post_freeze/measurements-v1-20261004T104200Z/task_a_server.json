@@ -1,0 +1,17 @@
+{
+  "command": [
+    "/home/azureuser/.venvs/vllm/bin/vllm",
+    "serve",
+    "--config",
+    "/home/azureuser/models/r0b0tlab/VibeThinker-3B-NVFP4/vllm-flashinfer.yaml",
+    "--host",
+    "127.0.0.1",
+    "--port",
+    "8000",
+    "--enable-prompt-tokens-details"
+  ],
+  "profile_sha256": "aa2f451c99233d1e3ba15f9931f550cf5c46273f1ddb837a5802d521cdcf9753",
+  "server_env": {
+    "VLLM_SERVER_DEV_MODE": "1"
+  }
+}
