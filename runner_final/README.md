@@ -186,6 +186,20 @@ transfer set. The [v2 manifest](core_v2/manifest.json) freezes the new core.
 Validate v2 artifacts with `python -m runner_final.core_v2.metadata ATTEMPT_DIRECTORY`;
 the historical v1 metadata command is `python -m src.attempt_metadata`.
 
+## Frozen core v2.1: CPU syntax validation and expression keys
+
+[Core v2.1](core_v2_1/README.md) preserves v2's prompt, 30×1 barrier, 8K initial,
+16K additional continuations, four-request cap and grader API. Before submission,
+an owned CPU worker validates complete mathematical syntax and rejects explicit
+placeholders. Equivalent normalized expressions share one per-question key;
+original expressions still go to the grader. Type and symbolic denominator
+restrictions are preserved, with raw-key fallback after normalization timeouts.
+
+Run `python -m runner_final.run_frozen_v2_1 --seed 20261011` after installing
+`core_v2_1/requirements-syntax.txt` in the runner environment. The immutable v1
+and v2 remain available. Offline replay retains all 90 previously correct v2
+candidates and rejects 56/62 wrong checks; v2.1 has no GPU timing result yet.
+
 ## Historical policies
 
 `run.py`, `run_v1.py`, `validate.py` and `validate_v1.py` preserve earlier final-

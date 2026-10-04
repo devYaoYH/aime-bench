@@ -143,6 +143,11 @@ OpenRouter is used for archived exploration, and is unnecessary for the final ru
 
 ## General-answer extension and experiment archive
 
+[Core v2.1](runner_final/core_v2_1/README.md) adds CPU syntax validation and
+expression-key deduplication to v2, preserving its prompt and scheduling.
+Its offline replay retained all 90 previously correct candidates and rejected
+56/62 wrong submissions; GPU performance is not yet measured.
+
 Core v2 adds arbitrary mathematical expressions and grader-provided question
 statements. It reached 18 in all five AIME 2025 trials but was slower in every
 same-seed comparison. Its broader parser admitted prompt placeholders, causing

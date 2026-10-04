@@ -121,6 +121,8 @@ support; report those limitations rather than modifying fixtures to hide them.
 - Validate core v2 attempt metadata with `python -m runner_final.core_v2.metadata
   ATTEMPT_DIRECTORY` (or `--all` for a mixed corpus). The frozen v1 metadata CLI
   cannot interpret generalized v2 dataset snapshots. Preserve the v2 manifest;
-  subsequent behavior changes require core v3. Apex #25/#26 overlap AIME 2025;
+  subsequent behavior changes require a new version. The user-requested v2.1
+  CPU validation/expression-key extension lives in `core_v2_1`, with a separate
+  manifest, entrypoint and requirements; do not alter v1 or v2 to add it. Apex #25/#26 overlap AIME 2025;
   account for that before claiming unseen transfer. Offline tests establish
   correctness of the runner plumbing, not a new GPU performance result.
