@@ -138,3 +138,12 @@ and [data provenance](data/README.md).
 AIME 2024 is bundled as a separate 30-question prewarming workload. Select it
 with `--benchmark-year 2024`; its default role is `prewarming`. See
 [prewarming instructions](docs/attempts.md#aime-2024-prewarming-workload).
+
+## Final speedrun handoff
+
+Use `python -m runner_final.run_frozen` for the selected speedrun strategy.
+The [frozen core and configuration presets](runner_final/README.md) preserve
+30×1 barrier coverage, exact-ID continuation and the four-request cap.
+The [audited strategy report](docs/reports/final/report.md) distinguishes that
+baseline from prepared prompt and 30×2/4K experiments; its
+[source audit](docs/reports/final/strategy-audit.json) records the resolved settings.

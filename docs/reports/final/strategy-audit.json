@@ -1,0 +1,45 @@
+{
+  "scope": "Final-strategy description checked against frozen baseline configuration, core implementation, launch profile and five-trial evidence. Earlier report experiments remain separately sourced.",
+  "core_source_commit": "fc0d724",
+  "core_manifest_sha256": "35d6a06315a0e45441b3ac49bd468a2b94553fb172f378bfebc7ea8cc044070f",
+  "selected_parameters": {
+    "model": "r0b0tlab/VibeThinker-3B-NVFP4",
+    "parallelism": 30,
+    "rollouts": 1,
+    "first_pass_max_tokens": 8192,
+    "continuation_additional_max_tokens": 16384,
+    "request_cap_per_question": 4,
+    "schedule": "barrier",
+    "target_correct": 18,
+    "cheap_warmup_default": true,
+    "benchmark": true,
+    "context_tokens": 65536,
+    "memory_envelope": 0.95,
+    "attention": "FLASHINFER",
+    "system_prompt_sha256": "2aa7a805921df2fc0924f582937d8c14cb02be3a520361b1181dd664eb73929a"
+  },
+  "prepared_not_executed": [
+    "prompt_adherence.json",
+    "30x2_4k.json"
+  ],
+  "five_warmed_trial_times_s": [
+    92.06094608496642,
+    105.33684468601132,
+    66.48107519402402,
+    78.12302461900981,
+    78.60067636496387
+  ],
+  "report_sha256": "8e9ba380c1cbc0c8e60abc8d89b8fabc6847c672dedfee5b6573ae889d1a4395",
+  "checks": [
+    "Core manifest matches all 21 pinned runtime/dependency files",
+    "Baseline scheduling/parser equal historical final v2",
+    "Grader confirmation precedes per-question cancellation",
+    "Four requests include exact-ID continuations",
+    "16K is additional output per continuation, 64K is total context",
+    "AIME 2024 warming is historical opt-in, cheap warmup selected",
+    "Required traces buffered; optional GPU/engine/CPU profiling disabled",
+    "Dynamic60/eight-request policy is an experiment",
+    "Alternate prompts/30x2_4K presets prepared, no new trials launched",
+    "Historical five-seed result fails all-five within 71.135s gate"
+  ]
+}

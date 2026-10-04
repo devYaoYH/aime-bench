@@ -1,0 +1,24 @@
+{
+  "bf16_reference": {
+    "path": "/home/azureuser/aime-bench/attempts/20261003T211557.382358Z/vllm.log",
+    "sha256": "1374956d2e4c076cf1115a7c35c8d64c4cacb55f3b68e97b2e96d63648703843",
+    "selected_lines": [
+      "(EngineCore pid=101171) INFO 10-03 21:16:25 [cuda.py:526] Using FLASH_ATTN attention backend out of potential backends: ['FLASH_ATTN', 'FLASHINFER', 'TRITON_ATTN', 'FLEX_ATTENTION']."
+    ]
+  },
+  "bf16_repeats": {
+    "path": "/home/azureuser/aime-bench/runs/experiments/bf16-best-warm-replicate-20261003T224038Z/vllm.log",
+    "sha256": "286effb77d0e7c055a52816a2d72cf8cf4fc59614d3991bda1919e6bd6cc1d49",
+    "selected_lines": [
+      "(EngineCore pid=112419) INFO 10-03 22:41:18 [cuda.py:526] Using FLASH_ATTN attention backend out of potential backends: ['FLASH_ATTN', 'FLASHINFER', 'TRITON_ATTN', 'FLEX_ATTENTION']."
+    ]
+  },
+  "nvfp4_repeats": {
+    "path": "/home/azureuser/aime-bench/runs/experiments/nvfp4-best-warm-replicate-20261003T224630Z/vllm.log",
+    "sha256": "7289ac5fc2a861881b4fe05eba88999fcdb6e06aeb57870e527896d09fb2304c",
+    "selected_lines": [
+      "(EngineCore pid=115192) INFO 10-03 22:57:03 [__init__.py:1186] Using MarlinNvFp4LinearKernel for NVFP4 GEMM",
+      "(EngineCore pid=115192) INFO 10-03 22:57:04 [cuda.py:526] Using FLASH_ATTN attention backend out of potential backends: ['FLASH_ATTN', 'FLASHINFER', 'TRITON_ATTN', 'FLEX_ATTENTION']."
+    ]
+  }
+}

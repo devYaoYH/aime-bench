@@ -69,6 +69,16 @@ support; report those limitations rather than modifying fixtures to hide them.
 
 ## Speedrun sweeps and overhead
 
+- The selected final speedrun entrypoint is `python -m runner_final.run_frozen`.
+  `runner_final/core_v1/manifest.json` pins the core and repository-owned runtime
+  dependencies; startup rejects hash drift. Do not modify v1 behavior or simply
+  refresh its manifest. Create a new core version for behavior changes. Keep
+  prompts and hyperparameter presets under `runner_final/prompts/` and
+  `runner_final/presets/`; record resolved inputs and their hashes. The baseline
+  is 30×1 barrier, initial 8K, four requests including continuations, cheap warmup
+  and benchmark mode. Alternative prompt and 30×2/4K presets are prepared,
+  untested configurations. Core freeze alone is not evidence of repeatability.
+
 - Use `src.attempt_runners.speedrun_v1` for prospective concurrency experiments;
   use `src.attempt_runners.sweep_speedrun_v1` to plan the versioned manifest in
   `configs/sweeps/vibe-speedrun-v1.json`. Planning is the default and does not

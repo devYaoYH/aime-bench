@@ -1,0 +1,242 @@
+{
+  "endpoint": "First client grader submission per question from official run start, whether correct or incorrect",
+  "endpoint_differs_from_previous": "Mean across questions, rather than minimum across questions within a run",
+  "matching": "Match question IDs after averaging three observed repeat times per model; no arbitrary pairing of trial numbers",
+  "complete_cases": {
+    "questions": [
+      1,
+      3,
+      4,
+      5,
+      6,
+      8,
+      16,
+      17,
+      18,
+      19,
+      21,
+      22,
+      24,
+      25,
+      26
+    ],
+    "n_question_pairs": 15,
+    "faster_with_nvfp4": 13,
+    "bf16_mean_s": 30.042422222222218,
+    "nvfp4_mean_s": 22.68468888888889,
+    "mean_difference_nvfp4_minus_bf16_s": -7.357733333333332,
+    "median_difference_s": -5.734333333333334,
+    "naive_question_paired_test": {
+      "t": -2.6407447787866776,
+      "df": 14.0,
+      "p_one_sided_raw": 0.009688014767430753
+    },
+    "test_is_confirmatory": false,
+    "limitations": "Conditioned on submissions observed in every run; question differences share run/batch effects. Test assumes independent question differences, which is unestablished."
+  },
+  "restricted_latency_definition": "min(time to first submission, H). A question with no submission by H contributes H; this is exactly its capped latency, not an imputed uncapped time.",
+  "minimum_time_to_18_s": 96.66657860501437,
+  "horizon_sensitivity": [
+    {
+      "horizon_s": 10,
+      "bf16_mean_s": 9.840644444444445,
+      "nvfp4_mean_s": 9.735833333333334,
+      "mean_difference_nvfp4_minus_bf16_s": -0.10481111111111122,
+      "n_question_pairs": 30,
+      "n_runs_per_model": 3,
+      "faster_with_nvfp4": 3,
+      "slower_with_nvfp4": 0,
+      "run_means": {
+        "bf16_flash_attn": [
+          9.702966666666667,
+          9.910066666666667,
+          9.9089
+        ],
+        "nvfp4_flash_attn": [
+          9.568566666666667,
+          9.819533333333334,
+          9.8194
+        ]
+      },
+      "naive_question_paired_test": {
+        "t": -1.5087216766781828,
+        "df": 29.0,
+        "p_one_sided_raw": 0.07109432195066606
+      },
+      "run_level_welch_test": {
+        "t": -0.9675972157336697,
+        "df": 3.857444333734199,
+        "p_one_sided_raw": 0.1949591462947289
+      },
+      "test_is_confirmatory": false
+    },
+    {
+      "horizon_s": 30,
+      "bf16_mean_s": 25.546266666666664,
+      "nvfp4_mean_s": 23.79528888888889,
+      "mean_difference_nvfp4_minus_bf16_s": -1.7509777777777775,
+      "n_question_pairs": 30,
+      "n_runs_per_model": 3,
+      "faster_with_nvfp4": 11,
+      "slower_with_nvfp4": 2,
+      "run_means": {
+        "bf16_flash_attn": [
+          24.909033333333333,
+          25.8766,
+          25.853166666666663
+        ],
+        "nvfp4_flash_attn": [
+          24.110866666666666,
+          23.637633333333333,
+          23.637366666666665
+        ]
+      },
+      "naive_question_paired_test": {
+        "t": -2.9503778198394137,
+        "df": 29.0,
+        "p_one_sided_raw": 0.0031107998869614223
+      },
+      "run_level_welch_test": {
+        "t": -4.923847521425395,
+        "df": 2.924986348495174,
+        "p_one_sided_raw": 0.008516174443956316
+      },
+      "test_is_confirmatory": false
+    },
+    {
+      "horizon_s": 60,
+      "bf16_mean_s": 42.82496666666667,
+      "nvfp4_mean_s": 40.561011111111114,
+      "mean_difference_nvfp4_minus_bf16_s": -2.2639555555555555,
+      "n_question_pairs": 30,
+      "n_runs_per_model": 3,
+      "faster_with_nvfp4": 13,
+      "slower_with_nvfp4": 6,
+      "run_means": {
+        "bf16_flash_attn": [
+          41.2523,
+          43.58989999999999,
+          43.6327
+        ],
+        "nvfp4_flash_attn": [
+          41.05566666666667,
+          40.31373333333333,
+          40.313633333333335
+        ]
+      },
+      "naive_question_paired_test": {
+        "t": -1.6956980735404998,
+        "df": 29.0,
+        "p_one_sided_raw": 0.050327549512575634
+      },
+      "run_level_welch_test": {
+        "t": -2.746168736944538,
+        "df": 2.3917936231400874,
+        "p_one_sided_raw": 0.045632033047362165
+      },
+      "test_is_confirmatory": false
+    },
+    {
+      "horizon_s": 90,
+      "bf16_mean_s": 55.89683333333333,
+      "nvfp4_mean_s": 54.71286666666667,
+      "mean_difference_nvfp4_minus_bf16_s": -1.1839666666666666,
+      "n_question_pairs": 30,
+      "n_runs_per_model": 3,
+      "faster_with_nvfp4": 15,
+      "slower_with_nvfp4": 7,
+      "run_means": {
+        "bf16_flash_attn": [
+          52.36433333333333,
+          57.5152,
+          57.810966666666666
+        ],
+        "nvfp4_flash_attn": [
+          54.34929999999999,
+          54.894999999999996,
+          54.8943
+        ]
+      },
+      "naive_question_paired_test": {
+        "t": -0.45225757035702835,
+        "df": 29.0,
+        "p_one_sided_raw": 0.32722419086655885
+      },
+      "run_level_welch_test": {
+        "t": -0.6660360142789234,
+        "df": 2.042267070538402,
+        "p_one_sided_raw": 0.28634371312682544
+      },
+      "test_is_confirmatory": false
+    }
+  ],
+  "observed_question_counts_by_run": {
+    "bf16_flash_attn": [
+      20,
+      19,
+      20
+    ],
+    "nvfp4_flash_attn": [
+      20,
+      18,
+      18
+    ]
+  },
+  "inference_limits": [
+    "Run-level shared load and cancellations can correlate question differences; more question rows do not create more independent model runs.",
+    "Question means average the same six runs, with sequential model batches and one shared warmed server per batch.",
+    "Horizon choices and complete-case membership are retrospective; retain all sensitivity results instead of choosing the smallest p-value.",
+    "Run-level tests preserve each whole run as a unit but still have only three runs/model, repeated fixed seeds, and unestablished independence.",
+    "Neither the naive paired tests nor these retrospective run-level tests establish a general causal/significance claim."
+  ],
+  "sources": [
+    {
+      "path": "analysis/first-grader/runs.csv",
+      "sha256": "b2fb0eee504a49f136897bbd8346e46886e83d9368525c41137864fc22d318a5"
+    },
+    {
+      "path": "analysis/first-grader/question-submissions.csv",
+      "sha256": "48350132c4cb8462105ce40b02836745c3ea712188eea64c58cedcecd362b4fa"
+    }
+  ],
+  "fastest_question_zoom": {
+    "fastest_nvfp4_question_mean": {
+      "question": 1,
+      "bf16_times_s": [
+        5.028,
+        7.555,
+        7.557
+      ],
+      "nvfp4_times_s": [
+        5.763,
+        4.662,
+        4.66
+      ],
+      "bf16_mean_s": 6.713333333333334,
+      "nvfp4_mean_s": 5.028333333333333,
+      "mean_reduction_percent": 25.09930486593844,
+      "bf16_min_s": 5.028,
+      "nvfp4_min_s": 4.66,
+      "selection": "Question selected retrospectively using NVFP4 results; descriptive case study, not an independently validated hypothesis."
+    },
+    "fastest_nvfp4_single_submission": {
+      "question": 17,
+      "bf16_times_s": [
+        7.876,
+        10.997,
+        9.96
+      ],
+      "nvfp4_times_s": [
+        4.125,
+        9.924,
+        9.922
+      ],
+      "bf16_mean_s": 9.611,
+      "nvfp4_mean_s": 7.990333333333333,
+      "mean_reduction_percent": 16.862622689279654,
+      "bf16_min_s": 7.876,
+      "nvfp4_min_s": 4.125,
+      "selection": "Question selected retrospectively using NVFP4 results; descriptive case study, not an independently validated hypothesis."
+    }
+  }
+}
