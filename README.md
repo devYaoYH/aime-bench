@@ -141,7 +141,9 @@ with `--benchmark-year 2024`; its default role is `prewarming`. See
 
 ## Final speedrun handoff
 
-Use `python -m runner_final.run_frozen` for the selected speedrun strategy.
+Use `python -m runner_final.run_frozen --preset runner_final/presets/prompt_adherence.json`
+for the strategy behind the current five-run statistics and 2026 transfer check.
+The original `baseline.json` preset remains available as a preserved control.
 The [frozen core and configuration presets](runner_final/README.md) preserve
 30×1 barrier coverage, exact-ID continuation and the four-request cap.
 The [audited strategy report](docs/reports/final/report.md) distinguishes that
@@ -152,3 +154,5 @@ The subsequent [improved-prompt core validation](runs/experiments/frozen-core-pr
 reached 18 in all five declared-seed trials: median **77.277s**, range
 **62.783–82.492s**, five successes across the declared seeds on one server. These measured
 batch statistics replace historical best-draw timing as the current headline. The core and original baseline preset are unchanged.
+
+[The lightweight AIME 2026 transfer check](runs/experiments/frozen-core-aime2026-lightweight-20261004T011005Z/README.md) reached 18 verified correct in **88.669s** with one wrong check, using the unchanged improved-prompt core. This is one predeclared seed, separate from the five-run 2025 headline statistics.

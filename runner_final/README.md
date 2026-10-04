@@ -17,6 +17,11 @@ correct-verdict cancellation, target stopping, service ownership, buffered
 storage and grader behavior are frozen. Behavior changes require a new core
 version, not rewriting this manifest in place.
 
+The published five-run statistics and AIME 2026 transfer check use
+`--preset runner_final/presets/prompt_adherence.json`; the default baseline
+preset preserves the original prompt as a control. `python -m
+runner_final.validate_frozen` repeats the declared five-seed configuration.
+
 Prompts, parameter presets and deployed model profiles are configuration. Every
 attempt saves the resolved arguments, prompt bytes/hash, preset path/hash, core
 manifest hash, Git commit, runtime package versions and deployed profile snapshot.
@@ -136,3 +141,5 @@ restoring the cheaper warmup after the five warmed trials; v2 changes that defau
 not the generation/grading policy. AIME 2024 warming remains opt-in.
 
 The lightweight AIME 2026 transfer protocol is [predeclared here](../configs/experiments/vibe-frozen-core-aime2026-lightweight-v1.json): one new seed, all 30 questions, target 18, the same improved-prompt preset and core.
+
+[The lightweight AIME 2026 transfer check](../runs/experiments/frozen-core-aime2026-lightweight-20261004T011005Z/README.md) reached 18 verified correct in **88.669s** with one wrong check, using the unchanged improved-prompt core. This is one predeclared seed, separate from the five-run 2025 headline statistics.

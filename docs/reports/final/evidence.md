@@ -143,6 +143,8 @@ The FlashInfer development batch produced two runs below 71.135s, while retainin
 
 **Completed validation.** The settling trial took **136.048s**; the three scored trials took **87.356/59.316/86.574s** (median 86.574s). Only one beat 71.134766841s, so the predeclared all-three gate failed. Prefix caches were reset before warmup, with a fresh grader and every outcome retained. The fastest scored run had 54.003s service and 0.483s idle; the other two had 25.657/27.739s idle. [Validation records](../../../runs/experiments/nvfp4-flashinfer-validation-20261003T233628Z/README.md). E7 separates decoding, TTFT, and first submission.
 
+**AIME 2026 transfer, one declared seed.** The unchanged improved-prompt core reached 18 in **88.669s**, with 19 checks (one wrong), 57.002s service and 25.271s later idle. All 16 continuation prefixes matched exact IDs. This fresh-server single run is a transfer check, not repeated 2026 performance or full accuracy. [Records](../../../runs/experiments/frozen-core-aime2026-lightweight-20261004T011005Z/README.md).
+
 **Sources:** [Full replication comparison](../../../runs/experiments/best-replication-20261003/README.md), [paired NVFP4 trials](../../../runs/experiments/nvfp4-best-warm-replicate-20261003T224630Z/README.md), [declared-seed outcomes](../../../runs/experiments/nvfp4-30x1-seed-comparison-20261003T231357Z/README.md), [FlashInfer development outcomes](../../../runs/experiments/nvfp4-flashinfer-best-replicate-20261003T233008Z/README.md), and [validation protocol](../../../configs/experiments/vibe-nvfp4-flashinfer-validation-v1.json). Original report reference **[4]**; docket E6.
 
 <!-- pagebreak -->

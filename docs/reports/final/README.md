@@ -26,3 +26,5 @@ python docs/reports/final/render_report.py
 The renderer preserves the original macOS font setup. The included
 `analyze_first_grader.py` is the original analysis-source snapshot and expects its
 historical workspace layout; it is evidence for that analysis, not a new runner.
+
+[The lightweight AIME 2026 transfer check](../../../runs/experiments/frozen-core-aime2026-lightweight-20261004T011005Z/README.md) reached 18 verified correct in **88.669s** with one wrong check, using the unchanged improved-prompt core. This is one predeclared seed, separate from the five-run 2025 headline statistics.

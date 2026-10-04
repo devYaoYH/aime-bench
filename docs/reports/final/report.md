@@ -18,7 +18,7 @@ Each question maintains a candidate queue and a normalized set of already propos
 
 **What we tried.** Beyond streaming extraction and exact-ID continuation, we swept initial fan-out, compared BF16 and NVFP4/Marlin, tested FlashInfer attention, profiled client CPU, deferred trace writes, and tested dynamic60 allocation. Warm vLLM and the sampling batch before timing. Benchmark mode buffers required evidence in RAM and disables optional profiling, then flushes afterward. Initialization, cancellation settlement, and flush are reported separately.
 
-**Start here as a teammate.** Use `python -m runner_final.run_frozen` with the baseline preset; read the core contract and runner catalogue [1]. Historical canonical and experimental entrypoints remain preserved. The stronger prompt has now completed five declared-seed trials; all reached 18, with a 77.277s median and 62.783-82.492s range. The 30 x 2 / 4K preset is still untested. [10]
+**Start here as a teammate.** Use `python -m runner_final.run_frozen --preset runner_final/presets/prompt_adherence.json` for the measured policy; read the core contract [1]. Historical canonical and experimental entrypoints remain preserved. The stronger prompt has now completed five declared-seed trials; all reached 18, with a 77.277s median and 62.783-82.492s range. The 30 x 2 / 4K preset is still untested. [10]
 
 <!-- pagebreak -->
 
@@ -53,13 +53,15 @@ At 95% memory, the 30 x 1/2/4 sweep reached 18 in 71.135/77.029/114.615s during 
 
 ## 3. What didn't, next steps, and handoff
 
-**What did not improve latency.** Increasing initial fan-out from 30 x 1 to 30 x 4 slowed the observed sweep from 71.135s to 114.615s. Dynamic60 ran correctly but took 127.565s versus the earlier 106.931s NVFP4 16K run; it is not a demonstrated latency win. Buffered benchmark mode lowered measured CPU use without improving wall time in its matched pair. Seventeen follow-ups failed to recover the original BF16 timing, showing why a best run is insufficient. These comparisons are qualified by changed trajectories and controls. [3-6]
+**What did not improve latency.** Initial 30 x 4 slowed the observed sweep to 114.615s. Dynamic60 took 127.565s, and buffered benchmarking reduced CPU without improving elapsed time in its matched pair. These workload comparisons retain changed-trajectory and control limitations. [3-6]
 
-**Approaches we set aside.** CPU Gemma salvage was slow and added no grounded candidates in the selected tests; model-only verification falsely approved wrong answers. Prompt-only stopping did not reliably prevent rechecking. Jev confidence pruning and self-consistency did not warrant adoption. Python tools improved hosted-model capability and replay estimates, but VibeThinker tool-use reliability and live latency remain unvalidated. Detailed results stay in Appendix A of the evidence packet, rather than being presented as local VibeThinker measurements. [7, 8]
+**Approaches we set aside.** CPU Gemma salvage was slow; model-only verification approved wrong answers; prompt-only stopping did not prevent rechecking. Confidence pruning and voting did not warrant adoption. Hosted Python tooling showed promise, but VibeThinker tool reliability and live latency remain unvalidated. Appendix A retains these separate-model findings. [7, 8]
 
 **Use three latency targets to diagnose a run.** The actual verification timeline separates first usable candidate arrival, useful grader service, and late idle gaps. For BF16 30 x 1, 5.055s to first pickup + 54.002s service + 12.076s idle approximately equals 71.135s; BF16 30 x 4 had 46.279s of idle gaps. Bring the first candidate forward, keep the grader supplied while limiting wrong checks, and rein in the late-answer tail. Trace CPU grows with fan-out, but CPU-seconds overlap inference and cannot be added to elapsed time. [3, 5]
 
-**Next experiments after the freeze.** Keep the core fixed. Pair original/improved prompts with matched warmup and server restarts, then compare 30 x 1 / 8K against 30 x 2 / 4K with exact-ID continuations and the four-request cap. Prior five-seed traces show 10-11 verified questions extracted by 4K versus 14-16 by 8K; their 4K union covers only eleven distinct questions. A second sample may diversify the tail, but an early doubling of solved questions is unsupported. Several late paths spend 6-27s rechecking after the requested result appears. Use predeclared seeds, matched warmup/profiles, all outcomes, and server restarts before claiming repeatability. [10]
+**AIME 2026 lightweight transfer.** With the same improved-prompt core and no retuning, one new seed reached 18 verified correct in **88.669s**: 19 checks, one wrong, 57.002s service and 25.271s later idle. All 16 continuation prefixes matched exact IDs. This is one transfer check, not repeated 2026 performance or full accuracy. [11]
+
+**Next experiments after the freeze.** Keep the core fixed. Pair original/improved prompts with matched warmup and server restarts, then compare 30 x 1 / 8K against 30 x 2 / 4K under the four-request cap. Historical five-seed traces yielded 10-11 winners by 4K versus 14-16 by 8K; the 4K union covered only eleven questions. Several late paths spent 6-27s rechecking after the requested result appeared. Preserve all predeclared outcomes. [10]
 
 **Handoff rule.** Preserve the baseline and versioned policies. Compare the eighteenth distinct positive verdict, grader service/idle time, wrong checks, and request usage; also retain setup and cleanup costs. Change one control at a time where possible and show all outcomes. Stopping at 18 does not establish full 30-question accuracy or arbitrary-seed repeatability. The evidence packet supplies the figures and source records needed to audit these decisions.
 
@@ -77,3 +79,5 @@ The [illustrated evidence packet](evidence.md) ([PDF](output/pdf/callosum-eviden
 - **[9] Live baseline:** [Completed pass@4 and coverage comparison](../../../attempts/20261003T202152.418590Z/README.md).
 
 - **[10] Final validation:** [Improved-prompt five seeds](../../../runs/experiments/frozen-core-prompt-five-seeds-20261004T005416Z/README.md); [historical warmed outcomes](../../../runs/experiments/runner-final-five-seeds-20261004T000926Z/README.md), [late reasoning](../../../runs/experiments/runner-final-five-seeds-20261004T000926Z/TAIL_REASONING.md), and [token distribution](../../../runs/experiments/runner-final-five-seeds-20261004T000926Z/EXTRACTION_TOKENS.md).
+
+- **[11] Transfer check:** [Predeclared AIME 2026 result](../../../runs/experiments/frozen-core-aime2026-lightweight-20261004T011005Z/README.md).
