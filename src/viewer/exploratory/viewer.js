@@ -160,7 +160,8 @@ function renderReview() {
 }
 
 function calibrationFor(index, sample) {
-  return state.overview?.jev_calibration?.rows.find(row => row.problem_idx === index && row.sample_number === sample);
+  return state.overview?.jev_calibration?.rows.find(row => row.problem_idx === index && row.sample_number === sample)
+    ?? state.overview?.jev_calibration_followup?.rows.find(row => row.problem_idx === index && row.sample_number === sample);
 }
 
 function renderCalibration() {
@@ -168,7 +169,16 @@ function renderCalibration() {
   const card = $('#calibration-card');
   card.hidden = !calibration;
   if (!calibration) return;
-  $('#calibration-meta').textContent = `${calibration.completed_trajectories} completed attempts reviewed`;
+  const followup = state.overview?.jev_calibration_followup;
+  const total = calibration.completed_trajectories + (followup?.new_scored ?? 0);
+  $('#calibration-meta').textContent = `${total} / 240 attempts scored`;
+  $('#calibration-coverage').textContent = followup
+    ? `${calibration.completed_trajectories} historical completed responses plus ${followup.new_scored} capped responses assessed after cutoff. Historical decisions are preserved. A missing final answer is an observed failure under the original 16K cap, not proof that a prefix is unsalvageable. Scores were collected in separate batches.`
+    : `${calibration.completed_trajectories} completed responses were scored; ${240-total} capped responses were excluded and remain unscored. Missing labels mean not assessed, not rejected. This selected cohort cannot establish overall precision.`;
+  const retained = followup?.thresholds.find(row => row.retain_at_or_above === 0.5);
+  $('#calibration-followup').innerHTML = retained
+    ? `<div class="calibration-stat"><span>No-answer traces retained · score ≥ 50%</span><strong>${retained.capped_retained} / ${followup.new_scored}</strong><small>post-cutoff assessment of capped traces</small></div><div class="calibration-stat"><span>Observed final-answer precision · score ≥ 50%</span><strong>${(retained.observed_final_precision*100).toFixed(1)}%</strong><small>${retained.correct_final_retained} / ${retained.retained} retained traces returned a correct final answer under the original cap; ${retained.completed_wrong_retained} completed wrong answers also retained</small></div>`
+    : '';
   const atHalf = calibration.thresholds.find(row => row.reject_below === 0.5);
   $('#calibration-stats').innerHTML = `<div class="calibration-stat"><span>Missed within budget · reject below 50%</span><strong>${atHalf.strict_budget_false_negatives} / ${atHalf.strict_budget_positives}</strong><small>correct completions by 9,692 total output tokens</small></div><div class="calibration-stat"><span>Eventually correct · reject below 50%</span><strong>${atHalf.eventual_false_negatives} / ${atHalf.eventual_positives}</strong><small>includes answers after the stated continuation budget</small></div>`;
   $('#calibration-thresholds').innerHTML = `<div class="calibration-threshold-head"><span>Reject below</span><span>Missed within budget</span><span>Missed eventually correct</span></div>${calibration.thresholds.filter(row => [0.5, 0.6, 0.65, 0.7].includes(row.reject_below)).map(row => `<div class="calibration-threshold-row"><strong>${percent(row.reject_below)}</strong><span>${row.strict_budget_false_negatives} / ${row.strict_budget_positives}</span><span>${row.eventual_false_negatives} / ${row.eventual_positives}</span></div>`).join('')}`;
@@ -283,7 +293,7 @@ function renderDetail() {
   const groupHtml = group ? `<section class="attempt-group" aria-label="Eight attempts for question ${item.problem_idx}">
       <div class="attempt-group-head"><div><div class="eyebrow">Self-consistency / question ${String(item.problem_idx).padStart(2, '0')}</div><h3>Eight independent attempts</h3></div><span class="badge ${group.pass_at_8 ? 'good' : 'bad'}">Pass@8 ${group.pass_at_8 ? 'yes' : 'no'} · ${group.correct_attempts}/8 correct</span></div>
       <div class="vote-summary"><span>Modal vote: <strong>${group.modal_answer == null ? 'No unique mode' : group.modal_answer}</strong>${group.modal_answer == null ? '' : ` (${group.modal_votes}/8)`}</span><span>Strict majority: <strong>${group.majority_answer == null ? 'None' : group.majority_answer}</strong></span><span>Answers: ${escapeHtml(votes)}</span></div>
-      <div id="attempt-grid" class="attempt-grid">${group.attempts.map(row => { const judged = calibrationFor(item.problem_idx, row.attempt); return `<button type="button" class="attempt-button ${row.correct ? 'correct' : row.candidate == null ? 'missing' : 'wrong'}${state.sample === row.attempt ? ' selected' : ''}" data-attempt="${row.attempt}" aria-label="Attempt ${row.attempt}, ${row.candidate == null ? 'no final answer' : `answer ${escapeHtml(row.candidate)}`}, ${row.correct ? 'correct' : 'incorrect'}${judged ? `, Jev promising ${percent(judged.probability)}` : ''}"><span>Attempt ${row.attempt}${row.attempt === 1 ? ' · original' : ''}</span><strong>${row.candidate == null ? 'No answer' : escapeHtml(row.candidate)}</strong><small>${seconds(row.api_latency_s, 0)} · ${integer(row.completion_tokens)} tok</small>${judged ? `<small class="attempt-jev">Jev promising ${percent(judged.probability)}</small>` : ''}</button>`; }).join('')}</div>
+      <div id="attempt-grid" class="attempt-grid">${group.attempts.map(row => { const judged = calibrationFor(item.problem_idx, row.attempt); const followup = judged?.cohort === 'post-cutoff capped follow-up'; return `<button type="button" class="attempt-button ${row.correct ? 'correct' : row.candidate == null ? 'missing' : 'wrong'}${state.sample === row.attempt ? ' selected' : ''}" data-attempt="${row.attempt}" aria-label="Attempt ${row.attempt}, ${row.candidate == null ? 'no final answer' : `answer ${escapeHtml(row.candidate)}`}, ${row.correct ? 'correct' : 'incorrect'}${judged ? `, Jev promising ${percent(judged.probability)}${followup ? ', post-cutoff' : ''}` : ', Jev not scored'}"><span>Attempt ${row.attempt}${row.attempt === 1 ? ' · original' : ''}</span><strong>${row.candidate == null ? 'No answer' : escapeHtml(row.candidate)}</strong><small>${seconds(row.api_latency_s, 0)} · ${integer(row.completion_tokens)} tok</small><small class="attempt-jev">${judged ? `Jev promising ${percent(judged.probability)}${followup ? ' · post-cutoff' : ''}` : 'Jev not scored'}</small></button>`; }).join('')}</div>
     </section>` : '';
   const review = item.jev_review;
   const prefix = item.prefix_review;
@@ -293,12 +303,14 @@ function renderDetail() {
       <p>Jev reviewed attempt 1 with no answer key. Its estimates are model judgments, not observed continuation outcomes.</p>
     </section>` : '';
   const afterPrefix = calibration ? calibration.completion_tokens - 1500 : null;
-  const calibrationOutcome = calibration?.correct
+  const calibrationOutcome = calibration?.finish_reason === 'length'
+    ? `It hit the original ${integer(calibration.completion_tokens)}-output-token cap without a final answer. This observed failure does not establish that the prefix was unsalvageable. This Jev score was collected after cutoff.`
+    : calibration?.correct
     ? calibration.within_8192_more_tokens
       ? `It reached the correct final answer after ${integer(afterPrefix)} more output tokens, within the stated budget.`
       : `It reached the correct final answer after ${integer(afterPrefix)} more output tokens, beyond the stated 8,192-token budget.`
     : `It completed with an incorrect final answer after ${integer(afterPrefix)} more output tokens. This one continuation does not establish that the prefix was unsalvageable.`;
-  const calibrationHtml = calibration ? `<section class="calibration-detail" aria-label="Jev prefix decision compared with observed completion"><div class="review-detail-head"><div><div class="eyebrow">Jev 1.13 / first 1,500 reasoning tokens</div><h3>Prediction versus observed continuation</h3></div><a class="trace-link" href="/api/runs/${encodeURIComponent(state.overview.run_id)}/jev-calibration/${item.problem_idx}/${state.sample}" target="_blank" rel="noopener">Decision JSON ↗</a></div><div class="calibration-detail-main"><strong>${percent(calibration.probability)}</strong><span>Jev “promising to extend”</span><span class="badge ${calibration.probability < 0.5 && calibration.correct ? 'bad' : 'neutral'}">${calibration.probability < 0.5 ? 'Below 50% cutoff' : 'At or above 50%'}</span></div><p>${calibrationOutcome} Jev saw neither this result nor the answer key.</p></section>` : '';
+  const calibrationHtml = calibration ? `<section class="calibration-detail" aria-label="Jev prefix decision compared with observed completion"><div class="review-detail-head"><div><div class="eyebrow">Jev 1.13 / first 1,500 reasoning tokens</div><h3>Prediction versus observed continuation</h3></div><a class="trace-link" href="/api/runs/${encodeURIComponent(state.overview.run_id)}/${calibration.cohort === 'post-cutoff capped follow-up' ? 'jev-calibration-followup' : 'jev-calibration'}/${item.problem_idx}/${state.sample}" target="_blank" rel="noopener">Decision JSON ↗</a></div><div class="calibration-detail-main"><strong>${percent(calibration.probability)}</strong><span>Jev “promising to extend”</span><span class="badge ${calibration.probability < 0.5 && calibration.correct ? 'bad' : 'neutral'}">${calibration.probability < 0.5 ? 'Below 50% cutoff' : 'At or above 50%'}</span></div><p>${calibrationOutcome} Jev saw neither this result nor the answer key.</p></section>` : '';
   const formatExplanation = formatValid
     ? 'The final line follows the requested Answer: NNN format.'
     : trace.candidate != null

@@ -1,0 +1,30 @@
+{
+  "schema_version": 1,
+  "protocol": {
+    "model": "typesafe/jev-1.13",
+    "endpoint": "https://openrouter.ai/api/alpha/decisions",
+    "source_run": "20260930-155212",
+    "source_selection": "finish_reason=stop; all original and self-consistency samples",
+    "tokenizer_repo": "Qwen/Qwen3-30B-A3B",
+    "tokenizer_sha256": "aeb13307a71acd8fe81861d94ad54ab689df773318809eed3cbe794b4492dae4",
+    "prefix_tokens": 1500,
+    "continuation_budget_tokens": 8192,
+    "question": {
+      "type": "noul",
+      "instructions": "If the same Qwen3 solver continues from the very end of this truncated reasoning trace for at most 8192 more output tokens, is it likely to reach a mathematically justified correct AIME integer answer without restarting the solution?",
+      "criteria": {
+        "true": "The current path has a sound, useful setup and remaining steps look feasible within the continuation budget.",
+        "false": "The path is fundamentally wrong, persistently looping, or too far from a justified answer to finish within the budget."
+      }
+    },
+    "uses_gold_answers_in_decisions": false
+  },
+  "source_selection": "115 finish_reason=length trajectories absent from historical calibration",
+  "post_cutoff": true,
+  "producer": "src.experiments.jev.complete_calibration",
+  "source_commit": "45b7cad51149fc07e349b977b6605ba270b8df08",
+  "producer_sha256": "46bf2743f557f65484d7681376f2739a7e14201213ed8afb6a1f7dc4a537c97c",
+  "historical_summary_sha256": "cb2b75f8a784a8dc8f104f14ddc0ce5fd2758a60f299c25fb3cf4a25bc0c0072",
+  "started_at_utc": "2026-10-05T16:09:53.356+00:00",
+  "expected_new_decisions": 115
+}

@@ -30,6 +30,7 @@ QUESTION = re.compile(r"^/api/runs/([^/]+)/questions/(\d{1,3})$")
 JEV_REVIEW = re.compile(r"^/api/runs/([^/]+)/jev-review/(\d{1,3})$")
 JEV_PREFIX = re.compile(r"^/api/runs/([^/]+)/jev-prefix/(\d{1,3})$")
 JEV_CALIBRATION = re.compile(r"^/api/runs/([^/]+)/jev-calibration/(\d{1,3})/([1-8])$")
+JEV_FOLLOWUP = re.compile(r"^/api/runs/([^/]+)/jev-calibration-followup/(\d{1,3})/([1-8])$")
 SAMPLE = re.compile(r"^/api/runs/([^/]+)/attempts/(\d{1,3})/([1-8])$")
 OVERVIEW = re.compile(r"^/api/runs/([^/]+)/overview$")
 REASONING_PLOT = re.compile(r"^/api/runs/([^/]+)/reasoning-tokens\.svg$")
@@ -69,6 +70,8 @@ def build_overview(name: str) -> dict:
     prefix_by_index = {int(item["problem_idx"]): item for item in prefix_review["ranked"]} if prefix_review else {}
     calibration_path = path / "jev_calibration" / "summary.json"
     calibration = read_json(calibration_path) if calibration_path.is_file() else None
+    followup_path = path / "jev_calibration_followup" / "summary.json"
+    followup = read_json(followup_path) if followup_path.is_file() else None
     samples_path = path / "self_consistency" / "summary.json"
     samples = read_json(samples_path) if samples_path.is_file() else None
     samples_by_index = {int(item["problem_idx"]): item for item in samples["results"]} if samples else {}
@@ -117,7 +120,7 @@ def build_overview(name: str) -> dict:
             "prefix_review": prefix_by_index.get(index),
             "self_consistency": samples_by_index.get(index),
         })
-    return {"run_id": name, "summary": summary, "config": config, "questions": items, "jev_review": review, "prefix_review": prefix_review, "jev_calibration": calibration, "self_consistency": samples, "reasoning_checkpoints": checkpoints, "budget_analysis": budgets}
+    return {"run_id": name, "summary": summary, "config": config, "questions": items, "jev_review": review, "prefix_review": prefix_review, "jev_calibration": calibration, "jev_calibration_followup": followup, "self_consistency": samples, "reasoning_checkpoints": checkpoints, "budget_analysis": budgets}
 
 
 class Handler(BaseHTTPRequestHandler):
@@ -208,6 +211,11 @@ class Handler(BaseHTTPRequestHandler):
                 folder = run_dir(match.group(1))
                 index, number = int(match.group(2)), int(match.group(3))
                 self.send_bytes((folder / "jev_calibration" / f"{index:02d}-{number:02d}.json").read_bytes(), "application/json; charset=utf-8")
+                return
+            if match := JEV_FOLLOWUP.fullmatch(path):
+                folder = run_dir(match.group(1))
+                index, number = int(match.group(2)), int(match.group(3))
+                self.send_bytes((folder / "jev_calibration_followup" / f"{index:02d}-{number:02d}.json").read_bytes(), "application/json; charset=utf-8")
                 return
             if match := SAMPLE.fullmatch(path):
                 folder = run_dir(match.group(1))

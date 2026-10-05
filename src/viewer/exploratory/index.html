@@ -56,7 +56,9 @@
     </section>
 
     <section class="calibration-card" id="calibration-card" aria-labelledby="calibration-heading" hidden>
-      <div class="section-heading"><div><div class="eyebrow">Jev 1.13 / observed Qwen completions</div><h2 id="calibration-heading">Did Jev reject a trajectory that succeeded?</h2></div><div id="calibration-meta" class="review-meta"></div></div>
+      <div class="section-heading"><div><div class="eyebrow">Jev 1.13 / retrospective prefix assessment</div><h2 id="calibration-heading">Jev scores and observed outcomes</h2></div><div id="calibration-meta" class="review-meta"></div></div>
+      <p class="review-explainer" id="calibration-coverage"></p>
+      <div id="calibration-followup" class="calibration-stats"></div>
       <p class="review-explainer">Jev saw only the first 1,500 reasoning tokens. A success within its stated 8,192-token continuation budget is a correct final answer by 9,692 total output tokens. Longer completions are shown separately because they do not test that exact budget.</p>
       <div id="calibration-stats" class="calibration-stats"></div>
       <div id="calibration-thresholds" class="calibration-thresholds"></div>
