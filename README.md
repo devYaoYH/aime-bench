@@ -12,12 +12,21 @@ uses **core v1 with `prompt_adherence.json`**. The canonical package is
 | Packaged canonical v1, same five AIME 2025 seeds | 5/5 reached 18; median 73.568s; range 62.118–128.744s; behavior audits passed, tail latency unresolved | [Refactor validation](runs/experiments/canonical-v1-refactor-five-seeds-20261004T215632Z/README.md) |
 | AIME 2025, five post-freeze extended seeds | 5/5 reached 18; median 78.305s; range 63.908–135.071s; 26–27 correct at exhaustion | [Extended curve and full baseline](results/post_freeze/measurements-v1-20261004T104200Z/README.md) |
 | AIME 2026, unchanged v1 policy | **88.669s**, one wrong check | [Single transfer run](runs/experiments/frozen-core-aime2026-lightweight-20261004T011005Z/README.md) |
+| **CUTOFF** | | |
+
+<details>
+<summary>Evaluations after CUTOFF</summary>
+
+| Evaluation | Time to 18 | Evidence |
+| --- | --- | --- |
 | Core v1.1 long rollouts, AIME 2025 | 5/5 reached 18; median 77.652s; range 60.906–92.096s | [Five-seed long-context experiment](runs/experiments/core-v1_1-five-seeds-20261004T083800Z/README.md) |
 | Core v1.5 eager30, AIME 2025 | 5/5 reached 18; median 77.352s; range 65.015–85.464s | [Five-seed scheduling experiment](runs/experiments/core-v1_5-five-seeds-20261004T074500Z/README.md) |
 | Core v1.6 initial barrier then pool, AIME 2025 | 5/5 reached 18; median 77.498s; range 63.445–101.123s; smaller tail than latest refactored-v1 batch | [Five-seed pool comparison](runs/experiments/core-v1_6-barrier-five-seeds-20261004T224850Z/README.md) |
 | Core v1.6 BF16 + FlashInfer, AIME 2025 seed 20261011 | 18 correct in 75.640s; zero wrong checks; all wins in initial coverage; one-run comparison | [BF16 vs NVFP4](runs/experiments/core-v1_6-bf16-flashinfer-20261004T230835Z/README.md) |
 | Core v1.6 AWQ + Marlin, AIME 2025 paired seeds | 5/5 reached 18; median 88.835s; range 61.211–100.163s; faster than NVFP4 on 2/5 paired seeds | [Five-seed AWQ vs NVFP4](runs/experiments/core-v1_6-awq-five-seeds-20261004T232747Z/README.md) |
 | General-answer core v2, AIME 2025 | 5/5 reached 18; median 113.415s | [Extension back-test](runs/experiments/core-v2-aime2025-five-seeds-20261004T013100Z/README.md) |
+
+</details>
 
 **Read the [three-page report](docs/reports/final/output/pdf/callosum-speedrun-report.pdf)
 and [evidence packet](docs/reports/final/output/pdf/callosum-evidence-packet.pdf).**
