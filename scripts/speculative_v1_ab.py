@@ -180,8 +180,10 @@ def cell(arm, seed, output, args):
            "runner_command": runner_command, "profile_sha256": hashlib.sha256(profile.read_bytes()).hexdigest()}
     save(folder/"config.json", row)
     try:
-        for port in (8000, 8080):
+        for port in (8000, 8077):
             with socket.socket() as sock:
+                # Same check as canonical ensure_free: TIME_WAIT is not a listener.
+                sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
                 sock.bind(("127.0.0.1", port))
         gpu = subprocess.check_output(["nvidia-smi", "--query-compute-apps=pid", "--format=csv,noheader"], text=True)
         if gpu.strip():
