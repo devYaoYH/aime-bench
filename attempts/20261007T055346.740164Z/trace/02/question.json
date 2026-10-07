@@ -1,0 +1,167 @@
+{
+  "problem_idx": 2,
+  "started_at_utc": "2026-10-07T05:53:47.611+00:00",
+  "finished_at_utc": "2026-10-07T05:54:55.198+00:00",
+  "end_to_end_latency_s": 67.58729709510226,
+  "status": "solved",
+  "winner": {
+    "answer": 588,
+    "part": "content",
+    "kind": "literal_prose",
+    "end": 22879,
+    "line": "Given we don't know c_x, but we can find it using other constraints? Actually we haven't used any other constraints besides area of quadrilateral. The area of quadrilateral gave c_y = 42, but c_x remained free. However perhaps other constraints like M and N being on extensions or shape of heptagon may impose something that yields a unique area. But our area of heptagon turned out independent of c_x and equals triangle area. So perhaps the answer is 588.",
+    "candidate": "588",
+    "rollout": 1,
+    "observed_at_utc": "2026-10-07T05:54:42.490+00:00",
+    "question_elapsed_s": 54.8792728621047,
+    "verification_started_at_utc": "2026-10-07T05:54:42.490+00:00",
+    "round": 1,
+    "candidate_queue_wait_s": 7.000192999839783e-05,
+    "result": {
+      "dataset": {
+        "format": "jsonl",
+        "gold_field": "answer",
+        "id": "aime_2025",
+        "idx_field": "problem_idx",
+        "revision": "c94da77eb22bbd6439e62a323bec18493a421302",
+        "source": "/home/azureuser/aime-bench/runner/grader/data/aime_2025.jsonl",
+        "year": 2025,
+        "sha256": "d5bcac5904290630fe98e3c3d1c2773260ebf59b57955382735e9ce8c0142b41"
+      },
+      "query_id": "20261007T055346.740164Z-q2-a588",
+      "seq": 21,
+      "agent_id": "20261007T055346.740164Z-q2-r1",
+      "index": 2,
+      "candidate": "588",
+      "verdict": true,
+      "queue_ahead_at_submit": 3,
+      "submitted_at": "2026-10-07T05:54:42.494709Z",
+      "picked_at": "2026-10-07T05:54:52.197374Z",
+      "answered_at": "2026-10-07T05:54:55.197506Z",
+      "queue_wait_s": 9.703,
+      "toll_s": 3.0,
+      "latency_s": 12.703
+    },
+    "verification_finished_at_utc": "2026-10-07T05:54:55.198+00:00",
+    "verification_latency_s": 12.707825450925156
+  },
+  "error": null,
+  "unique_candidates": 1,
+  "candidate_answers": [
+    "588"
+  ],
+  "rollouts": [
+    {
+      "rollout": 1,
+      "round": 1,
+      "started_at_utc": "2026-10-07T05:53:47.616+00:00",
+      "start_monotonic_s": 556675.679256521,
+      "ttft_s": 0.10380316292867064,
+      "last_token_s": 57.159453587955795,
+      "finish_reason": "length",
+      "status": "completed",
+      "done_received": true,
+      "usage": {
+        "prompt_tokens": 814,
+        "total_tokens": 9006,
+        "completion_tokens": 8192,
+        "prompt_tokens_details": {
+          "cached_tokens": 160,
+          "created_cache_tokens": 640
+        }
+      },
+      "endpoint": "/v1/chat/completions",
+      "continuation_of_rollout": null,
+      "requested_max_tokens": 8192,
+      "http_status": 200,
+      "headers_received_s": 0.029017875902354717,
+      "generation_finished_at_utc": "2026-10-07T05:54:44.777+00:00",
+      "generation_end_monotonic_s": 556732.839729077,
+      "generation_latency_s": 57.160472555900924,
+      "generation_censored": true,
+      "generated_token_ids_count": 8192,
+      "prompt_token_ids_count": 814,
+      "cached_prompt_tokens": 160,
+      "prefix_cache_hit_fraction": 0.19656019656019655,
+      "overhead": {
+        "enabled": false,
+        "timings": {},
+        "counters": {},
+        "maxima": {}
+      },
+      "finished_at_utc": "2026-10-07T05:54:55.198+00:00",
+      "end_to_end_latency_s": 67.58210238500033,
+      "end_to_end_scope": "rollout start through question verification/cancellation settlement",
+      "gpu": null
+    }
+  ],
+  "round": 1,
+  "first_solved": {
+    "problem_idx": 2,
+    "round": 1,
+    "rollout": 1,
+    "candidate": "588",
+    "first_solved_at_utc": "2026-10-07T05:54:55.198+00:00",
+    "first_solved_elapsed_s": 67.58873000007588,
+    "grader_answered_at_utc": "2026-10-07T05:54:55.197506Z",
+    "grader_query_id": "20261007T055346.740164Z-q2-a588"
+  },
+  "overhead": {
+    "enabled": false,
+    "timings": {},
+    "counters": {},
+    "maxima": {}
+  },
+  "rounds": [
+    {
+      "round": 1,
+      "status": "solved",
+      "started_at_utc": "2026-10-07T05:53:47.611+00:00",
+      "finished_at_utc": "2026-10-07T05:54:55.198+00:00",
+      "end_to_end_latency_s": 67.58729709510226,
+      "winner": {
+        "answer": 588,
+        "part": "content",
+        "kind": "literal_prose",
+        "end": 22879,
+        "line": "Given we don't know c_x, but we can find it using other constraints? Actually we haven't used any other constraints besides area of quadrilateral. The area of quadrilateral gave c_y = 42, but c_x remained free. However perhaps other constraints like M and N being on extensions or shape of heptagon may impose something that yields a unique area. But our area of heptagon turned out independent of c_x and equals triangle area. So perhaps the answer is 588.",
+        "candidate": "588",
+        "rollout": 1,
+        "observed_at_utc": "2026-10-07T05:54:42.490+00:00",
+        "question_elapsed_s": 54.8792728621047,
+        "verification_started_at_utc": "2026-10-07T05:54:42.490+00:00",
+        "round": 1,
+        "candidate_queue_wait_s": 7.000192999839783e-05,
+        "result": {
+          "dataset": {
+            "format": "jsonl",
+            "gold_field": "answer",
+            "id": "aime_2025",
+            "idx_field": "problem_idx",
+            "revision": "c94da77eb22bbd6439e62a323bec18493a421302",
+            "source": "/home/azureuser/aime-bench/runner/grader/data/aime_2025.jsonl",
+            "year": 2025,
+            "sha256": "d5bcac5904290630fe98e3c3d1c2773260ebf59b57955382735e9ce8c0142b41"
+          },
+          "query_id": "20261007T055346.740164Z-q2-a588",
+          "seq": 21,
+          "agent_id": "20261007T055346.740164Z-q2-r1",
+          "index": 2,
+          "candidate": "588",
+          "verdict": true,
+          "queue_ahead_at_submit": 3,
+          "submitted_at": "2026-10-07T05:54:42.494709Z",
+          "picked_at": "2026-10-07T05:54:52.197374Z",
+          "answered_at": "2026-10-07T05:54:55.197506Z",
+          "queue_wait_s": 9.703,
+          "toll_s": 3.0,
+          "latency_s": 12.703
+        },
+        "verification_finished_at_utc": "2026-10-07T05:54:55.198+00:00",
+        "verification_latency_s": 12.707825450925156
+      },
+      "error": null
+    }
+  ],
+  "question_start_monotonic_s": 556675.674061811
+}

@@ -1,0 +1,87 @@
+{
+  "arm": "B",
+  "seed": 20261011,
+  "started_utc": "2026-10-07T05:43:06.333067+00:00",
+  "server_command": [
+    "/home/azureuser/.venvs/vllm/bin/vllm",
+    "serve",
+    "--config",
+    "/home/azureuser/aime-bench/configs/vllm/r0b0tlab/VibeThinker-3B-NVFP4/vllm-spec-qwen05-k3.yaml"
+  ],
+  "runner_command": [
+    "/home/azureuser/.venvs/vllm/bin/python",
+    "-m",
+    "runner",
+    "--model",
+    "r0b0tlab/VibeThinker-3B-NVFP4",
+    "--models-dir",
+    "/home/azureuser/aime-bench/configs/vllm",
+    "--model-profile",
+    "vllm-spec-qwen05-k3.yaml",
+    "--reuse-server",
+    "--seed",
+    "20261011",
+    "--startup-timeout",
+    "900"
+  ],
+  "profile_sha256": "2766ac4c61457cbc2ea36acb4b6c65f0d9aa1dfc02c5ee5a64c852c564a846de",
+  "runner_exit": 0,
+  "attempt_id": "20261007T054453.524143Z",
+  "status": "completed",
+  "target_reached": true,
+  "time_to_target_s": 170.7786058409838,
+  "performance": {
+    "generation_requests": 30,
+    "fresh_ttft": {
+      "count": 30,
+      "median_s": 0.5618950040079653,
+      "p95_s": 0.6983316489495337
+    },
+    "continuation_ttft": {
+      "count": 0,
+      "median_s": null,
+      "p95_s": null
+    },
+    "official_gpu": null,
+    "initialization_gpu": null
+  },
+  "concurrency_bins": {
+    "0-4": {
+      "windows": 0,
+      "decode_request_seconds": 0,
+      "tokens": 0,
+      "per_active_tps": null,
+      "mean_context_tokens": null
+    },
+    "4-8": {
+      "windows": 0,
+      "decode_request_seconds": 0,
+      "tokens": 0,
+      "per_active_tps": null,
+      "mean_context_tokens": null
+    },
+    "8-16": {
+      "windows": 9,
+      "decode_request_seconds": 667.2931358712092,
+      "tokens": 32713,
+      "per_active_tps": 49.02343249386244,
+      "mean_context_tokens": 6898.686071146247
+    },
+    "16-30": {
+      "windows": 25,
+      "decode_request_seconds": 2891.006160043908,
+      "tokens": 130888,
+      "per_active_tps": 45.274203081605364,
+      "mean_context_tokens": 2775.387587016641
+    }
+  },
+  "counter_deltas_including_warmup": {
+    "spec_decode_num_drafts_total": 74487.0,
+    "spec_decode_num_draft_tokens_total": 223461.0,
+    "spec_decode_num_accepted_tokens_total": 90417.0,
+    "spec_decode_num_accepted_tokens_per_pos_total": 90417.0,
+    "num_preemptions_total": 0.0,
+    "generation_tokens_total": 164946.0
+  },
+  "finished_utc": "2026-10-07T05:48:03.774877+00:00"
+}

@@ -1,0 +1,83 @@
+{
+  "arm": "A",
+  "seed": 20261012,
+  "started_utc": "2026-10-07T05:52:49.599027+00:00",
+  "server_command": [
+    "/home/azureuser/.venvs/vllm/bin/vllm",
+    "serve",
+    "--config",
+    "/home/azureuser/aime-bench/configs/vllm/r0b0tlab/VibeThinker-3B-NVFP4/vllm-flashinfer.yaml"
+  ],
+  "runner_command": [
+    "/home/azureuser/.venvs/vllm/bin/python",
+    "-m",
+    "runner",
+    "--model",
+    "r0b0tlab/VibeThinker-3B-NVFP4",
+    "--models-dir",
+    "/home/azureuser/aime-bench/configs/vllm",
+    "--model-profile",
+    "vllm-flashinfer.yaml",
+    "--reuse-server",
+    "--seed",
+    "20261012",
+    "--startup-timeout",
+    "900"
+  ],
+  "profile_sha256": "aa2f451c99233d1e3ba15f9931f550cf5c46273f1ddb837a5802d521cdcf9753",
+  "runner_exit": 0,
+  "attempt_id": "20261007T055346.740164Z",
+  "status": "completed",
+  "target_reached": true,
+  "time_to_target_s": 67.58873000007588,
+  "performance": {
+    "generation_requests": 30,
+    "fresh_ttft": {
+      "count": 30,
+      "median_s": 0.23915832792408764,
+      "p95_s": 0.28493867302313447
+    },
+    "continuation_ttft": {
+      "count": 0,
+      "median_s": null,
+      "p95_s": null
+    },
+    "official_gpu": null,
+    "initialization_gpu": null
+  },
+  "concurrency_bins": {
+    "0-4": {
+      "windows": 0,
+      "decode_request_seconds": 0,
+      "tokens": 0,
+      "per_active_tps": null,
+      "mean_context_tokens": null
+    },
+    "4-8": {
+      "windows": 0,
+      "decode_request_seconds": 0,
+      "tokens": 0,
+      "per_active_tps": null,
+      "mean_context_tokens": null
+    },
+    "8-16": {
+      "windows": 0,
+      "decode_request_seconds": 0,
+      "tokens": 0,
+      "per_active_tps": null,
+      "mean_context_tokens": null
+    },
+    "16-30": {
+      "windows": 11,
+      "decode_request_seconds": 1277.3018538462547,
+      "tokens": 187112,
+      "per_active_tps": 146.49004026461088,
+      "mean_context_tokens": 4125.456449975031
+    }
+  },
+  "counter_deltas_including_warmup": {
+    "num_preemptions_total": 0.0,
+    "generation_tokens_total": 192691.0
+  },
+  "finished_utc": "2026-10-07T05:55:03.349971+00:00"
+}

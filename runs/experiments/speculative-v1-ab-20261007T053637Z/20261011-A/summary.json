@@ -1,0 +1,83 @@
+{
+  "arm": "A",
+  "seed": 20261011,
+  "started_utc": "2026-10-07T05:36:59.367982+00:00",
+  "server_command": [
+    "/home/azureuser/.venvs/vllm/bin/vllm",
+    "serve",
+    "--config",
+    "/home/azureuser/aime-bench/configs/vllm/r0b0tlab/VibeThinker-3B-NVFP4/vllm-flashinfer.yaml"
+  ],
+  "runner_command": [
+    "/home/azureuser/.venvs/vllm/bin/python",
+    "-m",
+    "runner",
+    "--model",
+    "r0b0tlab/VibeThinker-3B-NVFP4",
+    "--models-dir",
+    "/home/azureuser/aime-bench/configs/vllm",
+    "--model-profile",
+    "vllm-flashinfer.yaml",
+    "--reuse-server",
+    "--seed",
+    "20261011",
+    "--startup-timeout",
+    "900"
+  ],
+  "profile_sha256": "aa2f451c99233d1e3ba15f9931f550cf5c46273f1ddb837a5802d521cdcf9753",
+  "runner_exit": 0,
+  "attempt_id": "20261007T053756.499642Z",
+  "status": "completed",
+  "target_reached": true,
+  "time_to_target_s": 76.12290154094808,
+  "performance": {
+    "generation_requests": 45,
+    "fresh_ttft": {
+      "count": 31,
+      "median_s": 0.23398687096778303,
+      "p95_s": 0.2873247480019927
+    },
+    "continuation_ttft": {
+      "count": 14,
+      "median_s": 0.19072494201827794,
+      "p95_s": 0.2132446860196069
+    },
+    "official_gpu": null,
+    "initialization_gpu": null
+  },
+  "concurrency_bins": {
+    "0-4": {
+      "windows": 0,
+      "decode_request_seconds": 0,
+      "tokens": 0,
+      "per_active_tps": null,
+      "mean_context_tokens": null
+    },
+    "4-8": {
+      "windows": 0,
+      "decode_request_seconds": 0,
+      "tokens": 0,
+      "per_active_tps": null,
+      "mean_context_tokens": null
+    },
+    "8-16": {
+      "windows": 5,
+      "decode_request_seconds": 353.4970225667609,
+      "tokens": 49107,
+      "per_active_tps": 138.91771886346152,
+      "mean_context_tokens": 9010.462384624856
+    },
+    "16-30": {
+      "windows": 10,
+      "decode_request_seconds": 1200.7250209623799,
+      "tokens": 176901,
+      "per_active_tps": 147.32848646579717,
+      "mean_context_tokens": 3776.4534425681923
+    }
+  },
+  "counter_deltas_including_warmup": {
+    "num_preemptions_total": 0.0,
+    "generation_tokens_total": 228970.0
+  },
+  "finished_utc": "2026-10-07T05:39:22.681991+00:00"
+}

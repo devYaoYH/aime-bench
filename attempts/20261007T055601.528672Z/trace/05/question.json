@@ -1,0 +1,164 @@
+{
+  "problem_idx": 5,
+  "started_at_utc": "2026-10-07T05:56:02.394+00:00",
+  "finished_at_utc": "2026-10-07T05:56:48.776+00:00",
+  "end_to_end_latency_s": 46.38192250102293,
+  "status": "solved",
+  "winner": {
+    "answer": 279,
+    "part": "content",
+    "kind": "literal_prose",
+    "end": 13449,
+    "line": "Thus the answer is 279. But we need to check if any other constraints: Divisible by 22 requires divisible by both 2 and 11. We used the 11 test and even last digit. We accounted for last digit being even by counting arrangements where the units digit is even. However, we must ensure that the 11 test is still valid when we enforce the last digit being even; we used O sum = 18 and E sum = 18, which automatically ensures 11 divisibility regardless of which even is in position 8. Yes, the 11 test only cares about the sum of digits in odd and even positions, not about the specific arrangement within each parity group.",
+    "candidate": "279",
+    "rollout": 1,
+    "observed_at_utc": "2026-10-07T05:56:38.518+00:00",
+    "question_elapsed_s": 36.12400817091111,
+    "verification_started_at_utc": "2026-10-07T05:56:38.518+00:00",
+    "round": 1,
+    "candidate_queue_wait_s": 0.00020679598674178123,
+    "result": {
+      "dataset": {
+        "format": "jsonl",
+        "gold_field": "answer",
+        "id": "aime_2025",
+        "idx_field": "problem_idx",
+        "revision": "c94da77eb22bbd6439e62a323bec18493a421302",
+        "source": "/home/azureuser/aime-bench/runner/grader/data/aime_2025.jsonl",
+        "year": 2025,
+        "sha256": "d5bcac5904290630fe98e3c3d1c2773260ebf59b57955382735e9ce8c0142b41"
+      },
+      "query_id": "20261007T055601.528672Z-q5-a279",
+      "seq": 14,
+      "agent_id": "20261007T055601.528672Z-q5-r1",
+      "index": 5,
+      "candidate": "279",
+      "verdict": true,
+      "queue_ahead_at_submit": 2,
+      "submitted_at": "2026-10-07T05:56:38.523877Z",
+      "picked_at": "2026-10-07T05:56:45.771759Z",
+      "answered_at": "2026-10-07T05:56:48.771875Z",
+      "queue_wait_s": 7.248,
+      "toll_s": 3.0,
+      "latency_s": 10.248
+    },
+    "verification_finished_at_utc": "2026-10-07T05:56:48.773+00:00",
+    "verification_latency_s": 10.254587619914673
+  },
+  "error": null,
+  "unique_candidates": 1,
+  "candidate_answers": [
+    "279"
+  ],
+  "rollouts": [
+    {
+      "rollout": 1,
+      "round": 1,
+      "started_at_utc": "2026-10-07T05:56:02.401+00:00",
+      "start_monotonic_s": 556810.463860183,
+      "ttft_s": 0.12071171798743308,
+      "last_token_s": 46.36774362693541,
+      "finish_reason": null,
+      "status": "cancelled",
+      "done_received": false,
+      "usage": {
+        "prompt_tokens": 254,
+        "total_tokens": 7069,
+        "completion_tokens": 6815,
+        "completion_tokens_details": null
+      },
+      "endpoint": "/v1/chat/completions",
+      "continuation_of_rollout": null,
+      "requested_max_tokens": 8192,
+      "http_status": 200,
+      "headers_received_s": 0.027961223968304694,
+      "generation_finished_at_utc": "2026-10-07T05:56:48.773+00:00",
+      "generation_end_monotonic_s": 556856.836250084,
+      "generation_latency_s": 46.37238990096375,
+      "generation_censored": true,
+      "generated_token_ids_count": 6815,
+      "prompt_token_ids_count": 254,
+      "cached_prompt_tokens": null,
+      "prefix_cache_hit_fraction": null,
+      "overhead": {
+        "enabled": false,
+        "timings": {},
+        "counters": {},
+        "maxima": {}
+      },
+      "finished_at_utc": "2026-10-07T05:56:48.776+00:00",
+      "end_to_end_latency_s": 46.37511106103193,
+      "end_to_end_scope": "rollout start through question verification/cancellation settlement",
+      "gpu": null
+    }
+  ],
+  "round": 1,
+  "first_solved": {
+    "problem_idx": 5,
+    "round": 1,
+    "rollout": 1,
+    "candidate": "279",
+    "first_solved_at_utc": "2026-10-07T05:56:48.773+00:00",
+    "first_solved_elapsed_s": 46.38070388196502,
+    "grader_answered_at_utc": "2026-10-07T05:56:48.771875Z",
+    "grader_query_id": "20261007T055601.528672Z-q5-a279"
+  },
+  "overhead": {
+    "enabled": false,
+    "timings": {},
+    "counters": {},
+    "maxima": {}
+  },
+  "rounds": [
+    {
+      "round": 1,
+      "status": "solved",
+      "started_at_utc": "2026-10-07T05:56:02.394+00:00",
+      "finished_at_utc": "2026-10-07T05:56:48.776+00:00",
+      "end_to_end_latency_s": 46.38192250102293,
+      "winner": {
+        "answer": 279,
+        "part": "content",
+        "kind": "literal_prose",
+        "end": 13449,
+        "line": "Thus the answer is 279. But we need to check if any other constraints: Divisible by 22 requires divisible by both 2 and 11. We used the 11 test and even last digit. We accounted for last digit being even by counting arrangements where the units digit is even. However, we must ensure that the 11 test is still valid when we enforce the last digit being even; we used O sum = 18 and E sum = 18, which automatically ensures 11 divisibility regardless of which even is in position 8. Yes, the 11 test only cares about the sum of digits in odd and even positions, not about the specific arrangement within each parity group.",
+        "candidate": "279",
+        "rollout": 1,
+        "observed_at_utc": "2026-10-07T05:56:38.518+00:00",
+        "question_elapsed_s": 36.12400817091111,
+        "verification_started_at_utc": "2026-10-07T05:56:38.518+00:00",
+        "round": 1,
+        "candidate_queue_wait_s": 0.00020679598674178123,
+        "result": {
+          "dataset": {
+            "format": "jsonl",
+            "gold_field": "answer",
+            "id": "aime_2025",
+            "idx_field": "problem_idx",
+            "revision": "c94da77eb22bbd6439e62a323bec18493a421302",
+            "source": "/home/azureuser/aime-bench/runner/grader/data/aime_2025.jsonl",
+            "year": 2025,
+            "sha256": "d5bcac5904290630fe98e3c3d1c2773260ebf59b57955382735e9ce8c0142b41"
+          },
+          "query_id": "20261007T055601.528672Z-q5-a279",
+          "seq": 14,
+          "agent_id": "20261007T055601.528672Z-q5-r1",
+          "index": 5,
+          "candidate": "279",
+          "verdict": true,
+          "queue_ahead_at_submit": 2,
+          "submitted_at": "2026-10-07T05:56:38.523877Z",
+          "picked_at": "2026-10-07T05:56:45.771759Z",
+          "answered_at": "2026-10-07T05:56:48.771875Z",
+          "queue_wait_s": 7.248,
+          "toll_s": 3.0,
+          "latency_s": 10.248
+        },
+        "verification_finished_at_utc": "2026-10-07T05:56:48.773+00:00",
+        "verification_latency_s": 10.254587619914673
+      },
+      "error": null
+    }
+  ],
+  "question_start_monotonic_s": 556810.457048743
+}

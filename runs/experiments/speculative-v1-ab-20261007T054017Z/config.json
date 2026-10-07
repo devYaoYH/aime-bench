@@ -1,0 +1,45 @@
+{
+  "started_utc": "2026-10-07T05:40:17.461622+00:00",
+  "plan": [
+    {
+      "seed": 20261011,
+      "arms": [
+        "A",
+        "B"
+      ]
+    },
+    {
+      "seed": 20261012,
+      "arms": [
+        "B",
+        "A"
+      ]
+    },
+    {
+      "seed": 20261013,
+      "arms": [
+        "A",
+        "B"
+      ]
+    }
+  ],
+  "preflight": {
+    "vllm_version": "0.30.1rc1.dev623+g4ac0d0eac",
+    "shared_token_ids_match": true,
+    "target_only_tokens": {
+      "</think>": 151666,
+      "<think>": 151665
+    },
+    "lm_head_vocab_size": 151936,
+    "draft_native_context": 32768,
+    "draft_revision": "8123ea2e9354afb7ffcc6c8641d1b2f5ecf18301",
+    "tokenizer_hashes": [
+      "83d0b15d5bda7f2306b31e1689d11b3275c01da64b8c69b34c95eb05bfba868e",
+      "b7a0d4b412fcb6918cf000fd132caad4f953b705c5922747f499e0f60ebc1615"
+    ]
+  },
+  "git_commit": "188dcae3d2322d39afd73e9c23157561fda2ca0b",
+  "git_status": " M attempts/20261003T233132.790330Z/metadata.json\n M attempts/20261003T233317.639206Z/metadata.json\n M attempts/20261003T233424.568380Z/metadata.json\n M attempts/20261003T233726.660316Z/metadata.json\n M attempts/20261003T233946.145732Z/metadata.json\n M attempts/20261003T234116.410095Z/metadata.json\n M attempts/20261003T234218.148913Z/metadata.json\n?? attempts/20261004T071101.422687Z/\n?? attempts/20261005T224215.014196Z/\n?? attempts/20261007T053756.499642Z/\n?? runs/experiments/core-v1-fp8-kv-20261004T071101Z/\n?? runs/experiments/speculative-v1-ab-20261007T053637Z/\n?? runs/speedrun_sweeps/bf16-95pct-20261003T210226Z/grid/\n",
+  "hardware": "Wed Oct  7 05:40:37 2026       \n+-----------------------------------------------------------------------------------------+\n| NVIDIA-SMI 580.178.04             Driver Version: 580.178.04     CUDA Version: 13.0     |\n+-----------------------------------------+------------------------+----------------------+\n| GPU  Name                 Persistence-M | Bus-Id          Disp.A | Volatile Uncorr. ECC |\n| Fan  Temp   Perf          Pwr:Usage/Cap |           Memory-Usage | GPU-Util  Compute M. |\n|                                         |                        |               MIG M. |\n|=========================================+========================+======================|\n|   0  NVIDIA A100 80GB PCIe          Off |   00000001:00:00.0 Off |                    0 |\n| N/A   48C    P0             74W /  300W |       0MiB /  81920MiB |     17%      Default |\n|                                         |                        |             Disabled |\n+-----------------------------------------+------------------------+----------------------+\n\n+-----------------------------------------------------------------------------------------+\n| Processes:                                                                              |\n|  GPU   GI   CI              PID   Type   Process name                        GPU Memory |\n|        ID   ID                                                               Usage      |\n|=========================================================================================|\n|  No running processes found                                                             |\n+-----------------------------------------------------------------------------------------+\n",
+  "policy": "unchanged canonical v1 prompt_adherence benchmark; each cell owns a fresh server"
+}

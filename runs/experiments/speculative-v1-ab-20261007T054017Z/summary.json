@@ -1,0 +1,559 @@
+{
+  "config": {
+    "started_utc": "2026-10-07T05:40:17.461622+00:00",
+    "plan": [
+      {
+        "seed": 20261011,
+        "arms": [
+          "A",
+          "B"
+        ]
+      },
+      {
+        "seed": 20261012,
+        "arms": [
+          "B",
+          "A"
+        ]
+      },
+      {
+        "seed": 20261013,
+        "arms": [
+          "A",
+          "B"
+        ]
+      }
+    ],
+    "preflight": {
+      "vllm_version": "0.30.1rc1.dev623+g4ac0d0eac",
+      "shared_token_ids_match": true,
+      "target_only_tokens": {
+        "</think>": 151666,
+        "<think>": 151665
+      },
+      "lm_head_vocab_size": 151936,
+      "draft_native_context": 32768,
+      "draft_revision": "8123ea2e9354afb7ffcc6c8641d1b2f5ecf18301",
+      "tokenizer_hashes": [
+        "83d0b15d5bda7f2306b31e1689d11b3275c01da64b8c69b34c95eb05bfba868e",
+        "b7a0d4b412fcb6918cf000fd132caad4f953b705c5922747f499e0f60ebc1615"
+      ]
+    },
+    "git_commit": "188dcae3d2322d39afd73e9c23157561fda2ca0b",
+    "git_status": " M attempts/20261003T233132.790330Z/metadata.json\n M attempts/20261003T233317.639206Z/metadata.json\n M attempts/20261003T233424.568380Z/metadata.json\n M attempts/20261003T233726.660316Z/metadata.json\n M attempts/20261003T233946.145732Z/metadata.json\n M attempts/20261003T234116.410095Z/metadata.json\n M attempts/20261003T234218.148913Z/metadata.json\n?? attempts/20261004T071101.422687Z/\n?? attempts/20261005T224215.014196Z/\n?? attempts/20261007T053756.499642Z/\n?? runs/experiments/core-v1-fp8-kv-20261004T071101Z/\n?? runs/experiments/speculative-v1-ab-20261007T053637Z/\n?? runs/speedrun_sweeps/bf16-95pct-20261003T210226Z/grid/\n",
+    "hardware": "Wed Oct  7 05:40:37 2026       \n+-----------------------------------------------------------------------------------------+\n| NVIDIA-SMI 580.178.04             Driver Version: 580.178.04     CUDA Version: 13.0     |\n+-----------------------------------------+------------------------+----------------------+\n| GPU  Name                 Persistence-M | Bus-Id          Disp.A | Volatile Uncorr. ECC |\n| Fan  Temp   Perf          Pwr:Usage/Cap |           Memory-Usage | GPU-Util  Compute M. |\n|                                         |                        |               MIG M. |\n|=========================================+========================+======================|\n|   0  NVIDIA A100 80GB PCIe          Off |   00000001:00:00.0 Off |                    0 |\n| N/A   48C    P0             74W /  300W |       0MiB /  81920MiB |     17%      Default |\n|                                         |                        |             Disabled |\n+-----------------------------------------+------------------------+----------------------+\n\n+-----------------------------------------------------------------------------------------+\n| Processes:                                                                              |\n|  GPU   GI   CI              PID   Type   Process name                        GPU Memory |\n|        ID   ID                                                               Usage      |\n|=========================================================================================|\n|  No running processes found                                                             |\n+-----------------------------------------------------------------------------------------+\n",
+    "policy": "unchanged canonical v1 prompt_adherence benchmark; each cell owns a fresh server"
+  },
+  "cells": [
+    {
+      "arm": "A",
+      "seed": 20261011,
+      "started_utc": "2026-10-07T05:40:38.957491+00:00",
+      "server_command": [
+        "/home/azureuser/.venvs/vllm/bin/vllm",
+        "serve",
+        "--config",
+        "/home/azureuser/aime-bench/configs/vllm/r0b0tlab/VibeThinker-3B-NVFP4/vllm-flashinfer.yaml"
+      ],
+      "runner_command": [
+        "/home/azureuser/.venvs/vllm/bin/python",
+        "-m",
+        "runner",
+        "--model",
+        "r0b0tlab/VibeThinker-3B-NVFP4",
+        "--models-dir",
+        "/home/azureuser/aime-bench/configs/vllm",
+        "--model-profile",
+        "vllm-flashinfer.yaml",
+        "--reuse-server",
+        "--seed",
+        "20261011",
+        "--startup-timeout",
+        "900"
+      ],
+      "profile_sha256": "aa2f451c99233d1e3ba15f9931f550cf5c46273f1ddb837a5802d521cdcf9753",
+      "runner_exit": 0,
+      "attempt_id": "20261007T054136.161272Z",
+      "status": "completed",
+      "target_reached": true,
+      "time_to_target_s": 80.07279265101533,
+      "performance": {
+        "generation_requests": 46,
+        "fresh_ttft": {
+          "count": 31,
+          "median_s": 0.22326426696963608,
+          "p95_s": 0.2846395520027727
+        },
+        "continuation_ttft": {
+          "count": 15,
+          "median_s": 0.18262219009920955,
+          "p95_s": 0.2043489890638739
+        },
+        "official_gpu": null,
+        "initialization_gpu": null
+      },
+      "concurrency_bins": {
+        "0-4": {
+          "windows": 0,
+          "decode_request_seconds": 0,
+          "tokens": 0,
+          "per_active_tps": null,
+          "mean_context_tokens": null
+        },
+        "4-8": {
+          "windows": 0,
+          "decode_request_seconds": 0,
+          "tokens": 0,
+          "per_active_tps": null,
+          "mean_context_tokens": null
+        },
+        "8-16": {
+          "windows": 5,
+          "decode_request_seconds": 335.14647015293315,
+          "tokens": 45268,
+          "per_active_tps": 135.0693026226516,
+          "mean_context_tokens": 9307.329712822084
+        },
+        "16-30": {
+          "windows": 11,
+          "decode_request_seconds": 1255.3741646308415,
+          "tokens": 185301,
+          "per_active_tps": 147.60619201884728,
+          "mean_context_tokens": 4076.6687844990624
+        }
+      },
+      "counter_deltas_including_warmup": {
+        "num_preemptions_total": 0.0,
+        "generation_tokens_total": 231733.0
+      },
+      "finished_utc": "2026-10-07T05:43:06.331933+00:00"
+    },
+    {
+      "arm": "B",
+      "seed": 20261011,
+      "started_utc": "2026-10-07T05:43:06.333067+00:00",
+      "server_command": [
+        "/home/azureuser/.venvs/vllm/bin/vllm",
+        "serve",
+        "--config",
+        "/home/azureuser/aime-bench/configs/vllm/r0b0tlab/VibeThinker-3B-NVFP4/vllm-spec-qwen05-k3.yaml"
+      ],
+      "runner_command": [
+        "/home/azureuser/.venvs/vllm/bin/python",
+        "-m",
+        "runner",
+        "--model",
+        "r0b0tlab/VibeThinker-3B-NVFP4",
+        "--models-dir",
+        "/home/azureuser/aime-bench/configs/vllm",
+        "--model-profile",
+        "vllm-spec-qwen05-k3.yaml",
+        "--reuse-server",
+        "--seed",
+        "20261011",
+        "--startup-timeout",
+        "900"
+      ],
+      "profile_sha256": "2766ac4c61457cbc2ea36acb4b6c65f0d9aa1dfc02c5ee5a64c852c564a846de",
+      "runner_exit": 0,
+      "attempt_id": "20261007T054453.524143Z",
+      "status": "completed",
+      "target_reached": true,
+      "time_to_target_s": 170.7786058409838,
+      "performance": {
+        "generation_requests": 30,
+        "fresh_ttft": {
+          "count": 30,
+          "median_s": 0.5618950040079653,
+          "p95_s": 0.6983316489495337
+        },
+        "continuation_ttft": {
+          "count": 0,
+          "median_s": null,
+          "p95_s": null
+        },
+        "official_gpu": null,
+        "initialization_gpu": null
+      },
+      "concurrency_bins": {
+        "0-4": {
+          "windows": 0,
+          "decode_request_seconds": 0,
+          "tokens": 0,
+          "per_active_tps": null,
+          "mean_context_tokens": null
+        },
+        "4-8": {
+          "windows": 0,
+          "decode_request_seconds": 0,
+          "tokens": 0,
+          "per_active_tps": null,
+          "mean_context_tokens": null
+        },
+        "8-16": {
+          "windows": 9,
+          "decode_request_seconds": 667.2931358712092,
+          "tokens": 32713,
+          "per_active_tps": 49.02343249386244,
+          "mean_context_tokens": 6898.686071146247
+        },
+        "16-30": {
+          "windows": 25,
+          "decode_request_seconds": 2891.006160043908,
+          "tokens": 130888,
+          "per_active_tps": 45.274203081605364,
+          "mean_context_tokens": 2775.387587016641
+        }
+      },
+      "counter_deltas_including_warmup": {
+        "spec_decode_num_drafts_total": 74487.0,
+        "spec_decode_num_draft_tokens_total": 223461.0,
+        "spec_decode_num_accepted_tokens_total": 90417.0,
+        "spec_decode_num_accepted_tokens_per_pos_total": 90417.0,
+        "num_preemptions_total": 0.0,
+        "generation_tokens_total": 164946.0
+      },
+      "finished_utc": "2026-10-07T05:48:03.774877+00:00"
+    },
+    {
+      "arm": "B",
+      "seed": 20261012,
+      "started_utc": "2026-10-07T05:48:03.776132+00:00",
+      "server_command": [
+        "/home/azureuser/.venvs/vllm/bin/vllm",
+        "serve",
+        "--config",
+        "/home/azureuser/aime-bench/configs/vllm/r0b0tlab/VibeThinker-3B-NVFP4/vllm-spec-qwen05-k3.yaml"
+      ],
+      "runner_command": [
+        "/home/azureuser/.venvs/vllm/bin/python",
+        "-m",
+        "runner",
+        "--model",
+        "r0b0tlab/VibeThinker-3B-NVFP4",
+        "--models-dir",
+        "/home/azureuser/aime-bench/configs/vllm",
+        "--model-profile",
+        "vllm-spec-qwen05-k3.yaml",
+        "--reuse-server",
+        "--seed",
+        "20261012",
+        "--startup-timeout",
+        "900"
+      ],
+      "profile_sha256": "2766ac4c61457cbc2ea36acb4b6c65f0d9aa1dfc02c5ee5a64c852c564a846de",
+      "runner_exit": 0,
+      "attempt_id": "20261007T054911.006669Z",
+      "status": "completed",
+      "target_reached": true,
+      "time_to_target_s": 209.84186209901236,
+      "performance": {
+        "generation_requests": 44,
+        "fresh_ttft": {
+          "count": 30,
+          "median_s": 0.5536568009993061,
+          "p95_s": 0.6956186819588766
+        },
+        "continuation_ttft": {
+          "count": 14,
+          "median_s": 0.2797539079328999,
+          "p95_s": 0.2975072789704427
+        },
+        "official_gpu": null,
+        "initialization_gpu": null
+      },
+      "concurrency_bins": {
+        "0-4": {
+          "windows": 2,
+          "decode_request_seconds": 32.2109784349436,
+          "tokens": 1717,
+          "per_active_tps": 53.30480734907879,
+          "mean_context_tokens": 8384.17843350634
+        },
+        "4-8": {
+          "windows": 2,
+          "decode_request_seconds": 57.21190691887958,
+          "tokens": 2837,
+          "per_active_tps": 49.58757980261986,
+          "mean_context_tokens": 8116.088801358921
+        },
+        "8-16": {
+          "windows": 12,
+          "decode_request_seconds": 825.0736228919336,
+          "tokens": 41994,
+          "per_active_tps": 50.897276115564644,
+          "mean_context_tokens": 7618.6828817195965
+        },
+        "16-30": {
+          "windows": 25,
+          "decode_request_seconds": 2792.487470854475,
+          "tokens": 133452,
+          "per_active_tps": 47.789650407693664,
+          "mean_context_tokens": 2903.852670853173
+        }
+      },
+      "counter_deltas_including_warmup": {
+        "spec_decode_num_drafts_total": 81807.0,
+        "spec_decode_num_draft_tokens_total": 245421.0,
+        "spec_decode_num_accepted_tokens_total": 102554.0,
+        "spec_decode_num_accepted_tokens_per_pos_total": 102554.0,
+        "num_preemptions_total": 0.0,
+        "generation_tokens_total": 184407.0
+      },
+      "finished_utc": "2026-10-07T05:52:49.597642+00:00"
+    },
+    {
+      "arm": "A",
+      "seed": 20261012,
+      "started_utc": "2026-10-07T05:52:49.599027+00:00",
+      "server_command": [
+        "/home/azureuser/.venvs/vllm/bin/vllm",
+        "serve",
+        "--config",
+        "/home/azureuser/aime-bench/configs/vllm/r0b0tlab/VibeThinker-3B-NVFP4/vllm-flashinfer.yaml"
+      ],
+      "runner_command": [
+        "/home/azureuser/.venvs/vllm/bin/python",
+        "-m",
+        "runner",
+        "--model",
+        "r0b0tlab/VibeThinker-3B-NVFP4",
+        "--models-dir",
+        "/home/azureuser/aime-bench/configs/vllm",
+        "--model-profile",
+        "vllm-flashinfer.yaml",
+        "--reuse-server",
+        "--seed",
+        "20261012",
+        "--startup-timeout",
+        "900"
+      ],
+      "profile_sha256": "aa2f451c99233d1e3ba15f9931f550cf5c46273f1ddb837a5802d521cdcf9753",
+      "runner_exit": 0,
+      "attempt_id": "20261007T055346.740164Z",
+      "status": "completed",
+      "target_reached": true,
+      "time_to_target_s": 67.58873000007588,
+      "performance": {
+        "generation_requests": 30,
+        "fresh_ttft": {
+          "count": 30,
+          "median_s": 0.23915832792408764,
+          "p95_s": 0.28493867302313447
+        },
+        "continuation_ttft": {
+          "count": 0,
+          "median_s": null,
+          "p95_s": null
+        },
+        "official_gpu": null,
+        "initialization_gpu": null
+      },
+      "concurrency_bins": {
+        "0-4": {
+          "windows": 0,
+          "decode_request_seconds": 0,
+          "tokens": 0,
+          "per_active_tps": null,
+          "mean_context_tokens": null
+        },
+        "4-8": {
+          "windows": 0,
+          "decode_request_seconds": 0,
+          "tokens": 0,
+          "per_active_tps": null,
+          "mean_context_tokens": null
+        },
+        "8-16": {
+          "windows": 0,
+          "decode_request_seconds": 0,
+          "tokens": 0,
+          "per_active_tps": null,
+          "mean_context_tokens": null
+        },
+        "16-30": {
+          "windows": 11,
+          "decode_request_seconds": 1277.3018538462547,
+          "tokens": 187112,
+          "per_active_tps": 146.49004026461088,
+          "mean_context_tokens": 4125.456449975031
+        }
+      },
+      "counter_deltas_including_warmup": {
+        "num_preemptions_total": 0.0,
+        "generation_tokens_total": 192691.0
+      },
+      "finished_utc": "2026-10-07T05:55:03.349971+00:00"
+    },
+    {
+      "arm": "A",
+      "seed": 20261013,
+      "started_utc": "2026-10-07T05:55:03.351444+00:00",
+      "server_command": [
+        "/home/azureuser/.venvs/vllm/bin/vllm",
+        "serve",
+        "--config",
+        "/home/azureuser/aime-bench/configs/vllm/r0b0tlab/VibeThinker-3B-NVFP4/vllm-flashinfer.yaml"
+      ],
+      "runner_command": [
+        "/home/azureuser/.venvs/vllm/bin/python",
+        "-m",
+        "runner",
+        "--model",
+        "r0b0tlab/VibeThinker-3B-NVFP4",
+        "--models-dir",
+        "/home/azureuser/aime-bench/configs/vllm",
+        "--model-profile",
+        "vllm-flashinfer.yaml",
+        "--reuse-server",
+        "--seed",
+        "20261013",
+        "--startup-timeout",
+        "900"
+      ],
+      "profile_sha256": "aa2f451c99233d1e3ba15f9931f550cf5c46273f1ddb837a5802d521cdcf9753",
+      "runner_exit": 0,
+      "attempt_id": "20261007T055601.528672Z",
+      "status": "completed",
+      "target_reached": true,
+      "time_to_target_s": 70.45835353597067,
+      "performance": {
+        "generation_requests": 44,
+        "fresh_ttft": {
+          "count": 30,
+          "median_s": 0.24846282100770622,
+          "p95_s": 0.2998002900276333
+        },
+        "continuation_ttft": {
+          "count": 14,
+          "median_s": 0.16680559993255883,
+          "p95_s": 0.1854483219794929
+        },
+        "official_gpu": null,
+        "initialization_gpu": null
+      },
+      "concurrency_bins": {
+        "0-4": {
+          "windows": 0,
+          "decode_request_seconds": 0,
+          "tokens": 0,
+          "per_active_tps": null,
+          "mean_context_tokens": null
+        },
+        "4-8": {
+          "windows": 0,
+          "decode_request_seconds": 0,
+          "tokens": 0,
+          "per_active_tps": null,
+          "mean_context_tokens": null
+        },
+        "8-16": {
+          "windows": 4,
+          "decode_request_seconds": 272.79988464250135,
+          "tokens": 38360,
+          "per_active_tps": 140.61589523862884,
+          "mean_context_tokens": 9081.116769292375
+        },
+        "16-30": {
+          "windows": 10,
+          "decode_request_seconds": 1164.9552296066554,
+          "tokens": 174063,
+          "per_active_tps": 149.41604241630125,
+          "mean_context_tokens": 3800.9171164069476
+        }
+      },
+      "counter_deltas_including_warmup": {
+        "num_preemptions_total": 0.0,
+        "generation_tokens_total": 214285.0
+      },
+      "finished_utc": "2026-10-07T05:57:21.569948+00:00"
+    },
+    {
+      "arm": "B",
+      "seed": 20261013,
+      "started_utc": "2026-10-07T05:57:21.571542+00:00",
+      "server_command": [
+        "/home/azureuser/.venvs/vllm/bin/vllm",
+        "serve",
+        "--config",
+        "/home/azureuser/aime-bench/configs/vllm/r0b0tlab/VibeThinker-3B-NVFP4/vllm-spec-qwen05-k3.yaml"
+      ],
+      "runner_command": [
+        "/home/azureuser/.venvs/vllm/bin/python",
+        "-m",
+        "runner",
+        "--model",
+        "r0b0tlab/VibeThinker-3B-NVFP4",
+        "--models-dir",
+        "/home/azureuser/aime-bench/configs/vllm",
+        "--model-profile",
+        "vllm-spec-qwen05-k3.yaml",
+        "--reuse-server",
+        "--seed",
+        "20261013",
+        "--startup-timeout",
+        "900"
+      ],
+      "profile_sha256": "2766ac4c61457cbc2ea36acb4b6c65f0d9aa1dfc02c5ee5a64c852c564a846de",
+      "runner_exit": 0,
+      "attempt_id": "20261007T055818.796690Z",
+      "status": "completed",
+      "target_reached": true,
+      "time_to_target_s": 190.47917830990627,
+      "performance": {
+        "generation_requests": 30,
+        "fresh_ttft": {
+          "count": 30,
+          "median_s": 0.43746987800113857,
+          "p95_s": 0.5008924360154197
+        },
+        "continuation_ttft": {
+          "count": 0,
+          "median_s": null,
+          "p95_s": null
+        },
+        "official_gpu": null,
+        "initialization_gpu": null
+      },
+      "concurrency_bins": {
+        "0-4": {
+          "windows": 1,
+          "decode_request_seconds": 18.624705534089344,
+          "tokens": 994,
+          "per_active_tps": 53.36997130938004,
+          "mean_context_tokens": 8372.008008923554
+        },
+        "4-8": {
+          "windows": 3,
+          "decode_request_seconds": 97.43065438703354,
+          "tokens": 4925,
+          "per_active_tps": 50.54877267308428,
+          "mean_context_tokens": 8053.102754780647
+        },
+        "8-16": {
+          "windows": 5,
+          "decode_request_seconds": 314.1970158299878,
+          "tokens": 15489,
+          "per_active_tps": 49.29709456050693,
+          "mean_context_tokens": 7483.108437816697
+        },
+        "16-30": {
+          "windows": 29,
+          "decode_request_seconds": 3145.9601976196805,
+          "tokens": 148185,
+          "per_active_tps": 47.10326599558406,
+          "mean_context_tokens": 3302.2459139453936
+        }
+      },
+      "counter_deltas_including_warmup": {
+        "spec_decode_num_drafts_total": 75754.0,
+        "spec_decode_num_draft_tokens_total": 227262.0,
+        "spec_decode_num_accepted_tokens_total": 94853.0,
+        "spec_decode_num_accepted_tokens_per_pos_total": 94853.0,
+        "num_preemptions_total": 0.0,
+        "generation_tokens_total": 170633.0
+      },
+      "finished_utc": "2026-10-07T06:01:38.166542+00:00"
+    }
+  ]
+}

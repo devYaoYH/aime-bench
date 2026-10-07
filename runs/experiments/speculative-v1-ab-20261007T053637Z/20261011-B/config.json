@@ -1,0 +1,28 @@
+{
+  "arm": "B",
+  "seed": 20261011,
+  "started_utc": "2026-10-07T05:39:22.683135+00:00",
+  "server_command": [
+    "/home/azureuser/.venvs/vllm/bin/vllm",
+    "serve",
+    "--config",
+    "/home/azureuser/aime-bench/configs/vllm/r0b0tlab/VibeThinker-3B-NVFP4/vllm-spec-qwen05-k3.yaml"
+  ],
+  "runner_command": [
+    "/home/azureuser/.venvs/vllm/bin/python",
+    "-m",
+    "runner",
+    "--model",
+    "r0b0tlab/VibeThinker-3B-NVFP4",
+    "--models-dir",
+    "/home/azureuser/aime-bench/configs/vllm",
+    "--model-profile",
+    "vllm-spec-qwen05-k3.yaml",
+    "--reuse-server",
+    "--seed",
+    "20261011",
+    "--startup-timeout",
+    "900"
+  ],
+  "profile_sha256": "2766ac4c61457cbc2ea36acb4b6c65f0d9aa1dfc02c5ee5a64c852c564a846de"
+}

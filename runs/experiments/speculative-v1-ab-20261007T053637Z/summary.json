@@ -1,0 +1,163 @@
+{
+  "config": {
+    "started_utc": "2026-10-07T05:36:37.442389+00:00",
+    "plan": [
+      {
+        "seed": 20261011,
+        "arms": [
+          "A",
+          "B"
+        ]
+      },
+      {
+        "seed": 20261012,
+        "arms": [
+          "B",
+          "A"
+        ]
+      },
+      {
+        "seed": 20261013,
+        "arms": [
+          "A",
+          "B"
+        ]
+      }
+    ],
+    "preflight": {
+      "vllm_version": "0.30.1rc1.dev623+g4ac0d0eac",
+      "shared_token_ids_match": true,
+      "target_only_tokens": {
+        "<think>": 151665,
+        "</think>": 151666
+      },
+      "lm_head_vocab_size": 151936,
+      "draft_native_context": 32768,
+      "draft_revision": "8123ea2e9354afb7ffcc6c8641d1b2f5ecf18301",
+      "tokenizer_hashes": [
+        "83d0b15d5bda7f2306b31e1689d11b3275c01da64b8c69b34c95eb05bfba868e",
+        "b7a0d4b412fcb6918cf000fd132caad4f953b705c5922747f499e0f60ebc1615"
+      ]
+    },
+    "git_commit": "7458292df3d63ff1dff96e950c9f6008c9066595",
+    "git_status": " M attempts/20261003T233132.790330Z/metadata.json\n M attempts/20261003T233317.639206Z/metadata.json\n M attempts/20261003T233424.568380Z/metadata.json\n M attempts/20261003T233726.660316Z/metadata.json\n M attempts/20261003T233946.145732Z/metadata.json\n M attempts/20261003T234116.410095Z/metadata.json\n M attempts/20261003T234218.148913Z/metadata.json\n?? attempts/20261004T071101.422687Z/\n?? attempts/20261005T224215.014196Z/\n?? runs/experiments/core-v1-fp8-kv-20261004T071101Z/\n?? runs/speedrun_sweeps/bf16-95pct-20261003T210226Z/grid/\n",
+    "hardware": "Wed Oct  7 05:36:57 2026       \n+-----------------------------------------------------------------------------------------+\n| NVIDIA-SMI 580.178.04             Driver Version: 580.178.04     CUDA Version: 13.0     |\n+-----------------------------------------+------------------------+----------------------+\n| GPU  Name                 Persistence-M | Bus-Id          Disp.A | Volatile Uncorr. ECC |\n| Fan  Temp   Perf          Pwr:Usage/Cap |           Memory-Usage | GPU-Util  Compute M. |\n|                                         |                        |               MIG M. |\n|=========================================+========================+======================|\n|   0  NVIDIA A100 80GB PCIe          Off |   00000001:00:00.0 Off |                    0 |\n| N/A   41C    P0             70W /  300W |       0MiB /  81920MiB |     18%      Default |\n|                                         |                        |             Disabled |\n+-----------------------------------------+------------------------+----------------------+\n\n+-----------------------------------------------------------------------------------------+\n| Processes:                                                                              |\n|  GPU   GI   CI              PID   Type   Process name                        GPU Memory |\n|        ID   ID                                                               Usage      |\n|=========================================================================================|\n|  No running processes found                                                             |\n+-----------------------------------------------------------------------------------------+\n",
+    "policy": "unchanged canonical v1 prompt_adherence benchmark; each cell owns a fresh server"
+  },
+  "cells": [
+    {
+      "arm": "A",
+      "seed": 20261011,
+      "started_utc": "2026-10-07T05:36:59.367982+00:00",
+      "server_command": [
+        "/home/azureuser/.venvs/vllm/bin/vllm",
+        "serve",
+        "--config",
+        "/home/azureuser/aime-bench/configs/vllm/r0b0tlab/VibeThinker-3B-NVFP4/vllm-flashinfer.yaml"
+      ],
+      "runner_command": [
+        "/home/azureuser/.venvs/vllm/bin/python",
+        "-m",
+        "runner",
+        "--model",
+        "r0b0tlab/VibeThinker-3B-NVFP4",
+        "--models-dir",
+        "/home/azureuser/aime-bench/configs/vllm",
+        "--model-profile",
+        "vllm-flashinfer.yaml",
+        "--reuse-server",
+        "--seed",
+        "20261011",
+        "--startup-timeout",
+        "900"
+      ],
+      "profile_sha256": "aa2f451c99233d1e3ba15f9931f550cf5c46273f1ddb837a5802d521cdcf9753",
+      "runner_exit": 0,
+      "attempt_id": "20261007T053756.499642Z",
+      "status": "completed",
+      "target_reached": true,
+      "time_to_target_s": 76.12290154094808,
+      "performance": {
+        "generation_requests": 45,
+        "fresh_ttft": {
+          "count": 31,
+          "median_s": 0.23398687096778303,
+          "p95_s": 0.2873247480019927
+        },
+        "continuation_ttft": {
+          "count": 14,
+          "median_s": 0.19072494201827794,
+          "p95_s": 0.2132446860196069
+        },
+        "official_gpu": null,
+        "initialization_gpu": null
+      },
+      "concurrency_bins": {
+        "0-4": {
+          "windows": 0,
+          "decode_request_seconds": 0,
+          "tokens": 0,
+          "per_active_tps": null,
+          "mean_context_tokens": null
+        },
+        "4-8": {
+          "windows": 0,
+          "decode_request_seconds": 0,
+          "tokens": 0,
+          "per_active_tps": null,
+          "mean_context_tokens": null
+        },
+        "8-16": {
+          "windows": 5,
+          "decode_request_seconds": 353.4970225667609,
+          "tokens": 49107,
+          "per_active_tps": 138.91771886346152,
+          "mean_context_tokens": 9010.462384624856
+        },
+        "16-30": {
+          "windows": 10,
+          "decode_request_seconds": 1200.7250209623799,
+          "tokens": 176901,
+          "per_active_tps": 147.32848646579717,
+          "mean_context_tokens": 3776.4534425681923
+        }
+      },
+      "counter_deltas_including_warmup": {
+        "num_preemptions_total": 0.0,
+        "generation_tokens_total": 228970.0
+      },
+      "finished_utc": "2026-10-07T05:39:22.681991+00:00"
+    },
+    {
+      "arm": "B",
+      "seed": 20261011,
+      "started_utc": "2026-10-07T05:39:22.683135+00:00",
+      "server_command": [
+        "/home/azureuser/.venvs/vllm/bin/vllm",
+        "serve",
+        "--config",
+        "/home/azureuser/aime-bench/configs/vllm/r0b0tlab/VibeThinker-3B-NVFP4/vllm-spec-qwen05-k3.yaml"
+      ],
+      "runner_command": [
+        "/home/azureuser/.venvs/vllm/bin/python",
+        "-m",
+        "runner",
+        "--model",
+        "r0b0tlab/VibeThinker-3B-NVFP4",
+        "--models-dir",
+        "/home/azureuser/aime-bench/configs/vllm",
+        "--model-profile",
+        "vllm-spec-qwen05-k3.yaml",
+        "--reuse-server",
+        "--seed",
+        "20261011",
+        "--startup-timeout",
+        "900"
+      ],
+      "profile_sha256": "2766ac4c61457cbc2ea36acb4b6c65f0d9aa1dfc02c5ee5a64c852c564a846de",
+      "status": "failed",
+      "error": "OSError: [Errno 98] Address already in use",
+      "finished_utc": "2026-10-07T05:39:22.683390+00:00"
+    }
+  ]
+}

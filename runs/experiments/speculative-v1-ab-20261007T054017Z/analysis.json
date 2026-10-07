@@ -1,0 +1,837 @@
+{
+  "cells": [
+    {
+      "arm": "A",
+      "seed": 20261011,
+      "started_utc": "2026-10-07T05:40:38.957491+00:00",
+      "server_command": [
+        "/home/azureuser/.venvs/vllm/bin/vllm",
+        "serve",
+        "--config",
+        "/home/azureuser/aime-bench/configs/vllm/r0b0tlab/VibeThinker-3B-NVFP4/vllm-flashinfer.yaml"
+      ],
+      "runner_command": [
+        "/home/azureuser/.venvs/vllm/bin/python",
+        "-m",
+        "runner",
+        "--model",
+        "r0b0tlab/VibeThinker-3B-NVFP4",
+        "--models-dir",
+        "/home/azureuser/aime-bench/configs/vllm",
+        "--model-profile",
+        "vllm-flashinfer.yaml",
+        "--reuse-server",
+        "--seed",
+        "20261011",
+        "--startup-timeout",
+        "900"
+      ],
+      "profile_sha256": "aa2f451c99233d1e3ba15f9931f550cf5c46273f1ddb837a5802d521cdcf9753",
+      "runner_exit": 0,
+      "attempt_id": "20261007T054136.161272Z",
+      "status": "completed",
+      "target_reached": true,
+      "time_to_target_s": 80.07279265101533,
+      "performance": {
+        "generation_requests": 46,
+        "fresh_ttft": {
+          "count": 31,
+          "median_s": 0.22326426696963608,
+          "p95_s": 0.2846395520027727
+        },
+        "continuation_ttft": {
+          "count": 15,
+          "median_s": 0.18262219009920955,
+          "p95_s": 0.2043489890638739
+        },
+        "official_gpu": null,
+        "initialization_gpu": null
+      },
+      "concurrency_bins": {
+        "0-4": {
+          "windows": 0,
+          "decode_request_seconds": 0,
+          "tokens": 0,
+          "per_active_tps": null,
+          "mean_context_tokens": null
+        },
+        "4-8": {
+          "windows": 0,
+          "decode_request_seconds": 0,
+          "tokens": 0,
+          "per_active_tps": null,
+          "mean_context_tokens": null
+        },
+        "8-16": {
+          "windows": 5,
+          "decode_request_seconds": 335.14647015293315,
+          "tokens": 45268,
+          "per_active_tps": 135.0693026226516,
+          "mean_context_tokens": 9307.329712822084
+        },
+        "16-30": {
+          "windows": 11,
+          "decode_request_seconds": 1255.3741646308415,
+          "tokens": 185301,
+          "per_active_tps": 147.60619201884728,
+          "mean_context_tokens": 4076.6687844990624
+        }
+      },
+      "counter_deltas_including_warmup": {
+        "num_preemptions_total": 0.0,
+        "generation_tokens_total": 231733.0
+      },
+      "finished_utc": "2026-10-07T05:43:06.331933+00:00",
+      "sampled_official_counter_deltas": {
+        "num_preemptions_total": 0.0,
+        "generation_tokens_total": 226010.0
+      },
+      "sampled_official_acceptance_fraction": null,
+      "sampled_official_seconds": 78.530964
+    },
+    {
+      "arm": "B",
+      "seed": 20261011,
+      "started_utc": "2026-10-07T05:43:06.333067+00:00",
+      "server_command": [
+        "/home/azureuser/.venvs/vllm/bin/vllm",
+        "serve",
+        "--config",
+        "/home/azureuser/aime-bench/configs/vllm/r0b0tlab/VibeThinker-3B-NVFP4/vllm-spec-qwen05-k3.yaml"
+      ],
+      "runner_command": [
+        "/home/azureuser/.venvs/vllm/bin/python",
+        "-m",
+        "runner",
+        "--model",
+        "r0b0tlab/VibeThinker-3B-NVFP4",
+        "--models-dir",
+        "/home/azureuser/aime-bench/configs/vllm",
+        "--model-profile",
+        "vllm-spec-qwen05-k3.yaml",
+        "--reuse-server",
+        "--seed",
+        "20261011",
+        "--startup-timeout",
+        "900"
+      ],
+      "profile_sha256": "2766ac4c61457cbc2ea36acb4b6c65f0d9aa1dfc02c5ee5a64c852c564a846de",
+      "runner_exit": 0,
+      "attempt_id": "20261007T054453.524143Z",
+      "status": "completed",
+      "target_reached": true,
+      "time_to_target_s": 170.7786058409838,
+      "performance": {
+        "generation_requests": 30,
+        "fresh_ttft": {
+          "count": 30,
+          "median_s": 0.5618950040079653,
+          "p95_s": 0.6983316489495337
+        },
+        "continuation_ttft": {
+          "count": 0,
+          "median_s": null,
+          "p95_s": null
+        },
+        "official_gpu": null,
+        "initialization_gpu": null
+      },
+      "concurrency_bins": {
+        "0-4": {
+          "windows": 0,
+          "decode_request_seconds": 0,
+          "tokens": 0,
+          "per_active_tps": null,
+          "mean_context_tokens": null
+        },
+        "4-8": {
+          "windows": 0,
+          "decode_request_seconds": 0,
+          "tokens": 0,
+          "per_active_tps": null,
+          "mean_context_tokens": null
+        },
+        "8-16": {
+          "windows": 9,
+          "decode_request_seconds": 667.2931358712092,
+          "tokens": 32713,
+          "per_active_tps": 49.02343249386244,
+          "mean_context_tokens": 6898.686071146247
+        },
+        "16-30": {
+          "windows": 25,
+          "decode_request_seconds": 2891.006160043908,
+          "tokens": 130888,
+          "per_active_tps": 45.274203081605364,
+          "mean_context_tokens": 2775.387587016641
+        }
+      },
+      "counter_deltas_including_warmup": {
+        "spec_decode_num_drafts_total": 74487.0,
+        "spec_decode_num_draft_tokens_total": 223461.0,
+        "spec_decode_num_accepted_tokens_total": 90417.0,
+        "spec_decode_num_accepted_tokens_per_pos_total": 90417.0,
+        "num_preemptions_total": 0.0,
+        "generation_tokens_total": 164946.0
+      },
+      "finished_utc": "2026-10-07T05:48:03.774877+00:00",
+      "sampled_official_counter_deltas": {
+        "spec_decode_num_drafts_total": 73875.0,
+        "spec_decode_num_draft_tokens_total": 221625.0,
+        "spec_decode_num_accepted_tokens_total": 90021.0,
+        "spec_decode_num_accepted_tokens_per_pos_total": 90021.0,
+        "num_preemptions_total": 0.0,
+        "generation_tokens_total": 163912.0
+      },
+      "sampled_official_acceptance_fraction": 0.40618612521150593,
+      "sampled_official_seconds": 170.139811
+    },
+    {
+      "arm": "B",
+      "seed": 20261012,
+      "started_utc": "2026-10-07T05:48:03.776132+00:00",
+      "server_command": [
+        "/home/azureuser/.venvs/vllm/bin/vllm",
+        "serve",
+        "--config",
+        "/home/azureuser/aime-bench/configs/vllm/r0b0tlab/VibeThinker-3B-NVFP4/vllm-spec-qwen05-k3.yaml"
+      ],
+      "runner_command": [
+        "/home/azureuser/.venvs/vllm/bin/python",
+        "-m",
+        "runner",
+        "--model",
+        "r0b0tlab/VibeThinker-3B-NVFP4",
+        "--models-dir",
+        "/home/azureuser/aime-bench/configs/vllm",
+        "--model-profile",
+        "vllm-spec-qwen05-k3.yaml",
+        "--reuse-server",
+        "--seed",
+        "20261012",
+        "--startup-timeout",
+        "900"
+      ],
+      "profile_sha256": "2766ac4c61457cbc2ea36acb4b6c65f0d9aa1dfc02c5ee5a64c852c564a846de",
+      "runner_exit": 0,
+      "attempt_id": "20261007T054911.006669Z",
+      "status": "completed",
+      "target_reached": true,
+      "time_to_target_s": 209.84186209901236,
+      "performance": {
+        "generation_requests": 44,
+        "fresh_ttft": {
+          "count": 30,
+          "median_s": 0.5536568009993061,
+          "p95_s": 0.6956186819588766
+        },
+        "continuation_ttft": {
+          "count": 14,
+          "median_s": 0.2797539079328999,
+          "p95_s": 0.2975072789704427
+        },
+        "official_gpu": null,
+        "initialization_gpu": null
+      },
+      "concurrency_bins": {
+        "0-4": {
+          "windows": 2,
+          "decode_request_seconds": 32.2109784349436,
+          "tokens": 1717,
+          "per_active_tps": 53.30480734907879,
+          "mean_context_tokens": 8384.17843350634
+        },
+        "4-8": {
+          "windows": 2,
+          "decode_request_seconds": 57.21190691887958,
+          "tokens": 2837,
+          "per_active_tps": 49.58757980261986,
+          "mean_context_tokens": 8116.088801358921
+        },
+        "8-16": {
+          "windows": 12,
+          "decode_request_seconds": 825.0736228919336,
+          "tokens": 41994,
+          "per_active_tps": 50.897276115564644,
+          "mean_context_tokens": 7618.6828817195965
+        },
+        "16-30": {
+          "windows": 25,
+          "decode_request_seconds": 2792.487470854475,
+          "tokens": 133452,
+          "per_active_tps": 47.789650407693664,
+          "mean_context_tokens": 2903.852670853173
+        }
+      },
+      "counter_deltas_including_warmup": {
+        "spec_decode_num_drafts_total": 81807.0,
+        "spec_decode_num_draft_tokens_total": 245421.0,
+        "spec_decode_num_accepted_tokens_total": 102554.0,
+        "spec_decode_num_accepted_tokens_per_pos_total": 102554.0,
+        "num_preemptions_total": 0.0,
+        "generation_tokens_total": 184407.0
+      },
+      "finished_utc": "2026-10-07T05:52:49.597642+00:00",
+      "sampled_official_counter_deltas": {
+        "spec_decode_num_drafts_total": 80978.0,
+        "spec_decode_num_draft_tokens_total": 242934.0,
+        "spec_decode_num_accepted_tokens_total": 101962.0,
+        "spec_decode_num_accepted_tokens_per_pos_total": 101962.0,
+        "num_preemptions_total": 0.0,
+        "generation_tokens_total": 182942.0
+      },
+      "sampled_official_acceptance_fraction": 0.41971070331859683,
+      "sampled_official_seconds": 208.403401
+    },
+    {
+      "arm": "A",
+      "seed": 20261012,
+      "started_utc": "2026-10-07T05:52:49.599027+00:00",
+      "server_command": [
+        "/home/azureuser/.venvs/vllm/bin/vllm",
+        "serve",
+        "--config",
+        "/home/azureuser/aime-bench/configs/vllm/r0b0tlab/VibeThinker-3B-NVFP4/vllm-flashinfer.yaml"
+      ],
+      "runner_command": [
+        "/home/azureuser/.venvs/vllm/bin/python",
+        "-m",
+        "runner",
+        "--model",
+        "r0b0tlab/VibeThinker-3B-NVFP4",
+        "--models-dir",
+        "/home/azureuser/aime-bench/configs/vllm",
+        "--model-profile",
+        "vllm-flashinfer.yaml",
+        "--reuse-server",
+        "--seed",
+        "20261012",
+        "--startup-timeout",
+        "900"
+      ],
+      "profile_sha256": "aa2f451c99233d1e3ba15f9931f550cf5c46273f1ddb837a5802d521cdcf9753",
+      "runner_exit": 0,
+      "attempt_id": "20261007T055346.740164Z",
+      "status": "completed",
+      "target_reached": true,
+      "time_to_target_s": 67.58873000007588,
+      "performance": {
+        "generation_requests": 30,
+        "fresh_ttft": {
+          "count": 30,
+          "median_s": 0.23915832792408764,
+          "p95_s": 0.28493867302313447
+        },
+        "continuation_ttft": {
+          "count": 0,
+          "median_s": null,
+          "p95_s": null
+        },
+        "official_gpu": null,
+        "initialization_gpu": null
+      },
+      "concurrency_bins": {
+        "0-4": {
+          "windows": 0,
+          "decode_request_seconds": 0,
+          "tokens": 0,
+          "per_active_tps": null,
+          "mean_context_tokens": null
+        },
+        "4-8": {
+          "windows": 0,
+          "decode_request_seconds": 0,
+          "tokens": 0,
+          "per_active_tps": null,
+          "mean_context_tokens": null
+        },
+        "8-16": {
+          "windows": 0,
+          "decode_request_seconds": 0,
+          "tokens": 0,
+          "per_active_tps": null,
+          "mean_context_tokens": null
+        },
+        "16-30": {
+          "windows": 11,
+          "decode_request_seconds": 1277.3018538462547,
+          "tokens": 187112,
+          "per_active_tps": 146.49004026461088,
+          "mean_context_tokens": 4125.456449975031
+        }
+      },
+      "counter_deltas_including_warmup": {
+        "num_preemptions_total": 0.0,
+        "generation_tokens_total": 192691.0
+      },
+      "finished_utc": "2026-10-07T05:55:03.349971+00:00",
+      "sampled_official_counter_deltas": {
+        "num_preemptions_total": 0.0,
+        "generation_tokens_total": 188085.0
+      },
+      "sampled_official_acceptance_fraction": null,
+      "sampled_official_seconds": 66.466856
+    },
+    {
+      "arm": "A",
+      "seed": 20261013,
+      "started_utc": "2026-10-07T05:55:03.351444+00:00",
+      "server_command": [
+        "/home/azureuser/.venvs/vllm/bin/vllm",
+        "serve",
+        "--config",
+        "/home/azureuser/aime-bench/configs/vllm/r0b0tlab/VibeThinker-3B-NVFP4/vllm-flashinfer.yaml"
+      ],
+      "runner_command": [
+        "/home/azureuser/.venvs/vllm/bin/python",
+        "-m",
+        "runner",
+        "--model",
+        "r0b0tlab/VibeThinker-3B-NVFP4",
+        "--models-dir",
+        "/home/azureuser/aime-bench/configs/vllm",
+        "--model-profile",
+        "vllm-flashinfer.yaml",
+        "--reuse-server",
+        "--seed",
+        "20261013",
+        "--startup-timeout",
+        "900"
+      ],
+      "profile_sha256": "aa2f451c99233d1e3ba15f9931f550cf5c46273f1ddb837a5802d521cdcf9753",
+      "runner_exit": 0,
+      "attempt_id": "20261007T055601.528672Z",
+      "status": "completed",
+      "target_reached": true,
+      "time_to_target_s": 70.45835353597067,
+      "performance": {
+        "generation_requests": 44,
+        "fresh_ttft": {
+          "count": 30,
+          "median_s": 0.24846282100770622,
+          "p95_s": 0.2998002900276333
+        },
+        "continuation_ttft": {
+          "count": 14,
+          "median_s": 0.16680559993255883,
+          "p95_s": 0.1854483219794929
+        },
+        "official_gpu": null,
+        "initialization_gpu": null
+      },
+      "concurrency_bins": {
+        "0-4": {
+          "windows": 0,
+          "decode_request_seconds": 0,
+          "tokens": 0,
+          "per_active_tps": null,
+          "mean_context_tokens": null
+        },
+        "4-8": {
+          "windows": 0,
+          "decode_request_seconds": 0,
+          "tokens": 0,
+          "per_active_tps": null,
+          "mean_context_tokens": null
+        },
+        "8-16": {
+          "windows": 4,
+          "decode_request_seconds": 272.79988464250135,
+          "tokens": 38360,
+          "per_active_tps": 140.61589523862884,
+          "mean_context_tokens": 9081.116769292375
+        },
+        "16-30": {
+          "windows": 10,
+          "decode_request_seconds": 1164.9552296066554,
+          "tokens": 174063,
+          "per_active_tps": 149.41604241630125,
+          "mean_context_tokens": 3800.9171164069476
+        }
+      },
+      "counter_deltas_including_warmup": {
+        "num_preemptions_total": 0.0,
+        "generation_tokens_total": 214285.0
+      },
+      "finished_utc": "2026-10-07T05:57:21.569948+00:00",
+      "sampled_official_counter_deltas": {
+        "num_preemptions_total": 0.0,
+        "generation_tokens_total": 209648.0
+      },
+      "sampled_official_acceptance_fraction": null,
+      "sampled_official_seconds": 69.525637
+    },
+    {
+      "arm": "B",
+      "seed": 20261013,
+      "started_utc": "2026-10-07T05:57:21.571542+00:00",
+      "server_command": [
+        "/home/azureuser/.venvs/vllm/bin/vllm",
+        "serve",
+        "--config",
+        "/home/azureuser/aime-bench/configs/vllm/r0b0tlab/VibeThinker-3B-NVFP4/vllm-spec-qwen05-k3.yaml"
+      ],
+      "runner_command": [
+        "/home/azureuser/.venvs/vllm/bin/python",
+        "-m",
+        "runner",
+        "--model",
+        "r0b0tlab/VibeThinker-3B-NVFP4",
+        "--models-dir",
+        "/home/azureuser/aime-bench/configs/vllm",
+        "--model-profile",
+        "vllm-spec-qwen05-k3.yaml",
+        "--reuse-server",
+        "--seed",
+        "20261013",
+        "--startup-timeout",
+        "900"
+      ],
+      "profile_sha256": "2766ac4c61457cbc2ea36acb4b6c65f0d9aa1dfc02c5ee5a64c852c564a846de",
+      "runner_exit": 0,
+      "attempt_id": "20261007T055818.796690Z",
+      "status": "completed",
+      "target_reached": true,
+      "time_to_target_s": 190.47917830990627,
+      "performance": {
+        "generation_requests": 30,
+        "fresh_ttft": {
+          "count": 30,
+          "median_s": 0.43746987800113857,
+          "p95_s": 0.5008924360154197
+        },
+        "continuation_ttft": {
+          "count": 0,
+          "median_s": null,
+          "p95_s": null
+        },
+        "official_gpu": null,
+        "initialization_gpu": null
+      },
+      "concurrency_bins": {
+        "0-4": {
+          "windows": 1,
+          "decode_request_seconds": 18.624705534089344,
+          "tokens": 994,
+          "per_active_tps": 53.36997130938004,
+          "mean_context_tokens": 8372.008008923554
+        },
+        "4-8": {
+          "windows": 3,
+          "decode_request_seconds": 97.43065438703354,
+          "tokens": 4925,
+          "per_active_tps": 50.54877267308428,
+          "mean_context_tokens": 8053.102754780647
+        },
+        "8-16": {
+          "windows": 5,
+          "decode_request_seconds": 314.1970158299878,
+          "tokens": 15489,
+          "per_active_tps": 49.29709456050693,
+          "mean_context_tokens": 7483.108437816697
+        },
+        "16-30": {
+          "windows": 29,
+          "decode_request_seconds": 3145.9601976196805,
+          "tokens": 148185,
+          "per_active_tps": 47.10326599558406,
+          "mean_context_tokens": 3302.2459139453936
+        }
+      },
+      "counter_deltas_including_warmup": {
+        "spec_decode_num_drafts_total": 75754.0,
+        "spec_decode_num_draft_tokens_total": 227262.0,
+        "spec_decode_num_accepted_tokens_total": 94853.0,
+        "spec_decode_num_accepted_tokens_per_pos_total": 94853.0,
+        "num_preemptions_total": 0.0,
+        "generation_tokens_total": 170633.0
+      },
+      "finished_utc": "2026-10-07T06:01:38.166542+00:00",
+      "sampled_official_counter_deltas": {
+        "spec_decode_num_drafts_total": 74827.0,
+        "spec_decode_num_draft_tokens_total": 224481.0,
+        "spec_decode_num_accepted_tokens_total": 94177.0,
+        "spec_decode_num_accepted_tokens_per_pos_total": 94177.0,
+        "num_preemptions_total": 0.0,
+        "generation_tokens_total": 168985.0
+      },
+      "sampled_official_acceptance_fraction": 0.4195321653057497,
+      "sampled_official_seconds": 189.275244
+    }
+  ],
+  "paired": [
+    {
+      "seed": 20261011,
+      "valid": true,
+      "A_s": 80.07279265101533,
+      "B_s": 170.7786058409838,
+      "B_acceptance_fraction": 0.40618612521150593,
+      "B_minus_A_s": 90.70581318996847,
+      "A_over_B": 0.4688689912691587
+    },
+    {
+      "seed": 20261012,
+      "valid": true,
+      "A_s": 67.58873000007588,
+      "B_s": 209.84186209901236,
+      "B_acceptance_fraction": 0.41971070331859683,
+      "B_minus_A_s": 142.25313209893648,
+      "A_over_B": 0.32209364387066214
+    },
+    {
+      "seed": 20261013,
+      "valid": true,
+      "A_s": 70.45835353597067,
+      "B_s": 190.47917830990627,
+      "B_acceptance_fraction": 0.4195321653057497,
+      "B_minus_A_s": 120.0208247739356,
+      "A_over_B": 0.3699005537567795
+    }
+  ],
+  "pooled_concurrency_bins": {
+    "0-4": {
+      "A": {
+        "windows": 0,
+        "request_seconds": 0,
+        "tokens": 0,
+        "tps": null,
+        "context_tokens": null
+      },
+      "B": {
+        "windows": 3,
+        "request_seconds": 50.83568396903294,
+        "tokens": 2711,
+        "tps": 53.32868151535902,
+        "context_tokens": 8379.719546433682
+      },
+      "B_over_A": null
+    },
+    "4-8": {
+      "A": {
+        "windows": 0,
+        "request_seconds": 0,
+        "tokens": 0,
+        "tps": null,
+        "context_tokens": null
+      },
+      "B": {
+        "windows": 5,
+        "request_seconds": 154.64256130591312,
+        "tokens": 7762,
+        "tps": 50.19316761473739,
+        "context_tokens": 8076.405213066344
+      },
+      "B_over_A": null
+    },
+    "8-16": {
+      "A": {
+        "windows": 9,
+        "request_seconds": 607.9463547954344,
+        "tokens": 83628,
+        "tps": 137.55818969938503,
+        "context_tokens": 9205.822623565318
+      },
+      "B": {
+        "windows": 26,
+        "request_seconds": 1806.5637745931306,
+        "tokens": 90196,
+        "tps": 49.926828639256705,
+        "context_tokens": 7329.157528339997
+      },
+      "B_over_A": 0.3629506083815518
+    },
+    "16-30": {
+      "A": {
+        "windows": 32,
+        "request_seconds": 3697.631248083752,
+        "tokens": 546476,
+        "tps": 147.79083238308414,
+        "context_tokens": 4006.645097741881
+      },
+      "B": {
+        "windows": 79,
+        "request_seconds": 8829.453828518064,
+        "tokens": 412525,
+        "tps": 46.72146295930495,
+        "context_tokens": 3003.738343758356
+      },
+      "B_over_A": 0.31613234871158763
+    }
+  },
+  "pooled_context_bins": {
+    "0-8K": {
+      "A": {
+        "blocks": 736,
+        "request_seconds": 3658.650639051353,
+        "tokens": 540877,
+        "tps": 147.8351046221356
+      },
+      "B": {
+        "blocks": 2019,
+        "request_seconds": 10078.380931862033,
+        "tokens": 475411,
+        "tps": 47.17136643416844
+      },
+      "B_over_A": 0.31908095546546794
+    },
+    "8-16K": {
+      "A": {
+        "blocks": 88,
+        "request_seconds": 440,
+        "tokens": 59978,
+        "tps": 136.31363636363636
+      },
+      "B": {
+        "blocks": 88,
+        "request_seconds": 436.68989544814724,
+        "tokens": 23049,
+        "tps": 52.7811617357124
+      },
+      "B_over_A": 0.3872038274652949
+    },
+    "16-32K": {
+      "A": {
+        "blocks": 0,
+        "request_seconds": 0,
+        "tokens": 0,
+        "tps": null
+      },
+      "B": {
+        "blocks": 0,
+        "request_seconds": 0,
+        "tokens": 0,
+        "tps": null
+      },
+      "B_over_A": null
+    },
+    "32K+": {
+      "A": {
+        "blocks": 0,
+        "request_seconds": 0,
+        "tokens": 0,
+        "tps": null
+      },
+      "B": {
+        "blocks": 0,
+        "request_seconds": 0,
+        "tokens": 0,
+        "tps": null
+      },
+      "B_over_A": null
+    }
+  },
+  "request_rate_distribution": {
+    "A": {
+      "count": 120,
+      "median_tps": 144.8817250110893,
+      "p10_tps": 135.3020015354039,
+      "scope": "request mean observed decode rate, at least 5s first-to-last arrival; includes policy-censored streams"
+    },
+    "B": {
+      "count": 104,
+      "median_tps": 47.68035663334192,
+      "p10_tps": 43.41447344835587,
+      "scope": "request mean observed decode rate, at least 5s first-to-last arrival; includes policy-censored streams"
+    }
+  },
+  "control_audits": [
+    {
+      "seed": 20261011,
+      "matched_controls": [
+        "core_manifest_sha256",
+        "system_prompt_sha256",
+        "runner_id",
+        "seed",
+        "benchmark_year",
+        "question_indices",
+        "target_correct",
+        "grader_cost",
+        "parallelism",
+        "rollouts",
+        "schedule",
+        "first_pass_max_tokens",
+        "max_tokens",
+        "max_attempts_per_question",
+        "max_rounds",
+        "temperature",
+        "top_p",
+        "benchmark",
+        "buffer_traces",
+        "skip_benchmark_prewarm",
+        "no_continuation"
+      ],
+      "core_manifest_sha256": "165d659a47e0f3e789c9a1cfd4ec9fc4184081af91cbda35d719fe41c339d688",
+      "serving_difference": {
+        "speculative-config": "{\"method\":\"draft_model\",\"model\":\"/home/azureuser/models/Qwen/Qwen2.5-Coder-0.5B\",\"num_speculative_tokens\":3,\"max_model_len\":32768,\"draft_sample_method\":\"greedy\"}"
+      }
+    },
+    {
+      "seed": 20261012,
+      "matched_controls": [
+        "core_manifest_sha256",
+        "system_prompt_sha256",
+        "runner_id",
+        "seed",
+        "benchmark_year",
+        "question_indices",
+        "target_correct",
+        "grader_cost",
+        "parallelism",
+        "rollouts",
+        "schedule",
+        "first_pass_max_tokens",
+        "max_tokens",
+        "max_attempts_per_question",
+        "max_rounds",
+        "temperature",
+        "top_p",
+        "benchmark",
+        "buffer_traces",
+        "skip_benchmark_prewarm",
+        "no_continuation"
+      ],
+      "core_manifest_sha256": "165d659a47e0f3e789c9a1cfd4ec9fc4184081af91cbda35d719fe41c339d688",
+      "serving_difference": {
+        "speculative-config": "{\"method\":\"draft_model\",\"model\":\"/home/azureuser/models/Qwen/Qwen2.5-Coder-0.5B\",\"num_speculative_tokens\":3,\"max_model_len\":32768,\"draft_sample_method\":\"greedy\"}"
+      }
+    },
+    {
+      "seed": 20261013,
+      "matched_controls": [
+        "core_manifest_sha256",
+        "system_prompt_sha256",
+        "runner_id",
+        "seed",
+        "benchmark_year",
+        "question_indices",
+        "target_correct",
+        "grader_cost",
+        "parallelism",
+        "rollouts",
+        "schedule",
+        "first_pass_max_tokens",
+        "max_tokens",
+        "max_attempts_per_question",
+        "max_rounds",
+        "temperature",
+        "top_p",
+        "benchmark",
+        "buffer_traces",
+        "skip_benchmark_prewarm",
+        "no_continuation"
+      ],
+      "core_manifest_sha256": "165d659a47e0f3e789c9a1cfd4ec9fc4184081af91cbda35d719fe41c339d688",
+      "serving_difference": {
+        "speculative-config": "{\"method\":\"draft_model\",\"model\":\"/home/azureuser/models/Qwen/Qwen2.5-Coder-0.5B\",\"num_speculative_tokens\":3,\"max_model_len\":32768,\"draft_sample_method\":\"greedy\"}"
+      }
+    }
+  ],
+  "analysis_source_sha256": {
+    "report_speculative_v1_ab.py": "b6b57cd19cca7ab342f82fbc7e213f122e2569827a1d8e72b45fc404bd22770c",
+    "speculative_v1_ab.py": "7f1f2f8d5b1895495655b256606b48f9ad2138c3806ea567843effc289dae192"
+  },
+  "median_time_to_target_s": {
+    "A": 70.45835353597067,
+    "B": 190.47917830990627
+  }
+}

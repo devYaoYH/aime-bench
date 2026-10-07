@@ -1,0 +1,112 @@
+{
+  "problem_idx": 26,
+  "started_at_utc": "2026-10-07T05:41:37.023+00:00",
+  "finished_at_utc": "2026-10-07T05:42:16.107+00:00",
+  "end_to_end_latency_s": 39.083866755943745,
+  "status": "solved",
+  "winner": {
+    "answer": 113,
+    "part": "content",
+    "kind": "literal_prose",
+    "end": 13615,
+    "line": "Thus the answer is 113. However, we need to double-check that we haven't missed any nuance: The problem says \"Let S be the set of vertices of a regular 24-gon. Find the number of ways to draw 12 segments of equal lengths so that each vertex in S is an endpoint of exactly one of the 12 segments.\"",
+    "candidate": "113",
+    "rollout": 1,
+    "observed_at_utc": "2026-10-07T05:42:03.775+00:00",
+    "question_elapsed_s": 26.751633223961107,
+    "verification_started_at_utc": "2026-10-07T05:42:03.775+00:00",
+    "round": 1,
+    "candidate_queue_wait_s": 0.000580203952267766,
+    "result": {
+      "dataset": {
+        "format": "jsonl",
+        "gold_field": "answer",
+        "id": "aime_2025",
+        "idx_field": "problem_idx",
+        "revision": "c94da77eb22bbd6439e62a323bec18493a421302",
+        "source": "/home/azureuser/aime-bench/runner/grader/data/aime_2025.jsonl",
+        "year": 2025,
+        "sha256": "d5bcac5904290630fe98e3c3d1c2773260ebf59b57955382735e9ce8c0142b41"
+      },
+      "query_id": "20261007T054136.161272Z-q26-a113",
+      "seq": 11,
+      "agent_id": "20261007T054136.161272Z-q26-r1",
+      "index": 26,
+      "candidate": "113",
+      "verdict": true,
+      "queue_ahead_at_submit": 3,
+      "submitted_at": "2026-10-07T05:42:03.778755Z",
+      "picked_at": "2026-10-07T05:42:13.102737Z",
+      "answered_at": "2026-10-07T05:42:16.102818Z",
+      "queue_wait_s": 9.324,
+      "toll_s": 3.0,
+      "latency_s": 12.324
+    },
+    "verification_finished_at_utc": "2026-10-07T05:42:16.104+00:00",
+    "verification_latency_s": 12.328246915945783
+  },
+  "error": null,
+  "unique_candidates": 1,
+  "candidate_answers": [
+    "113"
+  ],
+  "rollouts": [
+    {
+      "rollout": 1,
+      "round": 1,
+      "started_at_utc": "2026-10-07T05:41:37.040+00:00",
+      "start_monotonic_s": 555945.103419244,
+      "ttft_s": 0.2388685999903828,
+      "last_token_s": 39.057809894904494,
+      "finish_reason": null,
+      "status": "cancelled",
+      "done_received": false,
+      "usage": {
+        "prompt_tokens": 232,
+        "total_tokens": 6063,
+        "completion_tokens": 5831,
+        "completion_tokens_details": null
+      },
+      "endpoint": "/v1/chat/completions",
+      "continuation_of_rollout": null,
+      "requested_max_tokens": 8192,
+      "http_status": 200,
+      "headers_received_s": 0.050112873897887766,
+      "generation_finished_at_utc": "2026-10-07T05:42:16.104+00:00",
+      "generation_end_monotonic_s": 555984.167101322,
+      "generation_latency_s": 39.0636820779182,
+      "generation_censored": true,
+      "generated_token_ids_count": 5831,
+      "prompt_token_ids_count": 232,
+      "cached_prompt_tokens": null,
+      "prefix_cache_hit_fraction": null,
+      "overhead": {
+        "enabled": false,
+        "timings": {},
+        "counters": {},
+        "maxima": {}
+      },
+      "finished_at_utc": "2026-10-07T05:42:16.107+00:00",
+      "end_to_end_latency_s": 39.06673624191899,
+      "end_to_end_scope": "rollout start through question verification/cancellation settlement",
+      "gpu": null
+    }
+  ],
+  "round": 1,
+  "first_solved": {
+    "problem_idx": 26,
+    "round": 1,
+    "rollout": 1,
+    "candidate": "113",
+    "first_solved_at_utc": "2026-10-07T05:42:16.104+00:00",
+    "first_solved_elapsed_s": 39.08529274200555,
+    "grader_answered_at_utc": "2026-10-07T05:42:16.102818Z",
+    "grader_query_id": "20261007T054136.161272Z-q26-a113"
+  },
+  "overhead": {
+    "enabled": false,
+    "timings": {},
+    "counters": {},
+    "maxima": {}
+  }
+}

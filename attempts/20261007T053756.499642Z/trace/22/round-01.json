@@ -1,0 +1,112 @@
+{
+  "problem_idx": 22,
+  "started_at_utc": "2026-10-07T05:37:57.359+00:00",
+  "finished_at_utc": "2026-10-07T05:38:37.979+00:00",
+  "end_to_end_latency_s": 40.6200576039264,
+  "status": "solved",
+  "winner": {
+    "answer": 237,
+    "part": "content",
+    "kind": "literal_prose",
+    "end": 8791,
+    "line": "Thus answer is 237.",
+    "candidate": "237",
+    "rollout": 1,
+    "observed_at_utc": "2026-10-07T05:38:18.044+00:00",
+    "question_elapsed_s": 20.685131718986668,
+    "verification_started_at_utc": "2026-10-07T05:38:18.045+00:00",
+    "round": 1,
+    "candidate_queue_wait_s": 0.0010210539912804961,
+    "result": {
+      "dataset": {
+        "format": "jsonl",
+        "gold_field": "answer",
+        "id": "aime_2025",
+        "idx_field": "problem_idx",
+        "revision": "c94da77eb22bbd6439e62a323bec18493a421302",
+        "source": "/home/azureuser/aime-bench/runner/grader/data/aime_2025.jsonl",
+        "year": 2025,
+        "sha256": "d5bcac5904290630fe98e3c3d1c2773260ebf59b57955382735e9ce8c0142b41"
+      },
+      "query_id": "20261007T053756.499642Z-q22-a237",
+      "seq": 12,
+      "agent_id": "20261007T053756.499642Z-q22-r1",
+      "index": 22,
+      "candidate": "237",
+      "verdict": true,
+      "queue_ahead_at_submit": 5,
+      "submitted_at": "2026-10-07T05:38:18.047427Z",
+      "picked_at": "2026-10-07T05:38:34.970483Z",
+      "answered_at": "2026-10-07T05:38:37.970564Z",
+      "queue_wait_s": 16.923,
+      "toll_s": 3.0,
+      "latency_s": 19.923
+    },
+    "verification_finished_at_utc": "2026-10-07T05:38:37.972+00:00",
+    "verification_latency_s": 19.92722488299478
+  },
+  "error": null,
+  "unique_candidates": 1,
+  "candidate_answers": [
+    "237"
+  ],
+  "rollouts": [
+    {
+      "rollout": 1,
+      "round": 1,
+      "started_at_utc": "2026-10-07T05:37:57.374+00:00",
+      "start_monotonic_s": 555725.436540213,
+      "ttft_s": 0.23732967406976968,
+      "last_token_s": 40.59266552107874,
+      "finish_reason": null,
+      "status": "cancelled",
+      "done_received": false,
+      "usage": {
+        "prompt_tokens": 266,
+        "total_tokens": 6252,
+        "completion_tokens": 5986,
+        "completion_tokens_details": null
+      },
+      "endpoint": "/v1/chat/completions",
+      "continuation_of_rollout": null,
+      "requested_max_tokens": 8192,
+      "http_status": 200,
+      "headers_received_s": 0.06024169200100005,
+      "generation_finished_at_utc": "2026-10-07T05:38:37.976+00:00",
+      "generation_end_monotonic_s": 555766.038999543,
+      "generation_latency_s": 40.60245932999533,
+      "generation_censored": true,
+      "generated_token_ids_count": 5986,
+      "prompt_token_ids_count": 266,
+      "cached_prompt_tokens": null,
+      "prefix_cache_hit_fraction": null,
+      "overhead": {
+        "enabled": false,
+        "timings": {},
+        "counters": {},
+        "maxima": {}
+      },
+      "finished_at_utc": "2026-10-07T05:38:37.979+00:00",
+      "end_to_end_latency_s": 40.6052494290052,
+      "end_to_end_scope": "rollout start through question verification/cancellation settlement",
+      "gpu": null
+    }
+  ],
+  "round": 1,
+  "first_solved": {
+    "problem_idx": 22,
+    "round": 1,
+    "rollout": 1,
+    "candidate": "237",
+    "first_solved_at_utc": "2026-10-07T05:38:37.972+00:00",
+    "first_solved_elapsed_s": 40.617707897908986,
+    "grader_answered_at_utc": "2026-10-07T05:38:37.970564Z",
+    "grader_query_id": "20261007T053756.499642Z-q22-a237"
+  },
+  "overhead": {
+    "enabled": false,
+    "timings": {},
+    "counters": {},
+    "maxima": {}
+  }
+}

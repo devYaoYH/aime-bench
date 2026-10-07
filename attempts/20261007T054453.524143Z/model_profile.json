@@ -1,0 +1,5 @@
+{
+  "path": "/home/azureuser/aime-bench/configs/vllm/r0b0tlab/VibeThinker-3B-NVFP4/vllm-spec-qwen05-k3.yaml",
+  "yaml": "# Same target profile as vllm-flashinfer.yaml; only speculation is added.\n# Draft weights pinned to 8123ea2e9354afb7ffcc6c8641d1b2f5ecf18301.\nmodel: /home/azureuser/models/r0b0tlab/VibeThinker-3B-NVFP4\nserved-model-name: r0b0tlab/VibeThinker-3B-NVFP4\nhost: \"127.0.0.1\"\nport: 8000\ndtype: bfloat16\nquantization: modelopt_fp4\nlinear-backend: marlin\nkv-cache-dtype: auto\ntensor-parallel-size: 1\nmax-model-len: 65536\ngpu-memory-utilization: 0.95\noverride-generation-config: '{\"max_new_tokens\": 16384}'\nenable-prefix-caching: true\nenable-prompt-tokens-details: true\nattention-backend: FLASHINFER\nspeculative-config: '{\"method\":\"draft_model\",\"model\":\"/home/azureuser/models/Qwen/Qwen2.5-Coder-0.5B\",\"num_speculative_tokens\":3,\"max_model_len\":32768,\"draft_sample_method\":\"greedy\"}'\n",
+  "sha256": "2766ac4c61457cbc2ea36acb4b6c65f0d9aa1dfc02c5ee5a64c852c564a846de"
+}

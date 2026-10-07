@@ -1,0 +1,87 @@
+{
+  "arm": "B",
+  "seed": 20261012,
+  "started_utc": "2026-10-07T05:48:03.776132+00:00",
+  "server_command": [
+    "/home/azureuser/.venvs/vllm/bin/vllm",
+    "serve",
+    "--config",
+    "/home/azureuser/aime-bench/configs/vllm/r0b0tlab/VibeThinker-3B-NVFP4/vllm-spec-qwen05-k3.yaml"
+  ],
+  "runner_command": [
+    "/home/azureuser/.venvs/vllm/bin/python",
+    "-m",
+    "runner",
+    "--model",
+    "r0b0tlab/VibeThinker-3B-NVFP4",
+    "--models-dir",
+    "/home/azureuser/aime-bench/configs/vllm",
+    "--model-profile",
+    "vllm-spec-qwen05-k3.yaml",
+    "--reuse-server",
+    "--seed",
+    "20261012",
+    "--startup-timeout",
+    "900"
+  ],
+  "profile_sha256": "2766ac4c61457cbc2ea36acb4b6c65f0d9aa1dfc02c5ee5a64c852c564a846de",
+  "runner_exit": 0,
+  "attempt_id": "20261007T054911.006669Z",
+  "status": "completed",
+  "target_reached": true,
+  "time_to_target_s": 209.84186209901236,
+  "performance": {
+    "generation_requests": 44,
+    "fresh_ttft": {
+      "count": 30,
+      "median_s": 0.5536568009993061,
+      "p95_s": 0.6956186819588766
+    },
+    "continuation_ttft": {
+      "count": 14,
+      "median_s": 0.2797539079328999,
+      "p95_s": 0.2975072789704427
+    },
+    "official_gpu": null,
+    "initialization_gpu": null
+  },
+  "concurrency_bins": {
+    "0-4": {
+      "windows": 2,
+      "decode_request_seconds": 32.2109784349436,
+      "tokens": 1717,
+      "per_active_tps": 53.30480734907879,
+      "mean_context_tokens": 8384.17843350634
+    },
+    "4-8": {
+      "windows": 2,
+      "decode_request_seconds": 57.21190691887958,
+      "tokens": 2837,
+      "per_active_tps": 49.58757980261986,
+      "mean_context_tokens": 8116.088801358921
+    },
+    "8-16": {
+      "windows": 12,
+      "decode_request_seconds": 825.0736228919336,
+      "tokens": 41994,
+      "per_active_tps": 50.897276115564644,
+      "mean_context_tokens": 7618.6828817195965
+    },
+    "16-30": {
+      "windows": 25,
+      "decode_request_seconds": 2792.487470854475,
+      "tokens": 133452,
+      "per_active_tps": 47.789650407693664,
+      "mean_context_tokens": 2903.852670853173
+    }
+  },
+  "counter_deltas_including_warmup": {
+    "spec_decode_num_drafts_total": 81807.0,
+    "spec_decode_num_draft_tokens_total": 245421.0,
+    "spec_decode_num_accepted_tokens_total": 102554.0,
+    "spec_decode_num_accepted_tokens_per_pos_total": 102554.0,
+    "num_preemptions_total": 0.0,
+    "generation_tokens_total": 184407.0
+  },
+  "finished_utc": "2026-10-07T05:52:49.597642+00:00"
+}
