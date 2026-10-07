@@ -1,0 +1,18 @@
+# Same target profile as vllm-flashinfer.yaml; only speculation is added.
+# Draft weights pinned to 8123ea2e9354afb7ffcc6c8641d1b2f5ecf18301.
+model: /home/azureuser/models/r0b0tlab/VibeThinker-3B-NVFP4
+served-model-name: r0b0tlab/VibeThinker-3B-NVFP4
+host: "127.0.0.1"
+port: 8000
+dtype: bfloat16
+quantization: modelopt_fp4
+linear-backend: marlin
+kv-cache-dtype: auto
+tensor-parallel-size: 1
+max-model-len: 65536
+gpu-memory-utilization: 0.95
+override-generation-config: '{"max_new_tokens": 16384}'
+enable-prefix-caching: true
+enable-prompt-tokens-details: true
+attention-backend: FLASHINFER
+speculative-config: '{"method":"draft_model","model":"/home/azureuser/models/Qwen/Qwen2.5-Coder-0.5B","num_speculative_tokens":3,"max_model_len":32768,"draft_sample_method":"greedy"}'
