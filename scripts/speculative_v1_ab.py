@@ -163,7 +163,7 @@ def decode_analysis(attempt, width=5):
                        "per_active_tps": sum(w["tokens"] for w in cells)/exposure if exposure else None,
                        "mean_context_tokens": sum(w["mean_context_tokens"]*w["decode_request_seconds"]
                                                   for w in cells)/exposure if exposure else None}
-    return {"requests": requests, "windows": windows, "concurrency_bins": bins,
+    return {"requests": requests, "request_blocks": blocks, "windows": windows, "concurrency_bins": bins,
             "method": "5s client arrival windows; exact token IDs audited; first SSE token chunk excluded; rates weighted by decoding request-seconds; incomplete final window excluded from bins. Mean concurrency and logical context are observational and trajectory-dependent."}
 
 
